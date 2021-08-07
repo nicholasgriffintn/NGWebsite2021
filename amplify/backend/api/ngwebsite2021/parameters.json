@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "ngwebsite2021",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authngwebsite2021461fce11",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

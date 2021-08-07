@@ -1,0 +1,55 @@
+type Tags {
+  name: String!
+}
+
+enum PostStatus {
+  DRAFT
+  PRIVATE
+  SUBSCRIBER
+  PUBLISHED
+}
+
+type Post
+  @model
+  @aws_iam
+  @aws_cognito_user_pools
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read, update, delete] }
+      { allow: public, provider: iam, operations: [read] }
+      { allow: groups, groups: ["everyone"], operations: [read] }
+    ]
+  ) {
+  id: ID!
+  title: String!
+  description: String!
+  status: PostStatus!
+  tags: Tags
+  thumbnail: String!
+  header: String!
+  ctime: String
+  content: String!
+  comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
+}
+
+type Comment
+  @model
+  @aws_iam
+  @aws_cognito_user_pools
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read, update, delete] }
+      { allow: public, provider: iam, operations: [create, read, update] }
+      {
+        allow: groups
+        groups: ["everyone"]
+        operations: [create, read, update]
+      }
+    ]
+  )
+  @key(name: "byPost", fields: ["postID", "content"]) {
+  id: ID!
+  postID: ID!
+  post: Post @connection(fields: ["postID"])
+  content: String!
+}
