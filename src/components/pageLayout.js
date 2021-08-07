@@ -9,6 +9,7 @@ export default function PageLayout({
   displayFooter = true,
   showHero = true,
   darkMain = false,
+  loadingState = false,
   title = 'NULL',
   description,
   thumbnail,
@@ -29,7 +30,10 @@ export default function PageLayout({
         </header>
       ) : null}
       {showHero === true ? (
-        <section className={styles.hero}>
+        <section
+          className={styles.hero}
+          style={loadingState === true ? { minHeight: '100vh' } : null}
+        >
           <div className={styles.heroPara}>
             <div className={styles.heroBgWrap}>
               <div className={styles.heroBg}></div>
@@ -48,7 +52,9 @@ export default function PageLayout({
       <main
         className={styles.main}
         style={
-          showHero === false && darkMain === true
+          loadingState === true
+            ? { display: 'none' }
+            : showHero === false && darkMain === true
             ? { minHeight: '100vh!important', background: '#222!important' }
             : showHero === false
             ? { minHeight: '100vh!important' }

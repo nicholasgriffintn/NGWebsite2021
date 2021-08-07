@@ -49,59 +49,64 @@ export default function PostComponent({ post = {}, errored = false }) {
       .catch((err) => console.error(err));
   }, [hasErrored]);
 
-  if (router.isFallback) {
-    return (
-      <PageLayout title="Please wait while we load the contents of this post...">
-        <p></p>
-      </PageLayout>
-    );
-  }
-  if (!post || !post.title) {
-    return (
-      <PageLayout title="Whoops, it looks like there's been a issue retrieving that...">
-        <div style={{ textAlign: 'center' }}>
-          <img
-            style={{ maxWidth: '780px', margin: '0 auto', height: 'auto' }}
-            src={failImage}
-            alt="Everything is fine..."
-          />
-        </div>
-        <br></br>
-        {failData && failData.url ? (
-          <div style={{ textAlign: 'center' }}>
-            <small
-              style={{
-                textAlign: 'center',
-                maxWidth: '480px',
-                margin: '0 auto',
-              }}
-            >
-              {failData.title} was retrieved from{' '}
-              <a target="_blank" rel="noopener noreferer" href={failData.url}>
-                GIPHY
-              </a>{' '}
-              {failData.user ? (
-                <>
-                  and was uploaded by{' '}
-                  <a
-                    target="_blank"
-                    rel="noopener noreferer"
-                    href={failData.user.profile_url}
-                  >
-                    {failData.user.display_name}
-                  </a>
-                </>
-              ) : null}
-            </small>
-          </div>
-        ) : null}
-      </PageLayout>
-    );
-  }
   return (
-    <PageLayout title={post.title}>
-      <h1>{post.title}</h1>
-      <Markdown children={post.content} />
+    <PageLayout
+      loadingState={router.isFallback}
+      title={
+        router.isFallback
+          ? 'Please wait while we load the contents of this post...'
+          : !post || !post.title
+          ? "Whoops, it looks like there's been a issue retrieving that..."
+          : post.title
+      }
+    >
+      {router.isFallback ? (
+        <p></p>
+      ) : !post || !post.title ? (
+        <>
+          <div style={{ textAlign: 'center' }}>
+            <img
+              style={{ maxWidth: '780px', margin: '0 auto', height: 'auto' }}
+              src={failImage}
+              alt="Everything is fine..."
+            />
+          </div>
+          <br></br>
+          {failData && failData.url ? (
+            <div style={{ textAlign: 'center' }}>
+              <small
+                style={{
+                  textAlign: 'center',
+                  maxWidth: '480px',
+                  margin: '0 auto',
+                }}
+              >
+                {failData.title} was retrieved from{' '}
+                <a target="_blank" rel="noopener noreferer" href={failData.url}>
+                  GIPHY
+                </a>{' '}
+                {failData.user ? (
+                  <>
+                    and was uploaded by{' '}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferer"
+                      href={failData.user.profile_url}
+                    >
+                      {failData.user.display_name}
+                    </a>
+                  </>
+                ) : null}
+              </small>
+            </div>
+          ) : null}
+        </>
+      ) : (
+        <>
+          <h1>{post.title}</h1>
+          <Markdown children={post.content} />
+        </>
+      )}
     </PageLayout>
   );
 }
