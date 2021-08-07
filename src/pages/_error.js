@@ -79,7 +79,7 @@ const ErrorPage = ({ statusCode = 500 }) => {
             </a>{' '}
             {failData.user ? (
               <>
-                where it was uploaded by{' '}
+                and was uploaded by{' '}
                 <a
                   target="_blank"
                   rel="noopener noreferer"

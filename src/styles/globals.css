@@ -1895,3 +1895,31 @@ span.footer-text-right {
 .footer-wrap a {
   color: #fff;
 }
+
+.content-wrap.landing-content-wrap {
+  color: #fff;
+}
+
+.content-wrap.landing-content-wrap h1#single-title span.emoji {
+  width: 100%;
+  display: inline-block;
+  margin-bottom: 25px;
+  font-size: 1.8em;
+}
+
+.content-wrap.landing-content-wrap h1 {
+  font: size 3.5em;
+}
+
+.content-wrap.landing-content-wrap h1,
+.content-wrap.landing-content-wrap h2,
+.content-wrap.landing-content-wrap h3,
+.content-wrap.landing-content-wrap h4,
+.content-wrap.landing-content-wrap h5,
+.content-wrap.landing-content-wrap p,
+.content-wrap.landing-content-wrap span,
+.content-wrap.landing-content-wrap small {
+  color: #fff;
+  margin-bottom: 40px;
+  margin-top: 60px;
+}

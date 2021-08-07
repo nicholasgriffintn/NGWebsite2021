@@ -80,7 +80,18 @@ export default function PostComponent({ post = {}, errored = false }) {
               <a target="_blank" rel="noopener noreferer" href={failData.url}>
                 GIPHY
               </a>{' '}
-              where it was uploaded by {failData.username}
+              {failData.user ? (
+                <>
+                  and was uploaded by{' '}
+                  <a
+                    target="_blank"
+                    rel="noopener noreferer"
+                    href={failData.user.profile_url}
+                  >
+                    {failData.user.display_name}
+                  </a>
+                </>
+              ) : null}
             </small>
           </div>
         ) : null}
