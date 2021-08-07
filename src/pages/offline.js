@@ -4,7 +4,12 @@ import React from 'react';
 import PageLayout from '../components/pageLayout';
 
 const OfflinePage = () => (
-  <PageLayout displayHeader={true} title="Offline">
+  <PageLayout
+    displayHeader={true}
+    showHero={false}
+    darkMain={true}
+    title="Offline"
+  >
     <div className="content-wrap landing-content-wrap">
       <div className="container-main">
         <div className="page-header-spacer"></div>

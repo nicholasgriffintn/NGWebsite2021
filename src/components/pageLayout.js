@@ -7,6 +7,8 @@ export default function PageLayout({
   children,
   displayHeader = true,
   displayFooter = true,
+  showHero = true,
+  darkMain = false,
   title = 'NULL',
   description,
   thumbnail,
@@ -26,22 +28,33 @@ export default function PageLayout({
           </nav>
         </header>
       ) : null}
-      <section className={styles.hero}>
-        <div className={styles.heroPara}>
-          <div className={styles.heroBgWrap}>
-            <div className={styles.heroBg}></div>
-          </div>
-          <div className={styles.heroContent}>
-            <div className={styles.container}>
-              <div className={styles.heroContentTitle}>
-                <h1>{title}</h1>
-                {description ? <p>{description}</p> : null}
+      {showHero === true ? (
+        <section className={styles.hero}>
+          <div className={styles.heroPara}>
+            <div className={styles.heroBgWrap}>
+              <div className={styles.heroBg}></div>
+            </div>
+            <div className={styles.heroContent}>
+              <div className={styles.container}>
+                <div className={styles.heroContentTitle}>
+                  <h1>{title}</h1>
+                  {description ? <p>{description}</p> : null}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-      <main className={styles.main}>
+        </section>
+      ) : null}
+      <main
+        className={styles.main}
+        style={
+          showHero === false && darkMain === true
+            ? { minHeight: '100vh!important', background: '#222!important' }
+            : showHero === false
+            ? { minHeight: '100vh!important' }
+            : null
+        }
+      >
         <section className={styles.wrap}>
           <Element
             name="pageContent"

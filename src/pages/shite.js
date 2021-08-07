@@ -4,7 +4,12 @@ import React from 'react';
 import PageLayout from '../components/pageLayout';
 
 const ShitePage = () => (
-  <PageLayout displayHeader={true} title="This is a shite page">
+  <PageLayout
+    displayHeader={true}
+    showHero={false}
+    darkMain={true}
+    title="This is a shite page"
+  >
     <div className="content-wrap landing-content-wrap">
       <div className="container-main">
         <div className="page-header-spacer"></div>
