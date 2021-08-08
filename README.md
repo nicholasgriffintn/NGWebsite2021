@@ -16,8 +16,8 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 - [ ] Finish sitemap
 - [ ] Finish robots
 - [ ] Finish homepage
-- [ ] Finish posts page in terms of showing data
-- [ ] Finish contact form
-- [ ] Publish to Amplify
+- [x] Finish posts page in terms of showing data
+- [x] Finish contact form
+- [x] Publish to Amplify
 - [ ] Work out Amplify GraphQL sorting.
 - [ ] Swap to nextjs/mdx? component rendering https://nextjs.org/blog/markdown
