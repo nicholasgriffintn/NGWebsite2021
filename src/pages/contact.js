@@ -23,8 +23,8 @@ export default function Page() {
           <div className={styles.col} style={{ width: '66.66%' }}>
             <h1>Send me a message</h1>
             <p>
-              I'm looking forward to hearing about the message that you're
-              looking to send me.
+              I'm looking forward to hearing from you (as long as you're not a
+              spammer xD)!
             </p>
             <p>
               Plase fill in the form below to send me a message, alternatively,
