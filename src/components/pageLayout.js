@@ -88,7 +88,7 @@ export default function PageLayout({
               <span className="footer-text-right">
                 Check out the source code for this site one{' '}
                 <a
-                  href="https://github.com/nicholasgriffintn/NGWebsite2020"
+                  href="https://github.com/nicholasgriffintn/NGWebsite2021"
                   title="Github Source Code"
                   target="_blank"
                 >

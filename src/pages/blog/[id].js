@@ -31,7 +31,7 @@ export default function PostComponent({ post = {}, errored = false }) {
       const giphy = {
         baseURL: 'https://api.giphy.com/v1/gifs/',
         apiKey: '0UTRbFtkMxAplrohufYco5IY74U8hOes',
-        tag: 'burning',
+        tag: 'fire',
         type: 'random',
         rating: 'pg-13',
       };
