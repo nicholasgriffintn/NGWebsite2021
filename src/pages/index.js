@@ -9,6 +9,8 @@ import dayjs from 'dayjs';
 import Typed from 'react-typed';
 import { Element, animateScroll as scroll } from 'react-scroll';
 
+import { NextSeo } from 'next-seo';
+
 export default function Home() {
   const [spotify, setSpotify] = useState([]);
 
@@ -184,6 +186,7 @@ export default function Home() {
 
   return (
     <div className={styles.applayout}>
+      <NextSeo title="Homepage" />
       <section
         className={styles.hero}
         style={

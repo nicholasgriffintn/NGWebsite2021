@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { API } from 'aws-amplify';
 import { getPost, listPosts } from '../../graphql/queries';
 import Markdown from 'react-markdown';
-import Image from 'next/image';
 
 import dayjs from 'dayjs';
 
@@ -65,6 +64,7 @@ export default function PostComponent({ post = {}, errored = false }) {
 
   return (
     <PageLayout
+      isArticle={true}
       loadingState={router.isFallback}
       hideContent={post && post.title ? true : false}
       title={
@@ -83,8 +83,8 @@ export default function PostComponent({ post = {}, errored = false }) {
       _version={post._version ? post._version : null}
       _deleted={post._deleted ? post._deleted : null}
       _lastChangedAt={post._lastChangedAt ? post._lastChangedAt : null}
-      createdAt={post.createdAt ? post.createdAt : null}
-      updatedAt={post.updatedAt ? post.updatedAt : null}
+      publishedTime={post.createdAt ? post.createdAt : null}
+      modifiedTime={post.updatedAt ? post.updatedAt : null}
       owner={post.owner ? post.owner : null}
       comments={post.comments ? post.comments : null}
     >

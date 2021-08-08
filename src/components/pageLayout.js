@@ -3,6 +3,8 @@ import Link from 'next/link';
 
 import { Element, animateScroll as scroll } from 'react-scroll';
 
+import { NextSeo } from 'next-seo';
+
 export default function PageLayout({
   children,
   displayHeader = true,
@@ -11,16 +13,44 @@ export default function PageLayout({
   darkMain = false,
   loadingState = false,
   hideContent = false,
-  title = 'NULL',
-  description,
-  thumbnail,
-  header,
-  tags,
-  ctime,
-  comments,
+  title = null,
+  description = null,
+  thumbnail = null,
+  header = null,
+  tags = null,
+  ctime = null,
+  comments = null,
+  isArticle = false,
+  publishedTime = null,
+  modifiedTime = null,
 }) {
   return (
     <div className={styles.applayout}>
+      <NextSeo
+        title={title}
+        description={description}
+        openGraph={{
+          type: isArticle === true ? 'article' : 'website',
+          locale: 'en_GB',
+          url: 'https://nicholasgriffin.dev/',
+          title: title,
+          site_name: 'Nicholas Griffin',
+          description: description,
+          images: [{ url: thumbnail }, { url: header }],
+          article:
+            isArticle === true
+              ? {
+                  publishedTime,
+                  modifiedTime,
+                  authors: {
+                    first_name: 'Nicholas',
+                    last_name: 'Griffin',
+                  },
+                  tags,
+                }
+              : null,
+        }}
+      />
       {displayHeader === true ? (
         <header className={styles.header}>
           <nav className={styles.nav}>
