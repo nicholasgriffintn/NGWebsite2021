@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "aws-amplify": "^4.2.2",
+    "dayjs": "^1.10.6",
     "fs": "^0.0.1-security",
     "next": "11.0.1",
     "react": "17.0.1",

@@ -10,6 +10,7 @@ export default function PageLayout({
   showHero = true,
   darkMain = false,
   loadingState = false,
+  hideContent = false,
   title = 'NULL',
   description,
   thumbnail,
@@ -41,17 +42,19 @@ export default function PageLayout({
                 className={styles.heroBg}
               ></div>
             </div>
-            <div
-              style={header ? { position: 'relative', zIndex: '9' } : null}
-              className={styles.heroContent}
-            >
-              <div className={styles.container}>
-                <div className={styles.heroContentTitle}>
-                  <h1>{title}</h1>
-                  {description ? <p>{description}</p> : null}
+            {hideContent === true ? null : (
+              <div
+                style={header ? { position: 'relative', zIndex: '9' } : null}
+                className={styles.heroContent}
+              >
+                <div className={styles.container}>
+                  <div className={styles.heroContentTitle}>
+                    <h1>{title}</h1>
+                    {description ? <p>{description}</p> : null}
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </section>
       ) : null}

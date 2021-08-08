@@ -1845,7 +1845,7 @@ button {
   display: inline-block;
   width: auto;
   font-size: 1.2em;
-  line-height: 0.8;
+  line-height: 1.4;
 }
 
 img {
@@ -1922,4 +1922,136 @@ span.footer-text-right {
   color: #fff;
   margin-bottom: 40px;
   margin-top: 60px;
+}
+
+#spotify-widget {
+  background: #000;
+  color: #fff;
+}
+
+.spotify-widget-latest,
+.spotify-widget-tracks {
+  position: relative;
+  width: 100%;
+  display: inline-block;
+}
+
+.spotify-widget-latest-background {
+  width: 100%;
+  min-height: 244px;
+  overflow: hidden;
+}
+
+.spotify-widget-latest-background img {
+  width: 100%;
+  height: 100%;
+}
+
+.spotify-widget-latest-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background: rgb(84 83 83 / 48%);
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  padding-top: 50px;
+}
+
+.spotify-widget-latest-overlay h3,
+.spotify-widget-latest-overlay span {
+  color: #fff;
+  width: 100%;
+  display: inline-block;
+}
+
+.trackLinkPlay svg {
+  fill: #fff;
+  width: 45px;
+  height: 45px;
+}
+
+.spotify-widget-latest-overlay .trackLinkPlay {
+  margin-top: 10px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.spotify-widget-tracks {
+  max-height: 150px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.spotify-widget-track-item {
+  width: 100%;
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.spotify-widget-track-item-image {
+  width: 80px;
+  text-align: center;
+}
+
+.spotify-widget-track-item-content {
+  width: 100%;
+}
+
+.spotify-widget-track-item-content h3 {
+  color: #fff;
+  width: 100%;
+  font-size: 16px;
+  line-height: 18px;
+  display: inline-block;
+  margin: 0px;
+}
+
+.spotify-widget-track-item-content span,
+.spotify-widget-track-item-content a {
+  color: #fff;
+  text-decoration: none;
+  margin-right: 5px;
+  width: auto;
+  display: inline;
+  font-size: 14px;
+}
+
+span#MusicOpeningWrapperTitle {
+  text-align: center;
+}
+span#MusicOpeningWrapperTitle {
+  display: inline-block;
+  width: 100%;
+  margin-top: 20px;
+}
+
+#MusicOpeningWrapperTitle svg {
+  width: 14px;
+  display: inline-block;
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+#BlogPostOpenerWrapper {
+  display: inline-block;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  margin-top: 20px;
+  width: 100%;
+  color: #fff;
+  text-align: center;
+}
+
+#BlogPostOpenerWrapper h2 {
+  color: #fff;
+}
+
+div#BlogPostsFloatingBlock {
+  margin-top: -200px;
+  position: relative;
+  z-index: 1;
 }

@@ -5,6 +5,8 @@ import { getPost, listPosts } from '../../graphql/queries';
 import Markdown from 'react-markdown';
 import Image from 'next/image';
 
+import dayjs from 'dayjs';
+
 import { useRouter } from 'next/router';
 
 import styles from '../../styles/Page.module.css';
@@ -64,6 +66,7 @@ export default function PostComponent({ post = {}, errored = false }) {
   return (
     <PageLayout
       loadingState={router.isFallback}
+      hideContent={true}
       title={
         router.isFallback
           ? 'Please wait while we load the contents of this post...'
@@ -128,18 +131,68 @@ export default function PostComponent({ post = {}, errored = false }) {
         </div>
       ) : (
         <div className={styles.postContentWrap}>
+          <h1>{post.title}</h1>
+          <p>{post.description}</p>
+          <small>
+            Posted: {dayjs(post.createdAt).format('dddd, MMMM D YYYY h:mm a')}
+          </small>
+          {post.createdAt !== post.updatedAt ? (
+            <small>
+              Updated:{' '}
+              {dayjs(post.updatedAt).format('dddd, MMMM D YYYY h:mm a')}
+            </small>
+          ) : null}
+          <hr />
+          {/* <picture>
+            <source
+              srcSet={`https://api.nicholasgriffin.dev/api/images/resize?image=posts/${post.id}/header.png&width=639&height=1000&position=left%20top, https://api.nicholasgriffin.dev/api/images/resize?image=posts/${post.id}/header.png&width=1278&height=1000&position=left%20top 2x`}
+              media="(max-width: 639px)"
+            />
+            <source
+              srcSet={`https://api.nicholasgriffin.dev/api/images/resize?image=posts/${post.id}/header.png&width=1023&height=500, https://api.nicholasgriffin.dev/api/images/resize?image=posts/${post.id}/header.png&width=1680&height=500 2x`}
+              media="(min-width: 640px) and (max-width: 1023px)"
+            />
+            <source
+              srcSet={`https://api.nicholasgriffin.dev/api/images/resize?image=posts/${post.id}/header.png&width=1680&height=500`}
+              media="(min-width: 1024px)"
+            />
+            <img
+              src={`https://api.nicholasgriffin.dev/api/images/resize?image=posts/${post.id}/header.png&width=1680&height=500`}
+              loading="lazy"
+              alt={post.title}
+            />
+          </picture> */}
           <Markdown
             components={{
               p: ({ node, children }) => {
-                if (node.children[0].tagName === 'img-test') {
+                if (node.children[0].tagName === 'img') {
                   const image = node.children[0];
                   return (
-                    <div className="image">
-                      <Image
+                    <div className="post-image">
+                      {/* <picture>
+                        <source
+                          srcSet={`https://api.nicholasgriffin.dev/api/images/resize?image=${image.properties.src}&width=639&height=1000&position=left%20top, https://api.nicholasgriffin.dev/api/images/resize?image=posts/${post.id}/header.png&width=1278&height=1000&position=left%20top 2x`}
+                          media="(max-width: 639px)"
+                        />
+                        <source
+                          srcSet={`https://api.nicholasgriffin.dev/api/images/resize?image=${image.properties.src}&width=1023&height=500, https://api.nicholasgriffin.dev/api/images/resize?image=posts/${post.id}/header.png&width=1680&height=500 2x`}
+                          media="(min-width: 640px) and (max-width: 1023px)"
+                        />
+                        <source
+                          srcSet={`https://api.nicholasgriffin.dev/api/images/resize?image=${image.properties.src}&width=1680&height=500`}
+                          media="(min-width: 1024px)"
+                        />
+                        <img
+                          src={`https://api.nicholasgriffin.dev/api/images/resize?image=${image.properties.src}&width=1680&height=500`}
+                          loading="lazy"
+                          alt={image.properties.alt}
+                        />
+                      </picture> */}
+
+                      <img
                         src={image.properties.src}
+                        loading="lazy"
                         alt={image.properties.alt}
-                        width={image.properties.width}
-                        height={image.properties.height}
                       />
                     </div>
                   );
@@ -149,7 +202,9 @@ export default function PostComponent({ post = {}, errored = false }) {
               },
               code({ className, children }) {
                 // Removing "language-" because React-Markdown already added "language-"
-                const language = className.replace('language-', '');
+                const language = className
+                  ? className.replace('language-', '')
+                  : null;
                 return (
                   <SyntaxHighlighter
                     style={materialDark}
