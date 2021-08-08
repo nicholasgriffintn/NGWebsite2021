@@ -13,8 +13,6 @@ import PageLayout from '../../components/pageLayout';
 
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import rehypeSlug from 'rehype-slug';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
 /* const gfm = require('remark-gfm');
 const rehypeRaw = require('rehype-raw'); */
