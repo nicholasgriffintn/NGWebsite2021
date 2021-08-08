@@ -25,17 +25,17 @@ export default function Home() {
     "<p>I'm a <strong>Technology Ethusiast</strong>.</p>",
     '<p>Okay...</p>',
     "<p>I'm realy just a bit of a <strong>Nerd</strong>.</p>",
-    "<p>I live in the <strong>UK</strong>.</p><br><br><small>I'm currently based in <strong>Leicester</strong>, but I am planning a move to <strong>London</strong> shortly.</small>",
+    "<p>I live in the <strong>UK</strong>.</p><small>I'm currently based in <strong>Leicester</strong>, but I am planning a move to <strong>London</strong> shortly.</small>",
     '<p>I spend most of my time doing new stuff on the <strong>web</strong>.</p>',
     '<p>Mostly <strong>front end</strong>, but I do dabble in a bit of <strong>back end</strong>.</p>',
     '<p>When I run out of stuff on the web, I often end up staying up late with <strong>Netflix</strong>.</p>',
-    '<p>My dogs are complete idiots:</p><br><br><br><img height="261px" width="348px" src="/uploads/dogs.JPG" id="hero_dogs_image" alt="My Shih Tzu\'s" />',
+    '<p>My dogs are complete idiots:</p><br><img height="261px" width="348px" src="/uploads/dogs.JPG" id="hero_dogs_image" alt="My Shih Tzu\'s" />',
     '<p>But probably not as bad as some of my <strong>code</strong>...</p>',
     "<p>We've all been through those days.</p>",
-    '<p>Here are my <strong>Github</strong> stats:</p><br><br><strong>Whoops... I forgot to add the Github stats...</strong>',
+    '<p>Here are my <strong>Github</strong> stats:</p><br><strong>Whoops... I forgot to add the Github stats...</strong>',
     '<p>My most used language is <strong>JavaScript</strong>.</p>',
-    '<p>I work a lot with <strong>Node.JS</strong>, <strong>React</strong> and <strong>Next.js</strong></p><br><br><p>But also with <strong>Redis</strong>, <strong>Postgres</strong> and various <strong>AWS</strong> services.</p>',
-    "<p>And that's about the sum of it.</p><br><br><p>Feel free to scroll below to find out more about me about maybe read some of my posts.</p>",
+    '<p>I work a lot with <strong>Node.JS</strong>, <strong>React</strong> and <strong>Next.js</strong></p><br><p>But also with <strong>Redis</strong>, <strong>Postgres</strong> and various <strong>AWS</strong> services.</p>',
+    "<p>And that's about the sum of it.</p><br><p>Feel free to scroll below to find out more about me about maybe read some of my posts.</p>",
   ]);
   const [showScroller, setShowScroller] = useState(false);
   const [typedInitialComplete, setTypedInitialComplete] = useState(0);
@@ -260,8 +260,11 @@ export default function Home() {
             className={styles.container}
           >
             <div>
-              <div className={styles['flex-grid']}>
-                <div className={styles.col} style={{ width: '75%' }}>
+              <div className="row">
+                <div
+                  id="openingWelcomeContent"
+                  className="col-12 col-6-m col-9-l pad-right-20-l"
+                >
                   <h1>👋 Welcome to my website!</h1>
                   <p>
                     As you might have read in the title, my name is Nicholas
@@ -331,21 +334,21 @@ export default function Home() {
                     </a>
                   </div>
                 </div>
-                <div className={styles.col} style={{ width: '25%' }}>
+                <div className="col-12 col-6-m col-3-l pad-top-10 pad-top-0-m">
                   <div id="spotify-widget">
                     {spotify && spotify.track && spotify.track.length > 0 ? (
                       <>
                         <div className="spotify-widget-latest">
-                          <div className="spotify-widget-latest-background">
-                            <img
-                              src={
+                          <div
+                            className="spotify-widget-latest-background"
+                            style={{
+                              backgroundImage: `url(${
                                 spotify.track[0].image.find(
                                   (element) => element.size === 'extralarge'
                                 )['#text']
-                              }
-                              alt={spotify.track[0].album['#text']}
-                            />
-                          </div>
+                              })`,
+                            }}
+                          ></div>
                           <div className="spotify-widget-latest-overlay">
                             <h3>{spotify.track[0].name}</h3>
                             <span>{spotify.track[0].artist['#text']}</span>
@@ -378,7 +381,7 @@ export default function Home() {
                                     <img
                                       src={
                                         track.image.find(
-                                          (element) => element.size === 'small'
+                                          (element) => element.size === 'medium'
                                         )['#text']
                                       }
                                       alt={track.album['#text']}
@@ -478,6 +481,98 @@ export default function Home() {
           <Element name="Langauges" id="Langauges" className={styles.container}>
             <div style={{ textAlign: 'center' }}>
               <h2>Languages that I often write in</h2>
+              <div className="grid">
+                <div className="row">
+                  <div className="col-1-4 icon-grid-item col-2-l col-1-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="CSS3"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/css3.svg"
+                    />
+                    <span>CSS3</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="GraphQL"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/graphql.svg"
+                    />
+                    <span>GraphQL</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="HTML5"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/html5.svg"
+                    />
+                    <span>HTML5</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="JavaScript"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/javascript.svg"
+                    />
+                    <span>JavaScript</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="SASS"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/sass.svg"
+                    />
+                    <span>SASS</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="JSON"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/json.svg"
+                    />
+                    <span>JSON</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="PHP"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/php.svg"
+                    />
+                    <span>PHP</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="React"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/react.svg"
+                    />
+                    <span>React (JSX)</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </Element>
         </section>
@@ -485,10 +580,235 @@ export default function Home() {
           <Element name="Tools" id="Tools" className={styles.container}>
             <div style={{ textAlign: 'center' }}>
               <h2>Tools that I often use</h2>
+              <div className="grid">
+                <div className="row">
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="Bootstrap"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/bootstrap.svg"
+                    />
+                    <span>Bootstrap</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="CloudFlare"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/cloudflare.svg"
+                    />
+                    <span>CloudFlare</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="NPM"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/npm.svg"
+                    />
+                    <span>NPM</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="Firebase"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/firebase.svg"
+                    />
+                    <span>Firebase</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="Gatsby"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/gatsby.svg"
+                    />
+                    <span>Gatsby</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="Git"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/git.svg"
+                    />
+                    <span>Git</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="Google Analytics"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/googleanalytics.svg"
+                    />
+                    <span>Google Analytics</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="NGINX"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/nginx.svg"
+                    />
+                    <span>NGINX</span>
+                  </div>
+                </div>
+                <div className="doubling eight col row">
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="NodeJS"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/nodejs.svg"
+                    />
+                    <span>NodeJS</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="Docker"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/docker.svg"
+                    />
+                    <span>Docker</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="AWS"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/aws.svg"
+                    />
+                    <span>AWS</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="Sentry"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/sentry.svg"
+                    />
+                    <span>Sentry</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="Yarn"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/yarn.svg"
+                    />
+                    <span>Yarn</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="Visual Studio Code"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/visualstudiocode.svg"
+                    />
+                    <span>Visual Studio / Code</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="Webpack"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/webpack.svg"
+                    />
+                    <span>Webpack</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="WordPress"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/wordpress.svg"
+                    />
+                    <span>WordPress</span>
+                  </div>
+                </div>
+              </div>
+              <small>And last but not least...</small>
+              <div className="grid">
+                <div className="row">
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="Stack Overflow"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/stackoverflow.svg"
+                    />
+                    <span>
+                      Stack Overflow (it's always good to be honest xD)
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </Element>
         </section>
       </main>
+      <footer>
+        <div className="footer-wrap">
+          <div className="container-main">
+            <span className="footer-text-left">No copyright required.</span>
+            <span className="footer-text-right">
+              Check out the source code for this site one{' '}
+              <a
+                href="https://github.com/nicholasgriffintn/NGWebsite2020"
+                title="Github Source Code"
+                target="_blank"
+              >
+                Github
+              </a>
+              . And the{' '}
+              <a
+                href="https://nicholasgriffin.dev/api/graphql"
+                title="Personal Site GraphQL Playground"
+                target="_blank"
+              >
+                GraphQL API here
+              </a>
+            </span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
