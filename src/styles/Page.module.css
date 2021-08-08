@@ -30,6 +30,9 @@
 }
 
 .heroBg {
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
   position: absolute;
   top: 0;
   left: 0;
@@ -406,7 +409,7 @@
 .heroContentTitle p,
 .heroContentTitle small {
   font-size: 1.5em;
-  line-height: 0.7;
+  line-height: 1.4;
   font-weight: 500;
   color: #fff;
 }
@@ -663,4 +666,16 @@
   text-decoration: none;
   font-weight: 600;
   color: #fff;
+}
+
+.postContentWrap {
+  max-width: 980px;
+  margin: 0 auto;
+  margin-top: -100px;
+  z-index: 99;
+  position: relative;
+  background: #f8f8fe;
+  padding: 10px 20px;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }

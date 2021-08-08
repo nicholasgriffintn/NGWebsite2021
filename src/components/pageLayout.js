@@ -36,9 +36,15 @@ export default function PageLayout({
         >
           <div className={styles.heroPara}>
             <div className={styles.heroBgWrap}>
-              <div className={styles.heroBg}></div>
+              <div
+                style={header ? { backgroundImage: `url(${header})` } : null}
+                className={styles.heroBg}
+              ></div>
             </div>
-            <div className={styles.heroContent}>
+            <div
+              style={header ? { position: 'relative', zIndex: '9' } : null}
+              className={styles.heroContent}
+            >
               <div className={styles.container}>
                 <div className={styles.heroContentTitle}>
                   <h1>{title}</h1>
@@ -73,10 +79,10 @@ export default function PageLayout({
       </main>
       {displayFooter === true ? (
         <footer>
-          <div class="footer-wrap">
-            <div class="container-main">
-              <span class="footer-text-left">No copyright required.</span>
-              <span class="footer-text-right">
+          <div className="footer-wrap">
+            <div className="container-main">
+              <span className="footer-text-left">No copyright required.</span>
+              <span className="footer-text-right">
                 Check out the source code for this site one{' '}
                 <a
                   href="https://github.com/nicholasgriffintn/NGWebsite2020"

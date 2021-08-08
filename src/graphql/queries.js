@@ -15,22 +15,22 @@ export const getPost = /* GraphQL */ `
       header
       ctime
       content
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
       owner
       comments {
         items {
           id
           postID
           content
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
           owner
         }
         nextToken
@@ -58,11 +58,56 @@ export const listPosts = /* GraphQL */ `
         header
         ctime
         content
+        createdAt
+        updatedAt
         _version
         _deleted
         _lastChangedAt
+        owner
+        comments {
+          nextToken
+          startedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const sortedPosts = /* GraphQL */ `
+  query SortedPosts(
+    $status: PostStatus
+    $createdAtUpdatedAt: ModelPostSortedPostsCompositeKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    sortedPosts(
+      status: $status
+      createdAtUpdatedAt: $createdAtUpdatedAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        title
+        description
+        status
+        tags {
+          name
+        }
+        thumbnail
+        header
+        ctime
+        content
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         owner
         comments {
           nextToken
@@ -99,11 +144,11 @@ export const syncPosts = /* GraphQL */ `
         header
         ctime
         content
+        createdAt
+        updatedAt
         _version
         _deleted
         _lastChangedAt
-        createdAt
-        updatedAt
         owner
         comments {
           nextToken
@@ -121,11 +166,11 @@ export const getComment = /* GraphQL */ `
       id
       postID
       content
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
       post {
         id
         title
@@ -138,11 +183,11 @@ export const getComment = /* GraphQL */ `
         header
         ctime
         content
+        createdAt
+        updatedAt
         _version
         _deleted
         _lastChangedAt
-        createdAt
-        updatedAt
         owner
         comments {
           nextToken
@@ -164,11 +209,11 @@ export const listComments = /* GraphQL */ `
         id
         postID
         content
+        createdAt
+        updatedAt
         _version
         _deleted
         _lastChangedAt
-        createdAt
-        updatedAt
         post {
           id
           title
@@ -178,11 +223,11 @@ export const listComments = /* GraphQL */ `
           header
           ctime
           content
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
           owner
         }
         owner
@@ -209,11 +254,11 @@ export const syncComments = /* GraphQL */ `
         id
         postID
         content
+        createdAt
+        updatedAt
         _version
         _deleted
         _lastChangedAt
-        createdAt
-        updatedAt
         post {
           id
           title
@@ -223,11 +268,11 @@ export const syncComments = /* GraphQL */ `
           header
           ctime
           content
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
           owner
         }
         owner

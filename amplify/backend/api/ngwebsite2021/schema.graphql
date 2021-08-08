@@ -19,6 +19,11 @@ type Post
       { allow: public, provider: iam, operations: [read] }
       { allow: groups, groups: ["everyone"], operations: [read] }
     ]
+  )
+  @key(
+    name: "sortedPosts"
+    fields: ["status", "createdAt", "updatedAt"]
+    queryField: "sortedPosts"
   ) {
   id: ID!
   title: String!
@@ -30,6 +35,8 @@ type Post
   ctime: String
   content: String!
   comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Comment
@@ -47,9 +54,14 @@ type Comment
       }
     ]
   )
-  @key(name: "byPost", fields: ["postID", "content"]) {
+  @key(
+    name: "byPost"
+    fields: ["postID", "content", "createdAt", "updatedAt"]
+  ) {
   id: ID!
   postID: ID!
   post: Post @connection(fields: ["postID"])
   content: String!
+  createdAt: String!
+  updatedAt: String!
 }

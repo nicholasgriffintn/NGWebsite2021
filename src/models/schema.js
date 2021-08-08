@@ -87,18 +87,16 @@ export const schema = {
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "updatedAt": {
                     "name": "updatedAt",
                     "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -115,6 +113,18 @@ export const schema = {
                 {
                     "type": "aws_cognito_user_pools",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "sortedPosts",
+                        "fields": [
+                            "status",
+                            "createdAt",
+                            "updatedAt"
+                        ],
+                        "queryField": "sortedPosts"
+                    }
                 },
                 {
                     "type": "auth",
@@ -188,18 +198,16 @@ export const schema = {
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "updatedAt": {
                     "name": "updatedAt",
                     "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -223,7 +231,9 @@ export const schema = {
                         "name": "byPost",
                         "fields": [
                             "postID",
-                            "content"
+                            "content",
+                            "createdAt",
+                            "updatedAt"
                         ]
                     }
                 },
@@ -247,7 +257,9 @@ export const schema = {
                                 "allow": "public",
                                 "provider": "iam",
                                 "operations": [
-                                    "read"
+                                    "create",
+                                    "read",
+                                    "update"
                                 ]
                             },
                             {
@@ -258,7 +270,9 @@ export const schema = {
                                     "everyone"
                                 ],
                                 "operations": [
-                                    "read"
+                                    "create",
+                                    "read",
+                                    "update"
                                 ]
                             }
                         ]
@@ -292,5 +306,5 @@ export const schema = {
             }
         }
     },
-    "version": "bc0f4e72c0e54d092c18442fb985985d"
+    "version": "ad549323dc68bfd797f63e38895bd8fb"
 };

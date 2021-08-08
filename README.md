@@ -8,4 +8,16 @@ This year, I'll be continuing with Next.js as it's awesome but I'm also going to
 
 ### Amplify
 
-To generate models from the backend api schema run: `amplify codegen models`
+To find out how to configure Amplify navigate to the README in the `amplify` folder.
+
+### TODO
+
+- [ ] Finish feed
+- [ ] Finish sitemap
+- [ ] Finish robots
+- [ ] Finish homepage
+- [ ] Finish posts page in terms of showing data
+- [ ] Finish contact form
+- [ ] Publish to Amplify
+- [ ] Work out Amplify GraphQL sorting.
+- [ ] Swap to nextjs/mdx? component rendering https://nextjs.org/blog/markdown

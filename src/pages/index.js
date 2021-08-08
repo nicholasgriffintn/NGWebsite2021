@@ -1,5 +1,7 @@
 import styles from '../styles/Home.module.css';
-import { DataStore } from 'aws-amplify';
+import { DataStore, API } from 'aws-amplify';
+import { listPosts } from '../graphql/queries';
+
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Post } from '../models';
@@ -9,6 +11,10 @@ import { Element, animateScroll as scroll } from 'react-scroll';
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
+  const [postsNextToken, setPostsNextToken] = useState(null);
+  const [postsStartedAt, setPostsStartedAt] = useState(null);
+  const [postsAllowLoadMore, setPostsAllowLoadMore] = useState(false);
+
   const [typedStrings, setTypedStrings] = useState([
     "<p>I'm a <strong>Web Developer</strong>.</p>",
     "<p>I'm a <strong>Blogger</strong>.</p>",
@@ -21,15 +27,58 @@ export default function Home() {
     '<p>When I run out of stuff on the web, I often end up staying up late with <strong>Netflix</strong>.</p>',
     '<p>My dogs are complete idiots:</p><br><br><br><img height="261px" width="348px" src="/uploads/dogs.JPG" id="hero_dogs_image" alt="My Shih Tzu\'s" />',
     '<p>But probably not as bad as some of my <strong>code</strong>...</p>',
-    '<p>Here are my <strong>Github</strong> stats:</p><br><br><strong>Whoops... I forgot to add the Github stats...</strong>',
     "<p>We've all been through those days.</p>",
-    '<p>My favourite language is <strong>JavaScript</strong>.</p>',
+    '<p>Here are my <strong>Github</strong> stats:</p><br><br><strong>Whoops... I forgot to add the Github stats...</strong>',
+    '<p>My most used language is <strong>JavaScript</strong>.</p>',
     '<p>I work a lot with <strong>Node.JS</strong>, <strong>React</strong> and <strong>Next.js</strong></p><br><br><p>But also with <strong>Redis</strong>, <strong>Postgres</strong> and various <strong>AWS</strong> services.</p>',
     "<p>And that's about the sum of it.</p><br><br><p>Feel free to scroll below to find out more about me about maybe read some of my posts.</p>",
   ]);
   const [showScroller, setShowScroller] = useState(false);
   const [typedInitialComplete, setTypedInitialComplete] = useState(0);
   const [hasScrolled, setHasScrolled] = useState(false);
+
+  const fetchPosts = async function fetchPosts(loadMore) {
+    const postData = await API.graphql({
+      query: listPosts,
+      variables:
+        loadMore === true && postsNextToken
+          ? {
+              limit: 6,
+              nextToken: postsNextToken,
+            }
+          : {
+              limit: 6,
+            },
+      authMode: 'AWS_IAM',
+    });
+
+    if (
+      postData &&
+      postData.data &&
+      postData.data.listPosts &&
+      postData.data.listPosts.items
+    ) {
+      if (postData.data.listPosts.items.length > 0) {
+        setPostsAllowLoadMore(false);
+        if (loadMore === true) {
+          setPosts([posts, ...postData.data.listPosts.items]);
+        } else {
+          setPosts(postData.data.listPosts.items);
+        }
+
+        if (postData.data.listPosts.nextToken) {
+          setPostsNextToken(postData.data.listPosts.nextToken);
+          setPostsAllowLoadMore(true);
+        }
+
+        if (postData.data.listPosts.startedAt) {
+          setPostsStartedAt(postData.data.listPosts.startedAt);
+        }
+      } else {
+        setPostsAllowLoadMore(false);
+      }
+    }
+  };
 
   useEffect(() => {
     // Set has scrolled on scroll
@@ -42,13 +91,9 @@ export default function Home() {
     }
 
     // Fetch posts on load
-    async function fetchPosts() {
-      const postData = await DataStore.query(Post);
-      setPosts(postData);
-    }
-
     fetchPosts();
 
+    // Fetch posts on update
     DataStore.observe(Post).subscribe(() => fetchPosts());
   }, []);
 
@@ -257,13 +302,20 @@ export default function Home() {
           <Element name="blog" id="blog" className={styles.container}>
             <div>
               <h1>Posts</h1>
-              {posts.map((post, index) => (
-                <Link key={`hp_post_${index}`} href={`/posts/${post.id}`}>
-                  <a>
-                    <h2>{post.title}</h2>
-                  </a>
-                </Link>
-              ))}
+              {posts && posts.length > 0
+                ? posts.map((post, index) => {
+                    return (
+                      <Link key={`hp_post_${index}`} href={`/blog/${post.id}`}>
+                        <a>
+                          <h2>{post.title}</h2>
+                        </a>
+                      </Link>
+                    );
+                  })
+                : null}
+              {postsAllowLoadMore === true ? (
+                <button onClick={() => fetchPosts(true)}>Load more</button>
+              ) : null}
             </div>
           </Element>
         </section>

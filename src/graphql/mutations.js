@@ -18,22 +18,22 @@ export const createPost = /* GraphQL */ `
       header
       ctime
       content
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
       owner
       comments {
         items {
           id
           postID
           content
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
           owner
         }
         nextToken
@@ -59,22 +59,22 @@ export const updatePost = /* GraphQL */ `
       header
       ctime
       content
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
       owner
       comments {
         items {
           id
           postID
           content
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
           owner
         }
         nextToken
@@ -100,22 +100,22 @@ export const deletePost = /* GraphQL */ `
       header
       ctime
       content
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
       owner
       comments {
         items {
           id
           postID
           content
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
           owner
         }
         nextToken
@@ -133,11 +133,11 @@ export const createComment = /* GraphQL */ `
       id
       postID
       content
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
       post {
         id
         title
@@ -150,11 +150,11 @@ export const createComment = /* GraphQL */ `
         header
         ctime
         content
+        createdAt
+        updatedAt
         _version
         _deleted
         _lastChangedAt
-        createdAt
-        updatedAt
         owner
         comments {
           nextToken
@@ -174,11 +174,11 @@ export const updateComment = /* GraphQL */ `
       id
       postID
       content
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
       post {
         id
         title
@@ -191,11 +191,11 @@ export const updateComment = /* GraphQL */ `
         header
         ctime
         content
+        createdAt
+        updatedAt
         _version
         _deleted
         _lastChangedAt
-        createdAt
-        updatedAt
         owner
         comments {
           nextToken
@@ -215,11 +215,11 @@ export const deleteComment = /* GraphQL */ `
       id
       postID
       content
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
       post {
         id
         title
@@ -232,11 +232,11 @@ export const deleteComment = /* GraphQL */ `
         header
         ctime
         content
+        createdAt
+        updatedAt
         _version
         _deleted
         _lastChangedAt
-        createdAt
-        updatedAt
         owner
         comments {
           nextToken
