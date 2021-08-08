@@ -1,10 +1,10 @@
 import styles from '../styles/Home.module.css';
-import { DataStore, API } from 'aws-amplify';
+import { API } from 'aws-amplify';
 import { listPosts } from '../graphql/queries';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Post } from '../models';
+import dayjs from 'dayjs';
 
 import Typed from 'react-typed';
 import { Element, animateScroll as scroll } from 'react-scroll';
@@ -32,7 +32,6 @@ export default function Home() {
     '<p>My dogs are complete idiots:</p><br><img height="261px" width="348px" src="/uploads/dogs.JPG" id="hero_dogs_image" alt="My Shih Tzu\'s" />',
     '<p>But probably not as bad as some of my <strong>code</strong>...</p>',
     "<p>We've all been through those days.</p>",
-    '<p>Here are my <strong>Github</strong> stats:</p><br><strong>Whoops... I forgot to add the Github stats...</strong>',
     '<p>My most used language is <strong>JavaScript</strong>.</p>',
     '<p>I work a lot with <strong>Node.JS</strong>, <strong>React</strong> and <strong>Next.js</strong></p><br><p>But also with <strong>Redis</strong>, <strong>Postgres</strong> and various <strong>AWS</strong> services.</p>',
     "<p>And that's about the sum of it.</p><br><p>Feel free to scroll below to find out more about me about maybe read some of my posts.</p>",
@@ -47,11 +46,11 @@ export default function Home() {
       variables:
         loadMore === true && postsNextToken
           ? {
-              limit: 6,
+              limit: 4,
               nextToken: postsNextToken,
             }
           : {
-              limit: 6,
+              limit: 10,
             },
       authMode: 'AWS_IAM',
     });
@@ -354,7 +353,7 @@ export default function Home() {
                             <span>{spotify.track[0].artist['#text']}</span>
                             <span>{spotify.track[0].album['#text']}</span>
                             <a
-                              class="trackLinkPlay"
+                              className="trackLinkPlay"
                               rel="noopener nofollow"
                               target="_blank"
                               href={spotify.track[0].url}
@@ -389,7 +388,7 @@ export default function Home() {
                                   </div>
                                   <div className="spotify-widget-track-item-content">
                                     <a
-                                      class="trackLinkPlay"
+                                      className="trackLinkPlay"
                                       rel="noopener nofollow"
                                       target="_blank"
                                       href={track.url}
@@ -423,7 +422,13 @@ export default function Home() {
         </section>
         <section
           className={styles.wrap}
-          style={{ background: '#19034e', color: '#fff' }}
+          style={{
+            background: '#093054',
+            background:
+              '-webkit-gradient(left top,right bottom,color-stop(0, #093054),color-stop(100%, #061e35))',
+            background: 'linear-gradient(135deg, #093054, #061e35)',
+            color: '#fff',
+          }}
         >
           <Element name="blog" id="blog" className={styles.container}>
             <div>
@@ -445,29 +450,60 @@ export default function Home() {
           <Element name="blogPosts" id="blogPosts" className={styles.container}>
             <div>
               <div id="BlogPostsFloatingBlock">
-                {posts && posts.length > 0
-                  ? posts.map((post, index) => {
-                      return (
-                        <Link
-                          key={`hp_post_${index}`}
-                          href={`/blog/${post.id}`}
-                        >
-                          <a>
-                            <h2>{post.title}</h2>
-                          </a>
-                        </Link>
-                      );
-                    })
-                  : null}
+                <div className="item-cards">
+                  {posts && posts.length > 0
+                    ? posts.map((post, index) => {
+                        return (
+                          <Link
+                            key={`hp_post_${index}`}
+                            href={`/blog/${post.id}`}
+                          >
+                            <a className="item-card">
+                              <div
+                                className="item-image"
+                                style={{
+                                  backgroundImage: `url(${post.thumbnail})`,
+                                }}
+                              ></div>
+                              <div className="item-content">
+                                <h3>{post.title}</h3>
+                                <p>{post.description}</p>
+                                {post.createdAt ? (
+                                  <span className="item-card__meta">
+                                    Posted:{' '}
+                                    {dayjs(post.createdAt).format(
+                                      'dddd, MMMM D YYYY h:mm a'
+                                    )}
+                                  </span>
+                                ) : null}
+                                {post.createdAt !== post.updatedAt ? (
+                                  <span className="item-card__meta">
+                                    Updated:{' '}
+                                    {dayjs(post.updatedAt).format(
+                                      'dddd, MMMM D YYYY h:mm a'
+                                    )}
+                                  </span>
+                                ) : null}
+                              </div>
+                            </a>
+                          </Link>
+                        );
+                      })
+                    : null}
+                </div>
                 {postsAllowLoadMore === true ? (
-                  <button onClick={() => fetchPosts(true)}>Load more</button>
+                  <div className="posts-load-more-wrap">
+                    <button className="button" onClick={() => fetchPosts(true)}>
+                      Load more
+                    </button>
+                  </div>
                 ) : null}
               </div>
             </div>
           </Element>
         </section>
         <section className={styles.wrap}>
-          <Element name="GitHub" id="GitHub" className={styles.container}>
+          <Element name="whatIDo" id="whatIDo" className={styles.container}>
             <div style={{ textAlign: 'center' }}>
               <h2>So what is it that you do? 🤔</h2>
               <small>
@@ -475,25 +511,73 @@ export default function Home() {
                 Github stuff:
               </small>
             </div>
+            <div
+              style={{
+                display: 'inline-block',
+                width: '100%',
+                height: '20px',
+              }}
+            ></div>
+            {github && github.data && github.data.length > 0 ? (
+              <div className="item-cards">
+                {github.data.map((repo) => {
+                  return (
+                    <a
+                      href={repo.html_url}
+                      target="_blank"
+                      rel="noopener noreferer"
+                      className="item-card"
+                      key={`item-card-${repo.id}`}
+                      data-github={repo.full_name}
+                    >
+                      <div className="item-content">
+                        <h3>{repo.name}</h3>
+                        <p>{repo.description}</p>
+                        {repo.language ? (
+                          <span className="item-card__meta">
+                            <span
+                              className="item-card__language-icon"
+                              style={{
+                                color:
+                                  repo.language === 'JavaScript'
+                                    ? '#f7df1c'
+                                    : repo.language === 'PHP'
+                                    ? '#777bb4'
+                                    : repo.language === 'HTML'
+                                    ? '#e34f25'
+                                    : repo.language === 'Vue'
+                                    ? '#42b883'
+                                    : '#ccc',
+                              }}
+                            >
+                              ●
+                            </span>{' '}
+                            {repo.language}
+                          </span>
+                        ) : null}
+                      </div>
+                    </a>
+                  );
+                })}
+              </div>
+            ) : null}
           </Element>
         </section>
         <section className={styles.wrap}>
           <Element name="Langauges" id="Langauges" className={styles.container}>
             <div style={{ textAlign: 'center' }}>
-              <h2>Languages that I often write in</h2>
+              <h2
+                style={{
+                  marginBotom: '1.5rem',
+                  paddingBotom: '1.5rem',
+                  display: 'inline-block',
+                  width: '100%',
+                }}
+              >
+                Languages that I often write in
+              </h2>
               <div className="grid">
                 <div className="row">
-                  <div className="col-1-4 icon-grid-item col-2-l col-1-l">
-                    <img
-                      width="50px"
-                      height="50px"
-                      className="lazy"
-                      alt="CSS3"
-                      loading="lazy"
-                      src="/uploads/langaugesIcons/css3.svg"
-                    />
-                    <span>CSS3</span>
-                  </div>
                   <div className="col-1-4 icon-grid-item col-2-l">
                     <img
                       width="50px"
@@ -510,22 +594,22 @@ export default function Home() {
                       width="50px"
                       height="50px"
                       className="lazy"
-                      alt="HTML5"
+                      alt="JavaScript"
                       loading="lazy"
-                      src="/uploads/langaugesIcons/html5.svg"
+                      src="/uploads/langaugesIcons/javascript.svg"
                     />
-                    <span>HTML5</span>
+                    <span>JavaScript</span>
                   </div>
                   <div className="col-1-4 icon-grid-item col-2-l">
                     <img
                       width="50px"
                       height="50px"
                       className="lazy"
-                      alt="JavaScript"
+                      alt="TypeScript"
                       loading="lazy"
-                      src="/uploads/langaugesIcons/javascript.svg"
+                      src="/uploads/langaugesIcons/typescript.svg"
                     />
-                    <span>JavaScript</span>
+                    <span>TypeScript</span>
                   </div>
                   <div className="col-1-4 icon-grid-item col-2-l">
                     <img
@@ -554,17 +638,6 @@ export default function Home() {
                       width="50px"
                       height="50px"
                       className="lazy"
-                      alt="PHP"
-                      loading="lazy"
-                      src="/uploads/langaugesIcons/php.svg"
-                    />
-                    <span>PHP</span>
-                  </div>
-                  <div className="col-1-4 icon-grid-item col-2-l">
-                    <img
-                      width="50px"
-                      height="50px"
-                      className="lazy"
                       alt="React"
                       loading="lazy"
                       src="/uploads/langaugesIcons/react.svg"
@@ -579,7 +652,16 @@ export default function Home() {
         <section className={styles.wrap}>
           <Element name="Tools" id="Tools" className={styles.container}>
             <div style={{ textAlign: 'center' }}>
-              <h2>Tools that I often use</h2>
+              <h2
+                style={{
+                  marginBotom: '1.5rem',
+                  paddingBotom: '1.5rem',
+                  display: 'inline-block',
+                  width: '100%',
+                }}
+              >
+                Tools that I often use
+              </h2>
               <div className="grid">
                 <div className="row">
                   <div className="col-1-4 icon-grid-item col-2-l">
@@ -587,11 +669,11 @@ export default function Home() {
                       width="50px"
                       height="50px"
                       className="lazy"
-                      alt="Bootstrap"
+                      alt="Redis"
                       loading="lazy"
-                      src="/uploads/langaugesIcons/bootstrap.svg"
+                      src="/uploads/langaugesIcons/redis.svg"
                     />
-                    <span>Bootstrap</span>
+                    <span>Redis</span>
                   </div>
                   <div className="col-1-4 icon-grid-item col-2-l">
                     <img
@@ -620,11 +702,11 @@ export default function Home() {
                       width="50px"
                       height="50px"
                       className="lazy"
-                      alt="Firebase"
+                      alt="Next.JS"
                       loading="lazy"
-                      src="/uploads/langaugesIcons/firebase.svg"
+                      src="/uploads/langaugesIcons/nextjs.svg"
                     />
-                    <span>Firebase</span>
+                    <span>Next.JS</span>
                   </div>
                   <div className="col-1-4 icon-grid-item col-2-l">
                     <img
@@ -636,6 +718,17 @@ export default function Home() {
                       src="/uploads/langaugesIcons/gatsby.svg"
                     />
                     <span>Gatsby</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="PostgresSQL"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/postgresql.svg"
+                    />
+                    <span>PostgresSQL</span>
                   </div>
                   <div className="col-1-4 icon-grid-item col-2-l">
                     <img
@@ -670,8 +763,17 @@ export default function Home() {
                     />
                     <span>NGINX</span>
                   </div>
-                </div>
-                <div className="doubling eight col row">
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="Netlify"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/netlify.svg"
+                    />
+                    <span>Netlify</span>
+                  </div>
                   <div className="col-1-4 icon-grid-item col-2-l">
                     <img
                       width="50px"
@@ -682,17 +784,6 @@ export default function Home() {
                       src="/uploads/langaugesIcons/nodejs.svg"
                     />
                     <span>NodeJS</span>
-                  </div>
-                  <div className="col-1-4 icon-grid-item col-2-l">
-                    <img
-                      width="50px"
-                      height="50px"
-                      className="lazy"
-                      alt="Docker"
-                      loading="lazy"
-                      src="/uploads/langaugesIcons/docker.svg"
-                    />
-                    <span>Docker</span>
                   </div>
                   <div className="col-1-4 icon-grid-item col-2-l">
                     <img
@@ -754,18 +845,43 @@ export default function Home() {
                       width="50px"
                       height="50px"
                       className="lazy"
-                      alt="WordPress"
+                      alt="Docker"
                       loading="lazy"
-                      src="/uploads/langaugesIcons/wordpress.svg"
+                      src="/uploads/langaugesIcons/docker.svg"
                     />
-                    <span>WordPress</span>
+                    <span>Docker</span>
+                  </div>
+                  <div className="col-1-4 icon-grid-item col-2-l">
+                    <img
+                      width="50px"
+                      height="50px"
+                      className="lazy"
+                      alt="Elastic Search"
+                      loading="lazy"
+                      src="/uploads/langaugesIcons/elasticsearch.svg"
+                    />
+                    <span>Elastic Search</span>
                   </div>
                 </div>
               </div>
+              <div
+                style={{
+                  display: 'inline-block',
+                  width: '100%',
+                  height: '20px',
+                }}
+              ></div>
               <small>And last but not least...</small>
+              <div
+                style={{
+                  display: 'inline-block',
+                  width: '100%',
+                  height: '20px',
+                }}
+              ></div>
               <div className="grid">
                 <div className="row">
-                  <div className="col-1-4 icon-grid-item col-2-l">
+                  <div className="col-12 icon-grid-item">
                     <img
                       width="50px"
                       height="50px"

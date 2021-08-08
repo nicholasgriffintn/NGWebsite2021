@@ -2450,7 +2450,14 @@ img#hero_dogs_image {
 }
 
 .footer-wrap {
-  background: #555;
+  background: #093054;
+  background: -webkit-gradient(
+    left top,
+    right bottom,
+    color-stop(0, #093054),
+    color-stop(100%, #061e35)
+  );
+  background: linear-gradient(135deg, #093054, #061e35);
   padding-top: 15px;
   padding-bottom: 15px;
   color: #fff;
@@ -2678,4 +2685,55 @@ div#BlogPostsFloatingBlock {
 .icon-grid-item span {
   width: 100%;
   display: inline-block;
+}
+
+.item-cards {
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.item-card {
+  display: block;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  margin: 10px;
+  color: #555;
+  background: #fff;
+  text-decoration: none;
+  font-size: 13px;
+  flex: 1;
+  min-width: 250px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.item-card:hover > .item-content {
+  background: #f9f9f9;
+}
+
+.item-card > .item-content {
+  padding: 20px;
+  height: 100%;
+}
+
+.item-card > .item-image {
+  min-height: 220px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top center;
+}
+
+.item-card > h3 {
+  margin-top: 0;
+  color: rgb(9, 48, 84);
+  font-size: 15px;
+}
+
+.item-card__meta {
+  margin-right: 20px;
+}
+.item-card__meta > i {
+  font-size: 16px;
 }

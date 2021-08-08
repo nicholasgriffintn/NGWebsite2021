@@ -27,7 +27,7 @@ export default function PostComponent({ post = {}, errored = false }) {
   const [hasErrored, setHasErrored] = useState(errored);
 
   useEffect(() => {
-    if (hasErrored) {
+    if (hasErrored === true || errored === true) {
       const giphy = {
         baseURL: 'https://api.giphy.com/v1/gifs/',
         apiKey: '0UTRbFtkMxAplrohufYco5IY74U8hOes',
@@ -61,12 +61,12 @@ export default function PostComponent({ post = {}, errored = false }) {
         })
         .catch((err) => console.error(err));
     }
-  }, [hasErrored]);
+  }, [hasErrored, errored]);
 
   return (
     <PageLayout
       loadingState={router.isFallback}
-      hideContent={true}
+      hideContent={post && post.title ? true : false}
       title={
         router.isFallback
           ? 'Please wait while we load the contents of this post...'

@@ -39,9 +39,9 @@
     left top,
     right bottom,
     color-stop(0, #093054),
-    color-stop(100%, #0b1042)
+    color-stop(100%, #061e35)
   );
-  background: linear-gradient(135deg, #093054, #0b1042);
+  background: linear-gradient(135deg, #093054, #061e35);
 }
 
 .heroBgAniWrap {
@@ -470,7 +470,7 @@
 
 .wrap {
   margin-top: 1.5rem;
-  margin-bottom: 1, 5rem;
+  margin-bottom: 1.5rem;
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }

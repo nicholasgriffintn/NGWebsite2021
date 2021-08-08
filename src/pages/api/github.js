@@ -4,7 +4,7 @@ const pkg = require('../../../package.json');
 
 export default (req, res) => {
   fetch(
-    'https://api.github.com/users/nicholasgriffintn/repos?sort=updated&type=owner',
+    'https://api.github.com/users/nicholasgriffintn/repos?sort=updated&type=public&per_page=8',
     {
       method: 'GET',
       headers: {
