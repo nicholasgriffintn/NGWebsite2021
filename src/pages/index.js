@@ -493,8 +493,11 @@ export default function Home() {
                 </div>
                 {postsAllowLoadMore === true ? (
                   <div className="posts-load-more-wrap">
-                    <button className="button" onClick={() => fetchPosts(true)}>
-                      Load more
+                    <button
+                      className="button button-prime-inverted"
+                      onClick={() => fetchPosts(true)}
+                    >
+                      Load more posts
                     </button>
                   </div>
                 ) : null}

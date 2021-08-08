@@ -2737,3 +2737,40 @@ div#BlogPostsFloatingBlock {
 .item-card__meta > i {
   font-size: 16px;
 }
+
+.posts-load-more-wrap {
+  text-align: center;
+  padding-top: 15px;
+}
+
+.posts-load-more-wrap .button {
+  max-width: 240px;
+  width: 100%;
+}
+
+.button-prime {
+  color: #fff;
+  background: #14094b;
+  border-color: #14094b;
+}
+
+.button-prime:hover {
+  background: #fff;
+  color: #14094b;
+}
+
+.button-prime-inverted {
+  color: #14094b;
+  background: #fff;
+  border-color: #14094b;
+}
+
+.button-prime-inverted:hover {
+  background: #14094b;
+  color: #fff;
+}
+
+.button {
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
