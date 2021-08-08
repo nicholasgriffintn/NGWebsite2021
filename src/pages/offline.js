@@ -21,7 +21,7 @@ const OfflinePage = () => (
         <p>Sadly, you didn't do that. Maybe next time?</p>
         <div className="title-button-wrap">
           <a
-            className="ui button white basic inverted"
+            className="button button-prime-inverted"
             href="https://nicholasgriffin.dev"
           >
             Go back home

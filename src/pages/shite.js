@@ -20,7 +20,7 @@ const ShitePage = () => (
         </h1>
         <div className="title-button-wrap">
           <a
-            className="ui button white basic inverted"
+            className="button button-prime-inverted"
             href="https://nicholasgriffin.dev"
           >
             Check out my homepage instead?

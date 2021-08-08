@@ -643,14 +643,14 @@
 }
 
 .header {
-  background: #000;
+  background: #161b22;
   background: -webkit-gradient(
     left top,
     right bottom,
-    color-stop(0, #000),
-    color-stop(100%, #000)
+    color-stop(0, #161b22),
+    color-stop(100%, #161b22)
   );
-  background: linear-gradient(135deg, #000, #000);
+  background: linear-gradient(135deg, #161b22, #161b22);
 }
 
 .header .nav {

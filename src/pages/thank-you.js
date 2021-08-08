@@ -16,6 +16,9 @@ export default function Page() {
           <div className={styles.col} style={{ width: '66.66%' }}>
             <h1>Thank you for sending your message</h1>
             <p>I'll get back to you soon if what you sent requires a reply.</p>
+            <a href="/" className="button button-prime-inverted">
+              Go back to my homepage
+            </a>
           </div>
         </div>
       </div>
