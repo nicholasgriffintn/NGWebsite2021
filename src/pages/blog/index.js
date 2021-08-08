@@ -1,4 +1,4 @@
-import styles from '../styles/Page.module.css';
+import styles from '../../styles/Page.module.css';
 
 import PageLayout from '../../components/pageLayout';
 
