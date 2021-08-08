@@ -630,11 +630,11 @@
 
 @media (max-width: 780px) {
   .hero {
-    min-height: 100vh !important;
+    min-height: 90vh !important;
   }
 
   .heroContent {
-    padding-top: 50px !important;
+    padding-top: 80px !important;
   }
 
   .heroContentTitle h1 {
