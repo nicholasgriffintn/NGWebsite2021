@@ -2774,3 +2774,35 @@ div#BlogPostsFloatingBlock {
   border-radius: 4px;
   transition: all 0.3s ease;
 }
+
+form label,
+form input,
+form textarea {
+  width: 100%;
+  display: inline-block;
+}
+
+form label {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+form fieldset {
+  margin-top: 10px;
+  padding: 0px;
+  border: navajowhite;
+}
+
+form fieldset legend {
+  display: inline-block !important;
+  position: relative;
+}
+
+form fieldset input,
+form fieldset label {
+  width: auto;
+}
+
+form fieldset label {
+  margin-left: 5px;
+}

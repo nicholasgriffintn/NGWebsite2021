@@ -269,19 +269,36 @@ export default function Home() {
                 >
                   <h1>👋 Welcome to my website!</h1>
                   <p>
-                    As you might have read in the title, my name is Nicholas
-                    Griffin and I am a web developer, blogger and technology
-                    enthusiast from the UK.
+                    Thanks for visiting my site! As you might have read in the
+                    title, my name is Nicholas Griffin and I am a Web Developer,
+                    Blogger and Technology enthusiast from the UK.
                   </p>
                   <p>
-                    I spend most of my time doing a range of personal web
-                    development projects around the web alongside my day job.
+                    Feel free to scroll further down to find out more about me
+                    or my projects, I've also added my contact links below.
+                  </p>
+                  <h3>About Me</h3>
+                  <p>
+                    At the time of writing this, I currently work as a Lead Web
+                    Developer at{' '}
+                    <a
+                      href="https://accrosoft.com"
+                      target="_blank"
+                      rel="noopener noreferer"
+                    >
+                      Accrosoft
+                    </a>
+                    . I would classify myself as a Full Stack Developer with a
+                    slight bias towards frontend. I spend most of my dev time
+                    doing a range of personal development projects around the
+                    web alongside my day job.
                   </p>
                   <p>
-                    I aim to use this website to not only showcase myself but
-                    also start working on a range of other personal projects.
-                    You can follow my expeditions below.
+                    Outside of development, I enjoy the odd read and love to
+                    listen to music, with an aim to find some good new stuff,
+                    however, that's mostly about trying to beat the algorithm.
                   </p>
+                  <p>You can find out more about me and my projects below.</p>
                   <div id="OpeningContentSocial">
                     <a
                       target="_blank"
@@ -332,6 +349,30 @@ export default function Home() {
                           d="M347.445 0H34.555C15.471 0 0 15.471 0 34.555v312.889C0 366.529 15.471 382 34.555 382h312.889C366.529 382 382 366.529 382 347.444V34.555C382 15.471 366.529 0 347.445 0zM118.207 329.844c0 5.554-4.502 10.056-10.056 10.056H65.345c-5.554 0-10.056-4.502-10.056-10.056V150.403c0-5.554 4.502-10.056 10.056-10.056h42.806c5.554 0 10.056 4.502 10.056 10.056v179.441zM86.748 123.432c-22.459 0-40.666-18.207-40.666-40.666S64.289 42.1 86.748 42.1s40.666 18.207 40.666 40.666-18.206 40.666-40.666 40.666zM341.91 330.654a9.247 9.247 0 0 1-9.246 9.246H286.73a9.247 9.247 0 0 1-9.246-9.246v-84.168c0-12.556 3.683-55.021-32.813-55.021-28.309 0-34.051 29.066-35.204 42.11v97.079a9.246 9.246 0 0 1-9.246 9.246h-44.426a9.247 9.247 0 0 1-9.246-9.246V149.593a9.247 9.247 0 0 1 9.246-9.246h44.426a9.247 9.247 0 0 1 9.246 9.246v15.655c10.497-15.753 26.097-27.912 59.312-27.912 73.552 0 73.131 68.716 73.131 106.472v86.846z"
                           fill="#0077b7"
                         ></path>
+                      </svg>
+                    </a>
+                    <a
+                      href="/contact"
+                      title="Contact Me"
+                      className={styles['social-icon-wrap']}
+                      id="ContactLinkWrap"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 -26 512 512"
+                      >
+                        <defs />
+                        <path
+                          fill="#e87288"
+                          d="M463.988 240.59C487.7 216.172 502 184.55 502 150c0-77.32-77.629-140-166-140S176 72.68 176 150l160 140c23.61 0 52.031-4.48 72.21-12.512C426.489 297.468 452.782 310 482 310c-18.79-18.79-24.8-45.54-18.012-69.41zm0 0"
+                        />
+                        <path
+                          fill="#cae9fc"
+                          d="M258.45 170C304.921 194.5 336 239.07 336 290c0 77.32-71.629 140-160 140-23.61 0-52.031-4.48-72.21-12.512C85.511 437.468 59.218 450 30 450c18.79-18.79 24.8-45.54 18.012-69.41C24.3 356.172 10 324.55 10 290c0-77.32 77.629-140 166-140 30.16 0 58.379 7.3 82.45 20zm0 0"
+                        />
+                        <path d="M256 100c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm0 0M90 280c5.52 0 10-4.48 10-10s-4.48-10-10-10-10 4.48-10 10 4.48 10 10 10zm0 0" />
+                        <path d="M336 0c-90.027 0-163.918 62.07-169.633 140.254C80.63 144.554 0 206.379 0 290c0 34.945 13.828 68.805 39 95.633 4.98 20.531-1.066 42.293-16.07 57.297A9.998 9.998 0 0030 460c28.52 0 56.004-11.184 76.426-30.89C126.32 435.89 152.277 440 176 440c90.016 0 163.898-62.055 169.629-140.223 20.937-.93 42.715-4.797 59.945-10.668C425.996 308.816 453.48 320 482 320a9.998 9.998 0 007.07-17.07c-15.004-15.004-21.05-36.766-16.07-57.297 25.172-26.828 39-60.688 39-95.633C512 63.113 425.16 0 336 0zM176 420c-23.602 0-50.496-4.633-68.512-11.8a10 10 0 00-11.078 2.538c-12.074 13.2-27.773 22.403-44.879 26.633a80.872 80.872 0 006.098-59.52 9.98 9.98 0 00-2.445-4.226C32.496 350.258 20 320.559 20 290c0-70.469 71.438-130 156-130 79.852 0 150 55.527 150 130 0 71.684-67.29 130-150 130zm280.816-186.375a10.027 10.027 0 00-2.445 4.227 80.872 80.872 0 006.098 59.52c-17.106-4.227-32.805-13.435-44.88-26.634a10.007 10.007 0 00-11.077-2.539c-15.614 6.211-37.887 10.512-58.914 11.551-2.922-37.816-21.786-73.36-54.036-99.75H422c5.523 0 10-4.477 10-10s-4.477-10-10-10H260.84c-22.7-11.555-48.188-18.293-74.422-19.707C192.164 73.129 257.058 20 336 20c84.563 0 156 59.531 156 130 0 30.559-12.496 60.258-35.184 83.625zm0 0" />
+                        <path d="M256 260H130c-5.523 0-10 4.477-10 10s4.477 10 10 10h126c5.523 0 10-4.477 10-10s-4.477-10-10-10zm0 0M256 320H90c-5.523 0-10 4.477-10 10s4.477 10 10 10h166c5.523 0 10-4.477 10-10s-4.477-10-10-10zm0 0M422 100H296c-5.523 0-10 4.477-10 10s4.477 10 10 10h126c5.523 0 10-4.477 10-10s-4.477-10-10-10zm0 0" />
                       </svg>
                     </a>
                   </div>
