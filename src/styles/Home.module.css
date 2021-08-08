@@ -627,3 +627,21 @@
 .social-icon-wrap svg:first-child {
   margin-left: 0px;
 }
+
+@media (max-width: 780px) {
+  .hero {
+    min-height: 100vh !important;
+  }
+
+  .heroContent {
+    padding-top: 50px !important;
+  }
+
+  .heroContentTitle h1 {
+    font-size: 1.8em;
+  }
+
+  .homepage-subtitle span {
+    font-size: 1em;
+  }
+}
