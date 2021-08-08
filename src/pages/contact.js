@@ -27,8 +27,12 @@ export default function Page() {
               spammer xD)!
             </p>
             <p>
-              Plase fill in the form below to send me a message, alternatively,
+              Please fill in the form below to send me a message, alternatively,
               you can send me a message via one of these social networks:
+            </p>
+            <p>
+              If you are a recruiter then please head on over to LinkedIn
+              instead where you may be ignored :).
             </p>
             <div id="OpeningContentSocial">
               <a

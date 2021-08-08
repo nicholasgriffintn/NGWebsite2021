@@ -21,3 +21,14 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 - [x] Publish to Amplify
 - [ ] Work out Amplify GraphQL sorting.
 - [ ] Swap to nextjs/mdx? component rendering https://nextjs.org/blog/markdown
+- [ ] Create post about new site
+- [ ] Add ability to record a voice message on contact form
+- [ ] Add the ability to send a WhatsApp or Text might be cool?
+- [ ] Finish blog page and posts list (make a component for the list)
+- [ ] Add setup page
+- [ ] Add projects (Github) page with full list
+- [ ] Update header with links to pages: blog, projects, contact, my desk (setup)
+- [ ] Add a Gists page
+- [ ] Add the image resizing back
+- [ ] Add login page and two-factor pages
+- [ ] Dark mode
