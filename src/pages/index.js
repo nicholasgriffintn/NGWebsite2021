@@ -31,7 +31,7 @@ export default function Home() {
     '<p>I spend most of my time doing new stuff on the <strong>web</strong>.</p>',
     '<p>Mostly <strong>front end</strong>, but I do dabble in a bit of <strong>back end</strong>.</p>',
     '<p>When I run out of stuff on the web, I often end up staying up late with <strong>Netflix</strong>.</p>',
-    '<p>My dogs are complete idiots:</p><br><img height="261px" width="348px" src="/uploads/dogs.JPG" id="hero_dogs_image" alt="My Shih Tzu\'s" />',
+    '<p>My dogs are complete idiots:</p><br><img height="261px" width="348px" src="/uploads/dogs.png" id="hero_dogs_image" alt="My Shih Tzu\'s" />',
     '<p>But probably not as bad as some of my <strong>code</strong>...</p>',
     "<p>We've all been through those days.</p>",
     '<p>My most used language is <strong>JavaScript</strong>.</p>',
