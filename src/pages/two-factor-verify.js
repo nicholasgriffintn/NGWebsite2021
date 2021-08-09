@@ -1,8 +1,8 @@
-import React from "react";
-import checkLoggedIn from "../lib/checkLoggedIn";
-import redirect from "../lib/redirect";
+import React from 'react';
+import checkLoggedIn from '../utils/checkLoggedIn';
+import redirect from '../utils/redirect';
 
-import Page from "../components/Page";
+import PageLayout from '../components/pageLayout';
 
 export default class Index extends React.Component {
   constructor(props) {
@@ -14,14 +14,19 @@ export default class Index extends React.Component {
   }
 
   componentDidMount() {
-    const { user, loggedIn } = checkLoggedIn();
-    if (!loggedIn) {
-      redirect({}, "/login");
-    } else if (user) {
-      this.setState({ user: user });
-    } else {
-      redirect({}, "/login");
-    }
+    checkLoggedIn()
+      .then((loggedIn, user) => {
+        if (!loggedIn) {
+          redirect({}, '/login');
+        } else if (user) {
+          this.setState({ user: user });
+        } else {
+          redirect({}, '/login');
+        }
+      })
+      .catch(() => {
+        redirect({}, '/login');
+      });
   }
 
   handleTwoFactorChange(e) {
@@ -32,33 +37,33 @@ export default class Index extends React.Component {
     e.preventDefault();
     var verifyTwoFactorHeaders = new Headers();
     verifyTwoFactorHeaders.append(
-      "Authorization",
-      "Bearer " + this.state.user.idToken.jwtToken
+      'Authorization',
+      'Bearer ' + this.state.user.idToken.jwtToken
     );
-    verifyTwoFactorHeaders.append("Content-Type", "application/json");
+    verifyTwoFactorHeaders.append('Content-Type', 'application/json');
 
     var raw = JSON.stringify({
       twofactor: this.state.twofactor,
     });
 
     var requestOptions = {
-      method: "POST",
+      method: 'POST',
       headers: verifyTwoFactorHeaders,
       body: raw,
-      redirect: "follow",
+      redirect: 'follow',
     };
 
-    fetch("/api/admin/verify-two-factor", requestOptions)
+    fetch('/api/admin/verify-two-factor', requestOptions)
       .then((response) => response.text())
       .then((result) => {
         this.setState({ qrcode_secret_url: result.secretURL });
       })
-      .catch((error) => console.error("error", error));
+      .catch((error) => console.error('error', error));
   }
 
   render() {
     return (
-      <Page displayHeader={true} title="Dashboard">
+      <PageLayout displayHeader={true} title="Dashboard">
         <div className="content-wrap">
           <div className="container-main">
             <div className="page-header-spacer"></div>
@@ -84,7 +89,7 @@ export default class Index extends React.Component {
             )}
           </div>
         </div>
-      </Page>
+      </PageLayout>
     );
   }
 }

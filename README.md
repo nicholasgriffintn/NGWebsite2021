@@ -30,5 +30,5 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 - [ ] Update header with links to pages: blog, projects, contact, my desk (setup)
 - [ ] Add a Gists page
 - [ ] Add the image resizing back
-- [ ] Add login page and two-factor pages
+- [x] Add login page and two-factor pages
 - [ ] Dark mode

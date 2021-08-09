@@ -110,7 +110,7 @@ export default function PageLayout({
           </Element>
         </section>
       </main>
-      {displayFooter === true ? (
+      {/* {displayFooter === true ? (
         <footer>
           <div className="footer-wrap">
             <div className="container-main">
@@ -136,7 +136,7 @@ export default function PageLayout({
             </div>
           </div>
         </footer>
-      ) : null}
+      ) : null} */}
     </div>
   );
 }

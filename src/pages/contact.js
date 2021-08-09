@@ -24,15 +24,15 @@ export default function Page() {
             <h1>Send me a message</h1>
             <p>
               I'm looking forward to hearing from you (as long as you're not a
-              spammer xD)!
+              spammer 😅)!
             </p>
             <p>
               Please fill in the form below to send me a message, alternatively,
-              you can send me a message via one of these social networks:
+              you can send me a message via one of the social networks below.
             </p>
             <p>
               If you are a recruiter then please head on over to LinkedIn
-              instead where you may be ignored :).
+              instead where you may be ignored 🥸.
             </p>
             <div id="OpeningContentSocial">
               <a

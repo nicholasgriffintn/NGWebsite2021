@@ -947,7 +947,7 @@ export default function Home() {
           </Element>
         </section>
       </main>
-      <footer>
+      {/* <footer>
         <div className="footer-wrap">
           <div className="container-main">
             <span className="footer-text-left">No copyright required.</span>
@@ -971,7 +971,7 @@ export default function Home() {
             </span>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 }

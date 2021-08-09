@@ -1,65 +1,70 @@
-import React from "react";
-import checkLoggedIn from "../lib/checkLoggedIn";
-import redirect from "../lib/redirect";
+import React from 'react';
+import checkLoggedIn from '../utils/checkLoggedIn';
+import redirect from '../utils/redirect';
 
-import Page from "../components/Page";
+import PageLayout from '../components/pageLayout';
 
-import QRCode from "qrcode.react";
+import QRCode from 'qrcode.react';
 
 export default class Index extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: "",
-      title: "",
-      description: "",
-      tags: "",
-      thumbnail: "",
-      header: "",
-      content: "",
+      user: '',
+      title: '',
+      description: '',
+      tags: '',
+      thumbnail: '',
+      header: '',
+      content: '',
       qrcode_secret_url: null,
     };
   }
 
   componentDidMount() {
-    const { user, loggedIn } = checkLoggedIn();
-    if (!loggedIn) {
-      redirect({}, "/login");
-    } else if (user) {
-      this.setState({ user: user });
-    } else {
-      redirect({}, "/login");
-    }
+    checkLoggedIn()
+      .then((loggedIn, user) => {
+        if (!loggedIn) {
+          redirect({}, '/login');
+        } else if (user) {
+          this.setState({ user: user });
+        } else {
+          redirect({}, '/login');
+        }
+      })
+      .catch(() => {
+        redirect({}, '/login');
+      });
   }
 
   generateTwoFactorCode() {
     if (this.state.user && this.state.user.idToken.jwtToken) {
       var grabTwoFactorSecretHeaders = new Headers();
       grabTwoFactorSecretHeaders.append(
-        "Authorization",
-        "Bearer " + this.state.user.idToken.jwtToken
+        'Authorization',
+        'Bearer ' + this.state.user.idToken.jwtToken
       );
-      grabTwoFactorSecretHeaders.append("Content-Type", "application/json");
+      grabTwoFactorSecretHeaders.append('Content-Type', 'application/json');
 
       var requestOptions = {
-        method: "POST",
+        method: 'POST',
         headers: grabTwoFactorSecretHeaders,
-        redirect: "follow",
+        redirect: 'follow',
       };
 
-      fetch("/api/admin/two-factor", requestOptions)
+      fetch('/api/admin/two-factor', requestOptions)
         .then((response) => response.text())
         .then((result) => {
           result = JSON.parse(result);
           this.setState({ qrcode_secret_url: result.secretURL });
         })
-        .catch((error) => console.error("error", error));
+        .catch((error) => console.error('error', error));
     }
   }
 
   render() {
     return (
-      <Page displayHeader={true} title="Dashboard">
+      <PageLayout displayHeader={true} title="Dashboard">
         <div className="content-wrap">
           <div className="container-main">
             <div className="page-header-spacer"></div>
@@ -85,7 +90,7 @@ export default class Index extends React.Component {
             )}
           </div>
         </div>
-      </Page>
+      </PageLayout>
     );
   }
 }
