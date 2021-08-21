@@ -1,5 +1,5 @@
 import styles from '../../styles/Home.module.css';
-
+import Image from 'next/image';
 import { Element } from 'react-scroll';
 
 const Languages = ({}) => {
@@ -20,7 +20,7 @@ const Languages = ({}) => {
           <div className="grid">
             <div className="row">
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -31,7 +31,7 @@ const Languages = ({}) => {
                 <span>Redis</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -42,7 +42,7 @@ const Languages = ({}) => {
                 <span>CloudFlare</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -53,7 +53,7 @@ const Languages = ({}) => {
                 <span>NPM</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -64,7 +64,7 @@ const Languages = ({}) => {
                 <span>Next.JS</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -75,7 +75,7 @@ const Languages = ({}) => {
                 <span>Gatsby</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -86,7 +86,7 @@ const Languages = ({}) => {
                 <span>PostgresSQL</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -97,7 +97,7 @@ const Languages = ({}) => {
                 <span>Git</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -108,7 +108,7 @@ const Languages = ({}) => {
                 <span>Google Analytics</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -119,7 +119,7 @@ const Languages = ({}) => {
                 <span>NGINX</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -130,7 +130,7 @@ const Languages = ({}) => {
                 <span>Netlify</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -141,7 +141,7 @@ const Languages = ({}) => {
                 <span>NodeJS</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -152,7 +152,7 @@ const Languages = ({}) => {
                 <span>AWS</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -163,7 +163,7 @@ const Languages = ({}) => {
                 <span>Sentry</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -174,7 +174,7 @@ const Languages = ({}) => {
                 <span>Yarn</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -185,7 +185,7 @@ const Languages = ({}) => {
                 <span>Visual Studio / Code</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -196,7 +196,7 @@ const Languages = ({}) => {
                 <span>Webpack</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -207,7 +207,7 @@ const Languages = ({}) => {
                 <span>Docker</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -237,7 +237,7 @@ const Languages = ({}) => {
           <div className="grid">
             <div className="row">
               <div className="col-12 icon-grid-item">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"

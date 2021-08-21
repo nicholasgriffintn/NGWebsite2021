@@ -1,6 +1,6 @@
 import styles from '../styles/Page.module.css';
 import Link from 'next/link';
-
+import Image from 'next/image';
 import { Element, animateScroll as scroll } from 'react-scroll';
 
 import { NextSeo } from 'next-seo';
@@ -67,10 +67,15 @@ export default function PageLayout({
         >
           <div className={styles.heroPara}>
             <div className={styles.heroBgWrap}>
-              <div
-                style={header ? { backgroundImage: `url(${header})` } : null}
-                className={styles.heroBg}
-              ></div>
+              <div className={styles.heroBg}>
+                <Image
+                  alt={title}
+                  src={header}
+                  layout="fill"
+                  objectFit="cover"
+                  quality={100}
+                />
+              </div>
             </div>
             {hideContent === true ? null : (
               <div

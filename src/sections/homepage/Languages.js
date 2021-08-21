@@ -1,5 +1,5 @@
 import styles from '../../styles/Home.module.css';
-
+import Image from 'next/image';
 import { Element } from 'react-scroll';
 
 const Languages = ({}) => {
@@ -20,7 +20,7 @@ const Languages = ({}) => {
           <div className="grid">
             <div className="row">
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -31,7 +31,7 @@ const Languages = ({}) => {
                 <span>GraphQL</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -42,7 +42,7 @@ const Languages = ({}) => {
                 <span>JavaScript</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -53,7 +53,7 @@ const Languages = ({}) => {
                 <span>TypeScript</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -64,7 +64,7 @@ const Languages = ({}) => {
                 <span>SASS</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"
@@ -75,7 +75,7 @@ const Languages = ({}) => {
                 <span>JSON</span>
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
-                <img
+                <Image
                   width="50px"
                   height="50px"
                   className="lazy"

@@ -2720,6 +2720,9 @@ div#BlogPostsFloatingBlock {
 
 .item-card > .item-image {
   min-height: 220px;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top center;

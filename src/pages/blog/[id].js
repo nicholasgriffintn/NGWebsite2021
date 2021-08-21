@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 import { API } from 'aws-amplify';
 import { getPost, listPosts } from '../../graphql/queries';
@@ -143,25 +144,6 @@ export default function PostComponent({ post = {}, errored = false }) {
             </small>
           ) : null}
           <hr />
-          {/* <picture>
-            <source
-              srcSet={`https://api.nicholasgriffin.dev/api/images/resize?image=posts/${post.id}/header.png&width=639&height=1000&position=left%20top, https://api.nicholasgriffin.dev/api/images/resize?image=posts/${post.id}/header.png&width=1278&height=1000&position=left%20top 2x`}
-              media="(max-width: 639px)"
-            />
-            <source
-              srcSet={`https://api.nicholasgriffin.dev/api/images/resize?image=posts/${post.id}/header.png&width=1023&height=500, https://api.nicholasgriffin.dev/api/images/resize?image=posts/${post.id}/header.png&width=1680&height=500 2x`}
-              media="(min-width: 640px) and (max-width: 1023px)"
-            />
-            <source
-              srcSet={`https://api.nicholasgriffin.dev/api/images/resize?image=posts/${post.id}/header.png&width=1680&height=500`}
-              media="(min-width: 1024px)"
-            />
-            <img
-              src={`https://api.nicholasgriffin.dev/api/images/resize?image=posts/${post.id}/header.png&width=1680&height=500`}
-              loading="lazy"
-              alt={post.title}
-            />
-          </picture> */}
           <Markdown
             components={{
               p: ({ node, children }) => {
