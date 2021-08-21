@@ -107,6 +107,11 @@ export default function Page() {
               </a>
             </div>
             <hr></hr>
+            <small>
+              If you prefer email clients over forms you can send me a message here:
+              <a href="mailto:secrecy-gong0r@icloud.com">secrecy-gong0r@icloud.com</a>
+            </small>
+            <hr></hr>
             {isSubmitting || formSubmitting ? (
               <p>Please wait while I submit your response...</p>
             ) : formError ? (
