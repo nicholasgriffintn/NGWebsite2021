@@ -12,7 +12,7 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 
 ### TODO
 
-- [ ] Finish feed
+- [x] Finish feed
 - [x] Finish sitemap
 - [x] Finish robots
 - [ ] Finish homepage
