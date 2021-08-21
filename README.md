@@ -36,3 +36,4 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 - [x] Add login page and two-factor pages
 - [ ] Dark mode
 - [ ] Maybe look into if it's possible to add Apple Music widget vs the current Spotify one.
+- [ ] Use context for passing around functions and state
