@@ -18,9 +18,9 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 - [x] Finish posts page in terms of showing data
 - [x] Finish contact form
 - [x] Publish to Amplify
-- [ ] Work out Amplify GraphQL sorting.
+- [x] Work out Amplify GraphQL sorting.
 - [x] Move homepage sections to components
-- [ ] Finish homepage
+- [x] Finish homepage
 - [x] Move widgets in the sections to a new widgets folder
 - [ ] Swap to nextjs/mdx? component rendering https://nextjs.org/blog/markdown
 - [ ] Create post about new site

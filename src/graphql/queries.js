@@ -17,9 +17,6 @@ export const getPost = /* GraphQL */ `
       content
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
       comments {
         items {
@@ -28,13 +25,9 @@ export const getPost = /* GraphQL */ `
           content
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         nextToken
-        startedAt
       }
     }
   }
@@ -60,17 +53,12 @@ export const listPosts = /* GraphQL */ `
         content
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
       nextToken
-      startedAt
     }
   }
 `;
@@ -105,58 +93,12 @@ export const sortedPosts = /* GraphQL */ `
         content
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncPosts = /* GraphQL */ `
-  query SyncPosts(
-    $filter: ModelPostFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncPosts(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        title
-        description
-        status
-        tags {
-          name
-        }
-        thumbnail
-        header
-        ctime
-        content
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-        comments {
-          nextToken
-          startedAt
-        }
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -168,9 +110,6 @@ export const getComment = /* GraphQL */ `
       content
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       post {
         id
         title
@@ -185,13 +124,9 @@ export const getComment = /* GraphQL */ `
         content
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
       owner
@@ -211,9 +146,6 @@ export const listComments = /* GraphQL */ `
         content
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         post {
           id
           title
@@ -225,60 +157,11 @@ export const listComments = /* GraphQL */ `
           content
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         owner
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncComments = /* GraphQL */ `
-  query SyncComments(
-    $filter: ModelCommentFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncComments(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        postID
-        content
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        post {
-          id
-          title
-          description
-          status
-          thumbnail
-          header
-          ctime
-          content
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        owner
-      }
-      nextToken
-      startedAt
     }
   }
 `;
