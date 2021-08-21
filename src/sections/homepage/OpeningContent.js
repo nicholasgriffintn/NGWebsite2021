@@ -27,7 +27,7 @@ const OpeningContent = ({ spotify }) => {
                 Feel free to scroll further down to find out more about me or my
                 projects, I've also added my contact links below.
               </p>
-              <h3>About Me</h3>
+              <h2>About Me</h2>
               <p>
                 I would classify myself as a Full Stack Developer with a slight
                 bias towards frontend. I spend most of my dev time doing a range
