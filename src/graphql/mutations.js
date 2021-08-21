@@ -20,9 +20,6 @@ export const createPost = /* GraphQL */ `
       content
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
       comments {
         items {
@@ -31,13 +28,9 @@ export const createPost = /* GraphQL */ `
           content
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         nextToken
-        startedAt
       }
     }
   }
@@ -61,9 +54,6 @@ export const updatePost = /* GraphQL */ `
       content
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
       comments {
         items {
@@ -72,13 +62,9 @@ export const updatePost = /* GraphQL */ `
           content
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         nextToken
-        startedAt
       }
     }
   }
@@ -102,9 +88,6 @@ export const deletePost = /* GraphQL */ `
       content
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
       comments {
         items {
@@ -113,13 +96,9 @@ export const deletePost = /* GraphQL */ `
           content
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         nextToken
-        startedAt
       }
     }
   }
@@ -135,9 +114,6 @@ export const createComment = /* GraphQL */ `
       content
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       post {
         id
         title
@@ -152,13 +128,9 @@ export const createComment = /* GraphQL */ `
         content
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
       owner
@@ -176,9 +148,6 @@ export const updateComment = /* GraphQL */ `
       content
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       post {
         id
         title
@@ -193,13 +162,9 @@ export const updateComment = /* GraphQL */ `
         content
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
       owner
@@ -217,9 +182,6 @@ export const deleteComment = /* GraphQL */ `
       content
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       post {
         id
         title
@@ -234,13 +196,9 @@ export const deleteComment = /* GraphQL */ `
         content
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
       owner
