@@ -13,15 +13,17 @@ const BlogPostsWidget = ({ posts, postsAllowLoadMore, fetchPosts }) => {
                   {post && post.id ? (
                     <Link key={`hp_post_${index}`} href={`/blog/${post.id}`}>
                       <a className="item-card">
-                        <div className="item-image">
-                          <Image
-                            alt={post.title}
-                            src={post.thumbnail}
-                            layout="fill"
-                            objectFit="cover"
-                            quality={100}
-                          />
-                        </div>
+                        {post.thumbnail ? (
+                          <div className="item-image">
+                            <Image
+                              alt={post.title}
+                              src={post.thumbnail}
+                              layout="fill"
+                              objectFit="cover"
+                              quality={100}
+                            />
+                          </div>
+                        ) : null}
                         <div className="item-content">
                           <h3>{post.title}</h3>
                           <p>{post.description}</p>

@@ -68,13 +68,15 @@ export default function PageLayout({
           <div className={styles.heroPara}>
             <div className={styles.heroBgWrap}>
               <div className={styles.heroBg}>
-                <Image
-                  alt={title}
-                  src={header}
-                  layout="fill"
-                  objectFit="cover"
-                  quality={100}
-                />
+                {header ? (
+                  <Image
+                    alt={title}
+                    src={header}
+                    layout="fill"
+                    objectFit="cover"
+                    quality={100}
+                  />
+                ) : null}
               </div>
             </div>
             {hideContent === true ? null : (
