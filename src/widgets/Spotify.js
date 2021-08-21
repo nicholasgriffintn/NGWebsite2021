@@ -47,6 +47,9 @@ const SpotifyWidget = ({ spotify }) => {
                             (element) => element.size === 'medium'
                           )['#text']
                         }
+                        width="53"
+                        height="53"
+                        loading="lazy"
                         alt={track.album['#text']}
                       />
                     </div>
