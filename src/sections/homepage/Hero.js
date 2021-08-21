@@ -8,7 +8,7 @@ const Hero = ({ hasScrolled }) => {
   const [showScroller, setShowScroller] = useState(false);
   const [typedInitialComplete, setTypedInitialComplete] = useState(0);
   const [typedStrings, setTypedStrings] = useState([
-    "<p>I'm a <strong>Senior Software Developer</strong>.</p>",
+    "<p>I'm a <strong>Senior Software Engineer</strong>.</p>",
     "<p>I'm a <strong>Blogger</strong>.</p>",
     "<p>I'm a <strong>Technology Ethusiast</strong>.</p>",
     '<p>Okay...</p>',

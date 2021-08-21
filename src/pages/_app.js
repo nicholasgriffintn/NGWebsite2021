@@ -62,7 +62,7 @@ function NGWebsiteApp({ Component, pageProps }) {
           url: 'https://nicholasgriffin.dev/',
           title: 'Nicholas Griffin',
           site_name: 'Nicholas Griffin',
-          description: 'Web Developer, Blogger and Technology Enthusiast',
+          description: 'Software Engineer, Blogger and Technology Enthusiast',
           images: [{ url: '/images/social.jpeg' }],
         }}
         twitter={{

@@ -20,7 +20,7 @@ const OpeningContent = ({ spotify }) => {
               <p>
                 Thanks for visiting my site! As you might have read in the
                 title, my name is Nicholas Griffin and I am a Senior Software
-                Developer, Blogger and Technology enthusiast from the UK.
+                Engineer, Blogger and Technology enthusiast from the UK.
               </p>
               <p>
                 Feel free to scroll further down to find out more about me or my
@@ -28,19 +28,10 @@ const OpeningContent = ({ spotify }) => {
               </p>
               <h3>About Me</h3>
               <p>
-                At the time of writing this, I currently work as a Lead Web
-                Developer at{' '}
-                <a
-                  href="https://accrosoft.com"
-                  target="_blank"
-                  rel="noopener noreferer"
-                >
-                  Accrosoft
-                </a>
-                . I would classify myself as a Full Stack Developer with a
-                slight bias towards frontend. I spend most of my dev time doing
-                a range of personal development projects around the web
-                alongside my day job.
+                I would classify myself as a Full Stack Developer with a slight
+                bias towards frontend. I spend most of my dev time doing a range
+                of personal development projects around the web alongside my day
+                job.
               </p>
               <p>
                 Outside of development, I enjoy the odd read and love to listen
