@@ -83,7 +83,7 @@ export default function Page() {
               style={{ maxWidth: '780px', width: '100%' }}
               lang="en"
               spellcheck="false"
-              action="https://fieldgoal.io/f/WUAezO"
+              action="https://api.slapform.com/p3qAjVNcV"
               method="POST"
               enctype="multipart/form-data"
             >
