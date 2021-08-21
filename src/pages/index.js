@@ -30,10 +30,14 @@ export default function Home() {
       variables:
         loadMore === true && postsNextToken
           ? {
+              filter: { status: { eq: 'PUBLISHED' } },
+              sortDirection: 'DESC',
               limit: 4,
               nextToken: postsNextToken,
             }
           : {
+              filter: { status: { eq: 'PUBLISHED' } },
+              sortDirection: 'DESC',
               limit: 10,
             },
       authMode: 'AWS_IAM',
