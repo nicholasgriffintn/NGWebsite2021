@@ -62,15 +62,15 @@ export const listPosts = /* GraphQL */ `
     }
   }
 `;
-export const postsByDate = /* GraphQL */ `
-  query PostsByDate(
+export const sortedPosts = /* GraphQL */ `
+  query SortedPosts(
     $createdAt: String
     $sortDirection: ModelSortDirection
     $filter: ModelPostFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    postsByDate(
+    sortedPosts(
       createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter

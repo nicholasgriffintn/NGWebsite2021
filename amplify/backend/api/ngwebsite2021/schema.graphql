@@ -20,7 +20,11 @@ type Post
       { allow: groups, groups: ["everyone"], operations: [read] }
     ]
   )
-  @key(name: "sortedPosts", fields: ["createdAt"], queryField: "sortedPosts") {
+  @key(
+    name: "sortedPosts"
+    fields: ["status", "createdAt", "updatedAt"]
+    queryField: "sortedPosts"
+  ) {
   id: ID!
   title: String!
   description: String!
