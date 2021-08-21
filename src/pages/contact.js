@@ -83,7 +83,7 @@ export default function Page() {
               style={{ maxWidth: '780px', width: '100%' }}
               lang="en"
               spellcheck="false"
-              action="https://api.slapform.com/p3qAjVNcV"
+              action="https://api.slapform.com/p3qAjVNcV?slap_debug=false&slap_redirect=https://nicholasgriffin.dev/thanks&"
               method="POST"
               enctype="multipart/form-data"
             >
@@ -101,9 +101,17 @@ export default function Page() {
                 <input
                   placeholder="Enter your email address"
                   type="email"
-                  name="email"
+                  name="slap_replyto"
                   required
                 />
+              </div>
+              <div>
+                    <label>What's the reason for your message? (Required)</label>
+                    <input
+                      placeholder="Please enter the reason for your message"
+                      name="slap_subject"
+                      required
+                    />
               </div>
               <div>
                 <fieldset>
@@ -172,6 +180,13 @@ export default function Page() {
                   <small>The max file size allowed is: 25MB</small>
                 </div>
               ) : null}
+              <div>
+                    <input
+                      placeholder="Anything else?"
+                      name="slap_honey"
+                      hidden
+                    />
+              </div>
               <div style={{ marginTop: '15px' }}>
                 <button
                   disabled={!messageType}
