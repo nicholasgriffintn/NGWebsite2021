@@ -10,6 +10,10 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head />
+        <link
+          rel="preconnect"
+          href="https://cognito-identity.eu-west-1.amazonaws.com"
+        ></link>
         <body>
           <Main />
           <NextScript />
