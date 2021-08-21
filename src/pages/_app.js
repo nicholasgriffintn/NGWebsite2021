@@ -56,6 +56,7 @@ function NGWebsiteApp({ Component, pageProps }) {
       <DefaultSeo
         titleTemplate="%s | Nicholas Griffin"
         title="Page"
+        description="Software Engineer, Blogger and Technology Enthusiast"
         openGraph={{
           type: 'website',
           locale: 'en_GB',
