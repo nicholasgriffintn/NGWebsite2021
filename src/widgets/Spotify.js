@@ -19,6 +19,7 @@ const SpotifyWidget = ({ spotify }) => {
               <span>{spotify.track[0].artist['#text']}</span>
               <span>{spotify.track[0].album['#text']}</span>
               <a
+                aria-label={`Play ${spotify.track[0].name}`}
                 className="trackLinkPlay"
                 rel="noopener nofollow"
                 target="_blank"
