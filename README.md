@@ -15,13 +15,15 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 - [x] Finish feed
 - [x] Finish sitemap
 - [x] Finish robots
-- [ ] Finish homepage
 - [x] Finish posts page in terms of showing data
 - [x] Finish contact form
 - [x] Publish to Amplify
 - [ ] Work out Amplify GraphQL sorting.
+- [x] Move homepage sections to components
+- [ ] Finish homepage
 - [ ] Swap to nextjs/mdx? component rendering https://nextjs.org/blog/markdown
 - [ ] Create post about new site
+- [ ] Create my own service for form submissions
 - [ ] Add ability to record a voice message on contact form
 - [ ] Add the ability to send a WhatsApp or Text might be cool?
 - [ ] Finish blog page and posts list (make a component for the list)
