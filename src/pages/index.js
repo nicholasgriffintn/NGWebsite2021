@@ -125,7 +125,11 @@ export default function Home() {
       <main className={styles.main}>
         <OpeningContent spotify={spotify} />
         <Blog />
-        <BlogPosts postsAllowLoadMore={postsAllowLoadMore} posts={posts} />
+        <BlogPosts
+          fetchPosts={fetchPosts}
+          postsAllowLoadMore={postsAllowLoadMore}
+          posts={posts}
+        />
         <WhatIDo github={github} />
         <Languages />
         <Tools />
