@@ -21,6 +21,7 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 - [ ] Work out Amplify GraphQL sorting.
 - [x] Move homepage sections to components
 - [ ] Finish homepage
+- [ ] Move widgets in the sections to a new widgets folder
 - [ ] Swap to nextjs/mdx? component rendering https://nextjs.org/blog/markdown
 - [ ] Create post about new site
 - [ ] Create my own service for form submissions
@@ -34,3 +35,4 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 - [ ] Add the image resizing back
 - [x] Add login page and two-factor pages
 - [ ] Dark mode
+- [ ] Maybe look into if it's possible to add Apple Music widget vs the current Spotify one.
