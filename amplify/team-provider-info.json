@@ -1,37 +1,38 @@
 {
-    "dev": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-ngwebsite2021-dev-144847-authRole",
-            "UnauthRoleArn": "arn:aws:iam::175054299308:role/amplify-ngwebsite2021-dev-144847-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::175054299308:role/amplify-ngwebsite2021-dev-144847-authRole",
-            "Region": "eu-west-1",
-            "DeploymentBucketName": "amplify-ngwebsite2021-dev-144847-deployment",
-            "UnauthRoleName": "amplify-ngwebsite2021-dev-144847-unauthRole",
-            "StackName": "amplify-ngwebsite2021-dev-144847",
-            "StackId": "arn:aws:cloudformation:eu-west-1:175054299308:stack/amplify-ngwebsite2021-dev-144847/3248eb10-f786-11eb-b7db-0a85dc25793d",
-            "AmplifyAppId": "dst7e6eh1ve17"
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-ngwebsite2021-dev-144847-authRole",
+      "UnauthRoleArn": "arn:aws:iam::175054299308:role/amplify-ngwebsite2021-dev-144847-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::175054299308:role/amplify-ngwebsite2021-dev-144847-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-ngwebsite2021-dev-144847-deployment",
+      "UnauthRoleName": "amplify-ngwebsite2021-dev-144847-unauthRole",
+      "StackName": "amplify-ngwebsite2021-dev-144847",
+      "StackId": "arn:aws:cloudformation:eu-west-1:175054299308:stack/amplify-ngwebsite2021-dev-144847/3248eb10-f786-11eb-b7db-0a85dc25793d",
+      "AmplifyAppId": "dst7e6eh1ve17"
+    },
+    "categories": {
+      "auth": {
+        "ngwebsite2021461fce11": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "ngwebsite2021461fce11PostConfirmation": {
+          "GROUP": "everyone",
+          "deploymentBucketName": "amplify-ngwebsite2021-dev-144847-deployment",
+          "s3Key": "amplify-builds/ngwebsite2021461fce11PostConfirmation-5779786a344675744432-build.zip"
         },
-        "categories": {
-            "auth": {
-                "ngwebsite2021461fce11": {}
-            },
-            "function": {
-                "ngwebsite2021461fce11PostConfirmation": {
-                    "GROUP": "everyone",
-                    "deploymentBucketName": "amplify-ngwebsite2021-dev-144847-deployment",
-                    "s3Key": "amplify-builds/ngwebsite2021461fce11PostConfirmation-5779786a344675744432-build.zip"
-                },
-                "AdminQueries64ded973": {
-                    "deploymentBucketName": "amplify-ngwebsite2021-dev-144847-deployment",
-                    "s3Key": "amplify-builds/AdminQueries64ded973-6e2f61707266744a4379-build.zip"
-                }
-            },
-            "hosting": {
-                "amplifyhosting": {
-                    "appId": "dst7e6eh1ve17",
-                    "type": "cicd"
-                }
-            }
+        "AdminQueries64ded973": {
+          "deploymentBucketName": "amplify-ngwebsite2021-dev-144847-deployment",
+          "s3Key": "amplify-builds/AdminQueries64ded973-6e2f61707266744a4379-build.zip"
         }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "dst7e6eh1ve17",
+          "type": "cicd"
+        }
+      }
     }
+  }
 }

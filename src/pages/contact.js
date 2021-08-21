@@ -1,10 +1,38 @@
 import { useState } from 'react';
 import styles from '../styles/Page.module.css';
-
+import { useForm } from "react-hook-form";
 import PageLayout from '../components/pageLayout';
+import { useRecaptcha } from "react-hook-recaptcha";
+
+const slapform = new (require('slapform'));
 
 export default function Page() {
   const [messageType, setMessageType] = useState(null);
+
+  const [formSubmitting, setFormSubmitting] = useState(false);
+  const [formSuccess, setFormSuccess] = useState(null);
+  const [formError, setFormError] = useState(null);
+
+  const { register, handleSubmit, watch, formState: { errors, isSubmitting, isSubmitted, isSubmitSuccessful, isValid } } = useForm();
+
+  const onSubmit = data => {
+    setFormSubmitting(true);
+    slapform.submit({
+      form: "p3qAjVNcV",
+      account: 'secrecy-gong0r@icloud.com',
+      data: data
+    })
+      .then(function (response) {
+        console.debug("Form Success:", response);
+        setFormSuccess(response)
+        setFormSubmitting(false);
+      })
+      .catch(function (response) {
+        console.error("Form Error:", response)
+        setFormError(response)
+        setFormSubmitting(false);
+      })
+  };
 
   const changeMessageType = (e) => {
     setMessageType(e.currentTarget.value);
@@ -79,56 +107,88 @@ export default function Page() {
               </a>
             </div>
             <hr></hr>
-            <form
-              style={{ maxWidth: '780px', width: '100%' }}
-              lang="en"
-              spellcheck="false"
-              action="https://api.slapform.com/p3qAjVNcV?slap_debug=false&slap_redirect=https://nicholasgriffin.dev/thanks&"
-              method="POST"
-              enctype="multipart/form-data"
-            >
-              <div>
-                <label>Your Name (Required)</label>
-                <input
-                  placeholder="Enter your first and last name"
-                  type="text"
-                  name="name"
-                  required
-                />
-              </div>
-              <div>
-                <label>Your Email (Required)</label>
-                <input
-                  placeholder="Enter your email address"
-                  type="email"
-                  name="slap_replyto"
-                  required
-                />
-              </div>
-              <div>
-                    <label>What's the reason for your message? (Required)</label>
-                    <input
-                      placeholder="Please enter the reason for your message"
-                      name="slap_subject"
-                      required
-                    />
-              </div>
-              <div>
-                <fieldset>
-                  <legend>
-                    How would you like to send a message? (Required)
-                  </legend>
-                  <div>
-                    <input
-                      type="radio"
-                      id="text"
-                      name="message_type"
-                      value="text"
-                      onChange={(e) => changeMessageType(e)}
-                    />
-                    <label for="text">Text</label>
-                  </div>
-                  {/* <div>
+            {isSubmitting || formSubmitting ? (
+              <p>Please wait while I submit your response...</p>
+            ) : formError ? (
+              <>
+                <p>An error occurred while submitting the form.</p>
+              </>
+            ) : formSuccess ? (
+              <>
+                <h3>Thanks for getting in touch!</h3>
+                <p>If you're not a recruiter I may get back to you soon!</p>
+              </>
+            ) : (
+              <form
+                style={{ maxWidth: '780px', width: '100%' }}
+                lang="en"
+                spellCheck="false"
+                onSubmit={handleSubmit(onSubmit)}
+              >
+                <div>
+                  <label>Your Name (Required)</label>
+                  <input
+                    placeholder="Enter your first and last name"
+                    type="text"
+                    name="name"
+                    required
+                    {...register("name")}
+                    aria-invalid={errors.name ? "true" : "false"}
+                  />
+                  {errors.name && (
+                    <span role="alert">
+                      This field is required
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <label>Your Email (Required)</label>
+                  <input
+                    placeholder="Enter your email address"
+                    type="email"
+                    name="slap_replyto"
+                    required
+                    {...register("slap_replyto")}
+                    aria-invalid={errors.slap_replyto ? "true" : "false"}
+                  />
+                  {errors.slap_replyto && (
+                    <span role="alert">
+                      This field is required
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <label>What's the reason for your message? (Required)</label>
+                  <input
+                    type="text"
+                    placeholder="Please enter the reason for your message"
+                    name="slap_subject"
+                    required
+                    {...register("slap_subject")}
+                    aria-invalid={errors.slap_subject ? "true" : "false"}
+                  />
+                  {errors.slap_subject && (
+                    <span role="alert">
+                      This field is required
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <fieldset>
+                    <legend>
+                      How would you like to send a message? (Required)
+                    </legend>
+                    <div>
+                      <input
+                        type="radio"
+                        id="text"
+                        name="message_type"
+                        value="text"
+                        onChange={(e) => changeMessageType(e)}
+                      />
+                      <label htmlFor="text">Text</label>
+                    </div>
+                    {/* <div>
                     <input
                       type="radio"
                       id="voice"
@@ -138,65 +198,81 @@ export default function Page() {
                     />
                     <label for="voice">Voice</label>
                   </div> */}
+                    <div>
+                      <input
+                        type="radio"
+                        id="upload"
+                        name="message_type"
+                        value="upload"
+                        onChange={(e) => changeMessageType(e)}
+                      />
+                      <label htmlFor="upload">Upload</label>
+                    </div>
+                  </fieldset>
+                </div>
+                {messageType === 'text' ? (
                   <div>
-                    <input
-                      type="radio"
-                      id="upload"
-                      name="message_type"
-                      value="upload"
-                      onChange={(e) => changeMessageType(e)}
-                    />
-                    <label for="upload">Upload</label>
+                    <label>Your Message: </label>
+                    <textarea
+                      type="message"
+                      name="message"
+                      rows="6"
+                      required
+                      placeholder="Enter your message here..."
+                      {...register("message")}
+                      aria-invalid={errors.message ? "true" : "false"}
+                    ></textarea>
+                    {errors.message && (
+                      <span role="alert">
+                        This field is required
+                      </span>
+                    )}
                   </div>
-                </fieldset>
-              </div>
-              {messageType === 'text' ? (
-                <div>
-                  <label>Your Message: </label>
-                  <textarea
-                    type="message"
-                    name="message"
-                    rows="6"
-                    required
-                    placeholder="Enter your message here..."
-                  ></textarea>
-                </div>
-              ) : messageType === 'upload' ? (
-                <div>
-                  <label>Upload your message:</label>
-                  <input
-                    type="file"
-                    name="uploaded_message"
-                    accept=".pdf,.doc,.txt,.jpg,.jpeg,.docx,.png,.mp3,.mp4"
-                    required
-                  />
-                  <br></br>
-                  <br></br>
-                  <small>
-                    Allowed file extensions are:
-                    pdf,doc,txt,jpg,jpeg,docx,png,mp3,mp4
-                  </small>
-                  <br></br>
-                  <small>The max file size allowed is: 25MB</small>
-                </div>
-              ) : null}
-              <div>
+                ) : messageType === 'upload' ? (
+                  <div>
+                    <label>Upload your message:</label>
                     <input
-                      placeholder="Anything else?"
-                      name="slap_honey"
-                      hidden
+                      type="file"
+                      name="uploaded_message"
+                      accept=".pdf,.doc,.txt,.jpg,.jpeg,.docx,.png,.mp3,.mp4"
+                      {...register("uploaded_message")}
+                      required
+                      aria-invalid={errors.uploaded_message ? "true" : "false"}
                     />
-              </div>
-              <div style={{ marginTop: '15px' }}>
-                <button
-                  disabled={!messageType}
-                  className="button button-prime"
-                  type="submit"
-                >
-                  Submit your message
-                </button>
-              </div>
-            </form>
+                    <br></br>
+                    <br></br>
+                    <small>
+                      Allowed file extensions are:
+                      pdf,doc,txt,jpg,jpeg,docx,png,mp3,mp4
+                    </small>
+                    <br></br>
+                    <small>The max file size allowed is: 25MB</small>
+                    {errors.uploaded_message && (
+                      <span role="alert">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
+                ) : null}
+                <div>
+                  <input
+                    placeholder="Anything else?"
+                    name="slap_honey"
+                    hidden
+                    {...register("slap_honey")}
+                  />
+                </div>
+                <div style={{ marginTop: '15px' }}>
+                  <button
+                    disabled={!messageType}
+                    className="button button-prime"
+                    type="submit"
+                  >
+                    Submit your message
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </div>

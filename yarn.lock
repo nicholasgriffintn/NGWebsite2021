@@ -3622,6 +3622,19 @@ react-dom@17.0.1:
     object-assign "^4.1.1"
     scheduler "^0.20.1"
 
+react-hook-form@^7.12.2:
+  version "7.12.2"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.12.2.tgz#2660afbf03c4ef360a9314ebf46ce3d972296c77"
+  integrity sha512-cpxocjrgpMAJCMJQR51BQhMoEx80/EQqePNihMTgoTYTqCRbd2GExi+N4GJIr+cFqrmbwNj9wxk5oLWYQsUefg==
+
+react-hook-recaptcha@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-hook-recaptcha/-/react-hook-recaptcha-1.0.3.tgz#d168df15b45afbf5045a7c6fa88401053a135610"
+  integrity sha512-128RzW19kHL/RH8OpW2QCJS0Jt2Py54lgoTvIYnzWLv5qgxpyz6I6Z2wpCXlwitBGSqjeRiAysHYnCOYnwsPgQ==
+  dependencies:
+    react "17.0.1"
+    react-dom "17.0.1"
+
 react-is@17.0.2, react-is@^17.0.0:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
@@ -3892,6 +3905,11 @@ sinon@^7.5.0:
     lolex "^4.2.0"
     nise "^1.5.2"
     supports-color "^5.5.0"
+
+slapform@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/slapform/-/slapform-2.0.3.tgz#4278d78b35071978fcfb9314d69b83656345d2f7"
+  integrity sha512-B0gb8lsb6b3Xfa6PjL7PrIdGM9Hj12GClz3GoYiJrIasTOd80DWC2flBu7tkMxxPygf6XcEON2yaYu8X3YqCnQ==
 
 source-map@0.7.3:
   version "0.7.3"
