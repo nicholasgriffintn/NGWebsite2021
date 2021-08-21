@@ -1,6 +1,6 @@
 import styles from '../styles/Home.module.css';
 import { API } from 'aws-amplify';
-import { listPosts } from '../graphql/queries';
+import { sortedPosts } from '../graphql/queries';
 import { useState, useEffect } from 'react';
 import { NextSeo } from 'next-seo';
 
@@ -26,17 +26,17 @@ export default function Home() {
 
   const fetchPosts = async function fetchPosts(loadMore) {
     const postData = await API.graphql({
-      query: listPosts,
+      query: sortedPosts,
       variables:
         loadMore === true && postsNextToken
           ? {
-              filter: { status: { eq: 'PUBLISHED' } },
+              status: 'PUBLISHED',
               sortDirection: 'DESC',
               limit: 4,
               nextToken: postsNextToken,
             }
           : {
-              filter: { status: { eq: 'PUBLISHED' } },
+              status: 'PUBLISHED',
               sortDirection: 'DESC',
               limit: 10,
             },
@@ -46,24 +46,24 @@ export default function Home() {
     if (
       postData &&
       postData.data &&
-      postData.data.listPosts &&
-      postData.data.listPosts.items
+      postData.data.sortedPosts &&
+      postData.data.sortedPosts.items
     ) {
-      if (postData.data.listPosts.items.length > 0) {
+      if (postData.data.sortedPosts.items.length > 0) {
         setPostsAllowLoadMore(false);
         if (loadMore === true) {
-          setPosts([posts, ...postData.data.listPosts.items]);
+          setPosts([posts, ...postData.data.sortedPosts.items]);
         } else {
-          setPosts(postData.data.listPosts.items);
+          setPosts(postData.data.sortedPosts.items);
         }
 
-        if (postData.data.listPosts.nextToken) {
-          setPostsNextToken(postData.data.listPosts.nextToken);
+        if (postData.data.sortedPosts.nextToken) {
+          setPostsNextToken(postData.data.sortedPosts.nextToken);
           setPostsAllowLoadMore(true);
         }
 
-        if (postData.data.listPosts.startedAt) {
-          setPostsStartedAt(postData.data.listPosts.startedAt);
+        if (postData.data.sortedPosts.startedAt) {
+          setPostsStartedAt(postData.data.sortedPosts.startedAt);
         }
       } else {
         setPostsAllowLoadMore(false);
