@@ -20,7 +20,7 @@ type Post
       { allow: groups, groups: ["everyone"], operations: [read] }
     ]
   )
-  @key(fields: ["id", "status", "tags", "updatedAt", "createdAt"]) {
+  @key(fields: ["id", "updatedAt", "createdAt"]) {
   id: ID!
   title: String!
   description: String!
