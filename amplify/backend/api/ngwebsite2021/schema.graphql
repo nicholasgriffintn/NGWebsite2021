@@ -11,6 +11,7 @@ enum PostStatus {
 
 type Post
   @model
+  @key(name: "postsByData", fields: ["createdAt"], queryField: "postsByData")
   @aws_iam
   @aws_cognito_user_pools
   @auth(
@@ -19,11 +20,6 @@ type Post
       { allow: public, provider: iam, operations: [read] }
       { allow: groups, groups: ["everyone"], operations: [read] }
     ]
-  )
-  @key(
-    name: "sortedPosts"
-    fields: ["status", "createdAt", "updatedAt"]
-    queryField: "sortedPosts"
   ) {
   id: ID!
   title: String!
