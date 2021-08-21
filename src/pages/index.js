@@ -22,7 +22,7 @@ export default function Home() {
   const [postsAllowLoadMore, setPostsAllowLoadMore] = useState(false);
 
   const [typedStrings, setTypedStrings] = useState([
-    "<p>I'm a <strong>Web Developer</strong>.</p>",
+    "<p>I'm a <strong>Senior Software Developer</strong>.</p>",
     "<p>I'm a <strong>Blogger</strong>.</p>",
     "<p>I'm a <strong>Technology Ethusiast</strong>.</p>",
     '<p>Okay...</p>',
@@ -270,7 +270,7 @@ export default function Home() {
                   <h1>👋 Welcome to my website!</h1>
                   <p>
                     Thanks for visiting my site! As you might have read in the
-                    title, my name is Nicholas Griffin and I am a Web Developer,
+                    title, my name is Nicholas Griffin and I am a Senior Software Developer,
                     Blogger and Technology enthusiast from the UK.
                   </p>
                   <p>
