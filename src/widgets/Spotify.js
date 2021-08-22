@@ -1,3 +1,6 @@
+import Image from 'next/image';
+import ReturnImageFormattingUrl from '../utils/returnImageFormattingUrl';
+
 const SpotifyWidget = ({ spotify }) => {
   return (
     <div id="spotify-widget">
@@ -7,13 +10,21 @@ const SpotifyWidget = ({ spotify }) => {
             <div
               className="spotify-widget-latest-background"
               style={{
-                backgroundImage: `url(${
+                position: 'relativie',
+              }}
+            >
+              <Image
+                alt={spotify.track[0].name}
+                src={ReturnImageFormattingUrl(
                   spotify.track[0].image.find(
                     (element) => element.size === 'extralarge'
                   )['#text']
-                })`,
-              }}
-            ></div>
+                )}
+                layout="fill"
+                objectFit="cover"
+                quality={80}
+              />
+            </div>
             <div className="spotify-widget-latest-overlay">
               <h3>{spotify.track[0].name}</h3>
               <span>{spotify.track[0].artist['#text']}</span>
@@ -41,16 +52,18 @@ const SpotifyWidget = ({ spotify }) => {
                     key={`spotify-track-item-${index}`}
                   >
                     <div className="spotify-widget-track-item-image">
-                      <img
-                        src={
-                          track.image.find(
-                            (element) => element.size === 'medium'
-                          )['#text']
-                        }
+                      <Image
                         width="53"
                         height="53"
                         loading="lazy"
                         alt={track.album['#text']}
+                        src={ReturnImageFormattingUrl(
+                          track.image.find(
+                            (element) => element.size === 'medium'
+                          )['#text']
+                        )}
+                        objectFit="cover"
+                        quality={80}
                       />
                     </div>
                     <div className="spotify-widget-track-item-content">
