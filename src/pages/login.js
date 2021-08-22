@@ -98,7 +98,7 @@ export default function Page() {
               </>
             ) : alreadyLoggedIn === true ? (
               <>
-                <strong>You've already logged in!</strong>
+                <strong>You&apos;ve already logged in!</strong>
                 <br></br>
                 <br></br>
                 <br></br>

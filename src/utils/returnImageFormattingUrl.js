@@ -5,8 +5,6 @@ const ReturnImageFormattingUrl = (url) => {
   }[process.env.NODE_ENV];
 
   if (url.includes('https://cdn.nicholasgriffin.dev/')) {
-    console.log('Original URL:', url);
-
     let noCDNURL = url.replace('https://cdn.nicholasgriffin.dev/', '');
 
     return `${baseUrl}/api/resize/?image=${noCDNURL}`;

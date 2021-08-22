@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+
+import ReturnImageFormattingUrl from '../../utils/returnImageFormattingUrl';
 import Image from 'next/image';
 
 import { API } from 'aws-amplify';
@@ -93,12 +95,26 @@ export default function PostComponent({ post = {}, errored = false }) {
         <p></p>
       ) : !post || !post.title ? (
         <div className={styles.postContentErrorWrap}>
-          <div style={{ textAlign: 'center' }}>
-            <img
-              style={{ maxWidth: '780px', margin: '0 auto', height: 'auto' }}
-              src={failImage}
-              alt="Everything is fine..."
-            />
+          <div
+            style={{
+              textAlign: 'center',
+              maxWidth: '780px',
+              margin: '0 auto',
+              height: 'auto',
+              position: 'relative',
+              minHeight: '450px',
+            }}
+          >
+            {failImage ? (
+              <Image
+                style={{ maxWidth: '780px', margin: '0 auto', height: 'auto' }}
+                src={failImage}
+                alt="Everything is fine..."
+                layout="fill"
+                quality={80}
+                objectFit="contain"
+              />
+            ) : null}
           </div>
           <br></br>
           {failData && failData.url ? (
@@ -111,7 +127,11 @@ export default function PostComponent({ post = {}, errored = false }) {
                 }}
               >
                 {failData.title} was retrieved from{' '}
-                <a target="_blank" rel="noopener noreferer" href={failData.url}>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={failData.url}
+                >
                   GIPHY
                 </a>{' '}
                 {failData.user ? (
@@ -119,7 +139,7 @@ export default function PostComponent({ post = {}, errored = false }) {
                     and was uploaded by{' '}
                     <a
                       target="_blank"
-                      rel="noopener noreferer"
+                      rel="noopener noreferrer"
                       href={failData.user.profile_url}
                     >
                       {failData.user.display_name}
@@ -144,37 +164,29 @@ export default function PostComponent({ post = {}, errored = false }) {
             </small>
           ) : null}
           <hr />
+          {/* eslint-disable */}
           <Markdown
             components={{
               p: ({ node, children }) => {
                 if (node.children[0].tagName === 'img') {
                   const image = node.children[0];
                   return (
-                    <div className="post-image">
-                      {/* <picture>
-                        <source
-                          srcSet={`https://api.nicholasgriffin.dev/api/images/resize?image=${image.properties.src}&width=639&height=1000&position=left%20top, https://api.nicholasgriffin.dev/api/images/resize?image=posts/${post.id}/header.png&width=1278&height=1000&position=left%20top 2x`}
-                          media="(max-width: 639px)"
-                        />
-                        <source
-                          srcSet={`https://api.nicholasgriffin.dev/api/images/resize?image=${image.properties.src}&width=1023&height=500, https://api.nicholasgriffin.dev/api/images/resize?image=posts/${post.id}/header.png&width=1680&height=500 2x`}
-                          media="(min-width: 640px) and (max-width: 1023px)"
-                        />
-                        <source
-                          srcSet={`https://api.nicholasgriffin.dev/api/images/resize?image=${image.properties.src}&width=1680&height=500`}
-                          media="(min-width: 1024px)"
-                        />
-                        <img
-                          src={`https://api.nicholasgriffin.dev/api/images/resize?image=${image.properties.src}&width=1680&height=500`}
-                          loading="lazy"
-                          alt={image.properties.alt}
-                        />
-                      </picture> */}
-
-                      <img
-                        src={image.properties.src}
-                        loading="lazy"
+                    <div
+                      className="post-image"
+                      style={{
+                        position: 'relative',
+                        width: '100%',
+                        height: 'auto',
+                        minHeight: '450px',
+                        marginBotom: '20px',
+                      }}
+                    >
+                      <Image
                         alt={image.properties.alt}
+                        src={ReturnImageFormattingUrl(image.properties.src)}
+                        layout="fill"
+                        objectFit="contain"
+                        quality={80}
                       />
                     </div>
                   );
@@ -182,7 +194,7 @@ export default function PostComponent({ post = {}, errored = false }) {
                 // Return default child if it's not an image
                 return <p>{children}</p>;
               },
-              code({ className, children }) {
+              code: ({ className, children }) => {
                 // Removing "language-" because React-Markdown already added "language-"
                 const language = className
                   ? className.replace('language-', '')
@@ -198,6 +210,7 @@ export default function PostComponent({ post = {}, errored = false }) {
             }}
             children={post.content}
           />
+          {/* eslint-enable */}
         </div>
       )}
     </PageLayout>

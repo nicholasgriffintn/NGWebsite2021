@@ -1,5 +1,5 @@
-// _error.js is only used in production. In development you'll get an error with the call stack to know where the error originated from.
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 import PageLayout from '../components/pageLayout';
 
@@ -40,7 +40,7 @@ const ErrorPage = ({ statusCode = 500 }) => {
         }
       })
       .catch((err) => console.error(err));
-  }, []);
+  }, [statusCode]);
 
   return (
     <PageLayout
@@ -56,12 +56,25 @@ const ErrorPage = ({ statusCode = 500 }) => {
           : `Code: ${statusCode}`
       }
     >
-      <div style={{ textAlign: 'center' }}>
-        <img
-          style={{ maxWidth: '780px', margin: '0 auto', height: 'auto' }}
-          src={failImage}
-          alt="Everything is fine..."
-        />
+      <div
+        style={{
+          textAlign: 'center',
+          maxWidth: '780px',
+          margin: '0 auto',
+          height: 'auto',
+          position: 'relative',
+          minHeight: '450px',
+        }}
+      >
+        {failImage ? (
+          <Image
+            src={failImage}
+            alt="Everything is fine..."
+            layout="fill"
+            quality={80}
+            objectFit="contain"
+          />
+        ) : null}
       </div>
       <br></br>
       {failData && failData.url ? (
@@ -74,7 +87,7 @@ const ErrorPage = ({ statusCode = 500 }) => {
             }}
           >
             {failData.title} was retrieved from{' '}
-            <a target="_blank" rel="noopener noreferer" href={failData.url}>
+            <a target="_blank" rel="noopener noreferrer" href={failData.url}>
               GIPHY
             </a>{' '}
             {failData.user ? (
@@ -82,7 +95,7 @@ const ErrorPage = ({ statusCode = 500 }) => {
                 and was uploaded by{' '}
                 <a
                   target="_blank"
-                  rel="noopener noreferer"
+                  rel="noopener noreferrer"
                   href={failData.user.profile_url}
                 >
                   {failData.user.display_name}

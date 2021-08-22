@@ -1,5 +1,5 @@
 import styles from '../styles/Page.module.css';
-
+import Link from 'next/link';
 import PageLayout from '../components/pageLayout';
 
 export default function Page() {
@@ -15,10 +15,12 @@ export default function Page() {
         <div className={styles['flex-grid']}>
           <div className={styles.col} style={{ width: '66.66%' }}>
             <h1>Thank you for sending your message</h1>
-            <p>I'll get back to you soon if what you sent requires a reply.</p>
-            <a href="/" className="button button-prime-inverted">
-              Go back to my homepage
-            </a>
+            <p>
+              I&apos;ll get back to you soon if what you sent requires a reply.
+            </p>
+            <Link href="/" className="button button-prime-inverted">
+              <a>Go back to my homepage</a>
+            </Link>
           </div>
         </div>
       </div>

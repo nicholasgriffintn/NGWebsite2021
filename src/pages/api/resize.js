@@ -55,7 +55,7 @@ const resize = (path, format, width, height, fit, position, quality) => {
   }
 };
 
-export default (req, res) => {
+const ImageFormatting = (req, res) => {
   try {
     async function triggerResize() {
       // Extract the query-parameter
@@ -122,3 +122,5 @@ export default (req, res) => {
     res.send(imageResizedBase);
   }
 };
+
+export default ImageFormatting;
