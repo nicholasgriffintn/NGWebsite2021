@@ -10,6 +10,7 @@ const MarkedCode = (props) => {
         style={materialDark}
         language={className.replace('language-', '')}
         children={children}
+        showLineNumbers={true}
       />
     </div>
   );

@@ -488,8 +488,8 @@ samp,
   font-size: 13px;
   line-height: 18px;
   word-wrap: break-word;
-  color: #000;
-  background-color: #f7f7f7;
+  color: #eee;
+  background-color: #2f2f2f;
   font-weight: normal;
   padding: 0;
   white-space: pre-wrap;
@@ -497,9 +497,7 @@ samp,
 
 pre,
 .pre {
-  padding: 10px 0;
   overflow: auto;
-  border: 1px solid #e7e7e7;
 }
 
 blockquote,
