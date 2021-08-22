@@ -1,8 +1,4 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-
-const pkg = require('../../../package.json');
-
-export default (req, res) => {
+const Spotify = (req, res) => {
   fetch(
     'https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=NGriiffin&api_key=c91dd1f9b8fcf710e36a2a48c6c493a8&limit=10&format=json',
     {
@@ -23,3 +19,4 @@ export default (req, res) => {
       res.status(500).json({ status: 'Error' });
     });
 };
+export default Spotify;

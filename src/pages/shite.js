@@ -15,8 +15,8 @@ const ShitePage = () => (
         <div className="page-header-spacer"></div>
 
         <h1 id="single-title" className="animated bounceInDown">
-          <span className="emoji">💩</span>I don't really know what to do with
-          this domain...
+          <span className="emoji">💩</span>I don&apos;t really know what to do
+          with this domain...
         </h1>
         <div className="title-button-wrap">
           <a

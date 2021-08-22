@@ -1,7 +1,8 @@
 import styles from '../styles/Page.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Element, animateScroll as scroll } from 'react-scroll';
+import ReturnImageFormattingUrl from '../utils/returnImageFormattingUrl';
+import { Element } from 'react-scroll';
 
 import { NextSeo } from 'next-seo';
 
@@ -71,10 +72,10 @@ export default function PageLayout({
                 {header ? (
                   <Image
                     alt={title}
-                    src={header}
+                    src={ReturnImageFormattingUrl(header)}
                     layout="fill"
                     objectFit="cover"
-                    quality={100}
+                    quality={80}
                   />
                 ) : null}
               </div>

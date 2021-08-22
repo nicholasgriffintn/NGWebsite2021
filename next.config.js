@@ -1,5 +1,18 @@
 module.exports = {
   images: {
-    domains: ['cdn.nicholasgriffin.dev', 'media.giphy.com'],
+    domains: [
+      'localhost',
+      'nicholasgriffin.dev',
+      'cdn.nicholasgriffin.dev',
+      'images.nicholasgriffin.dev',
+      'media.giphy.com',
+      'media0.giphy.com',
+      'media1.giphy.com',
+      'media2.giphy.com',
+      'media3.giphy.com',
+      'media4.giphy.com',
+      'media5.giphy.com',
+      'lastfm.freetls.fastly.net',
+    ],
   },
 };

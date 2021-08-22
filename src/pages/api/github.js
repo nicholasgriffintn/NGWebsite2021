@@ -1,8 +1,4 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-
-const pkg = require('../../../package.json');
-
-export default (req, res) => {
+const Github = (req, res) => {
   fetch(
     'https://api.github.com/users/nicholasgriffintn/repos?sort=updated&type=public&per_page=8',
     {
@@ -23,3 +19,5 @@ export default (req, res) => {
       res.status(500).json({ status: 'Error' });
     });
 };
+
+export default Github;

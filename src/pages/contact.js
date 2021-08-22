@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import styles from '../styles/Page.module.css';
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import PageLayout from '../components/pageLayout';
-import { useRecaptcha } from "react-hook-recaptcha";
+import { useRecaptcha } from 'react-hook-recaptcha';
 
-const slapform = new (require('slapform'));
+const slapform = new (require('slapform'))();
 
 export default function Page() {
   const [messageType, setMessageType] = useState(null);
@@ -13,25 +13,37 @@ export default function Page() {
   const [formSuccess, setFormSuccess] = useState(null);
   const [formError, setFormError] = useState(null);
 
-  const { register, handleSubmit, watch, formState: { errors, isSubmitting, isSubmitted, isSubmitSuccessful, isValid } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: {
+      errors,
+      isSubmitting,
+      isSubmitted,
+      isSubmitSuccessful,
+      isValid,
+    },
+  } = useForm();
 
-  const onSubmit = data => {
+  const onSubmit = (data) => {
     setFormSubmitting(true);
-    slapform.submit({
-      form: "p3qAjVNcV",
-      account: 'secrecy-gong0r@icloud.com',
-      data: data
-    })
+    slapform
+      .submit({
+        form: 'p3qAjVNcV',
+        account: 'secrecy-gong0r@icloud.com',
+        data: data,
+      })
       .then(function (response) {
-        console.debug("Form Success:", response);
-        setFormSuccess(response)
+        console.debug('Form Success:', response);
+        setFormSuccess(response);
         setFormSubmitting(false);
       })
       .catch(function (response) {
-        console.error("Form Error:", response)
-        setFormError(response)
+        console.error('Form Error:', response);
+        setFormError(response);
         setFormSubmitting(false);
-      })
+      });
   };
 
   const changeMessageType = (e) => {
@@ -51,8 +63,8 @@ export default function Page() {
           <div className={styles.col} style={{ width: '66.66%' }}>
             <h1>Send me a message</h1>
             <p>
-              I'm looking forward to hearing from you (as long as you're not a
-              spammer 😅)!
+              I&apos;m looking forward to hearing from you (as long as
+              you&apos;re not a spammer 😅)!
             </p>
             <p>
               Please fill in the form below to send me a message, alternatively,
@@ -66,7 +78,7 @@ export default function Page() {
               <a
                 target="_blank"
                 href="https://github.com/nicholasgriffintn"
-                rel="noopener"
+                rel="noopener noreferrer"
                 title="Github"
                 className={styles['social-icon-wrap']}
                 id="GithubLinkWrap"
@@ -78,7 +90,7 @@ export default function Page() {
               <a
                 target="_blank"
                 href="https://twitter.com/NGriffintn"
-                rel="noopener"
+                rel="noopener noreferrer"
                 title="Twitter"
                 className={styles['social-icon-wrap']}
                 id="TwitterLinkWrap"
@@ -93,7 +105,7 @@ export default function Page() {
               <a
                 target="_blank"
                 href="https://www.linkedin.com/in/nicholasgriffin-gb/"
-                rel="noopener"
+                rel="noopener noreferrer"
                 title="LinkedIn"
                 className={styles['social-icon-wrap']}
                 id="LinkedinLinkWrap"
@@ -108,8 +120,11 @@ export default function Page() {
             </div>
             <hr></hr>
             <small>
-              If you prefer email clients over forms you can send me a message here:
-              <a href="mailto:secrecy-gong0r@icloud.com">secrecy-gong0r@icloud.com</a>
+              If you prefer email clients over forms you can send me a message
+              here:
+              <a href="mailto:secrecy-gong0r@icloud.com">
+                secrecy-gong0r@icloud.com
+              </a>
             </small>
             <hr></hr>
             {isSubmitting || formSubmitting ? (
@@ -121,7 +136,9 @@ export default function Page() {
             ) : formSuccess ? (
               <>
                 <h3>Thanks for getting in touch!</h3>
-                <p>If you're not a recruiter I may get back to you soon!</p>
+                <p>
+                  If you&apos;re not a recruiter I may get back to you soon!
+                </p>
               </>
             ) : (
               <form
@@ -137,13 +154,11 @@ export default function Page() {
                     type="text"
                     name="name"
                     required
-                    {...register("name")}
-                    aria-invalid={errors.name ? "true" : "false"}
+                    {...register('name')}
+                    aria-invalid={errors.name ? 'true' : 'false'}
                   />
                   {errors.name && (
-                    <span role="alert">
-                      This field is required
-                    </span>
+                    <span role="alert">This field is required</span>
                   )}
                 </div>
                 <div>
@@ -153,29 +168,27 @@ export default function Page() {
                     type="email"
                     name="slap_replyto"
                     required
-                    {...register("slap_replyto")}
-                    aria-invalid={errors.slap_replyto ? "true" : "false"}
+                    {...register('slap_replyto')}
+                    aria-invalid={errors.slap_replyto ? 'true' : 'false'}
                   />
                   {errors.slap_replyto && (
-                    <span role="alert">
-                      This field is required
-                    </span>
+                    <span role="alert">This field is required</span>
                   )}
                 </div>
                 <div>
-                  <label>What's the reason for your message? (Required)</label>
+                  <label>
+                    What&apos;s the reason for your message? (Required)
+                  </label>
                   <input
                     type="text"
                     placeholder="Please enter the reason for your message"
                     name="slap_subject"
                     required
-                    {...register("slap_subject")}
-                    aria-invalid={errors.slap_subject ? "true" : "false"}
+                    {...register('slap_subject')}
+                    aria-invalid={errors.slap_subject ? 'true' : 'false'}
                   />
                   {errors.slap_subject && (
-                    <span role="alert">
-                      This field is required
-                    </span>
+                    <span role="alert">This field is required</span>
                   )}
                 </div>
                 <div>
@@ -224,13 +237,11 @@ export default function Page() {
                       rows="6"
                       required
                       placeholder="Enter your message here..."
-                      {...register("message")}
-                      aria-invalid={errors.message ? "true" : "false"}
+                      {...register('message')}
+                      aria-invalid={errors.message ? 'true' : 'false'}
                     ></textarea>
                     {errors.message && (
-                      <span role="alert">
-                        This field is required
-                      </span>
+                      <span role="alert">This field is required</span>
                     )}
                   </div>
                 ) : messageType === 'upload' ? (
@@ -240,9 +251,9 @@ export default function Page() {
                       type="file"
                       name="uploaded_message"
                       accept=".pdf,.doc,.txt,.jpg,.jpeg,.docx,.png,.mp3,.mp4"
-                      {...register("uploaded_message")}
+                      {...register('uploaded_message')}
                       required
-                      aria-invalid={errors.uploaded_message ? "true" : "false"}
+                      aria-invalid={errors.uploaded_message ? 'true' : 'false'}
                     />
                     <br></br>
                     <br></br>
@@ -253,9 +264,7 @@ export default function Page() {
                     <br></br>
                     <small>The max file size allowed is: 25MB</small>
                     {errors.uploaded_message && (
-                      <span role="alert">
-                        This field is required
-                      </span>
+                      <span role="alert">This field is required</span>
                     )}
                   </div>
                 ) : null}
@@ -264,7 +273,7 @@ export default function Page() {
                     placeholder="Anything else?"
                     name="slap_honey"
                     hidden
-                    {...register("slap_honey")}
+                    {...register('slap_honey')}
                   />
                 </div>
                 <div style={{ marginTop: '15px' }}>

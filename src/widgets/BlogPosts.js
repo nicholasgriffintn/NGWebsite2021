@@ -2,6 +2,8 @@ import Link from 'next/link';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 
+import ReturnImageFormattingUrl from '../utils/returnImageFormattingUrl';
+
 const BlogPostsWidget = ({ posts, postsAllowLoadMore, fetchPosts }) => {
   return (
     <div className="blog-posts-widget">
@@ -17,10 +19,10 @@ const BlogPostsWidget = ({ posts, postsAllowLoadMore, fetchPosts }) => {
                           <div className="item-image">
                             <Image
                               alt={post.title}
-                              src={post.thumbnail}
+                              src={ReturnImageFormattingUrl(post.thumbnail)}
                               layout="fill"
                               objectFit="cover"
-                              quality={100}
+                              quality={80}
                             />
                           </div>
                         ) : null}
