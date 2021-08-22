@@ -2717,6 +2717,11 @@ div#BlogPostsFloatingBlock {
   height: 100%;
 }
 
+.item-card > .item-content h3 {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 .item-card > .item-image {
   min-height: 220px;
   position: relative;
