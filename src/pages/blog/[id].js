@@ -187,6 +187,10 @@ export default function PostComponent({ post = {}, errored = false }) {
                         layout="fill"
                         objectFit="contain"
                         quality={80}
+                        placeholder="blur"
+                        blurDataURL={`/_next/image?url=${ReturnImageFormattingUrl(
+                          image.properties.src
+                        )}&w=16&q=1`}
                       />
                     </div>
                   );

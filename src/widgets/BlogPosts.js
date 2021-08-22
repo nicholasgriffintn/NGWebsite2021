@@ -23,6 +23,10 @@ const BlogPostsWidget = ({ posts, postsAllowLoadMore, fetchPosts }) => {
                               layout="fill"
                               objectFit="cover"
                               quality={80}
+                              placeholder="blur"
+                              blurDataURL={`/_next/image?url=${ReturnImageFormattingUrl(
+                                post.thumbnail
+                              )}&w=16&q=1`}
                             />
                           </div>
                         ) : null}

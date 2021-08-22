@@ -76,6 +76,11 @@ export default function PageLayout({
                     layout="fill"
                     objectFit="cover"
                     quality={80}
+                    priority="true"
+                    placeholder="blur"
+                    blurDataURL={`/_next/image?url=${ReturnImageFormattingUrl(
+                      header
+                    )}&w=16&q=1`}
                   />
                 ) : null}
               </div>
