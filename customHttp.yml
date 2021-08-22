@@ -17,25 +17,21 @@ customHeaders:
         value: 1; mode=block
   - pattern: '**/*.css'
     headers:
-      - key: 'Cache-Control' 
+      - key: 'Cache-Control'
         value: 'public, max-age=31536000, s-maxage=31536000, immutable'
   - pattern: '**/*.js'
     headers:
-      - key: 'Cache-Control' 
+      - key: 'Cache-Control'
         value: 'public, max-age=31536000, s-maxage=31536000, immutable'
   - pattern: '**/*.jpg'
     headers:
-      - key: 'Cache-Control' 
+      - key: 'Cache-Control'
         value: 'public, max-age=31536000, s-maxage=31536000, immutable'
-  - pattern: '**/*.css'
+  - pattern: '**/*.jpeg'
     headers:
-      - key: 'Cache-Control' 
+      - key: 'Cache-Control'
         value: 'public, max-age=31536000, s-maxage=31536000, immutable'
-  - pattern: '**/*.js'
+  - pattern: '**/*.png'
     headers:
-      - key: 'Cache-Control' 
-        value: 'public, max-age=31536000, s-maxage=31536000, immutable'
-  - pattern: '**/*.jpg'
-    headers:
-      - key: 'Cache-Control' 
+      - key: 'Cache-Control'
         value: 'public, max-age=31536000, s-maxage=31536000, immutable'

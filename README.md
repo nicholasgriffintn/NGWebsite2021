@@ -24,8 +24,8 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 - [x] Move widgets in the sections to a new widgets folder
 - [x] Swap to nextjs/mdx? component rendering https://nextjs.org/blog/markdown
 - [x] Create post about new site
-- [ ] Add a Gists page
-- [ ] Finish blog page and posts list (make a component for the list)
+- [x] Add a Gists page
+- [x] Finish blog page and posts list (make a component for the list)
 - [ ] Add setup page
 - [ ] Add projects (Github) page with full list
 - [ ] Update header with links to pages: blog, projects, contact, my desk (setup)
