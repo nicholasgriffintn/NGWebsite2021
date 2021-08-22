@@ -77,8 +77,8 @@ export default function Page() {
           <div className={styles.col} style={{ width: '66.66%' }}>
             <h1>Blog Posts</h1>
             <p>
-              I've been running my own blogs since 2011, I started off with my
-              own technology blog that I used to talk about my passion in
+              I&apos;ve been running my own blogs since 2011, I started off with
+              my own technology blog that I used to talk about my passion in
               technology, TechNutty.
             </p>
             <p>

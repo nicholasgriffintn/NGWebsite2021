@@ -15,8 +15,8 @@ export default function Page() {
           <div className={styles.col} style={{ width: '66.66%' }}>
             <h1>Setup</h1>
             <p>
-              Here's what I'm coding, gaming and watching videos on. Recently
-              updated for a better Covid experience in 2020.
+              Here&apos;s what I&apos;m coding, gaming and watching videos on.
+              Recently updated for a better Covid experience in 2020.
             </p>
             <h2>Code</h2>
             <ul>
@@ -69,7 +69,7 @@ export default function Page() {
               <li>Razer Gigantus V2 XXL</li>
               <li>Razer Thunderbolt™ 4 Dock Chroma</li>
               <li>Razer Seiren X </li>
-              <li>AOC CU34G2/BK 34" Widescreen WLED Monitor</li>
+              <li>AOC CU34G2/BK 34&quot; Widescreen WLED Monitor</li>
               <li>FLEXISPOT EC1 Height Adjustable Electric Standing Desk</li>
               <li>
                 Creative Sound Blaster X3 Hi-Res 7.1 Discrete External USB DAC

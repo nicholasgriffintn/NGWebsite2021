@@ -6,12 +6,14 @@ const MarkedCode = (props) => {
 
   return (
     <div className={`post-code ${className}`}>
+      {/* eslint-disable */}
       <SyntaxHighlighter
         style={materialDark}
         language={className.replace('language-', '')}
         children={children}
         showLineNumbers={true}
       />
+      {/* eslint-enable */}
     </div>
   );
 };

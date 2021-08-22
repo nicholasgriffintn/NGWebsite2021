@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import dayjs from 'dayjs';

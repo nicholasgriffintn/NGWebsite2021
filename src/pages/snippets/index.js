@@ -40,9 +40,9 @@ export default function Page() {
             <h1>Code Snippets</h1>
             <p>
               These are some random code snippets that I have made available on
-              Github's Gists platform. You'll find a range of things here from
-              the day to day bug fix up to something that might be a little more
-              useful.
+              Github&apos;s Gists platform. You&apos;ll find a range of things
+              here from the day to day bug fix up to something that might be a
+              little more useful.
             </p>
             <Gists gists={gists} />
           </div>
