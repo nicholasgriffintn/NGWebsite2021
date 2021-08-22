@@ -26,7 +26,7 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 - [x] Create post about new site
 - [x] Add a Gists page
 - [x] Finish blog page and posts list (make a component for the list)
-- [ ] Add setup page
+- [x] Add setup page
 - [ ] Add projects (Github) page with full list
 - [ ] Update header with links to pages: blog, projects, contact, my desk (setup)
 - [ ] Dark mode
