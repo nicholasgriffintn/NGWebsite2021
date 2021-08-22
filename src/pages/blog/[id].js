@@ -1,21 +1,34 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-
-import API from '@aws-amplify/api';
-import { getPost, listPosts } from '../../graphql/queries';
-import Markdown from 'react-markdown';
-
 import dayjs from 'dayjs';
-
 import { useRouter } from 'next/router';
-
 import styles from '../../styles/Page.module.css';
 
 import PageLayout from '../../components/pageLayout';
 
+import API from '@aws-amplify/api';
+import { getPost, listPosts } from '../../graphql/queries';
+
+import { serialize } from 'next-mdx-remote/serialize';
+import { MDXRemote } from 'next-mdx-remote';
+
 import MarkedImage from '../../components/markdown/MarkedImage';
 import MarkedCode from '../../components/markdown/MarkedCode';
 import MarkedLink from '../../components/markdown/MarkedLink';
+
+const components = {
+  img: (props) => {
+    return <MarkedImage {...props} />;
+  },
+  code: (props) => {
+    return <MarkedCode {...props} />;
+  },
+  a: (props) => {
+    return <MarkedLink {...props} />;
+  },
+  Image,
+  MarkedImage,
+};
 
 /* const gfm = require('remark-gfm');
 const rehypeRaw = require('rehype-raw'); */
@@ -164,37 +177,9 @@ export default function PostComponent({ post = {}, errored = false }) {
           ) : null}
           <hr />
           {/* eslint-disable */}
-          <Markdown
-            children={post.content}
-            components={{
-              a: ({ node, children }) => {
-                console.log(node, children);
-                return (
-                  <MarkedLink href={node.properties.href} children={children} />
-                );
-              },
-              p: ({ node, children }) => {
-                if (node.children[0].tagName === 'img') {
-                  const image = node.children[0];
-                  return <MarkedImage image={image} />;
-                }
-                // Return default child if it's not an image
-                return <p>{children}</p>;
-              },
-              code: ({ className, children, inline }) => {
-                if (inline === true) {
-                  return (
-                    <code className="inline-code-block">{children[0]}</code>
-                  );
-                }
-
-                const language = className
-                  ? className.replace('language-', '')
-                  : null;
-                return <MarkedCode code={children[0]} language={language} />;
-              },
-            }}
-          />
+          {post.content && post.content.compiledSource ? (
+            <MDXRemote {...post.content} components={components} />
+          ) : null}
           {/* eslint-enable */}
         </div>
       )}
@@ -241,9 +226,12 @@ export async function getStaticProps(req) {
     const post = await fetchPost(id);
 
     if (post && post.data && post.data.getPost) {
+      const postData = JSON.parse(JSON.stringify(post.data.getPost));
+      postData.content = await serialize(postData.content);
+
       return {
         props: {
-          post: JSON.parse(JSON.stringify(post.data.getPost)),
+          post: postData,
           errored: false,
         },
         revalidate: 1,
