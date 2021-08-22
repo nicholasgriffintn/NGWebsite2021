@@ -1,9 +1,12 @@
-import { API } from 'aws-amplify';
+import { withSSRContext } from 'aws-amplify';
 import { listPosts } from '../graphql/queries';
 
 const Feed = () => {};
 
-export const getServerSideProps = async ({ res }) => {
+export const getServerSideProps = async (context) => {
+  const { res } = context;
+  const { API } = withSSRContext(context);
+
   const baseUrl = {
     development: 'http://localhost:3000',
     production: 'https://nicholasgriffin.dev',
