@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-
-import ReturnImageFormattingUrl from '../../utils/returnImageFormattingUrl';
 import Image from 'next/image';
 
 import API from '@aws-amplify/api';
@@ -15,8 +13,9 @@ import styles from '../../styles/Page.module.css';
 
 import PageLayout from '../../components/pageLayout';
 
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { materialDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import MarkedImage from '../../components/markdown/MarkedImage';
+import MarkedCode from '../../components/markdown/MarkedCode';
+import MarkedLink from '../../components/markdown/MarkedLink';
 
 /* const gfm = require('remark-gfm');
 const rehypeRaw = require('rehype-raw'); */
@@ -166,53 +165,35 @@ export default function PostComponent({ post = {}, errored = false }) {
           <hr />
           {/* eslint-disable */}
           <Markdown
+            children={post.content}
             components={{
+              a: ({ node, children }) => {
+                console.log(node, children);
+                return (
+                  <MarkedLink href={node.properties.href} children={children} />
+                );
+              },
               p: ({ node, children }) => {
                 if (node.children[0].tagName === 'img') {
                   const image = node.children[0];
-                  return (
-                    <div
-                      className="post-image"
-                      style={{
-                        position: 'relative',
-                        width: '100%',
-                        height: 'auto',
-                        minHeight: '450px',
-                        marginBotom: '20px',
-                      }}
-                    >
-                      <Image
-                        alt={image.properties.alt}
-                        src={ReturnImageFormattingUrl(image.properties.src)}
-                        layout="fill"
-                        objectFit="contain"
-                        quality={80}
-                        placeholder="blur"
-                        blurDataURL={`/_next/image?url=${ReturnImageFormattingUrl(
-                          image.properties.src
-                        )}&w=16&q=1`}
-                      />
-                    </div>
-                  );
+                  return <MarkedImage image={image} />;
                 }
                 // Return default child if it's not an image
                 return <p>{children}</p>;
               },
-              code: ({ className, children }) => {
-                // Removing "language-" because React-Markdown already added "language-"
+              code: ({ className, children, inline }) => {
+                if (inline === true) {
+                  return (
+                    <code className="inline-code-block">{children[0]}</code>
+                  );
+                }
+
                 const language = className
                   ? className.replace('language-', '')
                   : null;
-                return (
-                  <SyntaxHighlighter
-                    style={materialDark}
-                    language={language}
-                    children={children[0]}
-                  />
-                );
+                return <MarkedCode code={children[0]} language={language} />;
               },
             }}
-            children={post.content}
           />
           {/* eslint-enable */}
         </div>

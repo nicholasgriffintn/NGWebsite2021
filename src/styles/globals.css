@@ -2813,3 +2813,11 @@ form fieldset label {
 form fieldset label {
   margin-left: 5px;
 }
+
+code.inline-code-block {
+  background: rgb(47, 47, 47);
+  color: rgb(238, 238, 238);
+  padding: 2px 5px;
+  font-size: inherit;
+  line-height: inherit;
+}
