@@ -1,5 +1,5 @@
 import styles from '../styles/Home.module.css';
-import { API } from 'aws-amplify';
+import API from '@aws-amplify/api';
 import { sortedPosts } from '../graphql/queries';
 import { useState, useEffect } from 'react';
 import { NextSeo } from 'next-seo';

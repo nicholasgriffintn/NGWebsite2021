@@ -1,4 +1,4 @@
-import { withSSRContext } from 'aws-amplify';
+import { withSSRContext } from '@aws-amplify/core';
 import { listPosts } from '../graphql/queries';
 
 const Feed = () => {};

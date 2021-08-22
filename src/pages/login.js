@@ -4,7 +4,7 @@ import styles from '../styles/Page.module.css';
 import PageLayout from '../components/pageLayout';
 import checkLoggedIn from '../utils/checkLoggedIn';
 
-import { Auth } from 'aws-amplify';
+import Auth from '@aws-amplify/auth';
 
 export default function Page() {
   const [email, setEmail] = useState('');

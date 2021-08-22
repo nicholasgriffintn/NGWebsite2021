@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import Amplify, { AuthModeStrategyType, Hub, Logger } from 'aws-amplify';
+import Amplify, { Hub, Logger } from '@aws-amplify/core';
+import { AuthModeStrategyType } from '@aws-amplify/datastore';
 import config from '../aws-exports';
 import { DefaultSeo } from 'next-seo';
 

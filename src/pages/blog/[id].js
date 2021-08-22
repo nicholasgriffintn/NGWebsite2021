@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import ReturnImageFormattingUrl from '../../utils/returnImageFormattingUrl';
 import Image from 'next/image';
 
-import { API } from 'aws-amplify';
+import API from '@aws-amplify/api';
 import { getPost, listPosts } from '../../graphql/queries';
 import Markdown from 'react-markdown';
 

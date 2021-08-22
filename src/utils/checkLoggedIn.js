@@ -1,4 +1,5 @@
-import { Auth, Logger } from 'aws-amplify';
+import { Logger } from '@aws-amplify/core';
+import Auth from '@aws-amplify/auth';
 
 const logger = new Logger('checkLoggedIn');
 
