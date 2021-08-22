@@ -2,7 +2,6 @@ import { useState } from 'react';
 import styles from '../styles/Page.module.css';
 import { useForm } from 'react-hook-form';
 import PageLayout from '../components/pageLayout';
-import { useRecaptcha } from 'react-hook-recaptcha';
 
 const slapform = new (require('slapform'))();
 
