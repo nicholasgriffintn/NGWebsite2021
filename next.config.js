@@ -4,6 +4,7 @@ module.exports = {
       'localhost',
       'nicholasgriffin.dev',
       'cdn.nicholasgriffin.dev',
+      'images.nicholasgriffin.dev',
       'media.giphy.com',
       'media0.giphy.com',
       'media1.giphy.com',

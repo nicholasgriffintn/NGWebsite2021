@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "aws-amplify": "^4.2.2",
-    "aws-sdk": "^2.973.0",
     "dayjs": "^1.10.6",
     "fs": "^0.0.1-security",
     "next": "11.0.1",
@@ -29,7 +28,6 @@
     "rehype-slug": "^5.0.0",
     "remark-gfm": "^2.0.0",
     "rss": "^1.2.2",
-    "sharp": "^0.29.0",
     "slapform": "^2.0.3"
   },
   "devDependencies": {
