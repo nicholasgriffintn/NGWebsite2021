@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { withSSRContext } from '@aws-amplify/core';
+import { withSSRContext } from 'aws-amplify';
 import { listPosts } from '../graphql/queries';
 
 const Sitemap = () => {};
