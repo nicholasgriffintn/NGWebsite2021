@@ -22,20 +22,20 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 - [x] Move homepage sections to components
 - [x] Finish homepage
 - [x] Move widgets in the sections to a new widgets folder
-- [ ] Swap to nextjs/mdx? component rendering https://nextjs.org/blog/markdown
+- [x] Swap to nextjs/mdx? component rendering https://nextjs.org/blog/markdown
 - [x] Create post about new site
-- [ ] Create my own service for form submissions
-- [ ] Add ability to record a voice message on contact form
-- [ ] Add the ability to send a WhatsApp or Text might be cool?
+- [ ] Add a Gists page
 - [ ] Finish blog page and posts list (make a component for the list)
 - [ ] Add setup page
 - [ ] Add projects (Github) page with full list
 - [ ] Update header with links to pages: blog, projects, contact, my desk (setup)
-- [ ] Add a Gists page
-- [x] Add the image resizing back
-- [x] Add login page and two-factor pages
 - [ ] Dark mode
 - [ ] Maybe look into if it's possible to add Apple Music widget vs the current Spotify one.
 - [ ] Use context for passing around functions and state
 - [x] Add Next/Image everywhere I can xD
 - [ ] AVIF?
+- [ ] Create my own service for form submissions
+- [ ] Add ability to record a voice message on contact form
+- [ ] Add the ability to send a WhatsApp or Text might be cool?
+- [x] Add the image resizing back
+- [x] Add login page and two-factor pages

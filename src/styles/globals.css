@@ -2821,3 +2821,41 @@ code.inline-code-block {
   font-size: inherit;
   line-height: inherit;
 }
+
+.item-content-files {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+  border: 1px solid #d8d8da;
+  border-radius: 4px;
+}
+
+.item-content-files-title {
+  font-size: 16px;
+  line-height: 18px;
+  padding: 10px 15px;
+  border-bottom: 1px solid #ccc;
+}
+
+.item-content-files-file {
+  padding: 10px 15px;
+  border-left: 3px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+.item-content-files-file:last-child {
+  border-bottom: 0px;
+}
+
+.item-content-files-file strong {
+  width: 100%;
+  display: inline-block;
+}
+
+.item-card.item-card-full {
+  min-width: 100%;
+}
+
+.item-card.item-card-half {
+  min-width: calc(50% - 20px);
+}
