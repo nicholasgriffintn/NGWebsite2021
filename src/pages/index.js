@@ -4,6 +4,8 @@ import { sortedPosts } from '../graphql/queries';
 import { useState, useEffect } from 'react';
 import { NextSeo } from 'next-seo';
 
+import useDarkMode from 'use-dark-mode';
+
 import Header from '../components/Header';
 import Footer from '../components/footer';
 
@@ -16,6 +18,8 @@ import Languages from '../sections/homepage/Languages';
 import Tools from '../sections/homepage/Tools';
 
 export default function Home() {
+  const darkMode = useDarkMode(false, {});
+
   const [spotify, setSpotify] = useState([]);
   const [spotifyLoading, setSpotifyLoading] = useState(true);
 
@@ -135,23 +139,28 @@ export default function Home() {
 
   return (
     <div className={styles.applayout}>
-      <Header />
+      <Header darkMode={darkMode} />
       <NextSeo title="Homepage" />
-      <Hero hasScrolled={hasScrolled} />
+      <Hero hasScrolled={hasScrolled} darkMode={darkMode} />
       <main className={styles.main}>
-        <OpeningContent spotify={spotify} loading={spotifyLoading} />
-        <Blog />
+        <OpeningContent
+          spotify={spotify}
+          loading={spotifyLoading}
+          darkMode={darkMode}
+        />
+        <Blog darkMode={darkMode} />
         <BlogPosts
+          darkMode={darkMode}
           fetchPosts={fetchPosts}
           postsAllowLoadMore={postsAllowLoadMore}
           posts={posts}
           loading={postsLoading}
         />
-        <WhatIDo github={github} loading={githubLoading} />
-        <Languages />
-        <Tools />
+        <WhatIDo darkMode={darkMode} github={github} loading={githubLoading} />
+        <Languages darkMode={darkMode} />
+        <Tools darkMode={darkMode} />
       </main>
-      <Footer />
+      <Footer darkMode={darkMode} />
     </div>
   );
 }

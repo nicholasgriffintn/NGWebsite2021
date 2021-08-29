@@ -29,8 +29,6 @@ export default function PageLayout({
 }) {
   const darkMode = useDarkMode(false, {});
 
-  console.log(darkMode.value);
-
   return (
     <div
       className={
