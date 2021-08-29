@@ -19,6 +19,17 @@ import Tools from '../sections/homepage/Tools';
 export default function Home() {
   const darkMode = useDarkMode();
 
+  useEffect(() => {
+    if (darkMode.darkModeActive === true) {
+      document.body.className = 'dark-mode';
+    } else {
+      document.body.className = 'light-mode';
+    }
+    return () => {
+      document.body.className = 'light-mode';
+    };
+  }, [darkMode.darkModeActive]);
+
   const [spotify, setSpotify] = useState([]);
   const [spotifyLoading, setSpotifyLoading] = useState(true);
 

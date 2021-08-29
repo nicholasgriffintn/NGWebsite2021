@@ -4,7 +4,7 @@ import { Element } from 'react-scroll';
 
 const Blog = ({ darkMode }) => {
   const { darkModeActive } = darkMode;
-  console.log('darkMode blog', darkModeActive);
+
   return (
     <section
       className={styles.wrap}

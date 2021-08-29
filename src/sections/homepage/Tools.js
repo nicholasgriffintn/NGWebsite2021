@@ -2,7 +2,9 @@ import styles from '../../styles/Home.module.css';
 import Image from 'next/image';
 import { Element } from 'react-scroll';
 
-const Languages = ({}) => {
+const Languages = ({ darkMode }) => {
+  const { darkModeActive } = darkMode;
+
   return (
     <section className={styles.wrap}>
       <Element name="Tools" id="Tools" className={styles.container}>
@@ -59,7 +61,11 @@ const Languages = ({}) => {
                   className="lazy"
                   alt="Next.JS"
                   loading="lazy"
-                  src="/uploads/langaugesIcons/nextjs.svg"
+                  src={
+                    darkModeActive === true
+                      ? '/uploads/langaugesIcons/nextjs_dark.svg'
+                      : '/uploads/langaugesIcons/nextjs.svg'
+                  }
                 />
                 <span>Next.JS</span>
               </div>
