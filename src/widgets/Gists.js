@@ -5,9 +5,9 @@ const GistsWidget = ({ loading, gists }) => {
         <p>Please wait just one sec while the snippets load...</p>
       ) : (
         <>
-          {gists && gists.data && gists.data.length > 0 ? (
+          {gists && gists.length > 0 ? (
             <div className="item-cards">
-              {gists.data.map((gist) => {
+              {gists.map((gist) => {
                 return (
                   <a
                     href={gist.html_url}
@@ -41,53 +41,66 @@ const GistsWidget = ({ loading, gists }) => {
                                         style={{
                                           color:
                                             gist.files[file].language ===
-                                              'JavaScript'
+                                            'JavaScript'
                                               ? '#f7df1c'
-                                              : gist.files[file].language === 'PHP'
-                                                ? '#777bb4'
-                                                : gist.files[file].language === 'HTML'
-                                                  ? '#e34f25'
-                                                  : gist.files[file].language === 'Vue'
-                                                    ? '#42b883'
-                                                    : gist.files[file].language === 'Go'
-                                                      ? '#00ADD8'
-                                                      : gist.files[file].language === 'C++'
-                                                        ? '#f34b7d'
-                                                        : gist.files[file].language === 'C#'
-                                                          ? '#178600'
-                                                          : gist.files[file].language ===
-                                                            'Python'
-                                                            ? '#3572A5'
-                                                            : gist.files[file].language ===
-                                                              'TypeScript'
-                                                              ? '#2b7489'
-                                                              : gist.files[file].language === 'CSS'
-                                                                ? '#563d7c'
-                                                                : gist.files[file].language ===
-                                                                  'Swift'
-                                                                  ? '#F05138'
-                                                                  : gist.files[file].language === 'Java'
-                                                                    ? '#b07219'
-                                                                    : gist.files[file].language === 'C'
-                                                                      ? '#555555'
-                                                                      : gist.files[file].language === 'Ruby'
-                                                                        ? '#701516'
-                                                                        : gist.files[file].language ===
-                                                                          'CoffeeScript'
-                                                                          ? '#244776'
-                                                                          : gist.files[file].language === 'Rust'
-                                                                            ? '#dea584'
-                                                                            : gist.files[file].language === 'Dart'
-                                                                              ? '#89e051'
-                                                                              : gist.files[file].language ===
-                                                                                'PowerShell'
-                                                                                ? '#012456'
-                                                                                : gist.files[file].language ===
-                                                                                  'Dockerfile'
-                                                                                  ? '#384d54'
-                                                                                  : gist.files[file].language === 'YAML'
-                                                                                    ? '#000'
-                                                                                    : '#fff',
+                                              : gist.files[file].language ===
+                                                'PHP'
+                                              ? '#777bb4'
+                                              : gist.files[file].language ===
+                                                'HTML'
+                                              ? '#e34f25'
+                                              : gist.files[file].language ===
+                                                'Vue'
+                                              ? '#42b883'
+                                              : gist.files[file].language ===
+                                                'Go'
+                                              ? '#00ADD8'
+                                              : gist.files[file].language ===
+                                                'C++'
+                                              ? '#f34b7d'
+                                              : gist.files[file].language ===
+                                                'C#'
+                                              ? '#178600'
+                                              : gist.files[file].language ===
+                                                'Python'
+                                              ? '#3572A5'
+                                              : gist.files[file].language ===
+                                                'TypeScript'
+                                              ? '#2b7489'
+                                              : gist.files[file].language ===
+                                                'CSS'
+                                              ? '#563d7c'
+                                              : gist.files[file].language ===
+                                                'Swift'
+                                              ? '#F05138'
+                                              : gist.files[file].language ===
+                                                'Java'
+                                              ? '#b07219'
+                                              : gist.files[file].language ===
+                                                'C'
+                                              ? '#555555'
+                                              : gist.files[file].language ===
+                                                'Ruby'
+                                              ? '#701516'
+                                              : gist.files[file].language ===
+                                                'CoffeeScript'
+                                              ? '#244776'
+                                              : gist.files[file].language ===
+                                                'Rust'
+                                              ? '#dea584'
+                                              : gist.files[file].language ===
+                                                'Dart'
+                                              ? '#89e051'
+                                              : gist.files[file].language ===
+                                                'PowerShell'
+                                              ? '#012456'
+                                              : gist.files[file].language ===
+                                                'Dockerfile'
+                                              ? '#384d54'
+                                              : gist.files[file].language ===
+                                                'YAML'
+                                              ? '#000'
+                                              : '#fff',
                                         }}
                                       >
                                         ●

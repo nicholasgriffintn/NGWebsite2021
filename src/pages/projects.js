@@ -15,6 +15,7 @@ export default function Page() {
         return data.json();
       })
       .then((data) => {
+        console.log(data);
         setGithub(data);
         setLoading(false);
       })

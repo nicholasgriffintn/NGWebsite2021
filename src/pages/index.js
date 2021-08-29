@@ -102,8 +102,8 @@ export default function Home() {
       })
       .then((data) => {
         setSpotifyLoading(false);
-        if (data && data.data && data.data.recenttracks) {
-          setSpotify(data.data.recenttracks);
+        if (data && data.recenttracks) {
+          setSpotify(data.recenttracks);
         }
       })
       .catch((err) => {
