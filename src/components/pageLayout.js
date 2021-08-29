@@ -2,8 +2,8 @@ import styles from '../styles/Page.module.css';
 import Image from 'next/image';
 import ReturnImageFormattingUrl from '../utils/returnImageFormattingUrl';
 import { Element } from 'react-scroll';
-import Header from './Header'
-import Footer from './Footer'
+import Header from './Header';
+import Footer from './footer';
 import { NextSeo } from 'next-seo';
 
 export default function PageLayout({
@@ -52,9 +52,7 @@ export default function PageLayout({
               : null,
         }}
       />
-      {displayHeader === true ? (
-        <Header />
-      ) : null}
+      {displayHeader === true ? <Header /> : null}
       {showHero === true ? (
         <section
           className={styles.hero}
@@ -117,9 +115,7 @@ export default function PageLayout({
           </Element>
         </section>
       </main>
-      {displayFooter === true ? (
-        <Footer />
-      ) : null}
+      {displayFooter === true ? <Footer /> : null}
     </div>
   );
 }
