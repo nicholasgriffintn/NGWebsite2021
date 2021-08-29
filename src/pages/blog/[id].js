@@ -31,9 +31,6 @@ const components = {
   MarkedImage,
 };
 
-/* const gfm = require('remark-gfm');
-const rehypeRaw = require('rehype-raw'); */
-
 export default function PostComponent({ post = {}, errored = false }) {
   const router = useRouter();
 
