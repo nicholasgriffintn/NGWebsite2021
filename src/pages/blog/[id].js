@@ -171,7 +171,7 @@ export default function PostComponent({ post = {}, errored = false }) {
             Posted: {dayjs(post.createdAt).format('dddd, MMMM D YYYY h:mm a')}
           </small>
           {post.createdAt !== post.updatedAt ? (
-            <small>
+            <small style={{ marginLeft: '10px' }}>
               Updated:{' '}
               {dayjs(post.updatedAt).format('dddd, MMMM D YYYY h:mm a')}
             </small>

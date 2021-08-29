@@ -29,7 +29,7 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 - [x] Add setup page
 - [x] Add projects (Github) page with full list
 - [x] Add a header with links to pages: blog, projects, contact, my desk (setup)
-- [ ] Dark mode
+- [x] Dark mode
 - [ ] Maybe look into if it's possible to add Apple Music widget vs the current Spotify one.
 - [ ] Use context for passing around functions and state
 - [x] Add Next/Image everywhere I can xD

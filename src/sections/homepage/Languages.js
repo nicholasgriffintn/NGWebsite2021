@@ -2,7 +2,9 @@ import styles from '../../styles/Home.module.css';
 import Image from 'next/image';
 import { Element } from 'react-scroll';
 
-const Languages = ({}) => {
+const Languages = ({ darkMode }) => {
+  const { darkModeActive } = darkMode;
+
   return (
     <section className={styles.wrap}>
       <Element name="Langauges" id="Langauges" className={styles.container}>
@@ -70,7 +72,11 @@ const Languages = ({}) => {
                   className="lazy"
                   alt="JSON"
                   loading="lazy"
-                  src="/uploads/langaugesIcons/json.svg"
+                  src={
+                    darkModeActive === true
+                      ? '/uploads/langaugesIcons/json_dark.svg'
+                      : '/uploads/langaugesIcons/json.svg'
+                  }
                 />
                 <span>JSON</span>
               </div>

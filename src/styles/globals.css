@@ -2737,7 +2737,8 @@ div#BlogPostsFloatingBlock {
 }
 
 .item-card__meta {
-  margin-right: 20px;
+  display: inline-block;
+  width: 100%;
 }
 .item-card__meta > i {
   font-size: 16px;
@@ -2958,4 +2959,48 @@ nav.footer-navbar {
   padding-top: 55px;
   padding-bottom: 55px;
   min-height: calc(100vh - 110px);
+}
+
+body.dark-mode {
+  background-color: #050505;
+  color: #fff;
+}
+
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode p,
+.dark-mode a,
+.dark-mode small,
+.dark-mode strong,
+.dark-mode span,
+.dark-mode ul,
+.dark-mode ul li {
+  color: #fff;
+}
+
+.dark-mode nav.footer-navbar,
+.dark-mode nav.footer-navbar a {
+  color: #f1f1f1;
+}
+
+.dark-mode .item-card {
+  background: #171923;
+  border-color: #252838;
+}
+
+.dark-mode #GithubLinkWrap svg {
+  fill: #fff;
+}
+
+.dark-mode .item-card:hover > .item-content {
+  background: #252838;
+}
+
+.button-prime-inverted {
+  background: #171923;
+  color: #fff;
+  border-color: #171923;
 }

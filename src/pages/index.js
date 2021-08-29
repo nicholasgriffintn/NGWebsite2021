@@ -3,6 +3,7 @@ import API from '@aws-amplify/api';
 import { sortedPosts } from '../graphql/queries';
 import { useState, useEffect } from 'react';
 import { NextSeo } from 'next-seo';
+import { useDarkMode } from 'next-dark-mode';
 
 import Header from '../components/Header';
 import Footer from '../components/footer';
@@ -16,6 +17,19 @@ import Languages from '../sections/homepage/Languages';
 import Tools from '../sections/homepage/Tools';
 
 export default function Home() {
+  const darkMode = useDarkMode();
+
+  useEffect(() => {
+    if (darkMode.darkModeActive === true) {
+      document.body.className = 'dark-mode';
+    } else {
+      document.body.className = 'light-mode';
+    }
+    return () => {
+      document.body.className = 'light-mode';
+    };
+  }, [darkMode.darkModeActive]);
+
   const [spotify, setSpotify] = useState([]);
   const [spotifyLoading, setSpotifyLoading] = useState(true);
 
@@ -134,24 +148,35 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={styles.applayout}>
-      <Header />
+    <div
+      className={
+        darkMode.darkModeActive === true || darkMode.darkModeActive === 'true'
+          ? styles.appLayoutDark
+          : styles.appLayout
+      }
+    >
+      <Header darkMode={darkMode} />
       <NextSeo title="Homepage" />
-      <Hero hasScrolled={hasScrolled} />
+      <Hero hasScrolled={hasScrolled} darkMode={darkMode} />
       <main className={styles.main}>
-        <OpeningContent spotify={spotify} loading={spotifyLoading} />
-        <Blog />
+        <OpeningContent
+          spotify={spotify}
+          loading={spotifyLoading}
+          darkMode={darkMode}
+        />
+        <Blog darkMode={darkMode} />
         <BlogPosts
+          darkMode={darkMode}
           fetchPosts={fetchPosts}
           postsAllowLoadMore={postsAllowLoadMore}
           posts={posts}
           loading={postsLoading}
         />
-        <WhatIDo github={github} loading={githubLoading} />
-        <Languages />
-        <Tools />
+        <WhatIDo darkMode={darkMode} github={github} loading={githubLoading} />
+        <Languages darkMode={darkMode} />
+        <Tools darkMode={darkMode} />
       </main>
-      <Footer />
+      <Footer darkMode={darkMode} />
     </div>
   );
 }

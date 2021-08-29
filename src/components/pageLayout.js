@@ -5,6 +5,8 @@ import { Element } from 'react-scroll';
 import Header from './Header';
 import Footer from './footer';
 import { NextSeo } from 'next-seo';
+import { useEffect } from 'react';
+import { useDarkMode } from 'next-dark-mode';
 
 export default function PageLayout({
   children,
@@ -25,8 +27,27 @@ export default function PageLayout({
   publishedTime = null,
   modifiedTime = null,
 }) {
+  const darkMode = useDarkMode();
+
+  useEffect(() => {
+    if (darkMode.darkModeActive === true) {
+      document.body.className = 'dark-mode';
+    } else {
+      document.body.className = 'light-mode';
+    }
+    return () => {
+      document.body.className = 'light-mode';
+    };
+  }, [darkMode.darkModeActive]);
+
   return (
-    <div className={styles.applayout}>
+    <div
+      className={
+        darkMode.darkModeActive === true
+          ? styles.appLayoutDark
+          : styles.appLayout
+      }
+    >
       <NextSeo
         title={title}
         description={description}
@@ -52,7 +73,7 @@ export default function PageLayout({
               : null,
         }}
       />
-      {displayHeader === true ? <Header /> : null}
+      {displayHeader === true ? <Header darkMode={darkMode} /> : null}
       {showHero === true ? (
         <section
           className={styles.hero}
@@ -99,7 +120,7 @@ export default function PageLayout({
           loadingState === true
             ? { display: 'none' }
             : showHero === false && darkMain === true
-            ? { minHeight: '100vh!important', background: '#222!important' }
+            ? { minHeight: '100vh!important', background: '#050505!important' }
             : showHero === false
             ? { minHeight: '100vh!important' }
             : null
@@ -115,7 +136,7 @@ export default function PageLayout({
           </Element>
         </section>
       </main>
-      {displayFooter === true ? <Footer /> : null}
+      {displayFooter === true ? <Footer darkMode={darkMode} /> : null}
     </div>
   );
 }

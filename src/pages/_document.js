@@ -15,6 +15,7 @@ class MyDocument extends Document {
           href="https://cognito-identity.eu-west-1.amazonaws.com"
         ></link>
         <body>
+          <script preload="true" src="/scripts/dm-flash.js" />
           <Main />
           <NextScript />
         </body>
