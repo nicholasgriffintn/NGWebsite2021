@@ -55,7 +55,7 @@ export default function Home() {
       postData.data.sortedPosts &&
       postData.data.sortedPosts.items
     ) {
-      setPostsLoading(false)
+      setPostsLoading(false);
       if (postData.data.sortedPosts.items.length > 0) {
         setPostsAllowLoadMore(false);
         if (loadMore === true) {
@@ -113,13 +113,13 @@ export default function Home() {
   useEffect(() => {
     // Set has scrolled on scroll
     if (window !== undefined) {
-      window.addEventListener('scroll', (event) => {
-        if (!hasScrolled) {
-          setHasScrolled(true);
-        }
+      window.addEventListener('scroll', () => {
+        setHasScrolled(true);
       });
     }
+  }, []);
 
+  useEffect(() => {
     // Fetch posts on load
     fetchPosts();
 
