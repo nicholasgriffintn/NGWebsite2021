@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { NextSeo } from 'next-seo';
 
 import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Footer from '../components/footer';
 
 import Hero from '../sections/homepage/Hero';
 import OpeningContent from '../sections/homepage/OpeningContent';
