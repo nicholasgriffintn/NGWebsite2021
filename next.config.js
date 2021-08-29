@@ -3,6 +3,7 @@ module.exports = {
     domains: [
       'localhost',
       'nicholasgriffin.dev',
+      'api.nicholasgriffin.dev',
       'cdn.nicholasgriffin.dev',
       'images.nicholasgriffin.dev',
       'media.giphy.com',
@@ -13,6 +14,7 @@ module.exports = {
       'media4.giphy.com',
       'media5.giphy.com',
       'lastfm.freetls.fastly.net',
+      'i.ibb.co',
     ],
   },
 };

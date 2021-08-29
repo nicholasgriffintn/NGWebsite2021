@@ -3,6 +3,7 @@ import Amplify, { Hub, Logger } from '@aws-amplify/core';
 import { AuthModeStrategyType } from '@aws-amplify/datastore';
 import config from '../aws-exports';
 import { DefaultSeo } from 'next-seo';
+import withDarkMode from 'next-dark-mode';
 
 import redirect from '../utils/redirect';
 
@@ -78,4 +79,4 @@ function NGWebsiteApp({ Component, pageProps }) {
   );
 }
 
-export default NGWebsiteApp;
+export default withDarkMode(NGWebsiteApp);

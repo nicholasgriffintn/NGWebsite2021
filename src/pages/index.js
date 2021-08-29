@@ -3,8 +3,7 @@ import API from '@aws-amplify/api';
 import { sortedPosts } from '../graphql/queries';
 import { useState, useEffect } from 'react';
 import { NextSeo } from 'next-seo';
-
-import useDarkMode from 'use-dark-mode';
+import { useDarkMode } from 'next-dark-mode';
 
 import Header from '../components/Header';
 import Footer from '../components/footer';
@@ -18,7 +17,7 @@ import Languages from '../sections/homepage/Languages';
 import Tools from '../sections/homepage/Tools';
 
 export default function Home() {
-  const darkMode = useDarkMode(false, {});
+  const darkMode = useDarkMode();
 
   const [spotify, setSpotify] = useState([]);
   const [spotifyLoading, setSpotifyLoading] = useState(true);
@@ -140,7 +139,7 @@ export default function Home() {
   return (
     <div
       className={
-        darkMode.value === true || darkMode.value === 'true'
+        darkMode.darkModeActive === true || darkMode.darkModeActive === 'true'
           ? styles.appLayoutDark
           : styles.appLayout
       }

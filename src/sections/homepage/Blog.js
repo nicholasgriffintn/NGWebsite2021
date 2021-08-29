@@ -3,18 +3,19 @@ import styles from '../../styles/Home.module.css';
 import { Element } from 'react-scroll';
 
 const Blog = ({ darkMode }) => {
-  console.log('darkMode blog', darkMode.value);
+  const { darkModeActive } = darkMode;
+  console.log('darkMode blog', darkModeActive);
   return (
     <section
       className={styles.wrap}
       style={{
-        background: darkMode.value === true ? '#171923' : '#093054',
+        background: darkModeActive === true ? '#171923' : '#093054',
         background:
-          darkMode.value === true
+          darkModeActive === true
             ? '-webkit-gradient(left top,right bottom,color-stop(0, #171923),color-stop(100%, #252838))'
             : '-webkit-gradient(left top,right bottom,color-stop(0, #093054),color-stop(100%, #061e35))',
         background:
-          darkMode.value === true
+          darkModeActive === true
             ? 'linear-gradient(135deg, #171923, #252838)'
             : 'linear-gradient(135deg, #093054, #061e35)',
         color: '#fff',

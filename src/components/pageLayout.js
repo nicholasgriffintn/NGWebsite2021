@@ -6,7 +6,7 @@ import Header from './Header';
 import Footer from './footer';
 import { NextSeo } from 'next-seo';
 
-import useDarkMode from 'use-dark-mode';
+import { useDarkMode } from 'next-dark-mode';
 
 export default function PageLayout({
   children,
@@ -27,12 +27,12 @@ export default function PageLayout({
   publishedTime = null,
   modifiedTime = null,
 }) {
-  const darkMode = useDarkMode(false, {});
+  const darkMode = useDarkMode();
 
   return (
     <div
       className={
-        darkMode.value === true || darkMode.value === 'true'
+        darkMode.darkModeActive === true
           ? styles.appLayoutDark
           : styles.appLayout
       }

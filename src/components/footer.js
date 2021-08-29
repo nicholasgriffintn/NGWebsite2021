@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-const Footer = ({ darkMode }) => {
+const Footer = () => {
   return (
     <footer className="footer-main-wrap">
       <div className="footer-topbar">

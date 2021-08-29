@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-const Header = ({ darkMode }) => {
+const Header = () => {
   return (
     <header className="header-main-wrap">
       <div className="header-topbar">
