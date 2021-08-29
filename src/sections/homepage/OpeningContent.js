@@ -3,7 +3,7 @@ import { Element } from 'react-scroll';
 
 import SpotifyWidget from '../../widgets/Spotify';
 
-const OpeningContent = ({ spotify }) => {
+const OpeningContent = ({ spotify, loading }) => {
   return (
     <section className={styles.wrap}>
       <Element
@@ -110,7 +110,7 @@ const OpeningContent = ({ spotify }) => {
               </div>
             </div>
             <div className="col-12 col-6-m col-3-l pad-top-10 pad-top-0-m">
-              <SpotifyWidget spotify={spotify} />
+              <SpotifyWidget loading={loading} spotify={spotify} />
               <span id="MusicOpeningWrapperTitle">
                 What I'm listening to{' '}
                 <svg

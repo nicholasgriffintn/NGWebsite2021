@@ -49,9 +49,6 @@
   background: linear-gradient(135deg, #093054, #0b1042);
 }
 
-.heroBgAniWrap {
-}
-
 .stars {
   animation: animStar 50s linear infinite;
 }
@@ -493,11 +490,64 @@
   padding-bottom: 1.5rem;
 }
 
-.container {
-  padding: 0 1rem;
-  max-width: 1240px;
-  width: 100%;
-  margin: 0 auto;
+
+.container,
+.container-full {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media only screen and (min-width: 768px) {
+  .container-m,
+  .container-full-m {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .container,
+  .container-m {
+    width: 748px;
+  }
+  .container-full-m {
+    width: auto;
+  }
+}
+
+@media only screen and (min-width: 980px) {
+  .container-l,
+  .container-full-l {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .container,
+  .container-l {
+    width: 960px;
+  }
+  .container-full-l {
+    width: auto;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .container-xl,
+  .container-full-xl {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .container,
+  .container-xl {
+    width: 1180px;
+  }
+  .container-full-xl {
+    width: auto;
+  }
 }
 
 .flex-grid {

@@ -1,9 +1,9 @@
 import styles from '../styles/Page.module.css';
-import Link from 'next/link';
 import Image from 'next/image';
 import ReturnImageFormattingUrl from '../utils/returnImageFormattingUrl';
 import { Element } from 'react-scroll';
-
+import Header from './Header'
+import Footer from './Footer'
 import { NextSeo } from 'next-seo';
 
 export default function PageLayout({
@@ -53,13 +53,7 @@ export default function PageLayout({
         }}
       />
       {displayHeader === true ? (
-        <header className={styles.header}>
-          <nav className={styles.nav}>
-            <Link href="/">
-              <a className={styles.logo}>Nicholas Griffin</a>
-            </Link>
-          </nav>
-        </header>
+        <Header />
       ) : null}
       {showHero === true ? (
         <section
@@ -123,33 +117,9 @@ export default function PageLayout({
           </Element>
         </section>
       </main>
-      {/* {displayFooter === true ? (
-        <footer>
-          <div className="footer-wrap">
-            <div className="container-main">
-              <span className="footer-text-left">No copyright required.</span>
-              <span className="footer-text-right">
-                Check out the source code for this site one{' '}
-                <a
-                  href="https://github.com/nicholasgriffintn/NGWebsite2021"
-                  title="Github Source Code"
-                  target="_blank"
-                >
-                  Github
-                </a>
-                . And the{' '}
-                <a
-                  href="https://nicholasgriffin.dev/api/graphql"
-                  title="Personal Site GraphQL Playground"
-                  target="_blank"
-                >
-                  GraphQL API here
-                </a>
-              </span>
-            </div>
-          </div>
-        </footer>
-      ) : null} */}
+      {displayFooter === true ? (
+        <Footer />
+      ) : null}
     </div>
   );
 }

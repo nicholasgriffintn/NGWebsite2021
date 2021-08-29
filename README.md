@@ -27,8 +27,8 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 - [x] Add a Gists page
 - [x] Finish blog page and posts list (make a component for the list)
 - [x] Add setup page
-- [ ] Add projects (Github) page with full list
-- [ ] Update header with links to pages: blog, projects, contact, my desk (setup)
+- [x] Add projects (Github) page with full list
+- [x] Add a header with links to pages: blog, projects, contact, my desk (setup)
 - [ ] Dark mode
 - [ ] Maybe look into if it's possible to add Apple Music widget vs the current Spotify one.
 - [ ] Use context for passing around functions and state

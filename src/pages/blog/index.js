@@ -9,6 +9,7 @@ import BlogPostsWidget from '../../widgets/BlogPosts';
 
 export default function Page() {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [postsNextToken, setPostsNextToken] = useState(null);
   const [postsStartedAt, setPostsStartedAt] = useState(null);
   const [postsAllowLoadMore, setPostsAllowLoadMore] = useState(false);
@@ -38,6 +39,7 @@ export default function Page() {
       postData.data.sortedPosts &&
       postData.data.sortedPosts.items
     ) {
+      setLoading(false)
       if (postData.data.sortedPosts.items.length > 0) {
         setPostsAllowLoadMore(false);
         if (loadMore === true) {
@@ -90,6 +92,7 @@ export default function Page() {
               posts={posts}
               postsAllowLoadMore={postsAllowLoadMore}
               fetchPosts={fetchPosts}
+              loading={loading}
             />
           </div>
         </div>

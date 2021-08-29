@@ -3,7 +3,7 @@ import { Element } from 'react-scroll';
 
 import GithubWidget from '../../widgets/Github';
 
-const WhatIDo = ({ github }) => {
+const WhatIDo = ({ github, loading }) => {
   return (
     <section className={styles.wrap}>
       <Element name="whatIDo" id="whatIDo" className={styles.container}>
@@ -21,7 +21,7 @@ const WhatIDo = ({ github }) => {
             height: '20px',
           }}
         ></div>
-        <GithubWidget github={github} />
+        <GithubWidget github={github} loading={loading} />
       </Element>
     </section>
   );

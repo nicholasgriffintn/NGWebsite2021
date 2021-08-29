@@ -4,6 +4,9 @@ import { sortedPosts } from '../graphql/queries';
 import { useState, useEffect } from 'react';
 import { NextSeo } from 'next-seo';
 
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+
 import Hero from '../sections/homepage/Hero';
 import OpeningContent from '../sections/homepage/OpeningContent';
 import Blog from '../sections/homepage/Blog';
@@ -14,10 +17,13 @@ import Tools from '../sections/homepage/Tools';
 
 export default function Home() {
   const [spotify, setSpotify] = useState([]);
+  const [spotifyLoading, setSpotifyLoading] = useState(true);
 
   const [github, setGithub] = useState([]);
+  const [githubLoading, setGithubLoading] = useState(true);
 
   const [posts, setPosts] = useState([]);
+  const [postsLoading, setPostsLoading] = useState([]);
   const [postsNextToken, setPostsNextToken] = useState(null);
   const [postsStartedAt, setPostsStartedAt] = useState(null);
   const [postsAllowLoadMore, setPostsAllowLoadMore] = useState(false);
@@ -49,6 +55,7 @@ export default function Home() {
       postData.data.sortedPosts &&
       postData.data.sortedPosts.items
     ) {
+      setPostsLoading(false)
       if (postData.data.sortedPosts.items.length > 0) {
         setPostsAllowLoadMore(false);
         if (loadMore === true) {
@@ -77,11 +84,13 @@ export default function Home() {
         return data.json();
       })
       .then((data) => {
+        setSpotifyLoading(false);
         if (data && data.data && data.data.recenttracks) {
           setSpotify(data.data.recenttracks);
         }
       })
       .catch((err) => {
+        setSpotifyLoading(false);
         console.error(err);
       });
   };
@@ -92,9 +101,11 @@ export default function Home() {
         return data.json();
       })
       .then((data) => {
+        setGithubLoading(false);
         setGithub(data);
       })
       .catch((err) => {
+        setGithubLoading(false);
         console.error(err);
       });
   };
@@ -124,45 +135,23 @@ export default function Home() {
 
   return (
     <div className={styles.applayout}>
+      <Header />
       <NextSeo title="Homepage" />
       <Hero hasScrolled={hasScrolled} />
       <main className={styles.main}>
-        <OpeningContent spotify={spotify} />
+        <OpeningContent spotify={spotify} loading={spotifyLoading} />
         <Blog />
         <BlogPosts
           fetchPosts={fetchPosts}
           postsAllowLoadMore={postsAllowLoadMore}
           posts={posts}
+          loading={postsLoading}
         />
-        <WhatIDo github={github} />
+        <WhatIDo github={github} loading={githubLoading} />
         <Languages />
         <Tools />
       </main>
-      {/* <footer>
-        <div className="footer-wrap">
-          <div className="container-main">
-            <span className="footer-text-left">No copyright required.</span>
-            <span className="footer-text-right">
-              Check out the source code for this site one{' '}
-              <a
-                href="https://github.com/nicholasgriffintn/NGWebsite2021"
-                title="Github Source Code"
-                target="_blank"
-              >
-                Github
-              </a>
-              . And the{' '}
-              <a
-                href="https://nicholasgriffin.dev/api/graphql"
-                title="Personal Site GraphQL Playground"
-                target="_blank"
-              >
-                GraphQL API here
-              </a>
-            </span>
-          </div>
-        </div>
-      </footer> */}
+      <Footer />
     </div>
   );
 }

@@ -4,12 +4,15 @@ import Image from 'next/image';
 
 import ReturnImageFormattingUrl from '../utils/returnImageFormattingUrl';
 
-const BlogPostsWidget = ({ posts, postsAllowLoadMore, fetchPosts }) => {
+const BlogPostsWidget = ({ posts, postsAllowLoadMore, fetchPosts, loading }) => {
   return (
     <div className="blog-posts-widget">
-      <div className="item-cards">
-        {posts && posts.length > 0
-          ? posts.map((post, index) => {
+      {loading === true ? (
+        <p>Please wait just one sec while the blog posts load...</p>
+      ) : (
+        <div className="item-cards">
+          {posts && posts.length > 0
+            ? posts.map((post, index) => {
               return (
                 <>
                   {post && post.id ? (
@@ -56,8 +59,9 @@ const BlogPostsWidget = ({ posts, postsAllowLoadMore, fetchPosts }) => {
                 </>
               );
             })
-          : null}
-      </div>
+            : null}
+        </div>
+      )}
       {postsAllowLoadMore === true ? (
         <div className="posts-load-more-wrap">
           <button

@@ -3,12 +3,13 @@ import { Element } from 'react-scroll';
 
 import BlogPostsWidget from '../../widgets/BlogPosts';
 
-const BlogPosts = ({ posts, postsAllowLoadMore, fetchPosts }) => {
+const BlogPosts = ({ loading, posts, postsAllowLoadMore, fetchPosts }) => {
   return (
     <section className={styles.wrap}>
       <Element name="blogPosts" id="blogPosts" className={styles.container}>
         <div id="BlogPostsFloatingBlock">
           <BlogPostsWidget
+            loading={loading}
             posts={posts}
             postsAllowLoadMore={postsAllowLoadMore}
             fetchPosts={fetchPosts}

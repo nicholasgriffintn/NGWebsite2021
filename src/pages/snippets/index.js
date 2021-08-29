@@ -8,6 +8,7 @@ import Gists from '../../widgets/Gists';
 
 export default function Page() {
   const [gists, setGists] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchSnippets = async function fetchSnippets(loadMore) {
     fetch('/api/gists')
@@ -16,9 +17,11 @@ export default function Page() {
       })
       .then((data) => {
         setGists(data);
+        setLoading(false)
       })
       .catch((err) => {
         console.error(err);
+        setLoading(false)
       });
   };
 
@@ -44,7 +47,7 @@ export default function Page() {
               here from the day to day bug fix up to something that might be a
               little more useful.
             </p>
-            <Gists gists={gists} />
+            <Gists gists={gists} loading={loading} />
           </div>
         </div>
       </div>

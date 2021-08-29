@@ -44,9 +44,6 @@
   background: linear-gradient(135deg, #093054, #061e35);
 }
 
-.heroBgAniWrap {
-}
-
 .stars {
   animation: animStar 50s linear infinite;
 }
@@ -404,7 +401,7 @@
   margin: auto;
   width: 34px;
   height: 55px;
-  z-index: 999;
+  z-index: 99;
 }
 
 .heroScrollIcon {
