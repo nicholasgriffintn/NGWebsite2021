@@ -1,3 +1,5 @@
+import { withSentry } from '@sentry/nextjs';
+
 const Spotify = (req, res) => {
   return new Promise((resolve) => {
     fetch(
@@ -25,4 +27,4 @@ const Spotify = (req, res) => {
       });
   });
 };
-export default Spotify;
+export default withSentry(Spotify);

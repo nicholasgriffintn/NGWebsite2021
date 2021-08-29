@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@sentry/nextjs": "^6.11.0",
     "aws-amplify": "^4.2.5",
     "dayjs": "^1.10.6",
     "fs": "^0.0.1-security",

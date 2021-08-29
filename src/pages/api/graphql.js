@@ -1,3 +1,5 @@
+import { withSentry } from '@sentry/nextjs';
+
 const GraphQL = (req, res) => {
   return new Promise((resolve) => {
     res.status(500).json({
@@ -10,4 +12,4 @@ const GraphQL = (req, res) => {
   });
 };
 
-export default GraphQL;
+export default withSentry(GraphQL);

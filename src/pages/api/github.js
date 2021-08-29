@@ -1,3 +1,5 @@
+import { withSentry } from '@sentry/nextjs';
+
 const Github = (req, res) => {
   return new Promise((resolve) => {
     fetch(
@@ -28,4 +30,4 @@ const Github = (req, res) => {
   });
 };
 
-export default Github;
+export default withSentry(Github);
