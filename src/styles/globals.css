@@ -2977,7 +2977,8 @@ body.dark-mode {
 .dark-mode strong,
 .dark-mode span,
 .dark-mode ul,
-.dark-mode ul li {
+.dark-mode ul li,
+.dark-mode label {
   color: #fff;
 }
 
