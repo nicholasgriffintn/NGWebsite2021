@@ -12,7 +12,10 @@ export default function Page() {
     >
       <div className="standard-page-content">
         <div className={styles['flex-grid']}>
-          <div className={styles.col} style={{ width: '66.66%' }}>
+          <div
+            className={styles.col}
+            style={{ maxWidth: '980px', width: '100%', margin: '0 auto' }}
+          >
             <h1>Setup</h1>
             <p>
               Here&apos;s what I&apos;m coding, gaming and watching videos on.

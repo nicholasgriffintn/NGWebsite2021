@@ -53,7 +53,10 @@ export default function Page() {
     >
       <div className="standard-page-content">
         <div className={styles['flex-grid']}>
-          <div className={styles.col} style={{ width: '66.66%' }}>
+          <div
+            className={styles.col}
+            style={{ maxWidth: '980px', width: '100%', margin: '0 auto' }}
+          >
             {alreadyLoggedIn === 'init' ? (
               <p>Checking your authentication status....</p>
             ) : alreadyLoggedIn === false ? (

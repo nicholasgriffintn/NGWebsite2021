@@ -39,7 +39,10 @@ export default function Page() {
     >
       <div className="standard-page-content">
         <div className={styles['flex-grid']}>
-          <div className={styles.col} style={{ width: '66.66%' }}>
+          <div
+            className={styles.col}
+            style={{ maxWidth: '980px', width: '100%', margin: '0 auto' }}
+          >
             <h1>Code Snippets</h1>
             <p>
               These are some random code snippets that I have made available on

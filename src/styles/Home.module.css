@@ -494,6 +494,9 @@
 .container-full {
   margin-left: auto;
   margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 100%;
 }
 
 @media only screen and (min-width: 768px) {
@@ -506,10 +509,10 @@
   }
   .container,
   .container-m {
-    width: 748px;
+    max-width: 748px;
   }
   .container-full-m {
-    width: auto;
+    max-width: 100%;
   }
 }
 
@@ -523,10 +526,10 @@
   }
   .container,
   .container-l {
-    width: 960px;
+    max-width: 960px;
   }
   .container-full-l {
-    width: auto;
+    max-width: 100%;
   }
 }
 
@@ -540,10 +543,10 @@
   }
   .container,
   .container-xl {
-    width: 1180px;
+    max-width: 1180px;
   }
   .container-full-xl {
-    width: auto;
+    max-width: 100%;
   }
 }
 
