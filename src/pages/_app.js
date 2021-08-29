@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Amplify, { Hub, Logger } from '@aws-amplify/core';
 import { AuthModeStrategyType } from '@aws-amplify/datastore';
-import config from '../aws-exports';
+import config from '../config';
+
 import { DefaultSeo } from 'next-seo';
 import withDarkMode from 'next-dark-mode';
 
