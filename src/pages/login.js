@@ -51,7 +51,7 @@ export default function Page() {
       loadingState={false}
       darkMain={false}
     >
-      <div>
+      <div className="standard-page-content">
         <div className={styles['flex-grid']}>
           <div className={styles.col} style={{ width: '66.66%' }}>
             {alreadyLoggedIn === 'init' ? (

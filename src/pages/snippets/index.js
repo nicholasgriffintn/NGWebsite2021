@@ -17,11 +17,11 @@ export default function Page() {
       })
       .then((data) => {
         setGists(data);
-        setLoading(false)
+        setLoading(false);
       })
       .catch((err) => {
         console.error(err);
-        setLoading(false)
+        setLoading(false);
       });
   };
 
@@ -37,7 +37,7 @@ export default function Page() {
       loadingState={false}
       darkMain={false}
     >
-      <div>
+      <div className="standard-page-content">
         <div className={styles['flex-grid']}>
           <div className={styles.col} style={{ width: '66.66%' }}>
             <h1>Code Snippets</h1>
