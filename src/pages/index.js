@@ -73,7 +73,10 @@ export default function Home() {
       if (postData.data.sortedPosts.items.length > 0) {
         setPostsAllowLoadMore(false);
         if (loadMore === true) {
-          setPosts([posts, ...postData.data.sortedPosts.items]);
+          const oldPosts = posts;
+          const newPosts = postData.data.sortedPosts.items;
+
+          setPosts([...oldPosts, ...newPosts]);
         } else {
           setPosts(postData.data.sortedPosts.items);
         }
