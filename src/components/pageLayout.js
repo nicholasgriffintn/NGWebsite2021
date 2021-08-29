@@ -3,7 +3,7 @@ import Image from 'next/image';
 import ReturnImageFormattingUrl from '../utils/returnImageFormattingUrl';
 import { Element } from 'react-scroll';
 import Header from './Header';
-import Footer from './Footer';
+import Footer from './footer';
 import { NextSeo } from 'next-seo';
 
 import useDarkMode from 'use-dark-mode';
