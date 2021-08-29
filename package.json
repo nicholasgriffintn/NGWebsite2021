@@ -28,7 +28,8 @@
     "rehype-slug": "^5.0.0",
     "remark-gfm": "^2.0.0",
     "rss": "^1.2.2",
-    "slapform": "^2.0.3"
+    "slapform": "^2.0.3",
+    "use-dark-mode": "^2.3.1"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

@@ -343,6 +343,19 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+body.dark-mode {
+  background-color: #050505;
+}
+
+body.dark-mode:parent {
+  background-color: #050505;
+}
+
+.dark-mode nav.footer-navbar,
+.dark-mode nav.footer-navbar a {
+  color: #f1f1f1;
+}
+
 *,
 *:before,
 *:after {
@@ -2958,4 +2971,17 @@ nav.footer-navbar {
   padding-top: 55px;
   padding-bottom: 55px;
   min-height: calc(100vh - 110px);
+}
+
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode p,
+.dark-mode a,
+.dark-mode small,
+.dark-mode strong,
+.dark-mode span {
+  color: #fff;
 }

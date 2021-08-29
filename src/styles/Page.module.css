@@ -1,4 +1,11 @@
-.applayout {
+.appLayout {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  min-height: 100vh;
+}
+
+.appLayoutDark {
   width: 100%;
   height: 100%;
   display: inline-block;
@@ -732,4 +739,8 @@
   padding: 10px 20px;
   padding-top: 30px;
   padding-bottom: 30px;
+}
+
+.appLayoutDark .postContentWrap {
+  background: #050505 !important;
 }
