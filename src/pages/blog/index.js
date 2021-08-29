@@ -64,7 +64,7 @@ export default function Page() {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [fetchPosts]);
 
   return (
     <PageLayout

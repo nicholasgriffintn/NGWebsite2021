@@ -41,8 +41,8 @@ export default function Page() {
           <div className={styles.col} style={{ width: '66.66%' }}>
             <h1>Projects</h1>
             <p>
-              It's my aim to spend a big percentage of my personal time on a
-              number of projects.
+              It&apos;s my aim to spend a big percentage of my personal time on
+              a number of projects.
             </p>
             <p>
               I often work on quite a few different things that you might find
