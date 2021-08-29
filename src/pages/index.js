@@ -138,7 +138,13 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={styles.applayout}>
+    <div
+      className={
+        darkMode.value === true || darkMode.value === 'true'
+          ? styles.appLayoutDark
+          : styles.appLayout
+      }
+    >
       <Header darkMode={darkMode} />
       <NextSeo title="Homepage" />
       <Hero hasScrolled={hasScrolled} darkMode={darkMode} />
