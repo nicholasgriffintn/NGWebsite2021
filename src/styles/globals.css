@@ -2906,7 +2906,7 @@ nav.header-navbar {
   list-style: none;
   color: #fff;
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   width: 100%;
 }
 
