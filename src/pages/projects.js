@@ -10,7 +10,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
 
   const fetchGithub = async function fetchGithub(loadMore) {
-    fetch('/api/github')
+    fetch('/api/github?limit=100')
       .then((data) => {
         return data.json();
       })

@@ -1,6 +1,8 @@
 const Github = (req, res) => {
   fetch(
-    'https://api.github.com/users/nicholasgriffintn/repos?sort=updated&type=public&per_page=8',
+    `https://api.github.com/users/nicholasgriffintn/repos?sort=updated&type=public&per_page=${
+      req.query.limit || '8'
+    }`,
     {
       method: 'GET',
       headers: {
