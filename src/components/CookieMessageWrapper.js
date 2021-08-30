@@ -23,8 +23,9 @@ const CookieMessageWrapper = ({ children }) => {
           </div>
           <div className="notification__contents_text">
             <p>
-              I'm using cookies for a number of reasons that allow me to monitor
-              the performance of the site as well as keep track of any bugs.
+              I&apos;m using cookies for a number of reasons that allow me to
+              monitor the performance of the site as well as keep track of any
+              bugs.
             </p>
             <p>
               Let me know how you feel about my use of cookies by using one of
@@ -39,14 +40,14 @@ const CookieMessageWrapper = ({ children }) => {
               marginRight: '10px',
             }}
           >
-            I'm fine with them
+            I&apos;m fine with them
           </button>
           <button
             type="button"
             className="button button-prime-inverted"
             onClick={() => changeCookiesStatus('declined')}
           >
-            I'd rather not have them
+            I&apos;d rather not have them
           </button>
         </div>
       </div>
