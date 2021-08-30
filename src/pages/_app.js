@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { AppWrapper } from '../context/store';
 import CognitoWrapper from '../components/CognitoWrapper';
 import CookieMessageWrapper from '../components/CookieMessageWrapper';
+import ComponentWrapper from '../components/ComponentWrapper';
 
 import '../styles/globals.css';
 
@@ -34,7 +35,9 @@ function NGWebsiteApp({ Component, pageProps }) {
         />
         <CognitoWrapper>
           <CookieMessageWrapper>
-            <Component {...pageProps} />
+            <ComponentWrapper>
+              <Component {...pageProps} />
+            </ComponentWrapper>
           </CookieMessageWrapper>
         </CognitoWrapper>
       </AppWrapper>

@@ -1,5 +1,3 @@
-const { withSentryConfig } = require('@sentry/nextjs');
-
 const moduleExports = {
   images: {
     domains: [
@@ -21,8 +19,4 @@ const moduleExports = {
   },
 };
 
-const SentryWebpackPluginOptions = {
-  silent: true,
-};
-
-module.exports = withSentryConfig(moduleExports, SentryWebpackPluginOptions);
+module.exports = moduleExports;
