@@ -1,4 +1,7 @@
 const config = {
+  posthog_key: 'phc_WjI76KM3R6cGiQjsHaZkTlkJ9LSjjRD8Ihb66HYqQ8s',
+  sentry_dsn:
+    'https://3f628f47345d4f5e8c87f90d842b8c36@o981760.ingest.sentry.io/5936226',
   aws_project_region: 'eu-west-1',
   aws_cognito_identity_pool_id:
     'eu-west-1:3f27a30a-8552-484f-b957-b6a60712348f',
