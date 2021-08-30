@@ -180,9 +180,11 @@ export default function PostComponent({ post = {}, errored = false }) {
           ) : null}
           <hr />
           {/* eslint-disable */}
-          {post.content && post.content.compiledSource ? (
-            <MDXRemote {...post.content} components={components} />
-          ) : null}
+          <div className="post-content">
+            {post.content && post.content.compiledSource ? (
+              <MDXRemote {...post.content} components={components} />
+            ) : null}
+          </div>
           {/* eslint-enable */}
           <div className="post-comments">
             <Comments />

@@ -18,6 +18,7 @@ export function AppWrapper({ children }) {
   const [cognitoState, setCognitoState] = useState('init');
 
   const darkMode = useDarkMode();
+
   useEffect(() => {
     if (darkMode.darkModeActive === true) {
       document.body.className = 'dark-mode';

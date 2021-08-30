@@ -46,6 +46,7 @@ const CookieMessageWrapper = ({ children }) => {
             type="button"
             className="button button-prime-inverted"
             onClick={() => changeCookiesStatus('declined')}
+            title="Please note that not all cookies can be disabled if you choose this option"
           >
             I&apos;d rather not have them
           </button>
