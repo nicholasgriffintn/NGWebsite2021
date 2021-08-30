@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import styles from '../../styles/Page.module.css';
 
 import PageLayout from '../../components/pageLayout';
+import Comments from '../../components/comments';
 
 import API from '@aws-amplify/api';
 import { getPost, listPosts } from '../../graphql/queries';
@@ -183,6 +184,9 @@ export default function PostComponent({ post = {}, errored = false }) {
             <MDXRemote {...post.content} components={components} />
           ) : null}
           {/* eslint-enable */}
+          <div className="post-comments">
+            <Comments />
+          </div>
         </div>
       )}
     </PageLayout>
