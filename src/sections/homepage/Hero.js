@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import styles from '../../styles/Home.module.css';
 import Typed from 'react-typed';
+import { useAppContext } from '../../context/store';
 
 import { animateScroll as scroll } from 'react-scroll';
 
-const Hero = ({ hasScrolled }) => {
+const Hero = ({}) => {
+  const { hasScrolled } = useAppContext();
+
   const [showScroller, setShowScroller] = useState(false);
   const [typedInitialComplete, setTypedInitialComplete] = useState(0);
   const [typedStrings, setTypedStrings] = useState([

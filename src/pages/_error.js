@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useAppContext } from '../context/store';
 
 import PageLayout from '../components/pageLayout';
 
 const ErrorPage = ({ statusCode = 500 }) => {
+  const { logger } = useAppContext();
+
   const [failImage, setFailImage] = useState(null);
   const [failData, setFailData] = useState({});
 
@@ -39,7 +42,7 @@ const ErrorPage = ({ statusCode = 500 }) => {
           }
         }
       })
-      .catch((err) => console.error(err));
+      .catch((err) => logger.error(err));
   }, [statusCode]);
 
   return (

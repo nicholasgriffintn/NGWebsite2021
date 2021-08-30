@@ -5,8 +5,7 @@ import { Element } from 'react-scroll';
 import Header from './Header';
 import Footer from './footer';
 import { NextSeo } from 'next-seo';
-import { useEffect } from 'react';
-import { useDarkMode } from 'next-dark-mode';
+import { useAppContext } from '../context/store';
 
 export default function PageLayout({
   children,
@@ -27,18 +26,7 @@ export default function PageLayout({
   publishedTime = null,
   modifiedTime = null,
 }) {
-  const darkMode = useDarkMode();
-
-  useEffect(() => {
-    if (darkMode.darkModeActive === true) {
-      document.body.className = 'dark-mode';
-    } else {
-      document.body.className = 'light-mode';
-    }
-    return () => {
-      document.body.className = 'light-mode';
-    };
-  }, [darkMode.darkModeActive]);
+  const { darkMode } = useAppContext();
 
   return (
     <div

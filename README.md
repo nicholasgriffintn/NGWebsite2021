@@ -31,7 +31,7 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 - [x] Add a header with links to pages: blog, projects, contact, my desk (setup)
 - [x] Dark mode
 - [ ] Maybe look into if it's possible to add Apple Music widget vs the current Spotify one.
-- [ ] Use context for passing around functions and state
+- [x] Use context for passing around functions and state
 - [x] Add Next/Image everywhere I can xD
 - [ ] AVIF?
 - [ ] Create my own service for form submissions

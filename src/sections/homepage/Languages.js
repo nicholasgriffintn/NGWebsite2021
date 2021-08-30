@@ -1,8 +1,10 @@
 import styles from '../../styles/Home.module.css';
 import Image from 'next/image';
 import { Element } from 'react-scroll';
+import { useAppContext } from '../../context/store';
 
-const Languages = ({ darkMode }) => {
+const Languages = () => {
+  const { darkMode } = useAppContext();
   const { darkModeActive } = darkMode;
 
   return (

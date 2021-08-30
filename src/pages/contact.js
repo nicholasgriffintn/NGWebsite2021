@@ -2,10 +2,13 @@ import { useState } from 'react';
 import styles from '../styles/Page.module.css';
 import { useForm } from 'react-hook-form';
 import PageLayout from '../components/pageLayout';
+import { useAppContext } from '../context/store';
 
 const slapform = new (require('slapform'))();
 
 export default function Page() {
+  const { logger } = useAppContext();
+
   const [messageType, setMessageType] = useState(null);
 
   const [formSubmitting, setFormSubmitting] = useState(false);
@@ -34,12 +37,12 @@ export default function Page() {
         data: data,
       })
       .then(function (response) {
-        console.debug('Form Success:', response);
+        logger.debug('Form Success:', response);
         setFormSuccess(response);
         setFormSubmitting(false);
       })
       .catch(function (response) {
-        console.error('Form Error:', response);
+        logger.error('Form Error:', response);
         setFormError(response);
         setFormSubmitting(false);
       });

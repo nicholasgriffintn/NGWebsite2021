@@ -17,6 +17,8 @@ import MarkedImage from '../../components/markdown/MarkedImage';
 import MarkedCode from '../../components/markdown/MarkedCode';
 import MarkedLink from '../../components/markdown/MarkedLink';
 
+import { useAppContext } from '../../context/store';
+
 const components = {
   img: (props) => {
     return <MarkedImage {...props} />;
@@ -32,6 +34,8 @@ const components = {
 };
 
 export default function PostComponent({ post = {}, errored = false }) {
+  const { logger } = useAppContext();
+
   const router = useRouter();
 
   const [failImage, setFailImage] = useState(null);
@@ -71,7 +75,7 @@ export default function PostComponent({ post = {}, errored = false }) {
             }
           }
         })
-        .catch((err) => console.error(err));
+        .catch((err) => logger.error(err));
     }
   }, [hasErrored, errored]);
 

@@ -3,10 +3,13 @@ import styles from '../styles/Page.module.css';
 
 import PageLayout from '../components/pageLayout';
 import checkLoggedIn from '../utils/checkLoggedIn';
+import { useAppContext } from '../context/store';
 
 import Auth from '@aws-amplify/auth';
 
 export default function Page() {
+  const { logger } = useAppContext();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [alreadyLoggedIn, setAlreadyLoggedIn] = useState('init');
@@ -20,7 +23,7 @@ export default function Page() {
       try {
         await Auth.signIn(email, password);
       } catch (error) {
-        console.error(`Error logging in: ${error}`);
+        logger.error(`Error logging in: ${error}`);
       }
     }
   };
@@ -29,7 +32,7 @@ export default function Page() {
     try {
       await Auth.signOut();
     } catch (error) {
-      console.error(`Error logging in: ${error}`);
+      logger.error(`Error logging in: ${error}`);
     }
   };
 

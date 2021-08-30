@@ -2,31 +2,15 @@ import { useState, useEffect } from 'react';
 import styles from '../styles/Page.module.css';
 import PageLayout from '../components/pageLayout';
 import Link from 'next/link';
+import { useAppContext } from '../context/store';
 
 import GithubWidget from '../widgets/Github';
 
 export default function Page() {
-  const [github, setGithub] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchGithub = async function fetchGithub(loadMore) {
-    fetch('/api/github?limit=100')
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        console.log(data);
-        setGithub(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
-  };
+  const { github, githubLoading, fetchGithub } = useAppContext();
 
   useEffect(() => {
-    fetchGithub();
+    fetchGithub(100);
   }, []);
 
   return (
@@ -59,7 +43,7 @@ export default function Page() {
               </Link>{' '}
               for some of my quick fixes and tips.
             </p>
-            <GithubWidget loading={loading} github={github} />
+            <GithubWidget loading={githubLoading} github={github} />
           </div>
         </div>
       </div>

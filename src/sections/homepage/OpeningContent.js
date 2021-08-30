@@ -1,9 +1,12 @@
 import styles from '../../styles/Home.module.css';
 import { Element } from 'react-scroll';
+import { useAppContext } from '../../context/store';
 
 import SpotifyWidget from '../../widgets/Spotify';
 
-const OpeningContent = ({ spotify, loading }) => {
+const OpeningContent = ({}) => {
+  const { spotify, loading } = useAppContext();
+
   return (
     <section className={styles.wrap}>
       <Element

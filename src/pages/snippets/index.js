@@ -6,7 +6,10 @@ import PageLayout from '../../components/pageLayout';
 
 import Gists from '../../widgets/Gists';
 
+import { useAppContext } from '../../context/store';
+
 export default function Page() {
+  const { logger } = useAppContext();
   const [gists, setGists] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,7 +23,7 @@ export default function Page() {
         setLoading(false);
       })
       .catch((err) => {
-        console.error(err);
+        logger.error(err);
         setLoading(false);
       });
   };

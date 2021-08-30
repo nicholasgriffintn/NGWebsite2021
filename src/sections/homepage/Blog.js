@@ -1,8 +1,10 @@
 import styles from '../../styles/Home.module.css';
+import { useAppContext } from '../../context/store';
 
 import { Element } from 'react-scroll';
 
-const Blog = ({ darkMode }) => {
+const Blog = () => {
+  const { darkMode } = useAppContext();
   const { darkModeActive } = darkMode;
 
   return (
