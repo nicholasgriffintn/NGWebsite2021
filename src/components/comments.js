@@ -2,10 +2,29 @@ import * as React from 'react';
 import { useAppContext } from '../context/store';
 
 const Comments = ({}) => {
-  const { darkMode } = useAppContext();
+  const { darkMode, cookiesAccepted } = useAppContext();
 
+  if (cookiesAccepted !== '1') {
+    return (
+      <section className="comments">
+        <p
+          style={{
+            textAlign: 'center',
+            marginTop: '20px',
+            display: 'inline-block',
+            width: '100%',
+          }}
+        >
+          You must accept my use of cookies before you can comment or read
+          comments! Please refresh this page if you have accepted cookies and
+          this still shows.
+        </p>
+      </section>
+    );
+  }
   return (
     <section
+      className="comments"
       ref={(elem) => {
         if (!elem || elem.childNodes.length) {
           return;

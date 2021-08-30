@@ -3,6 +3,7 @@ import withDarkMode from 'next-dark-mode';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { AppWrapper } from '../context/store';
 import CognitoWrapper from '../components/CognitoWrapper';
+import CookieMessageWrapper from '../components/CookieMessageWrapper';
 
 import '../styles/globals.css';
 
@@ -32,7 +33,9 @@ function NGWebsiteApp({ Component, pageProps }) {
           }}
         />
         <CognitoWrapper>
-          <Component {...pageProps} />
+          <CookieMessageWrapper>
+            <Component {...pageProps} />
+          </CookieMessageWrapper>
         </CognitoWrapper>
       </AppWrapper>
     </QueryClientProvider>

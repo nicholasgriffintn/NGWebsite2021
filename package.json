@@ -25,6 +25,7 @@
     "react-scroll": "^1.8.3",
     "react-syntax-highlighter": "^15.4.4",
     "react-typed": "^1.2.0",
+    "react-use-cookie": "^1.2.1",
     "rss": "^1.2.2",
     "slapform": "^2.0.3",
     "use-dark-mode": "^2.3.1"

@@ -4,6 +4,7 @@ import API from '@aws-amplify/api';
 import { sortedPosts } from '../graphql/queries';
 import { Logger } from '@aws-amplify/core';
 import { useDarkMode } from 'next-dark-mode';
+import useCookie from 'react-use-cookie';
 
 const AppContext = createContext();
 const logger = new Logger('NGWebsiteApp');
@@ -27,6 +28,15 @@ export function AppWrapper({ children }) {
       document.body.className = 'light-mode';
     };
   }, [darkMode.darkModeActive]);
+
+  const [showCookieMessage, setShowCookieMessage] = useCookie(
+    'showCookieMessage',
+    'true'
+  );
+  const [cookiesAccepted, setCookiesAccepted] = useCookie(
+    'cookiesAccepted',
+    '0'
+  );
 
   const [posts, setPosts] = useState([]);
   const [postsLoading, setPostsLoading] = useState([]);
@@ -135,6 +145,10 @@ export function AppWrapper({ children }) {
     darkMode,
     cognitoState,
     setCognitoState,
+    showCookieMessage,
+    setShowCookieMessage,
+    cookiesAccepted,
+    setCookiesAccepted,
     fetchSpotify,
     fetchGithub,
     posts,

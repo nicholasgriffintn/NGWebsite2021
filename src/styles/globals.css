@@ -3005,3 +3005,29 @@ body.dark-mode {
   color: #fff;
   border-color: #171923;
 }
+
+.notification {
+  position: fixed;
+  z-index: 9999;
+  bottom: 10px;
+  right: 10px;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 4px;
+  background: #171923;
+  border: 1px solid #252838;
+  padding: 10px 15px;
+}
+
+@media (max-width: 780px) {
+  .notification {
+    max-width: calc(100vw - 20px);
+  }
+}
+
+.notification__contents_title {
+  font-size: 22px;
+  line-height: 24px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
