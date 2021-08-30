@@ -9,7 +9,7 @@ const MarkedCode = (props) => {
       {/* eslint-disable */}
       <SyntaxHighlighter
         style={materialDark}
-        language={className.replace('language-', '')}
+        language={className ? className.replace('language-', '') : ''}
         children={children}
         showLineNumbers={true}
       />
