@@ -1,13 +1,24 @@
-const GithubWidget = ({ loading, github }) => {
+import { useAppContext } from '../context/store';
+import { useQuery } from 'react-query';
+
+const GithubWidget = ({ limit }) => {
+  const { fetchGithub } = useAppContext();
+
+  const { isLoading, error, data } = useQuery('github_hp', () =>
+    fetchGithub(limit)
+  );
+
   return (
     <div className="github-widget">
-      {loading === true ? (
+      {isLoading === true ? (
         <p>Please wait just one sec while the projects load...</p>
+      ) : error ? (
+        <p>An error occurred while fetching the projects.</p>
       ) : (
         <>
-          {github && github.length > 0 ? (
+          {data && data.length > 0 ? (
             <div className="item-cards">
-              {github.map((repo) => {
+              {data.map((repo) => {
                 return (
                   <a
                     href={repo.html_url}

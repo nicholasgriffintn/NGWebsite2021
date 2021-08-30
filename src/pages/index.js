@@ -15,27 +15,11 @@ import Languages from '../sections/homepage/Languages';
 import Tools from '../sections/homepage/Tools';
 
 export default function Home() {
-  const {
-    darkMode,
-    fetchSpotify,
-    github,
-    githubLoading,
-    fetchGithub,
-    fetchPosts,
-  } = useAppContext();
+  const { darkMode, fetchPosts } = useAppContext();
 
   useEffect(() => {
     // Fetch posts on load
     fetchPosts();
-
-    // Fetch spotify on load
-    fetchSpotify();
-
-    // Fetch github on load
-    fetchGithub();
-
-    // Fetch posts on update
-    // DataStore.observe(Post).subscribe(() => fetchPosts());
   }, []);
 
   return (
@@ -53,7 +37,7 @@ export default function Home() {
         <OpeningContent />
         <Blog />
         <BlogPosts />
-        <WhatIDo github={github} loading={githubLoading} />
+        <WhatIDo />
         <Languages />
         <Tools />
       </main>

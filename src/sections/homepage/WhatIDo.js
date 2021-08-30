@@ -1,12 +1,9 @@
 import styles from '../../styles/Home.module.css';
 import { Element } from 'react-scroll';
-import { useAppContext } from '../../context/store';
 
 import GithubWidget from '../../widgets/Github';
 
 const WhatIDo = ({}) => {
-  const { github, loading } = useAppContext();
-
   return (
     <section className={styles.wrap}>
       <Element name="whatIDo" id="whatIDo" className={styles.container}>
@@ -24,7 +21,7 @@ const WhatIDo = ({}) => {
             height: '20px',
           }}
         ></div>
-        <GithubWidget github={github} loading={loading} />
+        <GithubWidget />
       </Element>
     </section>
   );

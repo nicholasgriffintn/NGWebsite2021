@@ -32,6 +32,7 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 - [x] Dark mode
 - [ ] Maybe look into if it's possible to add Apple Music widget vs the current Spotify one.
 - [x] Use context for passing around functions and state
+- [x] Add on React Query for API queries
 - [x] Add Next/Image everywhere I can xD
 - [ ] AVIF?
 - [ ] Create my own service for form submissions

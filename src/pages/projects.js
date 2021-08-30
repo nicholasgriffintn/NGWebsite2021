@@ -1,18 +1,10 @@
-import { useState, useEffect } from 'react';
 import styles from '../styles/Page.module.css';
 import PageLayout from '../components/pageLayout';
 import Link from 'next/link';
-import { useAppContext } from '../context/store';
 
 import GithubWidget from '../widgets/Github';
 
 export default function Page() {
-  const { github, githubLoading, fetchGithub } = useAppContext();
-
-  useEffect(() => {
-    fetchGithub(100);
-  }, []);
-
   return (
     <PageLayout
       title="Projects"
@@ -43,7 +35,7 @@ export default function Page() {
               </Link>{' '}
               for some of my quick fixes and tips.
             </p>
-            <GithubWidget loading={githubLoading} github={github} />
+            <GithubWidget limit={100} />
           </div>
         </div>
       </div>

@@ -9,6 +9,11 @@ const AppContext = createContext();
 const logger = new Logger('NGWebsiteApp');
 
 export function AppWrapper({ children }) {
+  const baseUrl = {
+    development: 'http://localhost:3000',
+    production: 'https://nicholasgriffin.dev',
+  }[process.env.NODE_ENV];
+
   const [cognitoState, setCognitoState] = useState('init');
 
   const darkMode = useDarkMode();
@@ -22,12 +27,6 @@ export function AppWrapper({ children }) {
       document.body.className = 'light-mode';
     };
   }, [darkMode.darkModeActive]);
-
-  const [spotify, setSpotify] = useState([]);
-  const [spotifyLoading, setSpotifyLoading] = useState(true);
-
-  const [github, setGithub] = useState([]);
-  const [githubLoading, setGithubLoading] = useState(true);
 
   const [posts, setPosts] = useState([]);
   const [postsLoading, setPostsLoading] = useState([]);
@@ -87,43 +86,37 @@ export function AppWrapper({ children }) {
     }
   };
 
-  const fetchSpotify = async function fetchSpotify() {
-    setSpotifyLoading(true);
-    setSpotify({});
-
-    fetch(`/api/spotify`)
+  function fetchSpotify() {
+    return fetch(`${baseUrl}/api/spotify`)
       .then((data) => {
         return data.json();
       })
       .then((data) => {
-        setSpotifyLoading(false);
         if (data && data.recenttracks) {
-          setSpotify(data.recenttracks);
+          return data.recenttracks;
         }
+
+        return {};
       })
       .catch((err) => {
-        setSpotifyLoading(false);
         logger.error(err);
+        return {};
       });
-  };
+  }
 
-  const fetchGithub = async function fetchGithub(limit) {
-    setGithubLoading(true);
-    setGithub({});
-
-    fetch(`/api/github${limit ? `?limit=${limit}` : ''}`)
+  function fetchGithub(limit) {
+    return fetch(`${baseUrl}/api/github${limit ? `?limit=${limit}` : ''}`)
       .then((data) => {
         return data.json();
       })
       .then((data) => {
-        setGithubLoading(false);
-        setGithub(data);
+        return data;
       })
       .catch((err) => {
-        setGithubLoading(false);
         logger.error(err);
+        return {};
       });
-  };
+  }
 
   const [hasScrolled, setHasScrolled] = useState(false);
 
@@ -137,19 +130,12 @@ export function AppWrapper({ children }) {
   }, []);
 
   let sharedState = {
+    baseUrl,
     logger,
     darkMode,
     cognitoState,
     setCognitoState,
-    spotify,
-    setSpotify,
-    spotifyLoading,
-    setSpotifyLoading,
     fetchSpotify,
-    github,
-    setGithub,
-    githubLoading,
-    setGithubLoading,
     fetchGithub,
     posts,
     setPosts,
