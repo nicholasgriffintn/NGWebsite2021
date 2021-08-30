@@ -126,9 +126,9 @@ export default function Page() {
             <hr></hr>
             <small>
               If you prefer email clients over forms you can send me a message
-              here:
-              <a href="mailto:secrecy-gong0r@icloud.com">
-                secrecy-gong0r@icloud.com
+              here:{' '}
+              <a href="mailto:inbox@nicholasgriffin.dev">
+                inbox@nicholasgriffin.dev
               </a>
             </small>
             <hr></hr>
