@@ -3031,3 +3031,8 @@ body.dark-mode {
   margin-bottom: 10px;
   font-weight: 600;
 }
+
+.post-content {
+  word-break: break-all;
+  white-space: pre-line;
+}
