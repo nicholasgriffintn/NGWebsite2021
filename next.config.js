@@ -1,4 +1,12 @@
+const withPWA = require('next-pwa');
+
 const moduleExports = {
+  reactStrictMode: true,
+  pwa: {
+    dest: 'public',
+    register: true,
+    skipWaiting: true,
+  },
   images: {
     domains: [
       'localhost',
@@ -19,4 +27,4 @@ const moduleExports = {
   },
 };
 
-module.exports = moduleExports;
+module.exports = withPWA(moduleExports);
