@@ -23,7 +23,7 @@ const GithubWidget = ({ limit }) => {
                   <a
                     href={repo.html_url}
                     target="_blank"
-                    rel="noopener noreferer"
+                    rel="noopener noreferrer"
                     className="item-card"
                     key={`item-card-${repo.id}`}
                     data-github={repo.full_name}

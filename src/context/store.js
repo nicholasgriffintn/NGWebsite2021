@@ -129,6 +129,20 @@ export function AppWrapper({ children }) {
       });
   }
 
+  function fetchProjects() {
+    return fetch(`${baseUrl}/api/projects`)
+      .then((data) => {
+        return data.json();
+      })
+      .then((data) => {
+        return data;
+      })
+      .catch((err) => {
+        logger.error(err);
+        return {};
+      });
+  }
+
   const [hasScrolled, setHasScrolled] = useState(false);
 
   useEffect(() => {
@@ -152,6 +166,7 @@ export function AppWrapper({ children }) {
     setCookiesAccepted,
     fetchSpotify,
     fetchGithub,
+    fetchProjects,
     posts,
     setPosts,
     postsLoading,

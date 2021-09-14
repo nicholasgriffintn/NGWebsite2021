@@ -26,7 +26,7 @@ const Blog = () => {
       <Element name="blog" id="blog" className={styles.container}>
         <div>
           <div id="BlogPostOpenerWrapper">
-            <h2>What's going on?</h2>
+            <h2>What&apos;s going on?</h2>
             <p>
               Below you will find some of the blog posts that I have wrote (if
               that is still working), I used to write a lot and I'm looking to
