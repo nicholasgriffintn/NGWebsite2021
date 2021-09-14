@@ -115,8 +115,8 @@ export function AppWrapper({ children }) {
       });
   }
 
-  function fetchGithub(limit) {
-    return fetch(`${baseUrl}/api/github${limit ? `?limit=${limit}` : ''}`)
+  function fetchGithub(limit = 4, offset = 1) {
+    return fetch(`${baseUrl}/api/github${`?limit=${limit}&offset=${offset}`}`)
       .then((data) => {
         return data.json();
       })

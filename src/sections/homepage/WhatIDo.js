@@ -12,7 +12,7 @@ const WhatIDo = ({}) => {
           <h2>So what is it that you do? 🤔</h2>
           <p>
             I do a whole range of things across the web from blogging on this
-            site to random Github projects, as a full-time Senior Software
+            site to random GitHub projects, as a full-time Senior Software
             Engineer, there&apos;s not a whole ton of projects that I can share
             here as the majority of what I work on daily is private.
           </p>
@@ -28,6 +28,7 @@ const WhatIDo = ({}) => {
             height: '20px',
           }}
         ></div>
+        <GithubWidget limit={4} widKey="hp_github_1" />
         <div
           style={{
             marginLeft: '-15px',
@@ -36,7 +37,7 @@ const WhatIDo = ({}) => {
         >
           <Projects />
         </div>
-        <GithubWidget />
+        <GithubWidget limit={4} offset={2} widKey="hp_github_2" />
       </Element>
     </section>
   );

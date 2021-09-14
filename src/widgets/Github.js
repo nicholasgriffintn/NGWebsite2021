@@ -1,11 +1,11 @@
 import { useAppContext } from '../context/store';
 import { useQuery } from 'react-query';
 
-const GithubWidget = ({ limit }) => {
+const GithubWidget = ({ limit = 8, offset = 1, widKey = 'github_hp' }) => {
   const { fetchGithub } = useAppContext();
 
-  const { isLoading, error, data } = useQuery('github_hp', () =>
-    fetchGithub(limit)
+  const { isLoading, error, data } = useQuery(widKey, () =>
+    fetchGithub(limit, offset)
   );
 
   return (

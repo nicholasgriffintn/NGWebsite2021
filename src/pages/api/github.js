@@ -5,7 +5,7 @@ const Github = (req, res) => {
     fetch(
       `https://api.github.com/users/nicholasgriffintn/repos?sort=updated&type=public&per_page=${
         req.query.limit || '8'
-      }`,
+      }&page=${req.query.offset || '1'}`,
       {
         method: 'GET',
         headers: {

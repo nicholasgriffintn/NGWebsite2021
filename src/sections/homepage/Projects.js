@@ -9,7 +9,7 @@ const FeaturedProjects = ({}) => {
   return (
     <section
       className={styles.wrap}
-      style={{ marginBottom: 0, paddingBottom: 0 }}
+      style={{ marginBottom: 0, paddingBottom: 0, marginTop: 0, paddingTop: 0 }}
     >
       <Element
         name="featuredProjects"
