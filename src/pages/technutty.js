@@ -18,7 +18,7 @@ const TechNuttyPage = () => (
         </h1>
         <p>
           Sorry to say but I decided that I would stop my management of that
-          site back in 2011, I am now focusing on web development and other
+          site back in 2018, I am now focusing on web development and other
           interesting projects.
         </p>
         <div className="title-button-wrap">
