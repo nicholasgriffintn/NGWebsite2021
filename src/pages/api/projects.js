@@ -35,6 +35,13 @@ const Github = (req, res) => {
         image: 'https://cdn.nicholasgriffin.dev/images/projects/bouygues.png',
       },
       {
+        name: 'TechNutty',
+        description:
+          'TechNutty was a technology news and reviews site that I started during college/uni in 2011, I ran it for some time as a side project and a way of experimenting with developement. Sadly, a few years back I did choose to shut down this site, so Ive included a link to wayback machine instead :)',
+        url: 'https://web.archive.org/web/collections/*/https://technutty.co.uk',
+        image: 'https://cdn.nicholasgriffin.dev/images/projects/technutty.png',
+      },
+      {
         name: 'Education Job Finder',
         description:
           'Education Job Finder was one of the first projects that I worked on at Vacancy Filler, it is an education-focused job board from Norfolk County Council that promotes vacancies across the region.',
