@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@sentry/nextjs": "^6.11.0",
-    "aws-amplify": "^4.2.5",
+    "aws-amplify": "^4.2.6",
     "dayjs": "^1.10.6",
     "fs": "^0.0.1-security",
     "next": "11.1.0",
