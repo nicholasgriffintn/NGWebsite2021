@@ -8,32 +8,35 @@ import dayjs from 'dayjs';
 
 const bookmarksClient = new GraphQLClient(config.bookmarks_api, {});
 
-const BookmarksWidget = ({}) => {
-  const { isLoading, error, data } = useQuery('get-bookmarks', async () => {
-    const { bookmarks } = await bookmarksClient.request(
-      gql`
-        query {
-          bookmarks {
-            id
-            status
-            subject
-            recieved
-            toName
-            toAddress
-            fromName
-            fromAddress
-            bookmark
-            url
-            title
-            description
-            screenshot
+const BookmarksAdminWidget = ({}) => {
+  const { isLoading, error, data } = useQuery(
+    'get-unverified-bookmarks',
+    async () => {
+      const { unverifiedBookmarks } = await bookmarksClient.request(
+        gql`
+          query {
+            unverifiedBookmarks {
+              id
+              status
+              subject
+              recieved
+              toName
+              toAddress
+              fromName
+              fromAddress
+              bookmark
+              url
+              title
+              description
+              screenshot
+            }
           }
-        }
-      `,
-      {}
-    );
-    return bookmarks;
-  });
+        `,
+        {}
+      );
+      return unverifiedBookmarks;
+    }
+  );
 
   return (
     <div id="bookmarks-widget">
@@ -46,7 +49,7 @@ const BookmarksWidget = ({}) => {
           {data && data.length > 0 ? (
             <div className="item-cards">
               {data.map((bookmark) => {
-                if (bookmark) {
+                if (bookmark && bookmark.bookmark) {
                   return (
                     <a
                       href={bookmark.url}
@@ -79,6 +82,18 @@ const BookmarksWidget = ({}) => {
                               'dddd, MMMM D YYYY h:mm a'
                             )}
                           </small>
+                          <small>
+                            From: {bookmark.fromName} ({bookmark.fromAddress})
+                          </small>
+                        </div>
+                        <div className="item-card__tags">
+                          <div
+                            className={`tag tag-status-${
+                              bookmark.status === 'verifed' ? 'good' : 'bad'
+                            }`}
+                          >
+                            {bookmark.status}
+                          </div>
                         </div>
                         <p>{bookmark.description}</p>
 
@@ -98,10 +113,7 @@ const BookmarksWidget = ({}) => {
               })}
             </div>
           ) : (
-            <p>
-              Sorry, I haven&apos;t saved any Bookmarks yet! Please come back
-              later.
-            </p>
+            <p>There are no bookmarks to approve!</p>
           )}
         </>
       )}
@@ -109,4 +121,4 @@ const BookmarksWidget = ({}) => {
   );
 };
 
-export default BookmarksWidget;
+export default BookmarksAdminWidget;

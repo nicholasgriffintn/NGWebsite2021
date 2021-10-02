@@ -24,6 +24,7 @@ const moduleExports = {
       'media5.giphy.com',
       'lastfm.freetls.fastly.net',
       'i.ibb.co',
+      'via.placeholder.com',
     ],
   },
 };
