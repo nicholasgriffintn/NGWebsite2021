@@ -48,10 +48,7 @@ const BookmarksWidget = ({}) => {
               {data.map((bookmark) => {
                 if (bookmark) {
                   return (
-                    <a
-                      href={bookmark.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <div
                       className="item-card item-card-half"
                       key={`item-card-${bookmark.id}`}
                     >
@@ -86,13 +83,14 @@ const BookmarksWidget = ({}) => {
                           <a
                             href={bookmark.url}
                             target="_blank"
+                            className="button button-prime-inverted"
                             rel="noopener noreferrer"
                           >
                             Visit Bookmark
                           </a>
                         </span>
                       </div>
-                    </a>
+                    </div>
                   );
                 }
               })}

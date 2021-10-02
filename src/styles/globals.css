@@ -2768,7 +2768,7 @@ div#BlogPostsFloatingBlock {
 .button-prime-inverted {
   color: #14094b;
   background: #fff;
-  border-color: #14094b;
+  border-color: #2b2f42;
 }
 
 .button-prime-inverted:hover {
@@ -3003,7 +3003,7 @@ body.dark-mode {
 .button-prime-inverted {
   background: #171923;
   color: #fff;
-  border-color: #171923;
+  border-color: #2b2f42;
 }
 
 .notification {

@@ -94,6 +94,7 @@ class MyDocument extends Document {
           <script preload="true" src="/scripts/dm-flash.js" />
           <Main />
           <NextScript />
+          <div id="modal-root"></div>
         </body>
       </Html>
     );

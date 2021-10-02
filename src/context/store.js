@@ -5,6 +5,7 @@ import { sortedPosts } from '../graphql/queries';
 import { Logger } from '@aws-amplify/core';
 import { useDarkMode } from 'next-dark-mode';
 import useCookie from 'react-use-cookie';
+import checkLoggedIn from '../utils/checkLoggedIn';
 
 const AppContext = createContext();
 const logger = new Logger('NGWebsiteApp');
@@ -16,6 +17,17 @@ export function AppWrapper({ children }) {
   }[process.env.NODE_ENV];
 
   const [cognitoState, setCognitoState] = useState('init');
+  const [alreadyLoggedIn, setAlreadyLoggedIn] = useState(false);
+
+  useEffect(() => {
+    checkLoggedIn()
+      .then((value) => {
+        setAlreadyLoggedIn(value);
+      })
+      .catch((value) => {
+        setAlreadyLoggedIn(value);
+      });
+  }, []);
 
   const darkMode = useDarkMode();
 
@@ -160,6 +172,7 @@ export function AppWrapper({ children }) {
     darkMode,
     cognitoState,
     setCognitoState,
+    alreadyLoggedIn,
     showCookieMessage,
     setShowCookieMessage,
     cookiesAccepted,
