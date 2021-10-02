@@ -95,3 +95,4 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
 #amplify-do-not-edit-end
+public/.DS_Store

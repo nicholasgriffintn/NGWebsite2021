@@ -3041,3 +3041,38 @@ body.dark-mode {
   word-break: break-all;
   white-space: pre-line;
 }
+
+.tag {
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+  color: #212529;
+  background-color: #f8f9fa;
+}
+
+.tag-status-bad {
+  color: #fff;
+  background-color: #dc3545;
+}
+
+.tag-status-good {
+  color: #fff;
+  background-color: #28a745;
+}
+
+.item-card__tags {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.item-card__meta {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}

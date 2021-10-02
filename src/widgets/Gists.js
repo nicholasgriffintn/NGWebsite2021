@@ -12,7 +12,7 @@ const GistsWidget = ({ loading, gists }) => {
                   <a
                     href={gist.html_url}
                     target="_blank"
-                    rel="noopener noreferer"
+                    rel="noopener noreferrer"
                     className="item-card item-card-half"
                     key={`item-card-${gist.id}`}
                   >
@@ -24,9 +24,12 @@ const GistsWidget = ({ loading, gists }) => {
                             <li className="item-content-files-title">
                               <span>Files:</span>
                             </li>
-                            {Object.keys(gist.files).map((file) => {
+                            {Object.keys(gist.files).map((file, index) => {
                               return (
-                                <li className="item-content-files-file">
+                                <li
+                                  key={`file-${gist.files[file].filename}-${index}`}
+                                  className="item-content-files-file"
+                                >
                                   <strong>{gist.files[file].filename}</strong>
                                   <span className="item-card__meta">
                                     Type: {gist.files[file].type}
@@ -112,7 +115,7 @@ const GistsWidget = ({ loading, gists }) => {
                                     <a
                                       href={gist.files[file].raw_url}
                                       target="_blank"
-                                      rel="noopener noreferer"
+                                      rel="noopener noreferrer"
                                     >
                                       View File
                                     </a>

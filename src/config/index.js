@@ -1,4 +1,5 @@
 const config = {
+  bookmarks_api: 'https://bookmarks.nicholasgriffin.dev/graphql',
   posthog_key: 'phc_WjI76KM3R6cGiQjsHaZkTlkJ9LSjjRD8Ihb66HYqQ8s',
   sentry_dsn:
     'https://3f628f47345d4f5e8c87f90d842b8c36@o981760.ingest.sentry.io/5936226',

@@ -44,7 +44,7 @@ const SpotifyWidget = ({}) => {
                   <a
                     aria-label={`Play ${data.track[0].name}`}
                     className="trackLinkPlay"
-                    rel="noopener nofollow"
+                    rel="noopener noreferrer nofollow"
                     target="_blank"
                     href={data.track[0].url}
                   >
@@ -81,7 +81,7 @@ const SpotifyWidget = ({}) => {
                         <div className="spotify-widget-track-item-content">
                           <a
                             className="trackLinkPlay"
-                            rel="noopener nofollow"
+                            rel="noopener noreferrer nofollow"
                             target="_blank"
                             href={track.url}
                           >
