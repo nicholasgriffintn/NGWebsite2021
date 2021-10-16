@@ -198,12 +198,12 @@ export default function Page() {
               <>
                 <div
                   style={{
-                    textAlign: 'center',
-                    maxWidth: '780px',
-                    margin: '0 auto',
+                    textAlign: 'left',
+                    maxWidth: '100%',
                     height: 'auto',
                     position: 'relative',
-                    minHeight: '450px',
+                    minHeight: '220px',
+                    marginBottom: '20px',
                   }}
                 >
                   {thanksImage ? (
@@ -217,7 +217,7 @@ export default function Page() {
                       alt="Thanks"
                       layout="fill"
                       quality={80}
-                      objectFit="contain"
+                      objectFit="cover"
                     />
                   ) : null}
                 </div>
