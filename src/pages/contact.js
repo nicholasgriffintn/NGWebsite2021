@@ -1,10 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import styles from '../styles/Page.module.css';
 import { useForm } from 'react-hook-form';
 import PageLayout from '../components/pageLayout';
 import { useAppContext } from '../context/store';
-
-const slapform = new (require('slapform'))();
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 export default function Page() {
   const { logger } = useAppContext();
@@ -15,37 +14,63 @@ export default function Page() {
   const [formSuccess, setFormSuccess] = useState(null);
   const [formError, setFormError] = useState(null);
 
+  const [token, setToken] = useState(null);
+  const captchaRef = useRef(null);
+
   const {
     register,
     handleSubmit,
-    watch,
-    formState: {
-      errors,
-      isSubmitting,
-      isSubmitted,
-      isSubmitSuccessful,
-      isValid,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      message_type: 'text',
     },
-  } = useForm();
+  });
+
+  const onExpire = () => {
+    setFormError('hCaptcha Token Expired');
+  };
+
+  const onError = (err) => {
+    setFormError(`hCaptcha Error: ${err}`);
+  };
 
   const onSubmit = (data) => {
     setFormSubmitting(true);
-    slapform
-      .submit({
-        form: 'p3qAjVNcV',
-        account: 'secrecy-gong0r@icloud.com',
-        data: data,
+
+    captchaRef.current.execute();
+
+    if (token) {
+      fetch('https://forms.nicholasgriffin.dev/submit', {
+        method: 'POST',
+        body: JSON.stringify({ ...data, captcha: token }),
       })
-      .then(function (response) {
-        logger.debug('Form Success:', response);
-        setFormSuccess(response);
-        setFormSubmitting(false);
-      })
-      .catch(function (response) {
-        logger.error('Form Error:', response);
-        setFormError(response);
-        setFormSubmitting(false);
-      });
+        .then(async (response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            const errorResponse = await response.json();
+            throw new Error(
+              JSON.stringify({
+                message: errorResponse?.message,
+                info: errorResponse?.info,
+              })
+            );
+          }
+        })
+        .then((result) => {
+          logger.debug('Form Success:', result);
+          setFormSuccess(result);
+          setFormSubmitting(false);
+        })
+        .catch((error) => {
+          logger.error('Form Error:', error);
+          setFormError(error);
+          setFormSubmitting(false);
+        });
+    } else {
+      setFormError('No capatcha token was provided.');
+    }
   };
 
   const changeMessageType = (e) => {
@@ -132,13 +157,7 @@ export default function Page() {
               </a>
             </small>
             <hr></hr>
-            {isSubmitting || formSubmitting ? (
-              <p>Please wait while I submit your response...</p>
-            ) : formError ? (
-              <>
-                <p>An error occurred while submitting the form.</p>
-              </>
-            ) : formSuccess ? (
+            {formSuccess ? (
               <>
                 <h3>Thanks for getting in touch!</h3>
                 <p>
@@ -146,72 +165,79 @@ export default function Page() {
                 </p>
               </>
             ) : (
-              <form
-                style={{ maxWidth: '780px', width: '100%' }}
-                lang="en"
-                spellCheck="false"
-                onSubmit={handleSubmit(onSubmit)}
-              >
-                <div>
-                  <label>Your Name (Required)</label>
-                  <input
-                    placeholder="Enter your first and last name"
-                    type="text"
-                    name="name"
-                    required
-                    {...register('name')}
-                    aria-invalid={errors.name ? 'true' : 'false'}
-                  />
-                  {errors.name && (
-                    <span role="alert">This field is required</span>
-                  )}
-                </div>
-                <div>
-                  <label>Your Email (Required)</label>
-                  <input
-                    placeholder="Enter your email address"
-                    type="email"
-                    name="slap_replyto"
-                    required
-                    {...register('slap_replyto')}
-                    aria-invalid={errors.slap_replyto ? 'true' : 'false'}
-                  />
-                  {errors.slap_replyto && (
-                    <span role="alert">This field is required</span>
-                  )}
-                </div>
-                <div>
-                  <label>
-                    What&apos;s the reason for your message? (Required)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Please enter the reason for your message"
-                    name="slap_subject"
-                    required
-                    {...register('slap_subject')}
-                    aria-invalid={errors.slap_subject ? 'true' : 'false'}
-                  />
-                  {errors.slap_subject && (
-                    <span role="alert">This field is required</span>
-                  )}
-                </div>
-                <div>
-                  <fieldset>
-                    <legend>
-                      How would you like to send a message? (Required)
-                    </legend>
-                    <div>
-                      <input
-                        type="radio"
-                        id="text"
-                        name="message_type"
-                        value="text"
-                        onChange={(e) => changeMessageType(e)}
-                      />
-                      <label htmlFor="text">Text</label>
-                    </div>
-                    {/* <div>
+              <>
+                {formError ? (
+                  <p>
+                    {console.log(formError)}
+                    An error occured while attempting to submit the message.
+                  </p>
+                ) : null}
+                <form
+                  style={{ maxWidth: '780px', width: '100%' }}
+                  lang="en"
+                  spellCheck="false"
+                  onSubmit={handleSubmit(onSubmit)}
+                >
+                  <div>
+                    <label>Your Name (Required)</label>
+                    <input
+                      placeholder="Enter your first and last name"
+                      type="text"
+                      name="name"
+                      required
+                      {...register('name')}
+                      aria-invalid={errors.name ? 'true' : 'false'}
+                    />
+                    {errors.name && (
+                      <span role="alert">This field is required</span>
+                    )}
+                  </div>
+                  <div>
+                    <label>Your Email (Required)</label>
+                    <input
+                      placeholder="Enter your email address"
+                      type="email"
+                      name="email"
+                      required
+                      {...register('email')}
+                      aria-invalid={errors.email ? 'true' : 'false'}
+                    />
+                    {errors.email && (
+                      <span role="alert">This field is required</span>
+                    )}
+                  </div>
+                  <div>
+                    <label>
+                      What&apos;s the reason for your message? (Required)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Please enter the reason for your message"
+                      name="subject"
+                      required
+                      {...register('subject')}
+                      aria-invalid={errors.subject ? 'true' : 'false'}
+                    />
+                    {errors.subject && (
+                      <span role="alert">This field is required</span>
+                    )}
+                  </div>
+                  <div>
+                    <fieldset>
+                      <legend>
+                        How would you like to send a message? (Required)
+                      </legend>
+                      <div>
+                        <input
+                          type="radio"
+                          id="text"
+                          name="message_type"
+                          value="text"
+                          onChange={(e) => changeMessageType(e)}
+                        />
+                        <label htmlFor="text">Text</label>
+                      </div>
+                      {/* <div>
                     <input
                       type="radio"
                       id="voice"
@@ -221,7 +247,7 @@ export default function Page() {
                     />
                     <label for="voice">Voice</label>
                   </div> */}
-                    <div>
+                      {/* <div>
                       <input
                         type="radio"
                         id="upload"
@@ -230,67 +256,86 @@ export default function Page() {
                         onChange={(e) => changeMessageType(e)}
                       />
                       <label htmlFor="upload">Upload</label>
+                    </div> */}
+                    </fieldset>
+                  </div>
+                  {messageType === 'text' ? (
+                    <div>
+                      <label>Your Message: </label>
+                      <textarea
+                        type="message"
+                        name="message"
+                        rows="6"
+                        required
+                        placeholder="Enter your message here..."
+                        {...register('message')}
+                        aria-invalid={errors.message ? 'true' : 'false'}
+                      ></textarea>
+                      {errors.message && (
+                        <span role="alert">This field is required</span>
+                      )}
                     </div>
-                  </fieldset>
-                </div>
-                {messageType === 'text' ? (
+                  ) : messageType === 'upload' ? (
+                    <div>
+                      <label>Upload your message:</label>
+                      <input
+                        type="file"
+                        name="uploaded_message"
+                        accept=".pdf,.doc,.txt,.jpg,.jpeg,.docx,.png,.mp3,.mp4"
+                        {...register('uploaded_message')}
+                        required
+                        aria-invalid={
+                          errors.uploaded_message ? 'true' : 'false'
+                        }
+                      />
+                      <br></br>
+                      <br></br>
+                      <small>
+                        Allowed file extensions are:
+                        pdf,doc,txt,jpg,jpeg,docx,png,mp3,mp4
+                      </small>
+                      <br></br>
+                      <small>The max file size allowed is: 25MB</small>
+                      {errors.uploaded_message && (
+                        <span role="alert">This field is required</span>
+                      )}
+                    </div>
+                  ) : null}
                   <div>
-                    <label>Your Message: </label>
-                    <textarea
-                      type="message"
-                      name="message"
-                      rows="6"
-                      required
-                      placeholder="Enter your message here..."
-                      {...register('message')}
-                      aria-invalid={errors.message ? 'true' : 'false'}
-                    ></textarea>
-                    {errors.message && (
-                      <span role="alert">This field is required</span>
-                    )}
-                  </div>
-                ) : messageType === 'upload' ? (
-                  <div>
-                    <label>Upload your message:</label>
                     <input
-                      type="file"
-                      name="uploaded_message"
-                      accept=".pdf,.doc,.txt,.jpg,.jpeg,.docx,.png,.mp3,.mp4"
-                      {...register('uploaded_message')}
-                      required
-                      aria-invalid={errors.uploaded_message ? 'true' : 'false'}
+                      placeholder="Anything else?"
+                      name="honey"
+                      hidden
+                      {...register('honey')}
                     />
-                    <br></br>
-                    <br></br>
-                    <small>
-                      Allowed file extensions are:
-                      pdf,doc,txt,jpg,jpeg,docx,png,mp3,mp4
-                    </small>
-                    <br></br>
-                    <small>The max file size allowed is: 25MB</small>
-                    {errors.uploaded_message && (
-                      <span role="alert">This field is required</span>
-                    )}
                   </div>
-                ) : null}
-                <div>
-                  <input
-                    placeholder="Anything else?"
-                    name="slap_honey"
-                    hidden
-                    {...register('slap_honey')}
-                  />
-                </div>
-                <div style={{ marginTop: '15px' }}>
-                  <button
-                    disabled={!messageType}
-                    className="button button-prime"
-                    type="submit"
-                  >
-                    Submit your message
-                  </button>
-                </div>
-              </form>
+                  <div style={{ marginTop: '15px' }}>
+                    <HCaptcha
+                      sitekey="05004ce1-3dd0-4f25-923d-7146a9f6861f"
+                      onVerify={setToken}
+                      onError={onError}
+                      onExpire={onExpire}
+                      ref={captchaRef}
+                      size="compact"
+                      theme="dark"
+                    />
+                  </div>
+                  <div style={{ marginTop: '15px' }}>
+                    {isSubmitting || formSubmitting ? (
+                      <p>Please wait while I submit your message...</p>
+                    ) : null}
+                    <button
+                      disabled={
+                        !token || !messageType || isSubmitting || formSubmitting
+                      }
+                      className="button button-prime"
+                      type="submit"
+                    >
+                      Submit your message
+                    </button>
+                  </div>
+                </form>
+              </>
             )}
           </div>
         </div>
