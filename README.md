@@ -35,8 +35,10 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 - [x] Add on React Query for API queries
 - [x] Add Next/Image everywhere I can xD
 - [ ] AVIF?
-- [ ] Create my own service for form submissions
-- [ ] Add ability to record a voice message on contact form
-- [ ] Add the ability to send a WhatsApp or Text might be cool?
+- [x] Create my own service for form submissions
+- [ ] Create blog for form submissions, maybe after the next three things are done.
+- [ ] Play around with Twillo
+- [ ] Add ability to record a voice message on contact form (can we use Twillo for this?)
+- [ ] Add the ability to send a WhatsApp or Text might be cool? (can we use Twillo for this?)
 - [x] Add the image resizing back
 - [x] Add login page and two-factor pages

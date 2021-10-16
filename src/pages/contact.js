@@ -6,6 +6,15 @@ import PageLayout from '../components/pageLayout';
 import { useAppContext } from '../context/store';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 
+function uuidv4() {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+    (
+      c ^
+      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+    ).toString(16)
+  );
+}
+
 export default function Page() {
   const { logger } = useAppContext();
 
@@ -17,6 +26,9 @@ export default function Page() {
 
   const [token, setToken] = useState(null);
   const captchaRef = useRef(null);
+
+  const [upload, setUpload] = useState(null);
+  const uploadRef = useRef(null);
 
   const [thanksImage, setThanksImage] = useState(null);
 
@@ -72,42 +84,141 @@ export default function Page() {
     setFormError(`hCaptcha Error: ${err}`);
   };
 
-  const onSubmit = (data) => {
-    setFormSubmitting(true);
+  const uploadTheFile = (file) => {
+    return new Promise(async (resolve, reject) => {
+      const reader = new FileReader();
 
-    captchaRef.current.execute();
+      reader.addEventListener('loadend', async (e) => {
+        await fetch('https://upload.nicholasgriffin.dev/signed', {
+          method: 'POST',
+          body: JSON.stringify({
+            name: uuidv4() + '.' + file.name.split('.').pop(),
+            type: file.type,
+          }),
+        })
+          .then(async (response) => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              const errorResponse = await response.json();
+              reject(
+                JSON.stringify({
+                  message: errorResponse?.message,
+                  info: errorResponse?.info,
+                })
+              );
+            }
+          })
+          .then(async (result) => {
+            if (result && result.uploadURL) {
+              await fetch(result.uploadURL, {
+                method: 'PUT',
+                body: new Blob([reader.result, { type: file.type }]),
+              })
+                .then((s3Result) => {
+                  logger.debug('Upload Success:', result);
+                  setUpload(
+                    s3Result.url ||
+                      `https://s3.amazonaws.com/uploads.nicholasgriffin.dev/${file.name}`
+                  );
+                  resolve(result);
+                })
+                .catch((error) => {
+                  logger.error('Upload Error:', error);
+                  reject(error);
+                });
+            } else {
+              logger.error('Upload Error:', result);
+              reject(result);
+            }
+          })
+          .catch((error) => {
+            logger.error('Upload Error:', error);
+            reject(error);
+          });
+      });
 
-    if (token) {
+      reader.readAsArrayBuffer(file);
+    });
+  };
+
+  const submitTheMessage = (data, token) => {
+    return new Promise(async (resolve, reject) => {
       fetch('https://forms.nicholasgriffin.dev/submit', {
         method: 'POST',
-        body: JSON.stringify({ ...data, captcha: token }),
+        body: JSON.stringify({
+          ...data,
+          uploaded_message: '',
+          captcha: token,
+          upload,
+        }),
       })
         .then(async (response) => {
           if (response.ok) {
             return response.json();
           } else {
             const errorResponse = await response.json();
-            throw new Error(
-              JSON.stringify({
-                message: errorResponse?.message,
-                info: errorResponse?.info,
-              })
-            );
+            const error = JSON.stringify({
+              message: errorResponse?.message,
+              info: errorResponse?.info,
+            });
+
+            setFormError(error);
+            setFormSubmitting(false);
+            reject(error);
           }
         })
         .then((result) => {
           logger.debug('Form Success:', result);
           setFormSuccess(result);
           setFormSubmitting(false);
+          resolve(result);
         })
         .catch((error) => {
           logger.error('Form Error:', error);
           setFormError(error);
           setFormSubmitting(false);
+          reject(error);
         });
-    } else {
+    });
+  };
+
+  const onSubmit = async (data) => {
+    setFormSubmitting(true);
+
+    captchaRef.current.execute();
+
+    let file = '';
+
+    if (!token) {
       setFormError('No capatcha token was provided.');
+
+      return;
     }
+
+    if (messageType === 'upload') {
+      if (!data.uploaded_message > 0) {
+        setFormError('No file was found from the data.');
+        setFormSubmitting(false);
+
+        return;
+      }
+
+      file = data.uploaded_message[0];
+
+      if (!file || !file.type || !file.name) {
+        setFormError('No data was found from the file.');
+        setFormSubmitting(false);
+
+        return;
+      }
+
+      await uploadTheFile(file);
+    }
+
+    await submitTheMessage(data, token);
+
+    return 'Done :)';
   };
 
   const changeMessageType = (e) => {
@@ -194,6 +305,12 @@ export default function Page() {
               </a>
             </small>
             <hr></hr>
+            <small>
+              Fancy sending me a text, giving me a call or even sending me a fax
+              instead? You can do so by sending your message here:{' '}
+              <a href="tel:+447380327714">+44 7380 327714</a>.
+            </small>
+            <hr></hr>
             {formSuccess ? (
               <>
                 <div
@@ -231,7 +348,6 @@ export default function Page() {
               <>
                 {formError ? (
                   <p>
-                    {console.log(formError)}
                     An error occured while attempting to submit the message.
                   </p>
                 ) : null}
@@ -310,16 +426,16 @@ export default function Page() {
                     />
                     <label for="voice">Voice</label>
                   </div> */}
-                      {/* <div>
-                      <input
-                        type="radio"
-                        id="upload"
-                        name="message_type"
-                        value="upload"
-                        onChange={(e) => changeMessageType(e)}
-                      />
-                      <label htmlFor="upload">Upload</label>
-                    </div> */}
+                      <div>
+                        <input
+                          type="radio"
+                          id="upload"
+                          name="message_type"
+                          value="upload"
+                          onChange={(e) => changeMessageType(e)}
+                        />
+                        <label htmlFor="upload">Upload</label>
+                      </div>
                     </fieldset>
                   </div>
                   {messageType === 'text' ? (
@@ -342,6 +458,7 @@ export default function Page() {
                     <div>
                       <label>Upload your message:</label>
                       <input
+                        ref={uploadRef}
                         type="file"
                         name="uploaded_message"
                         accept=".pdf,.doc,.txt,.jpg,.jpeg,.docx,.png,.mp3,.mp4"

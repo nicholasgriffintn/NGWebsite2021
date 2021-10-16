@@ -3080,3 +3080,7 @@ body.dark-mode {
 .dark-mode #MusicOpeningWrapperTitle svg {
   fill: #fff;
 }
+
+.dark-mode input[type='file'] {
+  color: #fff;
+}

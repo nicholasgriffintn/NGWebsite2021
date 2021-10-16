@@ -3,6 +3,7 @@ const withPWA = require('next-pwa');
 const moduleExports = {
   reactStrictMode: true,
   pwa: {
+    disable: process.env.NODE_ENV === 'development',
     publicExcludes: ['!noprecache/**/*', '!playground/**/*'],
     dest: 'public',
     register: true,
