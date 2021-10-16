@@ -3076,3 +3076,7 @@ body.dark-mode {
   flex-direction: row;
   gap: 10px;
 }
+
+.dark-mode #MusicOpeningWrapperTitle svg {
+  fill: #fff;
+}

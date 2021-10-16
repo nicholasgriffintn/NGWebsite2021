@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import styles from '../styles/Page.module.css';
 import { useForm } from 'react-hook-form';
 import PageLayout from '../components/pageLayout';
@@ -16,6 +17,42 @@ export default function Page() {
 
   const [token, setToken] = useState(null);
   const captchaRef = useRef(null);
+
+  const [thanksImage, setThanksImage] = useState(null);
+
+  useEffect(() => {
+    const giphy = {
+      baseURL: 'https://api.giphy.com/v1/gifs/',
+      apiKey: '0UTRbFtkMxAplrohufYco5IY74U8hOes',
+      tag: 'thanks',
+      type: 'random',
+      rating: 'pg-13',
+    };
+
+    let giphyURL = encodeURI(
+      giphy.baseURL +
+        giphy.type +
+        '?api_key=' +
+        giphy.apiKey +
+        '&tag=' +
+        giphy.tag +
+        '&rating=' +
+        giphy.rating
+    );
+
+    fetch(giphyURL)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.data) {
+          if (data.data.images && data.data.images.downsized_large) {
+            setThanksImage(data.data.images.downsized_large.url);
+          } else if (data.data.image_original_url) {
+            setThanksImage(data.data.image_original_url);
+          }
+        }
+      })
+      .catch((err) => logger.error(err));
+  }, [setThanksImage, logger]);
 
   const {
     register,
@@ -159,9 +196,35 @@ export default function Page() {
             <hr></hr>
             {formSuccess ? (
               <>
+                <div
+                  style={{
+                    textAlign: 'center',
+                    maxWidth: '780px',
+                    margin: '0 auto',
+                    height: 'auto',
+                    position: 'relative',
+                    minHeight: '450px',
+                  }}
+                >
+                  {thanksImage ? (
+                    <Image
+                      style={{
+                        maxWidth: '780px',
+                        margin: '0 auto',
+                        height: 'auto',
+                      }}
+                      src={thanksImage}
+                      alt="Thanks"
+                      layout="fill"
+                      quality={80}
+                      objectFit="contain"
+                    />
+                  ) : null}
+                </div>
                 <h3>Thanks for getting in touch!</h3>
                 <p>
-                  If you&apos;re not a recruiter I may get back to you soon!
+                  If your message isn&apos;t SPAM and requires a response, I
+                  will get back to you soon!
                 </p>
               </>
             ) : (
