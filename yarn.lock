@@ -6905,10 +6905,10 @@ postcss@8.2.15:
     nanoid "^3.1.23"
     source-map "^0.6.1"
 
-posthog-js@^1.13.5:
-  version "1.13.13"
-  resolved "https://registry.yarnpkg.com/posthog-js/-/posthog-js-1.13.13.tgz#67d2a2028e5d6793d85f7f3841bcbc185c3ac08f"
-  integrity sha512-80isGaW6wbW2NXeWtCdq9lAc5VBNC7K+3Ikdghkp/87Av8NcGNC291aLKziOWTxtpQaSZZ8DpI/7yqEOTrFM0w==
+posthog-js@^1.13.14:
+  version "1.15.3"
+  resolved "https://registry.yarnpkg.com/posthog-js/-/posthog-js-1.15.3.tgz#45ecf69478d3a8586ec910f757fdc8e1d57c562a"
+  integrity sha512-yMFz24alQhmLB5eBz7kw9RzUogdq7r3gjTvbnvOCLL+wxBVs5rmlD14OZnCrfL2Nppph9oyEJl4hkIRPDiov8Q==
   dependencies:
     "@sentry/types" "^6.11.0"
     fflate "^0.4.1"
