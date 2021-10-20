@@ -26,7 +26,7 @@
     "react-dom": "17.0.2",
     "react-hook-form": "^7.15.0",
     "react-modal": "^3.14.3",
-    "react-query": "^3.22.0",
+    "react-query": "^3.24.5",
     "react-scroll": "^1.8.4",
     "react-syntax-highlighter": "^15.4.4",
     "react-typed": "^1.2.0",
