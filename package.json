@@ -16,19 +16,19 @@
     "graphql-request": "^3.6.1",
     "next": "12.0.0",
     "next-dark-mode": "^3.0.0",
-    "next-mdx-remote": "^3.0.4",
-    "next-pwa": "^5.3.1",
-    "next-seo": "^4.27.0",
-    "posthog-js": "^1.13.5",
+    "next-mdx-remote": "^3.0.6",
+    "next-pwa": "^5.4.0",
+    "next-seo": "^4.28.1",
+    "posthog-js": "^1.15.3",
     "qrcode.react": "^1.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-hook-form": "^7.15.0",
+    "react-hook-form": "^7.17.5",
     "react-modal": "^3.14.3",
-    "react-query": "^3.22.0",
+    "react-query": "^3.29.0",
     "react-scroll": "^1.8.4",
     "react-syntax-highlighter": "^15.4.4",
-    "react-typed": "^1.2.0",
+    "react-typed": "nicholasgriffintn/react-typed#v17.0.0-alpha",
     "react-use-cookie": "^1.2.1",
     "rss": "^1.2.2",
     "use-dark-mode": "^2.3.1"
@@ -37,6 +37,6 @@
     "eslint": "^7.32.0",
     "eslint-config-next": "^12.0.0",
     "eslint-config-prettier": "^8.3.0",
-    "prettier": "^2.3.2"
+    "prettier": "^2.4.1"
   }
 }
