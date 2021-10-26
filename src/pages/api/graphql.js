@@ -1,4 +1,4 @@
-import { withSentry } from '@sentry/nextjs';
+// import { withSentry } from '@sentry/nextjs';
 
 const GraphQL = (req, res) => {
   return new Promise((resolve) => {
@@ -12,4 +12,5 @@ const GraphQL = (req, res) => {
   });
 };
 
-export default withSentry(GraphQL);
+// export default withSentry(GraphQL);
+export default GraphQL;

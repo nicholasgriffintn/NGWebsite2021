@@ -1,5 +1,5 @@
 import { useAppContext } from '../context/store';
-import * as Sentry from '@sentry/nextjs';
+// import * as Sentry from '@sentry/nextjs';
 import config from '../config';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
@@ -13,13 +13,13 @@ const ComponentWrapper = ({ children }) => {
   useEffect(() => {
     if (cookiesAccepted === '1') {
       // Init Sentry
-      const SENTRY_DSN =
+      /* const SENTRY_DSN =
         process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
 
       Sentry.init({
         dsn: SENTRY_DSN || config.sentry_dsn,
         tracesSampleRate: 1.0,
-      });
+      }); */
 
       // Init PostHog
       posthog.init(config.posthog_key, { api_host: 'https://app.posthog.com' });

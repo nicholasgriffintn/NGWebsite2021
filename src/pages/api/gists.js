@@ -1,4 +1,4 @@
-import { withSentry } from '@sentry/nextjs';
+// import { withSentry } from '@sentry/nextjs';
 
 const Github = (req, res) => {
   return new Promise((resolve) => {
@@ -25,4 +25,5 @@ const Github = (req, res) => {
   });
 };
 
-export default withSentry(Github);
+// export default withSentry(Github);
+export default Github;

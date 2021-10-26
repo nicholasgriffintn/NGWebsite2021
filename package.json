@@ -1,6 +1,6 @@
 {
   "name": "ng-website-2021",
-  "version": "1.0.0",
+  "version": "12.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,12 +10,11 @@
   },
   "dependencies": {
     "@hcaptcha/react-hcaptcha": "^0.3.7",
-    "@sentry/nextjs": "^6.12.0",
-    "aws-amplify": "^4.2.6",
+    "aws-amplify": "^4.3.3",
     "dayjs": "^1.10.7",
-    "fs": "^0.0.1-security",
-    "graphql-request": "^3.5.0",
-    "next": "11.1.2",
+    "graphql": "^15.6.1",
+    "graphql-request": "^3.6.1",
+    "next": "12.0.0",
     "next-dark-mode": "^3.0.0",
     "next-mdx-remote": "^3.0.4",
     "next-pwa": "^5.3.1",
@@ -36,7 +35,7 @@
   },
   "devDependencies": {
     "eslint": "^7.32.0",
-    "eslint-config-next": "^11.1.0",
+    "eslint-config-next": "^12.0.0",
     "eslint-config-prettier": "^8.3.0",
     "prettier": "^2.3.2"
   }
