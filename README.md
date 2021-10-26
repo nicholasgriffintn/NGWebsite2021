@@ -34,8 +34,7 @@ To find out how to configure Amplify navigate to the README in the `amplify` fol
 - [x] Use context for passing around functions and state
 - [x] Add on React Query for API queries
 - [x] Add Next/Image everywhere I can xD
-- [x] AVIF?
-    - Next.JS supports this now! Yay!
+- [ ] AVIF?
 - [x] Create my own service for form submissions
 - [ ] Create blog for form submissions, maybe after the next three things are done.
 - [ ] Play around with Twillo
