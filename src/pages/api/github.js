@@ -1,6 +1,6 @@
-import { withSentry } from '@sentry/nextjs';
+// import { withSentry } from '@sentry/nextjs';
 
-const Github = (req, res) => {
+const Gists = (req, res) => {
   return new Promise((resolve) => {
     fetch(
       `https://api.github.com/users/nicholasgriffintn/repos?sort=updated&type=public&per_page=${
@@ -30,4 +30,5 @@ const Github = (req, res) => {
   });
 };
 
-export default withSentry(Github);
+// export default withSentry(Gists);
+export default Gists;

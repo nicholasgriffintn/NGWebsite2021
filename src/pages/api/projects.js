@@ -1,6 +1,6 @@
-import { withSentry } from '@sentry/nextjs';
+// import { withSentry } from '@sentry/nextjs';
 
-const Github = (req, res) => {
+const Projects = (req, res) => {
   return new Promise((resolve) => {
     res.setHeader('Cache-Control', 'max-age=180000');
     res.json([
@@ -55,4 +55,5 @@ const Github = (req, res) => {
   });
 };
 
-export default withSentry(Github);
+// export default withSentry(Projects);
+export default Projects;

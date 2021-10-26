@@ -1,4 +1,4 @@
-import { withSentry } from '@sentry/nextjs';
+// import { withSentry } from '@sentry/nextjs';
 const pkg = require('../../../package.json');
 
 const StatusCheck = (req, res) => {
@@ -13,4 +13,5 @@ const StatusCheck = (req, res) => {
   });
 };
 
-export default withSentry(StatusCheck);
+// export default withSentry(StatusCheck);
+export default StatusCheck;
