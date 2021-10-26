@@ -10,6 +10,7 @@ const moduleExports = {
     skipWaiting: true,
   },
   images: {
+    formats: ['image/avif', 'image/webp'],
     domains: [
       'localhost',
       'nicholasgriffin.dev',
