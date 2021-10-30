@@ -58,7 +58,7 @@ const OpeningContent = ({}) => {
                 </a>
                 <a
                   target="_blank"
-                  href="https://twitter.com/NGriffintn"
+                  href="https://twitter.com/ngriffin_uk"
                   rel="noopener"
                   title="Twitter"
                   className={styles['social-icon-wrap']}
