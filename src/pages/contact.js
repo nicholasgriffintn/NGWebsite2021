@@ -267,7 +267,7 @@ export default function Page() {
               </a>
               <a
                 target="_blank"
-                href="https://twitter.com/NGriffintn"
+                href="https://twitter.com/ngriffin_uk"
                 rel="noopener noreferrer"
                 title="Twitter"
                 className={styles['social-icon-wrap']}
