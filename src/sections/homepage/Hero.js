@@ -16,7 +16,7 @@ const Hero = ({}) => {
     "<p>I'm a <strong>Technology Ethusiast</strong>.</p>",
     '<p>Okay...</p>',
     "<p>I'm really just a bit of a <strong>Nerd</strong>.</p>",
-    "<p>I live in the <strong>UK</strong>.</p><small>I'm currently based in <strong>Leicester</strong>, but I am planning a move to <strong>London</strong> shortly.</small>",
+    "<p>I live in the <strong>UK</strong>.</p><small>I'm currently based in <strong>London</strong>.</p>",
     '<p>I spend most of my time doing new stuff on the <strong>web</strong>.</p>',
     '<p>Mostly <strong>front end</strong>, but I do dabble in a bit of <strong>back end</strong>.</p>',
     '<p>When I run out of stuff on the web, I often end up staying up late during bindge-watching secctions.</p>',
