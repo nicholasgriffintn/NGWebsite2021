@@ -24,7 +24,6 @@
   "stabilityDays": 3,
   "supportPolicy": ["lts_latest"],
   "dependencyDashboardAutoclose": true,
-  "prHeader": "[JIRA: DATAFORCE-](https://jira.dev.bbc.co.uk/browse/DATAFORCE-)",
   "labels": ["dependencies"],
   "postUpgradeTasks": {
     "commands": ["format"],
