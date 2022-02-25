@@ -25,11 +25,6 @@
   "supportPolicy": ["lts_latest"],
   "dependencyDashboardAutoclose": true,
   "labels": ["dependencies"],
-  "postUpgradeTasks": {
-    "commands": ["format"],
-    "fileFilters": ["yarn.lock", "**/*.{ts,js,json,jsx,tsx,md,scss}"],
-    "executionMode": "update"
-  },
   "vulnerabilityAlerts": {
     "labels": ["security"]
   },
