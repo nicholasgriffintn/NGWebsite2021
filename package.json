@@ -11,7 +11,7 @@
   "dependencies": {
     "@hcaptcha/react-hcaptcha": "1.1.0",
     "aws-amplify": "4.3.14",
-    "dayjs": "1.10.7",
+    "dayjs": "1.10.8",
     "graphql": "16.3.0",
     "graphql-request": "4.0.0",
     "next": "12.1.0",
