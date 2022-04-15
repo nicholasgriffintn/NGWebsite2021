@@ -96,3 +96,4 @@ amplifytools.xcconfig
 .secret-*
 #amplify-do-not-edit-end
 public/.DS_Store
+.DS_Store

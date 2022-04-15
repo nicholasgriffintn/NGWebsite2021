@@ -6005,11 +6005,6 @@ next-mdx-remote@4.0.0:
     vfile "^5.3.0"
     vfile-matter "^3.0.1"
 
-next-plausible@^3.1.6:
-  version "3.1.8"
-  resolved "https://registry.yarnpkg.com/next-plausible/-/next-plausible-3.1.8.tgz#56f01bf5064445fc5d657c19b7c2fc2a195b571f"
-  integrity sha512-7lqtSflFvSVzzxwaTwnHnoxK5J1BJcvORBWpLKb7GsRblf3dDC85BIfLiWLNonkxfS+P8/pjem0bunAg6Wh1IQ==
-
 next-pwa@5.4.6:
   version "5.4.6"
   resolved "https://registry.yarnpkg.com/next-pwa/-/next-pwa-5.4.6.tgz#67db147631e67076e2767555ab07324e60f4e7cf"

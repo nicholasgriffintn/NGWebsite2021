@@ -13,15 +13,29 @@ const Comments = ({}) => {
             return;
           }
           const scriptElem = document.createElement('script');
-          scriptElem.src = 'https://utteranc.es/client.js';
+          scriptElem.src = 'https://giscus.app/client.js';
           scriptElem.async = true;
           scriptElem.crossOrigin = 'anonymous';
-          scriptElem.setAttribute('repo', 'nicholasgriffintn/NGWebsite2021');
-          scriptElem.setAttribute('issue-term', 'title');
-          scriptElem.setAttribute('label', 'comment :speech_balloon:');
+          scriptElem.setAttribute('data-category', 'General');
+          scriptElem.setAttribute('data-category-id', 'DIC_kwDOEWdp3s4COmKH');
+          scriptElem.setAttribute('data-mapping', 'title');
+          scriptElem.setAttribute('data-reactions-enabled', '1');
+          scriptElem.setAttribute('data-category', 'General');
+          scriptElem.setAttribute('data-emit-metadata', '0');
+          scriptElem.setAttribute('data-input-position', 'top');
+          scriptElem.setAttribute('data-lang', 'en');
+          scriptElem.setAttribute('data-loading', 'lazy');
           scriptElem.setAttribute(
-            'theme',
-            darkMode.darkModeActive === true ? 'github-dark' : 'github-light'
+            'data-repo',
+            'nicholasgriffintn/nicholasgriffintn'
+          );
+          scriptElem.setAttribute(
+            'data-repo-id',
+            'MDEwOlJlcG9zaXRvcnkyOTE5ODk5ODI'
+          );
+          scriptElem.setAttribute(
+            'data-theme',
+            darkMode.darkModeActive === true ? 'dark' : 'light'
           );
           elem.appendChild(scriptElem);
         }}
