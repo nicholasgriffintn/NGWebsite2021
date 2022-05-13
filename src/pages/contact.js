@@ -298,14 +298,6 @@ export default function Page() {
             </div>
             <hr></hr>
             <small>
-              If you prefer email clients over forms you can send me a message
-              here:{' '}
-              <a href="mailto:inbox@nicholasgriffin.dev">
-                inbox@nicholasgriffin.dev
-              </a>
-            </small>
-            <hr></hr>
-            <small>
               Fancy sending me a text, giving me a call or even sending me a fax
               instead? Try out my automated service here:{' '}
               <a href="tel:+447380327714">+44 7380 327714</a>.
@@ -515,6 +507,15 @@ export default function Page() {
                     </button>
                   </div>
                 </form>
+                <hr></hr>
+                <small>
+                  If you prefer email clients over forms you can send me a
+                  message{' '}
+                  <a href="javascript:window.location.href=atob('bWFpbHRvOmluYm94QG5pY2hvbGFzZ3JpZmZpbi5kZXY')">
+                    here
+                  </a>
+                  .
+                </small>
               </>
             )}
           </div>
