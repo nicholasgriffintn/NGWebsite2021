@@ -299,7 +299,7 @@ export default function Page() {
             <hr></hr>
             <small>
               Fancy sending me a text? Try out my automated service here (you
-              can even sending me a fax if that still works...):{' '}
+              can even try sending me a fax if that still works...):{' '}
               <a href="tel:+447380327714">+44 7380 327714</a>.
             </small>
             <hr></hr>
