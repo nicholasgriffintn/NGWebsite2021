@@ -307,7 +307,7 @@ export default function Page() {
             <hr></hr>
             <small>
               Fancy sending me a text, giving me a call or even sending me a fax
-              instead? You can do so by sending your message here:{' '}
+              instead? Try out my automated service here:{' '}
               <a href="tel:+447380327714">+44 7380 327714</a>.
             </small>
             <hr></hr>
