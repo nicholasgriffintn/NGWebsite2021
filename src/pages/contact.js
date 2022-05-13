@@ -298,8 +298,8 @@ export default function Page() {
             </div>
             <hr></hr>
             <small>
-              Fancy sending me a text, giving me a call or even sending me a fax
-              instead? Try out my automated service here:{' '}
+              Fancy sending me a text? Try out my automated service here (you
+              can even sending me a fax if that still works...):{' '}
               <a href="tel:+447380327714">+44 7380 327714</a>.
             </small>
             <hr></hr>
