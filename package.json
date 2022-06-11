@@ -29,7 +29,7 @@
     "react-scroll": "1.8.6",
     "react-syntax-highlighter": "15.5.0",
     "react-typed": "nicholasgriffintn/react-typed#v17.0.0-alpha",
-    "react-use-cookie": "1.3.0",
+    "react-use-cookie": "1.4.0",
     "rss": "1.2.2",
     "sharp": "^0.30.3",
     "use-dark-mode": "2.3.1"
