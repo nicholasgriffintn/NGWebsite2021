@@ -24,7 +24,7 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-hook-form": "7.29.0",
-    "react-modal": "3.14.4",
+    "react-modal": "3.15.1",
     "react-query": "3.34.19",
     "react-scroll": "1.8.7",
     "react-syntax-highlighter": "15.5.0",
