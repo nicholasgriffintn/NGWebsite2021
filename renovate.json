@@ -28,6 +28,7 @@
   "vulnerabilityAlerts": {
     "labels": ["security"]
   },
+  "automerge": true,
   "packageRules": [
     {
       "matchPackageNames": ["aws-sdk"],
