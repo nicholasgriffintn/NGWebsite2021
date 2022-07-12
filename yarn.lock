@@ -2930,10 +2930,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@hcaptcha/react-hcaptcha@1.3.1":
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/@hcaptcha/react-hcaptcha/-/react-hcaptcha-1.3.1.tgz#f6e187ad2d97e89e7fd002b44ff1fa4cd99291f6"
-  integrity sha512-APs/hH7VFp+6zoz6PTKiGcIjQguwRbiZDRCFUeRK7gQg7KG4tXQayGtknKmozYL6z1ypoVE8FXz/W68rnc/u3g==
+"@hcaptcha/react-hcaptcha@1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@hcaptcha/react-hcaptcha/-/react-hcaptcha-1.4.4.tgz#529c55369160995115735b5fe5453daef4670f04"
+  integrity sha512-Aen217LDnf5ywbPSwBG5CsoqBLIHIAS9lhj3zQjXJuO13doQ6/ubkCWNuY8jmwYLefoFt3V3MrZmCdKDaFoTuQ==
   dependencies:
     "@babel/runtime" "^7.17.9"
 
