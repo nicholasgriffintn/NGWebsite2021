@@ -3140,10 +3140,10 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.1.3.tgz#6801033be7ff87a6b7cadaf5b337c9f366a3c4b0"
   integrity sha512-WiBSI6JBIhC6LRIsB2Kwh8DsGTlbBU+mLRxJmAe3LjHTdkDpwIbEOZgoXBbZilk/vlfjK8i6nKRAvIRn1XaIMw==
 
-"@sentry/types@^6.11.0":
-  version "6.11.0"
-  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-6.11.0.tgz#5122685478d32ddacd3a891cbcf550012df85f7c"
-  integrity sha512-gm5H9eZhL6bsIy/h3T+/Fzzz2vINhHhqd92CjHle3w7uXdTdFV98i2pDpErBGNTSNzbntqOMifYEB5ENtZAvcg==
+"@sentry/types@^7.2.0":
+  version "7.7.0"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-7.7.0.tgz#dd6bd3d119d7efea0e85dbaa4b17de1c22b63c7a"
+  integrity sha512-4x8O7uerSGLnYC10krHl9t8h7xXHn5FextqKYbTCXCnx2hC8D+9lz8wcbQAFo0d97wiUYqI8opmEgFVGx7c5hQ==
 
 "@surma/rollup-plugin-off-main-thread@^2.2.3":
   version "2.2.3"
@@ -6445,12 +6445,12 @@ postcss@8.4.5:
     picocolors "^1.0.0"
     source-map-js "^1.0.1"
 
-posthog-js@1.25.1:
-  version "1.25.1"
-  resolved "https://registry.yarnpkg.com/posthog-js/-/posthog-js-1.25.1.tgz#3db9143eb1d41db96e3baaa6abe40308ed625790"
-  integrity sha512-z/YsdDxkzgL9tksqqWDX/yFSm14K7LI6ulyLAEVeY/CfqPEH9/0otbMjU4OfByvoLljubRurEHQKo+59fhIApA==
+posthog-js@1.25.2:
+  version "1.25.2"
+  resolved "https://registry.yarnpkg.com/posthog-js/-/posthog-js-1.25.2.tgz#468e56783747512dbb52988677fdd9e8ea3edb08"
+  integrity sha512-La+fue4tVOZ5fYYO/2TzxG0WZ3mErrnhHGJkqAUr2ram27AdtrRZZrUbiLHytwDV8f5Atn17FGw+7dEY6EDf+Q==
   dependencies:
-    "@sentry/types" "^6.11.0"
+    "@sentry/types" "^7.2.0"
     fflate "^0.4.1"
     rrweb-snapshot "^1.1.14"
 
