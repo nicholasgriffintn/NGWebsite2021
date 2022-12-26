@@ -31,7 +31,7 @@ export default function Page() {
             <p>
               You can also take a look at my{' '}
               <Link href="/snippets">
-                <a>code snippets</a>
+                code snippets
               </Link>{' '}
               for some of my quick fixes and tips.
             </p>

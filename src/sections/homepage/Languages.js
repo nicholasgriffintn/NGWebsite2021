@@ -25,8 +25,8 @@ const Languages = () => {
             <div className="row">
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="GraphQL"
                   loading="lazy"
@@ -36,8 +36,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="JavaScript"
                   loading="lazy"
@@ -47,8 +47,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="TypeScript"
                   loading="lazy"
@@ -58,8 +58,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="SASS"
                   loading="lazy"
@@ -69,8 +69,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="JSON"
                   loading="lazy"
@@ -84,8 +84,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="React"
                   loading="lazy"

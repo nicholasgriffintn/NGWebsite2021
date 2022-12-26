@@ -25,8 +25,8 @@ const Languages = () => {
             <div className="row">
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="Redis"
                   loading="lazy"
@@ -36,8 +36,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="CloudFlare"
                   loading="lazy"
@@ -47,8 +47,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="NPM"
                   loading="lazy"
@@ -58,8 +58,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="Next.JS"
                   loading="lazy"
@@ -73,8 +73,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="Gatsby"
                   loading="lazy"
@@ -84,8 +84,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="PostgresSQL"
                   loading="lazy"
@@ -95,8 +95,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="Git"
                   loading="lazy"
@@ -106,8 +106,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="Google Analytics"
                   loading="lazy"
@@ -117,8 +117,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="NGINX"
                   loading="lazy"
@@ -128,8 +128,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="Netlify"
                   loading="lazy"
@@ -139,8 +139,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="NodeJS"
                   loading="lazy"
@@ -150,8 +150,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="AWS"
                   loading="lazy"
@@ -161,8 +161,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="Sentry"
                   loading="lazy"
@@ -172,8 +172,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="Yarn"
                   loading="lazy"
@@ -183,8 +183,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="Visual Studio Code"
                   loading="lazy"
@@ -194,8 +194,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="Webpack"
                   loading="lazy"
@@ -205,8 +205,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="Docker"
                   loading="lazy"
@@ -216,8 +216,8 @@ const Languages = () => {
               </div>
               <div className="col-1-4 icon-grid-item col-2-l">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="Elastic Search"
                   loading="lazy"
@@ -246,8 +246,8 @@ const Languages = () => {
             <div className="row">
               <div className="col-12 icon-grid-item">
                 <Image
-                  width="50px"
-                  height="50px"
+                  width="50"
+                  height="50"
                   className="lazy"
                   alt="Stack Overflow"
                   loading="lazy"

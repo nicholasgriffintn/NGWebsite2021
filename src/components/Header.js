@@ -12,7 +12,6 @@ const Header = () => {
           <nav className="header-navbar">
             <div className="header-navbar-logo">
               <Link href="/">
-                <a>
                   <Image
                     src="/avatar.png"
                     alt="Nicholas Griffin"
@@ -20,24 +19,23 @@ const Header = () => {
                     height="32"
                     priority={true}
                   />
-                </a>
               </Link>
             </div>
             <div className="header-navbar-links">
               <ul>
                 <li>
                   <Link href="/projects">
-                    <a>Projects</a>
+                    Projects
                   </Link>
                 </li>
                 <li>
                   <Link href="/blog">
-                    <a>Blog</a>
+                    Blog
                   </Link>
                 </li>
                 <li>
                   <Link href="/contact">
-                    <a>Contact</a>
+                    Contact
                   </Link>
                 </li>
               </ul>

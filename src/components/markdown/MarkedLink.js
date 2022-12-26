@@ -7,8 +7,8 @@ const MarkedLink = (props) => {
 
   if (isInternalLink === true) {
     return (
-      <Link href={href}>
-        <a {...props}>{children}</a>
+      <Link href={href} {...props}>
+        {children}
       </Link>
     );
   }

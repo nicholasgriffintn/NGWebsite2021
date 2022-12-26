@@ -12,7 +12,6 @@ const Footer = () => {
           <nav className="footer-navbar">
             <div className="footer-navbar-logo">
               <Link href="/">
-                <a>
                   <Image
                     src="/avatar.png"
                     alt="Nicholas Griffin"
@@ -20,7 +19,6 @@ const Footer = () => {
                     height="32"
                     priority={true}
                   />
-                </a>
               </Link>
             </div>
             <div className="footer-navbar-copyright">

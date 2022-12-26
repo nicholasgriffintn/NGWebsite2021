@@ -22,7 +22,7 @@ export default function Page() {
               I&apos;ll get back to you soon if what you sent requires a reply.
             </p>
             <Link href="/" className="button button-prime-inverted">
-              <a>Go back to my homepage</a>
+              Go back to my homepage
             </Link>
           </div>
         </div>

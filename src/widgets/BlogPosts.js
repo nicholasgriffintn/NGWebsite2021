@@ -22,8 +22,7 @@ const BlogPostsWidget = ({
                 return (
                   <React.Fragment key={`hp_post_${index}`}>
                     {post && post.id ? (
-                      <Link href={`/blog/${post.id}`}>
-                        <a className="item-card">
+                      <Link href={`/blog/${post.id}`} className="item-card">
                           {post.thumbnail ? (
                             <div className="item-image">
                               <Image
@@ -59,7 +58,6 @@ const BlogPostsWidget = ({
                               </span>
                             ) : null}
                           </div>
-                        </a>
                       </Link>
                     ) : null}
                   </React.Fragment>
