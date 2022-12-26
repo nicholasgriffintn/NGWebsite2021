@@ -253,7 +253,7 @@ const Languages = () => {
                   loading="lazy"
                   src="/uploads/langaugesIcons/stackoverflow.svg"
                 />
-                <span>Stack Overflow (it's always good to be honest xD)</span>
+                <span>Stack Overflow (it&apos;s always good to be honest xD)</span>
               </div>
             </div>
           </div>
