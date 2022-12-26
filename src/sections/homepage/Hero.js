@@ -104,7 +104,7 @@ const Hero = ({}) => {
         >
           <div className={styles.container}>
             <div className={styles.heroContentTitle}>
-              <h1>I'm Nicholas Griffin</h1>
+              <h1>I&apos;m Nicholas Griffin</h1>
             </div>
             <div className="homepage-subtitle">
               <div className={styles.typedWrap}>

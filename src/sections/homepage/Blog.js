@@ -29,7 +29,7 @@ const Blog = () => {
             <h2>What&apos;s going on?</h2>
             <p>
               Below you will find some of the blog posts that I have wrote (if
-              that is still working), I used to write a lot and I'm looking to
+              that is still working), I used to write a lot and I&apos;m looking to
               write blog posts more about the projects that I am working on.
               There might not be a lot here but I hope that it will at least be
               interesting, at least to me.

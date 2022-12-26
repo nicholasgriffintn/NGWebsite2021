@@ -28,7 +28,7 @@ const OpeningContent = ({}) => {
               </p>
               <p>
                 Feel free to scroll further down to find out more about me or my
-                projects, I've also added my contact links below.
+                projects, I&apos;ve also added my contact links below.
               </p>
               <h2>About Me</h2>
               <p>
@@ -40,14 +40,14 @@ const OpeningContent = ({}) => {
               <p>
                 Outside of development, I enjoy the odd read and love to listen
                 to music, with an aim to find some good new stuff, however,
-                that's mostly about trying to beat the algorithm.
+                that&apos;s mostly about trying to beat the algorithm.
               </p>
               <p>You can find out more about me and my projects below.</p>
               <div id="OpeningContentSocial">
                 <a
                   target="_blank"
                   href="https://github.com/nicholasgriffintn"
-                  rel="noopener"
+                  rel="noopener noreferrer"
                   title="Github"
                   className={styles['social-icon-wrap']}
                   id="GithubLinkWrap"
@@ -59,7 +59,7 @@ const OpeningContent = ({}) => {
                 <a
                   target="_blank"
                   href="https://twitter.com/ngriffin_uk"
-                  rel="noopener"
+                  rel="noopener noreferrer"
                   title="Twitter"
                   className={styles['social-icon-wrap']}
                   id="TwitterLinkWrap"
@@ -74,7 +74,7 @@ const OpeningContent = ({}) => {
                 <a
                   target="_blank"
                   href="https://www.linkedin.com/in/nicholasgriffin-gb/"
-                  rel="noopener"
+                  rel="noopener noreferrer"
                   title="LinkedIn"
                   className={styles['social-icon-wrap']}
                   id="LinkedinLinkWrap"
@@ -115,7 +115,7 @@ const OpeningContent = ({}) => {
             <div className="col-12 col-6-m col-3-l pad-top-10 pad-top-0-m">
               <SpotifyWidget loading={loading} spotify={spotify} />
               <span id="MusicOpeningWrapperTitle">
-                What I'm listening to{' '}
+                What I&apos;m listening to{' '}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 407.437 407.437"
