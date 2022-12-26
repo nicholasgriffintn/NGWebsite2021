@@ -1,7 +1,7 @@
 import { useAppContext } from '../context/store';
 
 const CookieMessageWrapper = ({ children }) => {
-  const { showCookieMessage, setShowCookieMessage, setCookiesAccepted } =
+  const { showCookieMessage, setShowCookieMessage, setCookiesAccepted, cookiesAccepted } =
     useAppContext();
 
   const changeCookiesStatus = (status) => {
@@ -9,7 +9,7 @@ const CookieMessageWrapper = ({ children }) => {
     setShowCookieMessage('false');
   };
 
-  if (showCookieMessage === 'false') {
+  if (showCookieMessage === 'false' || cookiesAccepted === "1") {
     return <>{children}</>;
   }
 

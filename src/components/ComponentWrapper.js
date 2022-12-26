@@ -7,7 +7,7 @@ const ComponentWrapper = ({ children }) => {
   return (
     <>
       <Head>
-        {typeof window !== undefined && cookiesAccepted === 1 && (
+        {typeof window !== undefined && cookiesAccepted === "1" && (
           <script
             id="analytics-script"
             defer
