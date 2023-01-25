@@ -85,6 +85,7 @@ class MyDocument extends Document {
           property="og:image"
           content="https://images.nicholasgriffin.dev/resize/?image=Screenshot+2020-04-18+at+23.40.18.png"
         />
+        <link href="https://mastodon.online/@ngriffin" rel="me"></link>
         <Head />
         <link
           rel="preconnect"
