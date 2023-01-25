@@ -8,7 +8,7 @@ import styles from '../../styles/Page.module.css';
 import PageLayout from '../../components/pageLayout';
 import Comments from '../../components/comments';
 
-import API from '@aws-amplify/api';
+import { API } from '@aws-amplify/api';
 import { getPost, listPosts } from '../../graphql/queries';
 
 import { serialize } from 'next-mdx-remote/serialize';

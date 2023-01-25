@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styles from '../../styles/Page.module.css';
 
-import API from '@aws-amplify/api';
+import { API } from '@aws-amplify/api';
 import { sortedPosts } from '../../graphql/queries';
 import PageLayout from '../../components/pageLayout';
 

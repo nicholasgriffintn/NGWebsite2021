@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { createContext, useContext } from 'react';
-import API from '@aws-amplify/api';
+import { API } from '@aws-amplify/api';
 import { sortedPosts } from '../graphql/queries';
 import { Logger } from '@aws-amplify/core';
 import { useDarkMode } from 'next-dark-mode';
