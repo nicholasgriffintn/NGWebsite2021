@@ -2225,10 +2225,10 @@
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.1.1.tgz#076d78ce99822258cf813ecc1e7fa460fa74d052"
   integrity sha512-NQ17ii0rK1b34VZonlmT2QMJFI70m0TRwbknO/ihlbatXyaktDhN/98vBiUU6kNBPljqGqyIrl2T4nY2RpFANg==
 
-"@hcaptcha/react-hcaptcha@1.4.4":
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/@hcaptcha/react-hcaptcha/-/react-hcaptcha-1.4.4.tgz#529c55369160995115735b5fe5453daef4670f04"
-  integrity sha512-Aen217LDnf5ywbPSwBG5CsoqBLIHIAS9lhj3zQjXJuO13doQ6/ubkCWNuY8jmwYLefoFt3V3MrZmCdKDaFoTuQ==
+"@hcaptcha/react-hcaptcha@1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@hcaptcha/react-hcaptcha/-/react-hcaptcha-1.6.0.tgz#99bd06ac3438f617c15140479e045e770d269669"
+  integrity sha512-FhUxeQRe5K6P1ZEUs/zGPs9ob1D/aVjOL/zCwgTWVnt8U+QHUXqo5E5Yeht167eIdnVhe1LsOY0Q66Sx4zMQCQ==
   dependencies:
     "@babel/runtime" "^7.17.9"
 
