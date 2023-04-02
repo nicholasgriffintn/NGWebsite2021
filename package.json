@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@hcaptcha/react-hcaptcha": "1.6.0",
-    "aws-amplify": "5.0.22",
+    "aws-amplify": "5.0.23",
     "dayjs": "1.11.7",
     "graphql": "16.6.0",
     "graphql-request": "5.2.0",
