@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@hcaptcha/react-hcaptcha": "1.7.0",
+    "@hcaptcha/react-hcaptcha": "1.8.0",
     "aws-amplify": "5.0.25",
     "dayjs": "1.11.7",
     "graphql": "16.6.0",
