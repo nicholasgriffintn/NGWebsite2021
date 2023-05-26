@@ -13,7 +13,7 @@
     "aws-amplify": "5.2.2",
     "dayjs": "1.11.7",
     "graphql": "16.6.0",
-    "graphql-request": "6.0.0",
+    "graphql-request": "6.1.0",
     "next": "13.4.3",
     "next-dark-mode": "3.0.0",
     "next-mdx-remote": "4.4.1",
