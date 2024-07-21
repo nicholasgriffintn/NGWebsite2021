@@ -19,6 +19,9 @@ export default function Home() {
 					</p>
 				</div>
 			</section>
+			<section className="container px-4 md:px-6 py-12 text-center">
+				<p>I'm currently working on rebuilding this site, please bare with, it's still a work in progress.</p>
+			</section>
 		</PageLayout>
 	);
 }
