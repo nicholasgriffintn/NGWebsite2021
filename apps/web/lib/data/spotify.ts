@@ -4,7 +4,7 @@ export async function getRecentlyPlayed(): Promise<RecentTracks> {
   const lastFmToken = process.env.LAST_FM_TOKEN;
 
   if (!lastFmToken) {
-    throw new Error('Error fetching data from Audioscrobbler');
+    throw new Error('No Last FM token');
   }
 
   const res = await fetch(
@@ -21,6 +21,7 @@ export async function getRecentlyPlayed(): Promise<RecentTracks> {
   );
 
   if (!res.ok) {
+    console.error(res.statusText);
     throw new Error('Error fetching data from Audioscrobbler');
   }
 
