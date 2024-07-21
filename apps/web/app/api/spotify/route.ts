@@ -1,6 +1,14 @@
 export async function GET() {
-	const res = await fetch(
-		"https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=NGriiffin&api_key=c91dd1f9b8fcf710e36a2a48c6c493a8&limit=10&format=json",
+	const lastFmToken = process.env.LAST_FM_TOKEN;
+
+	if (!lastFmToken) {
+		return Response.json({
+			message: "Error fetching data from Audioscrobbler",
+			status: 500,
+		});
+	}
+
+	const res = await fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=NGriiffin&api_key=${lastFmToken}&limit=10&format=json`,
 		{
 			headers: {
 				"Content-Type": "application/json",
