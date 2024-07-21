@@ -1,8 +1,10 @@
+import { PageLayout } from "@/components/PageLayout";
+
 export const runtime = "edge";
 
 export default function Home() {
 	return (
-		<main>
+		<PageLayout>
 			<section className="w-full min-h-screen flex flex-col items-center justify-center bg-contain bg-center">
 				<div className="container px-4 md:px-6 text-center space-y-6 flex flex-col items-center justify-center">
 					<h1 className="text-4xl md:text-6xl font-bold text-primary-foreground">
@@ -14,6 +16,6 @@ export default function Home() {
 					</p>
 				</div>
 			</section>
-		</main>
+		</PageLayout>
 	);
 }
