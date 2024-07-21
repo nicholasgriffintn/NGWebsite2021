@@ -29,9 +29,11 @@ export function SpotifyWidget({ data }: { data: RecentTracks }) {
                   <Image
                     alt={firstTrack.name}
                     src={ReturnImageFormattingUrl(firstTrackImage)}
-                    layout="fill"
-                    objectFit="cover"
-                    quality={80}
+                    fill
+                    style={{
+                      objectFit: 'cover',
+                    }}
+                    unoptimized
                   />
                 </div>
               ) : null}
@@ -78,8 +80,10 @@ export function SpotifyWidget({ data }: { data: RecentTracks }) {
                             loading="lazy"
                             alt={track.album['#text']}
                             src={ReturnImageFormattingUrl(trackImage)}
-                            objectFit="cover"
-                            quality={80}
+                            style={{
+                              objectFit: 'cover',
+                            }}
+                            unoptimized
                           />
                         </div>
                       ) : null}
