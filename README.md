@@ -1,44 +1,81 @@
-# Nicholas Griffin's Personal Site
+# Turborepo starter
 
-## 2021 Edition
+This is an official starter Turborepo.
 
-On a yearly basis I recreate my website from scratch with the latest technologies available.
+## Using this example
 
-This year, I'll be continuing with Next.js as it's awesome but I'm also going to use the AWS Amplify service for data storage and hosting.
+Run the following command:
 
-### Amplify
+```sh
+npx create-turbo@latest
+```
 
-To find out how to configure Amplify navigate to the README in the `amplify` folder.
+## What's inside?
 
-### TODO
+This Turborepo includes the following packages/apps:
 
-- [x] Finish feed
-- [x] Finish sitemap
-- [x] Finish robots
-- [x] Finish posts page in terms of showing data
-- [x] Finish contact form
-- [x] Publish to Amplify
-- [x] Work out Amplify GraphQL sorting.
-- [x] Move homepage sections to components
-- [x] Finish homepage
-- [x] Move widgets in the sections to a new widgets folder
-- [x] Swap to nextjs/mdx? component rendering https://nextjs.org/blog/markdown
-- [x] Create post about new site
-- [x] Add a Gists page
-- [x] Finish blog page and posts list (make a component for the list)
-- [x] Add setup page
-- [x] Add projects (Github) page with full list
-- [x] Add a header with links to pages: blog, projects, contact, my desk (setup)
-- [x] Dark mode
-- [ ] Maybe look into if it's possible to add Apple Music widget vs the current Spotify one.
-- [x] Use context for passing around functions and state
-- [x] Add on React Query for API queries
-- [x] Add Next/Image everywhere I can xD
-- [ ] AVIF?
-- [x] Create my own service for form submissions
-- [ ] Create blog for form submissions, maybe after the next three things are done.
-- [ ] Play around with Twillo
-- [ ] Add ability to record a voice message on contact form (can we use Twillo for this?)
-- [ ] Add the ability to send a WhatsApp or Text might be cool? (can we use Twillo for this?)
-- [x] Add the image resizing back
-- [x] Add login page and two-factor pages
+### Apps and Packages
+
+- `docs`: a [Next.js](https://nextjs.org/) app
+- `web`: another [Next.js](https://nextjs.org/) app
+- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
+- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
+- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+
+Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+
+### Utilities
+
+This Turborepo has some additional tools already setup for you:
+
+- [TypeScript](https://www.typescriptlang.org/) for static type checking
+- [ESLint](https://eslint.org/) for code linting
+- [Prettier](https://prettier.io) for code formatting
+
+### Build
+
+To build all apps and packages, run the following command:
+
+```
+cd my-turborepo
+pnpm build
+```
+
+### Develop
+
+To develop all apps and packages, run the following command:
+
+```
+cd my-turborepo
+pnpm dev
+```
+
+### Remote Caching
+
+Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+
+By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+
+```
+cd my-turborepo
+npx turbo login
+```
+
+This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+
+Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+
+```
+npx turbo link
+```
+
+## Useful Links
+
+Learn more about the power of Turborepo:
+
+- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
+- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
+- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
+- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
+- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
+- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
