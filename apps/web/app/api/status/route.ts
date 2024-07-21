@@ -1,6 +1,6 @@
-export const runtime = 'edge';
+export const runtime = "edge";
 
-import pkg from "@/package.json"
+import pkg from "@/package.json";
 
 export async function GET() {
 	return Response.json({

@@ -7,7 +7,11 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "biome lint",
-		"format": "biome format --write"
+		"format": "biome format --write",
+		"pages:build": "npx @cloudflare/next-on-pages",
+		"preview": "npm run pages:build && wrangler pages dev",
+		"deploy": "npm run pages:build && wrangler pages deploy",
+		"cf-typegen": "wrangler types --env-interface CloudflareEnv env.d.ts"
 	},
 	"dependencies": {
 		"@radix-ui/react-avatar": "^1.1.0",
@@ -21,6 +25,10 @@
 		"tailwindcss-animate": "^1.0.7"
 	},
 	"devDependencies": {
+		"@cloudflare/next-on-pages": "^1.12.1",
+		"@cloudflare/workers-types": "^4.20240718.0",
+		"vercel": "^35.1.0",
+		"wrangler": "^3.65.1",
 		"@biomejs/biome": "1.8.3",
 		"@repo/typescript-config": "workspace:*",
 		"@types/node": "^20",

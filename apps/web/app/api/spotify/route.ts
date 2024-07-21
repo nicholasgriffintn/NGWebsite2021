@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+export const runtime = "edge";
 
 export async function GET() {
 	const lastFmToken = process.env.LAST_FM_TOKEN;
@@ -10,7 +10,8 @@ export async function GET() {
 		});
 	}
 
-	const res = await fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=NGriiffin&api_key=${lastFmToken}&limit=10&format=json`,
+	const res = await fetch(
+		`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=NGriiffin&api_key=${lastFmToken}&limit=10&format=json`,
 		{
 			headers: {
 				"Content-Type": "application/json",
