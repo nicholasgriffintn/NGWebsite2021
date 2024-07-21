@@ -1,5 +1,5 @@
 {
-  "name": "NGWebsite2021",
+  "name": "ngweb",
   "private": true,
   "scripts": {
     "build": "turbo build",
