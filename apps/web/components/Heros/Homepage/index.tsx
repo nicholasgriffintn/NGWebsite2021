@@ -1,32 +1,32 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Typed from 'react-typed';
-import { animateScroll as scroll } from 'react-scroll';
+import { useState } from "react";
+import Typed from "react-typed";
+import { animateScroll as scroll } from "react-scroll";
 
 export function Hero() {
-  const [hasScrolled] = useState(false);
-  const [showScroller, setShowScroller] = useState(false);
-  const [typedInitialComplete, setTypedInitialComplete] = useState(0);
-  const [typedStrings, setTypedStrings] = useState([
-    "<p>I'm a <strong>Senior Software Engineer</strong>.</p>",
-    "<p>I'm a <strong>Blogger</strong>.</p>",
-    "<p>I'm a <strong>Technology Enthusiast</strong>.</p>",
-    '<p>Okay...</p>',
-    "<p>I'm really just a bit of a <strong>Nerd</strong>.</p>",
-    "<p>I live in the <strong>UK</strong>.</p><small>I'm currently based in <strong>London</strong>.</p>",
-    '<p>I spend most of my time doing new stuff on the <strong>web</strong>.</p>',
-    '<p>Mostly <strong>front end</strong>, but I do dabble in a bit of <strong>back end</strong>.</p>',
-    '<p>When I run out of stuff on the web, I often end up staying up late during binge-watching sessions.</p>',
-    '<p>My dogs are complete idiots:</p><br><img height="261px" width="348px" src="/uploads/dogs.png" id="hero_dogs_image" alt="My Shih Tzu\'s" />',
-    '<p>But probably not as bad as some of my <strong>code</strong>...</p>',
-    "<p>We've all been through those days.</p>",
-    '<p>My most used language is <strong>JavaScript</strong>.</p>',
-    '<p>I work a lot with <strong>Node.JS</strong>, <strong>React</strong> and <strong>Next.js</strong></p><br><p>But also with <strong>Redis</strong>, <strong>Postgres</strong> and various <strong>AWS</strong> services.</p>',
-    "<p>And that's about the sum of it.</p><br><p>Feel free to scroll below to find out more about me about maybe read some of my posts.</p>",
-  ]);
+	const [hasScrolled] = useState(false);
+	const [showScroller, setShowScroller] = useState(false);
+	const [typedInitialComplete, setTypedInitialComplete] = useState(0);
+	const [typedStrings, setTypedStrings] = useState([
+		"<p>I'm a <strong>Senior Software Engineer</strong>.</p>",
+		"<p>I'm a <strong>Blogger</strong>.</p>",
+		"<p>I'm a <strong>Technology Enthusiast</strong>.</p>",
+		"<p>Okay...</p>",
+		"<p>I'm really just a bit of a <strong>Nerd</strong>.</p>",
+		"<p>I live in the <strong>UK</strong>.</p><small>I'm currently based in <strong>London</strong>.</p>",
+		"<p>I spend most of my time doing new stuff on the <strong>web</strong>.</p>",
+		"<p>Mostly <strong>front end</strong>, but I do dabble in a bit of <strong>back end</strong>.</p>",
+		"<p>When I run out of stuff on the web, I often end up staying up late during binge-watching sessions.</p>",
+		'<p>My dogs are complete idiots:</p><br><img height="261px" width="348px" src="/uploads/dogs.png" id="hero_dogs_image" alt="My Shih Tzu\'s" />',
+		"<p>But probably not as bad as some of my <strong>code</strong>...</p>",
+		"<p>We've all been through those days.</p>",
+		"<p>My most used language is <strong>JavaScript</strong>.</p>",
+		"<p>I work a lot with <strong>Node.JS</strong>, <strong>React</strong> and <strong>Next.js</strong></p><br><p>But also with <strong>Redis</strong>, <strong>Postgres</strong> and various <strong>AWS</strong> services.</p>",
+		"<p>And that's about the sum of it.</p><br><p>Feel free to scroll below to find out more about me about maybe read some of my posts.</p>",
+	]);
 
-  /* useEffect(() => {
+	/* useEffect(() => {
     if (typedInitialComplete === 1) {
       setTimeout(() => {
         setTypedStrings([
@@ -73,65 +73,65 @@ export function Hero() {
     }
   }, [typedInitialComplete]); */
 
-  return (
-    <section
-      className="transition-all relative overflow-hidden w-full flex flex-col items-center bg-contain bg-center bg-[#010517] bg-gradient-to-r from-[#010517] to-[#030825]"
-      style={
-        !hasScrolled && typedInitialComplete === 0
-          ? { minHeight: '100vh', paddingTop: '204px' }
-          : { minHeight: '800px', paddingTop: '64px' }
-      }
-    >
-      <div className="w-full h-hull">
-        <div className="stars" />
-        <div className="stars1" />
-        <div className="stars2" />
-      </div>
-      <div className="z-10 pt-8 container px-4 md:px-6 text-center space-y-6 flex flex-col items-center justify-center">
-        <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground">
-          I'm Nicholas Griffin
-        </h1>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-[640px]">
-          <Typed
-            strings={typedStrings}
-            typeSpeed={10}
-            backSpeed={0}
-            backDelay={1500}
-            startDelay={200}
-            showCursor={false}
-            smartBackspace={true}
-            onComplete={() => {
-              setTypedInitialComplete(typedInitialComplete + 1);
-              setShowScroller(true);
-            }}
-          />
-        </p>
-        {hasScrolled || showScroller ? (
-          <div className="hero__scroll">
-            <div
-              className="hero__scroll__icon"
-              onClick={() => {
-                scroll.scrollTo(800, {
-                  duration: 750,
-                  delay: 0,
-                  smooth: true,
-                  offset: 50,
-                });
-              }}
-              onKeyDown={() => {
-                scroll.scrollTo(800, {
-                  duration: 750,
-                  delay: 0,
-                  smooth: true,
-                  offset: 50,
-                });
-              }}
-            >
-              <div className="hero__scroll__icon__marker" />
-            </div>
-          </div>
-        ) : null}
-      </div>
-    </section>
-  );
+	return (
+		<section
+			className="transition-all relative overflow-hidden w-full flex flex-col items-center bg-contain bg-center bg-[#010517] bg-gradient-to-r from-[#010517] to-[#030825]"
+			style={
+				!hasScrolled && typedInitialComplete === 0
+					? { minHeight: "100vh", paddingTop: "204px" }
+					: { minHeight: "800px", paddingTop: "64px" }
+			}
+		>
+			<div className="w-full h-hull">
+				<div className="stars" />
+				<div className="stars1" />
+				<div className="stars2" />
+			</div>
+			<div className="z-10 pt-8 container px-4 md:px-6 text-center space-y-6 flex flex-col items-center justify-center">
+				<h1 className="text-4xl md:text-6xl font-bold text-primary-foreground">
+					I'm Nicholas Griffin
+				</h1>
+				<p className="text-lg md:text-xl text-muted-foreground max-w-[640px]">
+					<Typed
+						strings={typedStrings}
+						typeSpeed={10}
+						backSpeed={0}
+						backDelay={1500}
+						startDelay={200}
+						showCursor={false}
+						smartBackspace={true}
+						onComplete={() => {
+							setTypedInitialComplete(typedInitialComplete + 1);
+							setShowScroller(true);
+						}}
+					/>
+				</p>
+				{hasScrolled || showScroller ? (
+					<div className="hero__scroll">
+						<div
+							className="hero__scroll__icon"
+							onClick={() => {
+								scroll.scrollTo(800, {
+									duration: 750,
+									delay: 0,
+									smooth: true,
+									offset: 50,
+								});
+							}}
+							onKeyDown={() => {
+								scroll.scrollTo(800, {
+									duration: 750,
+									delay: 0,
+									smooth: true,
+									offset: 50,
+								});
+							}}
+						>
+							<div className="hero__scroll__icon__marker" />
+						</div>
+					</div>
+				) : null}
+			</div>
+		</section>
+	);
 }
