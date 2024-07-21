@@ -6,6 +6,7 @@ import { getRecentlyPlayed } from "@/lib/data/spotify";
 import { PageLayout } from "@/components/PageLayout";
 import { Hero } from "@/components/Heros/Homepage";
 import { SpotifyWidget } from "@/components/SpotifyWidget";
+import { ContactLinks } from "@/components/ContactLinks";
 
 async function getData() {
 	const spotify = await getRecentlyPlayed();
@@ -50,6 +51,7 @@ export default async function Home() {
 								mostly about trying to beat the algorithm.
 							</p>
 							<p>You can find out more about me and my projects below.</p>
+							<ContactLinks />
 						</div>
 					</div>
 					<div className="col-span-5 md:col-span-2 lg:col-span-1">
