@@ -8,7 +8,7 @@ export default function Home() {
 					<h1 className="text-4xl md:text-6xl font-bold text-primary-foreground">
 						Hi! I'm Nicholas Griffin!
 					</h1>
-					<p className="text-lg md:text-xl text-muted-foreground max-w-[700px]">
+					<p className="text-lg md:text-xl text-muted-foreground max-w-[450px]">
 						I'm currently rebuilding my website after a bit of a break, please
 						bare with.
 					</p>
