@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import data from "./data.json";
 
 export async function GET() {

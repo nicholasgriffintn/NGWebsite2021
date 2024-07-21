@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import pkg from "@/package.json"
 
 export async function GET() {

@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 export async function GET() {
 	const res = await fetch(
 		"https://api.github.com/users/nicholasgriffintn/gists",

@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 export async function GET() {
 	const lastFmToken = process.env.LAST_FM_TOKEN;
 
