@@ -21,22 +21,25 @@
 		"next": "15.0.0-rc.0",
 		"react": "19.0.0-rc-f994737d14-20240522",
 		"react-dom": "19.0.0-rc-f994737d14-20240522",
+		"react-scroll": "^1.9.0",
+		"react-typed": "nicholasgriffintn/react-typed#v17.0.0-alpha",
 		"tailwind-merge": "^2.4.0",
 		"tailwindcss-animate": "^1.0.7"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.8.3",
 		"@cloudflare/next-on-pages": "^1.12.1",
 		"@cloudflare/workers-types": "^4.20240718.0",
-		"vercel": "^35.1.0",
-		"wrangler": "^3.65.1",
-		"@biomejs/biome": "1.8.3",
 		"@repo/typescript-config": "workspace:*",
 		"@types/node": "^20",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
+		"@types/react-scroll": "^1.8.10",
 		"autoprefixer": "^10.4.19",
 		"postcss": "^8.4.39",
 		"tailwindcss": "^3.4.6",
-		"typescript": "^5"
+		"typescript": "^5",
+		"vercel": "^35.1.0",
+		"wrangler": "^3.65.1"
 	}
 }
