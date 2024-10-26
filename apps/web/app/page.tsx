@@ -25,17 +25,12 @@ export default async function Home() {
         <div className="grid grid-cols-5 gap-4">
           <div className="col-span-5 md:col-span-3 lg:col-span-4 pt-5">
             <div className="text-primary-foreground lg:max-w-[75%]">
-              <h1 className="text-2xl md:text-4xl font-bold text-primary-foreground">
+              <h1 className="text-2xl md:text-4xl font-bold text-primary-foreground md:pt-5">
                 👋 Welcome to my website!
               </h1>
               <p>
-                Thanks for visiting my site! As you might have read in the
-                title, my name is Nicholas Griffin and I am a Senior Software
-                Engineer, Blogger and Technology enthusiast from the UK.
-              </p>
-              <p>
-                Feel free to scroll further down to find out more about me or my
-                projects, I've also added my contact links below.
+                Thanks for visiting my site! My name is Nicholas Griffin and I
+                am a Senior Software Engineer from the UK.
               </p>
               <h2 className="text-1xl md:text-2xl font-bold text-primary-foreground">
                 About me
@@ -44,7 +39,7 @@ export default async function Home() {
                 I would classify myself as a Full Stack Developer with a slight
                 bias towards frontend. I spend most of my dev time doing a range
                 of personal development projects around the web alongside my day
-                job.
+                job at the BBC.
               </p>
               <p>
                 Outside of development, I enjoy the odd read and love to listen
