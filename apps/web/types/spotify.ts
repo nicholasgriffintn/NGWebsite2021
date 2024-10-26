@@ -4,9 +4,12 @@ export type RecentTracks = {
       mbid: string;
       name: string;
       artist: {
+        mbid: string;
         '#text': string;
       };
+      streamable: string;
       album: {
+        mbid: string;
         '#text': string;
       };
       url: string;
@@ -16,6 +19,10 @@ export type RecentTracks = {
       }[];
       '@attr': {
         nowplaying: string;
+      };
+      date: {
+        uts: string;
+        '#text': string;
       };
     }[];
   };

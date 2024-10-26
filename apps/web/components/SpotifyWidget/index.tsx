@@ -74,8 +74,12 @@ export function SpotifyWidget({ data }: { data: RecentTracks | null }) {
                   const trackImage = track.image.find(
                     (element) => element.size === 'medium'
                   )?.['#text'];
+
                   return (
-                    <div className="spotify-widget-track-item" key={track.mbid}>
+                    <div
+                      className="spotify-widget-track-item"
+                      key={`${track.mbid}_${track.date.uts}`}
+                    >
                       {trackImage ? (
                         <div className="spotify-widget-track-item-image">
                           <Image
