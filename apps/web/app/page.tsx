@@ -20,9 +20,9 @@ export default async function Home() {
 
 	return (
     <PageLayout>
-      <section className="container px-4 md:px-6 py-12 text-left">
+      <section className="container px-4 md:px-6 pt-20 text-left">
         <div className="grid grid-cols-5 gap-4">
-          <div className="col-span-5 md:col-span-3 lg:col-span-4">
+          <div className="col-span-5 md:col-span-3 lg:col-span-4 pt-5">
             <div className="text-primary-foreground lg:max-w-[75%]">
               <h2 className="text-2xl md:text-4xl font-bold text-primary-foreground">
                 👋 Welcome to my website!
@@ -54,7 +54,7 @@ export default async function Home() {
               <ContactLinks />
             </div>
           </div>
-          <div className="col-span-5 md:col-span-2 lg:col-span-1">
+          <div className="col-span-5 md:col-span-2 lg:col-span-1 pt-5">
             <div>
               <SpotifyWidget data={data?.spotify} />
               <span id="MusicOpeningWrapperTitle">

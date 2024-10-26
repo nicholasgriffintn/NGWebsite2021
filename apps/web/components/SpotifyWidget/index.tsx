@@ -58,7 +58,7 @@ export function SpotifyWidget({ data }: { data: RecentTracks }) {
                   </svg>
                 </a>
               </div>
-              {firstTrack?.['@attr'].nowplaying === 'true' ? (
+              {firstTrack?.['@attr']?.nowplaying === 'true' ? (
                 <div className="absolute left-0 bottom-0 z-10 bg-[#010517] text-primary-foreground px-1 py-1 text-sm">
                   <span>Now Playing</span>
                 </div>

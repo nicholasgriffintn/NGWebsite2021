@@ -4,7 +4,8 @@ export async function getRecentlyPlayed(): Promise<RecentTracks> {
   const lastFmToken = process.env.LAST_FM_TOKEN;
 
   if (!lastFmToken) {
-    throw new Error('No Last FM token');
+    console.error('No LastFM token found');
+    return null;
   }
 
   const res = await fetch(
