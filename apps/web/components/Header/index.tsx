@@ -16,8 +16,12 @@ export function Header() {
             </Link>
           </div>
           <nav className="flex items-center space-x-6">
-            <Link href="/">Home</Link>
-            <Link href="/contact">Contact</Link>
+            <Link href="/" underline={false}>
+              Home
+            </Link>
+            <Link href="/contact" underline={false}>
+              Contact
+            </Link>
           </nav>
         </div>
       </div>

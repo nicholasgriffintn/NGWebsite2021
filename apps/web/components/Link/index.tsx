@@ -1,18 +1,26 @@
 import NextLink from "next/link";
+import { clsx } from 'clsx';
 
 export function Link({
-	href,
-	children,
-	...props
+  href,
+  children,
+  underline = true,
+  ...props
 }: {
-	href: string;
-	children: React.ReactNode;
-	[key: string]: unknown;
+  href: string;
+  children: React.ReactNode;
+  underline?: boolean;
+  [key: string]: unknown;
 }) {
-	return (
+  return (
     <NextLink
       href={href}
-      className="font-medium text-primary-foreground hover:underline transition-colors"
+      className={clsx(
+        'text-[#fff] inline font-bold p-0 transition-colors hover:underline hover:outline-none decoration-1 decoration-skip-ink-none underline-offset-[0.25em] hover:decoration-2',
+        {
+          underline: underline,
+        }
+      )}
       prefetch={false}
       {...props}
     >
