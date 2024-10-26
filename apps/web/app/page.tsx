@@ -4,6 +4,7 @@ import { getRecentlyPlayed } from '@/lib/data/spotify';
 import { PageLayout } from '@/components/PageLayout';
 import { SpotifyWidget } from '@/components/SpotifyWidget';
 import { ContactLinks } from '@/components/ContactLinks';
+import { InnerPage } from '@/components/InnerPage';
 
 async function getData() {
   const spotify = await getRecentlyPlayed();
@@ -18,8 +19,7 @@ export default async function Home() {
 
   return (
     <PageLayout>
-      <section className="container px-4 md:px-6 pt-20 text-left">
-        <div className="pt-20"></div>
+      <InnerPage>
         <div className="grid grid-cols-5 gap-4">
           <div className="col-span-5 md:col-span-3 lg:col-span-4 pt-5">
             <div className="text-primary-foreground lg:max-w-[75%]">
@@ -62,8 +62,7 @@ export default async function Home() {
             </div>
           </div>
         </div>
-        <div className="pt-20"></div>
-      </section>
+      </InnerPage>
     </PageLayout>
   );
 }
