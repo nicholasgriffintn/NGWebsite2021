@@ -1,5 +1,6 @@
 import { PageLayout } from '@/components/PageLayout';
 import { ContactLinks } from '@/components/ContactLinks';
+import { Link } from '@/components/Link';
 
 export default async function Home() {
   return (
@@ -9,13 +10,10 @@ export default async function Home() {
         <div className="grid grid-cols-5 gap-4">
           <div className="col-span-5 md:col-span-3 lg:col-span-4 pt-5">
             <div className="text-primary-foreground lg:max-w-[75%]">
-              <h2 className="text-2xl md:text-4xl font-bold text-primary-foreground">
+              <h1 className="text-2xl md:text-4xl font-bold text-primary-foreground">
                 Send me a message
-              </h2>
-              <p>
-                I'm looking forward to hearing from you (as long as you're not a
-                spammer 😅)!
-              </p>
+              </h1>
+              <p>I'm looking forward to hearing from you!</p>
               <p>
                 Please fill in the form below to send me a message,
                 alternatively, you can send me a message via one of the social
@@ -23,7 +21,8 @@ export default async function Home() {
               </p>
               <p>
                 If you are a recruiter then please head on over to LinkedIn
-                instead where you may be ignored 🥸.
+                instead where you may be ignored, unless you have a really
+                interesting thing for me 🥸.
               </p>
               <ContactLinks />
             </div>
@@ -32,7 +31,7 @@ export default async function Home() {
         <p className="bg-[#555] mt-6 p-4">
           Sorry, I'm currently working on rebuilding the form for this page,
           while you wait, you can instead send me a message at{' '}
-          <a href="mailto:me@nickgriffin.uk">me@nickgriffin.uk</a>
+          <Link href="mailto:me@nickgriffin.uk">me@nickgriffin.uk</Link>
         </p>
         <div className="pt-20"></div>
       </section>

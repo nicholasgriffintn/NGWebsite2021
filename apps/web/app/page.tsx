@@ -23,9 +23,9 @@ export default async function Home() {
         <div className="grid grid-cols-5 gap-4">
           <div className="col-span-5 md:col-span-3 lg:col-span-4 pt-5">
             <div className="text-primary-foreground lg:max-w-[75%]">
-              <h2 className="text-2xl md:text-4xl font-bold text-primary-foreground">
+              <h1 className="text-2xl md:text-4xl font-bold text-primary-foreground">
                 👋 Welcome to my website!
-              </h2>
+              </h1>
               <p>
                 Thanks for visiting my site! As you might have read in the
                 title, my name is Nicholas Griffin and I am a Senior Software
