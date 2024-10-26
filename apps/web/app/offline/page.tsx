@@ -1,8 +1,6 @@
 import { PageLayout } from '@/components/PageLayout';
 import { Link } from '@/components/Link';
 
-export const runtime = 'edge';
-
 export default function Home() {
   return (
     <PageLayout>

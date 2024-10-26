@@ -1,7 +1,5 @@
 import { PageLayout } from "@/components/PageLayout";
 
-export const runtime = "edge";
-
 export default function Home() {
 	return (
 		<PageLayout>
