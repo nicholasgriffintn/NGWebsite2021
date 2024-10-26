@@ -1,6 +1,8 @@
 import { ChevronDown } from "lucide-react";
 
 import { getRecentlyPlayed } from '@/lib/data/spotify';
+import { getProjects } from '../lib/data/projects';
+import { getGitHubRepos } from '@/lib/data/github';
 import { PageLayout } from '@/components/PageLayout';
 import { SpotifyWidget } from '@/components/SpotifyWidget';
 import { ContactLinks } from '@/components/ContactLinks';
@@ -10,9 +12,13 @@ export const revalidate = 60;
 
 async function getData() {
   const spotify = await getRecentlyPlayed();
+  const projects = await getProjects();
+  const repos = await getGitHubRepos({ limit: 8, offset: 1 });
 
   return {
     spotify,
+    projects,
+    repos,
   };
 }
 
