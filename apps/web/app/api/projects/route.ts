@@ -1,11 +1,13 @@
-export const runtime = "edge";
+import { getProjects } from '@/lib/data/projects';
 
-import data from "./data.json";
+export const runtime = 'edge';
 
 export async function GET() {
-	return Response.json(data, {
-		headers: {
-			"Cache-Control": "s-maxage=180000",
-		},
-	});
+  const data = await getProjects();
+
+  return Response.json(data, {
+    headers: {
+      'Cache-Control': 's-maxage=180000',
+    },
+  });
 }
