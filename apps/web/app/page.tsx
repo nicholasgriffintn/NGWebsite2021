@@ -37,9 +37,9 @@ export default async function Home() {
                 Feel free to scroll further down to find out more about me or my
                 projects, I've also added my contact links below.
               </p>
-              <h3 className="text-1xl md:text-2xl font-bold text-primary-foreground">
+              <h2 className="text-1xl md:text-2xl font-bold text-primary-foreground">
                 About me
-              </h3>
+              </h2>
               <p>
                 I would classify myself as a Full Stack Developer with a slight
                 bias towards frontend. I spend most of my dev time doing a range

@@ -7,7 +7,10 @@ export function Footer() {
       <div className="container flex items-center items-center justify-center py-4 gap-4">
         <div className="flex items-center space-x-4 py-2">
           <Avatar>
-            <AvatarImage src="/avatar.png" />
+            <AvatarImage
+              src="/avatar.png"
+              alt="Nicholas Griffin's initials as a logo"
+            />
             <AvatarFallback>NG</AvatarFallback>
           </Avatar>
         </div>

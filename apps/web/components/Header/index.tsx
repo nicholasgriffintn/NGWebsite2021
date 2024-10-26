@@ -10,15 +10,16 @@ export function Header() {
           <div className="flex items-center space-x-4 py-2">
             <Link href="/">
               <Avatar>
-                <AvatarImage src="/avatar.png" />
+                <AvatarImage
+                  src="/avatar.png"
+                  alt="Nicholas Griffin's initials as a logo"
+                />
                 <AvatarFallback>NG</AvatarFallback>
               </Avatar>
+              <span className="sr-only">Home</span>
             </Link>
           </div>
           <nav className="flex items-center space-x-6">
-            <Link href="/" underline={false}>
-              Home
-            </Link>
             <Link href="/contact" underline={false}>
               Contact
             </Link>

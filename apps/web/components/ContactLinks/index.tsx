@@ -22,6 +22,7 @@ export function ContactLinks() {
         target="_blank"
         href="https://twitter.com/ngriffin_uk"
         rel="noopener noreferrer"
+        title="Twitter"
       >
         <svg
           className="w-[24px] h-[24px] fill-white"
