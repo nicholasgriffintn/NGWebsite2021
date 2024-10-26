@@ -6,7 +6,7 @@ import { SpotifyWidget } from '@/components/SpotifyWidget';
 import { ContactLinks } from '@/components/ContactLinks';
 import { InnerPage } from '@/components/InnerPage';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 async function getData() {
   const spotify = await getRecentlyPlayed();
