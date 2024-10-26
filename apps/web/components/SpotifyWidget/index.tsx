@@ -11,8 +11,14 @@ export function SpotifyWidget({ data }: { data: RecentTracks | null }) {
     return null;
   }
 
-  const firstTrack =
-    data?.recenttracks?.track?.length > 0 ? data.recenttracks.track[0] : null;
+  const tracksList = data?.recenttracks;
+  // Create a new array that removes any duplicate tracks by mbid
+  const uniqueTracks = tracksList?.track.filter(
+    (track, index, self) =>
+      index === self.findIndex((t) => t.mbid === track.mbid)
+  );
+
+  const firstTrack = uniqueTracks?.length > 0 ? uniqueTracks[0] : null;
   const firstTrackImage = firstTrack?.image?.find(
     (element) => element.size === 'extralarge'
   )?.['#text'];
@@ -69,7 +75,7 @@ export function SpotifyWidget({ data }: { data: RecentTracks | null }) {
               ) : null}
             </div>
             <div className="spotify-widget-tracks">
-              {data.recenttracks.track.map((track, index) => {
+              {uniqueTracks.map((track, index) => {
                 if (index !== 0) {
                   const trackImage = track.image.find(
                     (element) => element.size === 'medium'
