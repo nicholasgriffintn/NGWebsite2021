@@ -6,7 +6,11 @@ import './styles.css';
 import ReturnImageFormattingUrl from '@/lib/returnImageFormattingUrl';
 import type { RecentTracks } from '@/types/spotify';
 
-export function SpotifyWidget({ data }: { data: RecentTracks }) {
+export function SpotifyWidget({ data }: { data: RecentTracks | null }) {
+  if (!data) {
+    return null;
+  }
+
   const firstTrack =
     data?.recenttracks?.track?.length > 0 ? data.recenttracks.track[0] : null;
   const firstTrackImage = firstTrack?.image?.find(

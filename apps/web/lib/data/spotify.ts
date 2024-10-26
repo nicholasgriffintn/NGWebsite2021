@@ -1,6 +1,6 @@
 import type { RecentTracks } from '@/types/spotify';
 
-export async function getRecentlyPlayed(): Promise<RecentTracks> {
+export async function getRecentlyPlayed(): Promise<RecentTracks | null> {
   const lastFmToken = process.env.LAST_FM_TOKEN;
 
   if (!lastFmToken) {
