@@ -26,8 +26,8 @@ async function getData() {
 export default async function Home() {
   const data = await getData();
 
-  const firstFeaturedProjects = data?.projects?.slice(0, 4);
-  const lastFeaturedProjects = data?.projects?.slice(4);
+  const firstFeaturedProjects = data?.projects?.slice(0, 3);
+  const lastFeaturedProjects = data?.projects?.slice(3);
 
   return (
     <PageLayout>
@@ -81,7 +81,7 @@ export default async function Home() {
                 projects:
               </p>
             </div>
-            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {firstFeaturedProjects?.map((project) => (
                 <ProjectCard key={project.name} project={project} />
               ))}
