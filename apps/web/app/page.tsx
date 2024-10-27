@@ -71,7 +71,7 @@ export default async function Home() {
           </div>
         </div>
         <div className="mx-break-out pt-5 mt-20 relative">
-          <div className="bg-[#171923] w-full min-h-[240px] absolute top-0 left-0"></div>
+          <div className="bg-[#171923] w-full min-h-[240px] absolute top-0 left-0" />
           <div className="container relative">
             <div className="text-center pb-5">
               <h2 className="text-2xl md:text-3xl font-bold text-primary-foreground md:pt-5">
