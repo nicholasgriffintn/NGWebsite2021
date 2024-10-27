@@ -42,7 +42,9 @@ export function ProjectCard({ project }: { project: Project }) {
         )}
       </CardContent>
       <CardFooter>
-        <Link href={project.url}>View Project</Link>
+        <Link href={project.url} muted>
+          View Project
+        </Link>
       </CardFooter>
     </Card>
   );
