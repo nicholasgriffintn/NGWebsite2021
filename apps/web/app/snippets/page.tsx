@@ -17,12 +17,12 @@ export default async function Home() {
   return (
     <PageLayout>
       <InnerPage>
+        <h1 className="text-2xl md:text-4xl font-bold text-primary-foreground">
+          Code Snippets
+        </h1>
         <div className="grid grid-cols-5 gap-4">
           <div className="col-span-5 md:col-span-3 lg:col-span-3 pt-5">
             <div className="text-primary-foreground lg:max-w-[100%] prose">
-              <h1 className="text-2xl md:text-4xl font-bold text-primary-foreground">
-                Code Snippets
-              </h1>
               <p>
                 These are some random code snippets that I have made available
                 on Github's Gists platform. You'll find a range of things here
