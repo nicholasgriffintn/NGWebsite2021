@@ -105,11 +105,11 @@ export default async function Home({ params }) {
               )}
             </div>
           </div>
-          {post.metadata.image && (
+          {post.metadata.image && !post.metadata.hideFeaturedImage && (
             <div className="col-span-5 md:col-span-2 lg:col-span-1">
               <img
                 src={post.metadata.image}
-                alt={post.metadata.title}
+                alt={post.metadata.imageAlt || post.metadata.title}
                 className="w-full h-full object-cover rounded-lg"
               />
             </div>

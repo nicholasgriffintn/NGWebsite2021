@@ -16,7 +16,7 @@ export function BlogCard({ post }) {
       {post.metadata.image && (
         <img
           src={post.metadata.image}
-          alt={post.metadata.title}
+          alt={post.metadata.imageAlt || post.metadata.title}
           className="w-full"
         />
       )}

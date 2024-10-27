@@ -4,5 +4,7 @@ export type Metadata = {
   updated?: string;
   description?: string;
   image?: string;
+  imageAlt?: string;
+  hideFeaturedImage?: boolean;
   archived?: boolean;
 };
