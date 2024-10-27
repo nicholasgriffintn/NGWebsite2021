@@ -3,7 +3,7 @@ import { Link } from '@/components/Link';
 export function Footer() {
   return (
     <footer className="w-full">
-      <div className="container md:flex items-center items-center justify-center py-4 gap-4">
+      <div className="container md:flex items-left justify-left py-4 gap-4">
         <div>
           <span>
             © {new Date().getFullYear()} Nicholas Griffin.{' '}
@@ -20,7 +20,7 @@ export function Footer() {
           <span> | </span>
         </div>
         <div>
-          <nav className="flex items-center space-x-4">
+          <nav className="flex items-left space-x-4">
             <Link href="https://undefined.computer">Undefined</Link>
             <span> | </span>
             <Link

@@ -85,7 +85,7 @@ export default async function Home() {
         <div className="mx-break-out pt-5 mt-20 relative">
           <div className="bg-[#171923] w-full min-h-[240px] absolute top-0 left-0" />
           <div className="container relative">
-            <div className="text-center pb-5">
+            <div className="text-left pb-5">
               <h2 className="text-2xl md:text-3xl font-bold text-primary-foreground md:pt-5">
                 What's going on?
               </h2>
@@ -105,7 +105,7 @@ export default async function Home() {
                   ))}
                 </div>
               )}
-              <div className="w-full flex justify-center pt-5">
+              <div className="w-full flex justify-left pt-5">
                 <Link
                   href="/blog"
                   className={buttonVariants({ variant: 'default', size: 'lg' })}
@@ -115,7 +115,7 @@ export default async function Home() {
                 </Link>
               </div>
             </section>
-            <div className="text-center pb-5">
+            <div className="text-left pt-5 pb-5">
               <h2 className="text-2xl md:text-3xl font-bold text-primary-foreground md:pt-5">
                 So what is it that you do? 🤔
               </h2>

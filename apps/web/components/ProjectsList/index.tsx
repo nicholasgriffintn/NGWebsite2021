@@ -44,7 +44,7 @@ export function ProjectsList({
         ))}
       </div>
       {!showAll && (
-        <div className="w-full flex justify-center pt-5">
+        <div className="w-full flex justify-left pt-5">
           <Link
             href="/projects"
             className={buttonVariants({ variant: 'default', size: 'lg' })}
