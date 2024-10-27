@@ -14,11 +14,14 @@ export function BlogCard({ post }) {
   return (
     <Card className="overflow-hidden">
       {post.metadata.image && (
-        <img
-          src={post.metadata.image}
-          alt={post.metadata.imageAlt || post.metadata.title}
-          className="w-full"
-        />
+        <div className="max-h-[190px] overflow-hidden">
+          <img
+            src={post.metadata.image}
+            alt={post.metadata.imageAlt || post.metadata.title}
+            className="w-full object-cover"
+            loading="lazy"
+          />
+        </div>
       )}
       <CardHeader>
         <CardTitle>

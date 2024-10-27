@@ -29,7 +29,14 @@ export function ProjectCard({ project }: { project: Project }) {
   return (
     <Card key={project.name} className="overflow-hidden">
       {project.image && (
-        <img src={project.image} alt={project.name} className="w-full" />
+        <div className="max-h-[190px] overflow-hidden">
+          <img
+            src={project.image}
+            alt={project.imageAlt || project.name}
+            className="w-full object-cover"
+            loading="lazy"
+          />
+        </div>
       )}
       <CardHeader>
         <CardTitle>{project.name}</CardTitle>
