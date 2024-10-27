@@ -20,6 +20,9 @@ export function Header() {
             </Link>
           </div>
           <nav className="flex items-center space-x-6">
+            <Link href="/projects" underline={false}>
+              Projects
+            </Link>
             <Link href="/setup" underline={false}>
               Setup
             </Link>

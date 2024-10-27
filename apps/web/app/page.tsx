@@ -7,19 +7,19 @@ import { PageLayout } from '@/components/PageLayout';
 import { SpotifyWidget } from '@/components/SpotifyWidget';
 import { ContactLinks } from '@/components/ContactLinks';
 import { InnerPage } from '@/components/InnerPage';
-import { FeaturedProjectsList } from '@/components/FeaturedProjectsList';
+import { ProjectsList } from '@/components/ProjectsList';
 
 export const revalidate = 60;
 
 async function getData() {
   const spotify = await getRecentlyPlayed();
   const projects = await getProjects();
-  const repos = await getGitHubRepos({ limit: 8, offset: 1 });
+  const featuredRepos = await getGitHubRepos({ limit: 8, offset: 1 });
 
   return {
     spotify,
     projects,
-    repos,
+    featuredRepos,
   };
 }
 
@@ -35,7 +35,7 @@ export default async function Home() {
         <div className="grid grid-cols-5 gap-4">
           <div className="col-span-5 md:col-span-3 lg:col-span-4 pt-5">
             <div className="text-primary-foreground lg:max-w-[75%]">
-              <h1 className="text-2xl md:text-4xl font-bold text-primary-foreground md:pt-5">
+              <h1 className="text-2xl md:text-4xl font-bold text-primary-foreground lg:pt-5">
                 👋 Welcome to my website!
               </h1>
               <p>
@@ -60,7 +60,7 @@ export default async function Home() {
               <ContactLinks />
             </div>
           </div>
-          <div className="col-span-5 md:col-span-2 lg:col-span-1 pt-5">
+          <div className="col-span-5 md:col-span-2 lg:col-span-1 pt-10 lg:pt-5">
             <div>
               <SpotifyWidget data={data?.spotify} />
               <span id="MusicOpeningWrapperTitle">
@@ -81,9 +81,9 @@ export default async function Home() {
                 alongside my most recently updated GitHub repos:
               </p>
             </div>
-            <FeaturedProjectsList
+            <ProjectsList
               firstFeaturedProjects={firstFeaturedProjects}
-              repos={data?.repos}
+              featuredRepos={data?.featuredRepos}
               lastFeaturedProjects={lastFeaturedProjects}
             />
           </div>

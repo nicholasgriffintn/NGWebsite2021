@@ -6,10 +6,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  CardFooter,
 } from '@/components/ui/card';
 import { Link } from '@/components/Link';
 import type { Project } from '@/types/projects';
+import { buttonVariants } from '@/components/ui/button';
 
 function parseMarkdownLinks(text: string) {
   return text?.replace(
@@ -40,12 +40,19 @@ export function ProjectCard({ project }: { project: Project }) {
             {parse(parseMarkdownLinks(project.description))}
           </CardDescription>
         )}
+        <div className="w-full flex justify-left">
+          <Link
+            href={project.url}
+            muted
+            target="_blank"
+            rel="noopener noreferer"
+            className={buttonVariants({ variant: 'outline', size: 'sm' })}
+            underline={false}
+          >
+            View Project
+          </Link>
+        </div>
       </CardContent>
-      <CardFooter>
-        <Link href={project.url} muted target="_blank" rel="noopener noreferer">
-          View Project
-        </Link>
-      </CardFooter>
     </Card>
   );
 }
