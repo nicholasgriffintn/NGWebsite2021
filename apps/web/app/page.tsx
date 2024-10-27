@@ -8,6 +8,8 @@ import { SpotifyWidget } from '@/components/SpotifyWidget';
 import { ContactLinks } from '@/components/ContactLinks';
 import { InnerPage } from '@/components/InnerPage';
 import { ProjectsList } from '@/components/ProjectsList';
+import { buttonVariants } from '@/components/ui/button';
+import { Link } from '@/components/Link';
 
 export const revalidate = 60;
 
@@ -89,10 +91,15 @@ export default async function Home() {
                 There might not be a lot here but I hope that it will at least
                 be interesting, at least to me.
               </p>
-              <p className="bg-[#555] mt-6 p-4 max-w-[50%] m-auto">
-                Sorry, I'm currently working on rebuilding the blog. Please bare
-                with me.
-              </p>
+              <div className="w-full flex justify-center pt-5">
+                <Link
+                  href="/blog"
+                  className={buttonVariants({ variant: 'outline', size: 'lg' })}
+                  underline={false}
+                >
+                  View all of my blog posts
+                </Link>
+              </div>
             </div>
             <div className="text-center pb-5">
               <h2 className="text-2xl md:text-3xl font-bold text-primary-foreground md:pt-5">

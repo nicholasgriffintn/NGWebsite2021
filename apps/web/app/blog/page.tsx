@@ -1,14 +1,24 @@
 import { PageLayout } from '@/components/PageLayout';
 import { InnerPage } from '@/components/InnerPage';
-
-// TODO: Add new blog list and functionality
+import { getBlogPosts } from '@/lib/blog';
+import { Link } from '@/components/Link';
 
 export const metadata = {
   title: 'Blog',
   description: 'A collection of blog posts that I have written.',
 };
 
+async function getData() {
+  const posts = await getBlogPosts();
+
+  return {
+    posts,
+  };
+}
+
 export default async function Home() {
+  const data = await getData();
+
   return (
     <PageLayout>
       <InnerPage>
@@ -28,10 +38,15 @@ export default async function Home() {
             </div>
           </div>
         </div>
-        <p className="bg-[#555] mt-6 p-4">
-          Sorry, I'm currently working on rebuilding the blog list for this
-          page.
-        </p>
+        {data?.posts && (
+          <ul>
+            {data.posts.map((post) => (
+              <li key={post.slug}>
+                <Link href={`/blog/${post.slug}`}>{post.metadata.title}</Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </InnerPage>
     </PageLayout>
   );
