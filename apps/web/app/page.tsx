@@ -75,22 +75,6 @@ export default async function Home() {
           <div className="container relative">
             <div className="text-center pb-5">
               <h2 className="text-2xl md:text-3xl font-bold text-primary-foreground md:pt-5">
-                What's going on?
-              </h2>
-              <p>
-                Below you will find some of the blog posts that I have wrote (if
-                that is still working), I used to write a lot and I'm looking to
-                write blog posts more about the projects that I am working on.
-                There might not be a lot here but I hope that it will at least
-                be interesting, at least to me.
-              </p>
-              <p className="bg-[#555] mt-6 p-4 max-w-[50%] m-auto">
-                Sorry, I'm currently working on rebuilding the blog. Please bare
-                with me.
-              </p>
-            </div>
-            <div className="text-center pb-5">
-              <h2 className="text-2xl md:text-3xl font-bold text-primary-foreground md:pt-5">
                 So what is it that you do? 🤔
               </h2>
               <p>
