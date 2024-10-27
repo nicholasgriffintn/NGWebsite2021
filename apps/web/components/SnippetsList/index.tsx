@@ -14,7 +14,6 @@ export function SnippetsList({ gists }: { gists: GitHubGists | undefined }) {
                   {gist.description && (
                     <Link
                       href={gist.html_url}
-                      muted
                       target="_blank"
                       rel="noopener noreferer"
                       underline={false}
