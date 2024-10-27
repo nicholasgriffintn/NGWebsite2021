@@ -64,7 +64,7 @@
 }
 
 .spotify-widget-tracks {
-  max-height: 90px;
+  max-height: 95px;
   overflow-y: scroll;
   overflow-x: hidden;
 }

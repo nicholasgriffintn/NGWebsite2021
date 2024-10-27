@@ -50,25 +50,25 @@ export default async function Home() {
               <h1 className="text-2xl md:text-4xl font-bold text-primary-foreground">
                 👋 Welcome to my website!
               </h1>
+              <p>Thanks for visiting my site!</p>
               <p>
-                Thanks for visiting my site! My name is Nicholas Griffin and I
-                am a Senior Software Engineer from the UK.
+                I'm Nicholas Griffin, a Senior Software Engineer from the UK,
+                currently with the BBC.
               </p>
               <h2 className="text-1xl md:text-2xl font-bold text-primary-foreground">
                 About me
               </h2>
               <p>
-                I would classify myself as a Full Stack Developer with a slight
-                bias towards frontend. I spend most of my dev time doing a range
-                of personal development projects around the web alongside my day
-                job at the BBC.
+                I'm a Full Stack Developer, leaning a bit more towards frontend
+                work. My time outside of my main role is spent on various
+                personal projects across the web.
               </p>
               <p>
-                Outside of development, I enjoy the odd read and love to listen
-                to music, with an aim to find some good new stuff, however,
-                that's mostly about trying to beat the algorithm.
+                Beyond development, I enjoy reading now and then and have a
+                passion for discovering new music — mainly trying to outsmart
+                the algorithms.
               </p>
-              <p>You can find out more about me and my projects below.</p>
+              <p>Feel free to explore more about me and my projects below.</p>
               <ContactLinks />
             </div>
           </div>
