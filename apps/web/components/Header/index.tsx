@@ -19,9 +19,15 @@ export function Header() {
               <span className="sr-only">Home</span>
             </Link>
           </div>
-          <nav className="flex items-center space-x-6">
+          <nav className="flex items-center space-x-6 hidden md:block">
+            <Link href="/blog" underline={false}>
+              Blog
+            </Link>
             <Link href="/projects" underline={false}>
               Projects
+            </Link>
+            <Link href="/bookmarks" underline={false}>
+              Bookmarks
             </Link>
             <Link href="/setup" underline={false}>
               Setup

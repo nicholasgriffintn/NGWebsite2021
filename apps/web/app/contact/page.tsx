@@ -3,6 +3,8 @@ import { ContactLinks } from '@/components/ContactLinks';
 import { Link } from '@/components/Link';
 import { InnerPage } from '@/components/InnerPage';
 
+// TODO: Add form: https://github.com/nicholasgriffintn/NGWebsite2021/blob/16930e6c23a6a57a2ff61c1f802bcdd2c35aced4/src/pages/contact.js
+
 export default async function Home() {
   return (
     <PageLayout>
