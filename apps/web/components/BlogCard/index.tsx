@@ -27,12 +27,12 @@ export function BlogCard({ post }) {
         </CardTitle>
       </CardHeader>
       <CardContent>
+        <CardDescription>{post.metadata.description}</CardDescription>
         {post.metadata.date && (
           <p className="text-sm text-muted-foreground">
             Published on {formatDate(post.metadata.date)}
           </p>
         )}
-        <CardDescription>{post.metadata.description}</CardDescription>
         <Link
           href={`/blog/${post.slug}`}
           className={buttonVariants({
