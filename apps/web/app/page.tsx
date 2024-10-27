@@ -86,7 +86,7 @@ export default async function Home() {
                 <ProjectCard key={project.name} project={project} />
               ))}
             </ul>
-            {data?.repos?.length > 0 && (
+            {data?.repos && data.repos.length > 0 && (
               <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                 {data.repos.map((repo) => (
                   <ProjectCard
