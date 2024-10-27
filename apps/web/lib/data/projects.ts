@@ -34,14 +34,12 @@ const data: Projects = [
     description:
       'TechNutty was a technology news and reviews site that I started during college/uni in 2011, I ran it for some time as a side project and a way of experimenting with developement. Sadly, a few years back I did choose to shut down this site, so Ive included a link to wayback machine instead :)',
     url: 'https://web.archive.org/web/collections/*/https://technutty.co.uk',
-    image: '/images/projects/technutty.png',
   },
   {
     name: 'Side Projects',
     description:
       'Alongside my day job, I have a number of side projects that I work on, some of which are open source and can be found on my GitHub. I have a number of projects that I have worked on over the years, some of which are still in development, others are just experiments.',
     url: 'https://github.com/nicholasgriffintn',
-    image: '/images/projects/ng_github.png',
   },
 ];
 

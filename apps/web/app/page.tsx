@@ -1,12 +1,13 @@
 import { ChevronDown } from "lucide-react";
 
 import { getRecentlyPlayed } from '@/lib/data/spotify';
-import { getProjects } from '../lib/data/projects';
+import { getProjects } from '@/lib/data/projects';
 import { getGitHubRepos } from '@/lib/data/github';
 import { PageLayout } from '@/components/PageLayout';
 import { SpotifyWidget } from '@/components/SpotifyWidget';
 import { ContactLinks } from '@/components/ContactLinks';
 import { InnerPage } from '@/components/InnerPage';
+import { ProjectCard } from '@/components/ProjectCard';
 
 export const revalidate = 60;
 
@@ -24,6 +25,9 @@ async function getData() {
 
 export default async function Home() {
   const data = await getData();
+
+  const firstFeaturedProjects = data?.projects?.slice(0, 4);
+  const lastFeaturedProjects = data?.projects?.slice(4);
 
   return (
     <PageLayout>
@@ -63,6 +67,44 @@ export default async function Home() {
                 What I&apos;m listening to <ChevronDown />
               </span>
             </div>
+          </div>
+        </div>
+        <div className="mx-break-out pt-5 mt-20 relative">
+          <div className="bg-[#171923] w-full min-h-[240px] absolute top-0 left-0"></div>
+          <div className="container relative">
+            <div className="text-center pb-5">
+              <h2 className="text-2xl md:text-3xl font-bold text-primary-foreground md:pt-5">
+                So what is it that you do? 🤔
+              </h2>
+              <p>
+                I'm not sure that I actually know but here's some of my recent
+                projects:
+              </p>
+            </div>
+            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {firstFeaturedProjects?.map((project) => (
+                <ProjectCard key={project.name} project={project} />
+              ))}
+            </ul>
+            {data?.repos?.length > 0 && (
+              <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+                {data.repos.map((repo) => (
+                  <ProjectCard
+                    key={repo.name}
+                    project={{
+                      name: repo.name,
+                      description: repo.description,
+                      url: repo.html_url,
+                    }}
+                  />
+                ))}
+              </ul>
+            )}
+            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mt-4">
+              {lastFeaturedProjects?.map((project) => (
+                <ProjectCard key={project.name} project={project} />
+              ))}
+            </ul>
           </div>
         </div>
       </InnerPage>
