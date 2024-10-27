@@ -41,16 +41,35 @@ export function ProjectCard({ project }: { project: Project }) {
           </CardDescription>
         )}
         <div className="w-full flex justify-left">
-          <Link
-            href={project.url}
-            muted
-            target="_blank"
-            rel="noopener noreferer"
-            className={buttonVariants({ variant: 'outline', size: 'sm' })}
-            underline={false}
-          >
-            View Project
-          </Link>
+          {project.url && (
+            <Link
+              href={project.url}
+              muted
+              target="_blank"
+              rel="noopener noreferer"
+              className={buttonVariants({ variant: 'outline', size: 'sm' })}
+              underline={false}
+            >
+              View Project
+            </Link>
+          )}
+          {project.links && (
+            <div className="flex flex-wrap gap-2">
+              {project.links.map((link) => (
+                <Link
+                  key={link.url}
+                  href={link.url}
+                  muted
+                  target="_blank"
+                  rel="noopener noreferer"
+                  className={buttonVariants({ variant: 'outline', size: 'sm' })}
+                  underline={false}
+                >
+                  {link.title}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
