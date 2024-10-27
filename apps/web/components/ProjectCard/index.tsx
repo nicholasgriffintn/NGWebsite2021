@@ -42,7 +42,7 @@ export function ProjectCard({ project }: { project: Project }) {
         )}
       </CardContent>
       <CardFooter>
-        <Link href={project.url} muted>
+        <Link href={project.url} muted target="_blank" rel="noopener noreferer">
           View Project
         </Link>
       </CardFooter>
