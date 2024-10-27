@@ -4,7 +4,7 @@ const data: Projects = [
   {
     name: 'BBC Projects',
     description:
-      'Recently I worked on rebuilding the site to transition it to the new [WebCore](https://www.bbc.co.uk/webarchive/https%3A%2F%2Fwww.bbc.co.uk%2Fblogs%2Finternet%2Fentries%2F8673fe2a-e876-45fc-9a5f-203c049c9f9c) service for a more performant and maintainable site, which renewing it to be more accessible and user friendly. Alongside that, I also spend time working on open source projects such as [SQS Consumer](https://github.com/bbc/sqs-consumer) and my general day job, which involves helping teams enhance their data and experimentation capabilities.',
+      'Recently I worked on rebuilding the site to transition it to the new [WebCore](https://www.bbc.co.uk/webarchive/https%3A%2F%2Fwww.bbc.co.uk%2Fblogs%2Finternet%2Fentries%2F8673fe2a-e876-45fc-9a5f-203c049c9f9c) service for a more performant and maintainable site, while renewing it to be more accessible and user friendly. Alongside that, I also spend time working on open source projects such as [SQS Consumer](https://github.com/bbc/sqs-consumer) and my general day job, which involves helping teams enhance their data and experimentation capabilities.',
     url: 'https://bbc.co.uk/opensource',
     image: '/images/projects/bbc_open_source.png',
   },
