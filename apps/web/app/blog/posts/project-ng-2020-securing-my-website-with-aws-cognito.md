@@ -225,7 +225,7 @@ Super simple.
 
 Here's what the finished product looks like:
 
-![]()
+
 
 This will obviously need some expansion with error messages and not using prompts for our responses, but I'll do that in the background.
 

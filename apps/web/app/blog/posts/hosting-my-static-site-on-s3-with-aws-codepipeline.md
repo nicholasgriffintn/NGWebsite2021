@@ -19,7 +19,7 @@ You could just create two repos for this and that would work, however, I prefer 
 
 For this, I left the master branch as my branch for my website's build and then created a second branch for the deployments, called master-deploy.
 
-![]()
+
 
 You will find that Github might tell you one branch is outdated with this method, as you will have to commit seperately every time you push new content, however, in my opinion, it makes the whole process cleaner and you can probably ignore most of that annyway as once this is set up, you probably won't have to go to the UI all that often.
 
@@ -66,7 +66,7 @@ Once you have done both of those steps you'll be ready to set up your pipeline f
 
 To do this, head over to CodePipeline in AWS and select 'New Pipeline', give your pipeline a fitting name and then select 'Next'.
 
-![]()
+
 
 Next you'll need to add a source provider.
 
@@ -78,7 +78,7 @@ Once that's done you can move onto the next step, which should be the build stag
 
 On the build stage, you will need to select the deploy provider and set up the settings.
 
-![]()
+
 
 For this, we will be using Amazon S3 as the provider.
 

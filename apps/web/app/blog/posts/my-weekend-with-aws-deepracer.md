@@ -15,7 +15,7 @@ The whole process of getting started with AWS DeepRacer and concept of Reinforce
 
 Thankfully, it isn't actually that hard to do. Simply head on over to the [AWS DeepRacer](https://console.aws.amazon.com/deepracer/) page in your console and hit the orange 'Get Started' button, that will take you to another page where you need to click another button in order to create the resources required.
 
-![]()
+
 
 There's also a link to a document about learning RL on this page that you should definitely check out.
 
@@ -31,7 +31,7 @@ Then you'll likely have to do at least an hour or two of training before you can
 
 That said, I can't say that I didn't find the experience enjoyable, nor that I didn't learn anything from, nor that I didn't have any fun.
 
-![]()
+
 
 As you can see from the GIF above, there are a lot of options, but it actually isn't that hard to get one going fast.
 
@@ -69,7 +69,7 @@ So in this example, the car will get the highest reward if it is closer to the c
 
 For this first one, I did only that and then used the default settings.
 
-![]()
+
 
 The great thing about DeepRacer is that you can actually watch a live stream of your model training in the simulation while it is doing so. This means that you can quickly see where you could make optimisations to your model and what optimisations you should probably tone down.
 
@@ -144,7 +144,7 @@ I then trained the model further and decreased that time too 25.932 at rank 115.
 
 I was pretty happy at that point and I've left it there, gradually decreasing down to 155 between the time of me returning to my real job and writing this post.
 
-![]()
+
 
 Ultimately, for me, the whole process of creating code, testing it, reiterating it and then finally succeeding at a goal was great. As developers, we are often doing the same project month after month, not really moving between extremely different technologies and generally staying within the same lane that we started on.
 

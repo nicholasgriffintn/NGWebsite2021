@@ -181,7 +181,7 @@ export default class Index extends React.Component {
 
 It should look something like this:
 
-![Generate two-factor code]()
+
 
 ## Creating an API for verifying two-factor codes
 
@@ -225,7 +225,7 @@ Super simple right?
 
 You can use this API to ensure that your user has inputted a two-factor code before allowing them access to any of their details, for this post, I've done a simple bit of code that calls the API on form submission.
 
-![Verify two-factor code]()
+
 
 ```javascript
 import React from "react";

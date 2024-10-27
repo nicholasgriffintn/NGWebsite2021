@@ -24,7 +24,7 @@ This is super simple if your domain is on Route 53 as AWS will update your recor
 
 You’ll want to make sure that you also generate a record for incoming emails or this won’t work.
 
-![SES Email Verification]()
+
 
 If you want to be able to send emails from SES, you’ll also want to move your account out of “sandbox” mode, which can be done from the “Sending Statistics” page.
 

@@ -89,11 +89,11 @@ When live we can request an image like this:
 
 Here's an example of one with width 400 and height 200:
 
-![]()
+
 
 And here's another that's been set to 80x80:
 
-![]()
+
 
 Yes, it really is that simple and this could save you a ton of money that you would otherwise have to spend on a service like Imgix, granted without the crop and editing features for now, we'll get there.
 
