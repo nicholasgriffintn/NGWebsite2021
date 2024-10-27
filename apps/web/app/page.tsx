@@ -11,6 +11,8 @@ import { ProjectsList } from '@/components/ProjectsList';
 import { buttonVariants } from '@/components/ui/button';
 import { Link } from '@/components/Link';
 
+// TODO: Render non-archived posts on the home page
+
 export const revalidate = 60;
 
 export const metadata = {

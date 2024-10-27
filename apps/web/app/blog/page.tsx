@@ -3,6 +3,8 @@ import { InnerPage } from '@/components/InnerPage';
 import { getBlogPosts } from '@/lib/blog';
 import { Link } from '@/components/Link';
 
+// TODO: Make the list of blog posts a little better.
+
 export const metadata = {
   title: 'Blog',
   description: 'A collection of blog posts that I have written.',
