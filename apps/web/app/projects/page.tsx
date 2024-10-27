@@ -8,6 +8,11 @@ import { getProjects } from '@/lib/data/projects';
 import { getGitHubRepos } from '@/lib/data/github';
 import { ProjectsList } from '@/components/ProjectsList';
 
+export const metadata = {
+  title: 'Projects',
+  description: 'A collection of projects that I have worked on.',
+};
+
 async function getData() {
   const spotify = await getRecentlyPlayed();
   const projects = await getProjects();
@@ -38,7 +43,7 @@ export default async function Home() {
         </h1>
         <div className="grid grid-cols-5 gap-4">
           <div className="col-span-5 md:col-span-3 lg:col-span-3 pt-5">
-            <div className="text-primary-foreground lg:max-w-[100%] prose">
+            <div className="text-primary-foreground lg:max-w-[100%] prose dark:prose-invert">
               <p>
                 It's my aim to spend a big percentage of my personal time on a
                 number of projects.

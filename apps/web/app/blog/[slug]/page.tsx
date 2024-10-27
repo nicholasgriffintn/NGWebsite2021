@@ -126,7 +126,9 @@ export default async function Home({ params }) {
             </p>
           </div>
         )}
-        <div className="prose">{post.content}</div>
+        <article className="prose dark:prose-invert mt-10 border-t-2 pt-10 w-full">
+          <CustomMDX source={post.content} />
+        </article>
       </InnerPage>
     </PageLayout>
   );

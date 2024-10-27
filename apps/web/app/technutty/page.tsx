@@ -2,6 +2,12 @@ import { PageLayout } from '@/components/PageLayout';
 import { Link } from '@/components/Link';
 import { InnerPage } from '@/components/InnerPage';
 
+export const metadata = {
+  title: 'TechNutty',
+  description:
+    'TechNutty was a technology news site that was run by Nicholas Griffin.',
+};
+
 export default async function Home() {
   return (
     <PageLayout>

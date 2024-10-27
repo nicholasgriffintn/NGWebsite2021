@@ -11,6 +11,11 @@ import { ProjectsList } from '@/components/ProjectsList';
 
 export const revalidate = 60;
 
+export const metadata = {
+  title: 'Home',
+  description: 'THe personal website of Nicholas Griffin',
+};
+
 async function getData() {
   const spotify = await getRecentlyPlayed();
   const projects = await getProjects();

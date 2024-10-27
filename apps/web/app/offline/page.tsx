@@ -1,6 +1,11 @@
 import { PageLayout } from '@/components/PageLayout';
 import { Link } from '@/components/Link';
 
+export const metadata = {
+  title: 'Offline',
+  description: 'You are offline right now.',
+};
+
 export default function Home() {
   return (
     <PageLayout>

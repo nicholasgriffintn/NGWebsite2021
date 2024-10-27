@@ -3,6 +3,11 @@ import { InnerPage } from '@/components/InnerPage';
 
 // TODO: Add new blog list and functionality
 
+export const metadata = {
+  title: 'Blog',
+  description: 'A collection of blog posts that I have written.',
+};
+
 export default async function Home() {
   return (
     <PageLayout>
