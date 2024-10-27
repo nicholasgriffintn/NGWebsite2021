@@ -1,9 +1,7 @@
 import { PageLayout } from '@/components/PageLayout';
 import { InnerPage } from '@/components/InnerPage';
 import { getBlogPosts } from '@/lib/blog';
-import { Link } from '@/components/Link';
-
-// TODO: Make the list of blog posts a little better.
+import { BlogCard } from '@/components/BlogCard';
 
 export const metadata = {
   title: 'Blog',
@@ -41,13 +39,11 @@ export default async function Home() {
           </div>
         </div>
         {data?.posts && (
-          <ul>
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
             {data.posts.map((post) => (
-              <li key={post.slug}>
-                <Link href={`/blog/${post.slug}`}>{post.metadata.title}</Link>
-              </li>
+              <BlogCard key={post.slug} post={post} />
             ))}
-          </ul>
+          </div>
         )}
       </InnerPage>
     </PageLayout>

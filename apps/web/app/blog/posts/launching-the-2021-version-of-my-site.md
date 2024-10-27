@@ -1,8 +1,13 @@
 ---
 title: "Launching the 2021 version of my site"
 description: "It's that time again!"
+<<<<<<< Updated upstream
 date: "Saturday, August 21 2021 9:33 pm"
 updated: "Saturday, August 21 2021 9:56 pm"
+=======
+date: "2021-08-21T21:33"
+updated: "2021-08-21T21:56"
+>>>>>>> Stashed changes
 archived: true
 ---
 

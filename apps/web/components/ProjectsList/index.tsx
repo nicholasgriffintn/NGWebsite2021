@@ -19,13 +19,13 @@ export function ProjectsList({
 }) {
   return (
     <section>
-      <ul className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
         {firstFeaturedProjects?.map((project) => (
           <ProjectCard key={project.name} project={project} />
         ))}
-      </ul>
+      </div>
       {featuredRepos && featuredRepos.length > 0 && (
-        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
           {featuredRepos.map((repo) => (
             <ProjectCard
               key={repo.name}
@@ -36,26 +36,26 @@ export function ProjectsList({
               }}
             />
           ))}
-        </ul>
+        </div>
       )}
-      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mt-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mt-4">
         {lastFeaturedProjects?.map((project) => (
           <ProjectCard key={project.name} project={project} />
         ))}
-      </ul>
+      </div>
       {!showAll && (
         <div className="w-full flex justify-center pt-5">
           <Link
             href="/projects"
-            className={buttonVariants({ variant: 'outline', size: 'lg' })}
+            className={buttonVariants({ variant: 'default', size: 'lg' })}
             underline={false}
           >
-            View all projects
+            View all of my projects
           </Link>
         </div>
       )}
       {showAll && repos && repos.length > 0 && (
-        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
           {repos.map((repo) => (
             <ProjectCard
               key={repo.name}
@@ -66,7 +66,7 @@ export function ProjectsList({
               }}
             />
           ))}
-        </ul>
+        </div>
       )}
     </section>
   );

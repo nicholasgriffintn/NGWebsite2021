@@ -1,7 +1,11 @@
 ---
 title: "Adding authentication to our Express blog with Passport.js"
 description: "Time to make things secure"
+<<<<<<< Updated upstream
 date: "19-04-2019 15:48"
+=======
+date: "2019-04-19T15:48"
+>>>>>>> Stashed changes
 archived: true
 ---
 

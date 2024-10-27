@@ -10,8 +10,8 @@ import { InnerPage } from '@/components/InnerPage';
 import { ProjectsList } from '@/components/ProjectsList';
 import { buttonVariants } from '@/components/ui/button';
 import { Link } from '@/components/Link';
-
-// TODO: Render non-archived posts on the home page
+import { getBlogPosts } from '@/lib/blog';
+import { BlogCard } from '@/components/BlogCard';
 
 export const revalidate = 60;
 
@@ -24,11 +24,14 @@ async function getData() {
   const spotify = await getRecentlyPlayed();
   const projects = await getProjects();
   const featuredRepos = await getGitHubRepos({ limit: 8, offset: 1 });
+  const blogPosts = await getBlogPosts();
+  const firstSixPosts = blogPosts.slice(0, 6);
 
   return {
     spotify,
     projects,
     featuredRepos,
+    blogPosts: firstSixPosts,
   };
 }
 
@@ -93,16 +96,25 @@ export default async function Home() {
                 There might not be a lot here but I hope that it will at least
                 be interesting, at least to me.
               </p>
+            </div>
+            <section>
+              {data?.blogPosts && (
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
+                  {data.blogPosts.map((post) => (
+                    <BlogCard key={post.slug} post={post} />
+                  ))}
+                </div>
+              )}
               <div className="w-full flex justify-center pt-5">
                 <Link
                   href="/blog"
-                  className={buttonVariants({ variant: 'outline', size: 'lg' })}
+                  className={buttonVariants({ variant: 'default', size: 'lg' })}
                   underline={false}
                 >
                   View all of my blog posts
                 </Link>
               </div>
-            </div>
+            </section>
             <div className="text-center pb-5">
               <h2 className="text-2xl md:text-3xl font-bold text-primary-foreground md:pt-5">
                 So what is it that you do? 🤔

@@ -1,7 +1,11 @@
 ---
 title: "Project NG 2020: Re-launching my personal website"
 description: "Bringing it back to a server"
+<<<<<<< Updated upstream
 date: "Thursday, April 16 2020 3:48 pm"
+=======
+date: "2020-04-16T15:48"
+>>>>>>> Stashed changes
 archived: true
 ---
 

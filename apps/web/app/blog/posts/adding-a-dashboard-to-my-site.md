@@ -1,7 +1,7 @@
 ---
-title: "Adding a dashboard to my site"
+title: 'Adding a dashboard to my site'
 description: "It's time to expand Project NG 2020 with a new dashboard for publishing and editing content"
-date: "Saturday, May 9 2020 3:34 pm"
+date: '2020-05-09T15:34'
 archived: true
 ---
 
@@ -22,9 +22,9 @@ server.post(`/api/admin/content`, limiter, async function (req, res) {
   if (req.token) {
     cognitoExpress.validate(req.token, async function (err, response) {
       if (err || !response) {
-        res.status(403).json({ error: "Token invalid" });
+        res.status(403).json({ error: 'Token invalid' });
       } else {
-        req.apicacheGroup = "content-api";
+        req.apicacheGroup = 'content-api';
 
         try {
           if (
@@ -70,7 +70,7 @@ server.post(`/api/admin/content`, limiter, async function (req, res) {
               res.status(200).json({ record });
             }
           } else {
-            res.status(500).json({ error: "Incorrect params" });
+            res.status(500).json({ error: 'Incorrect params' });
           }
         } catch (error) {
           res.status(500).json({ error: error });
@@ -78,7 +78,7 @@ server.post(`/api/admin/content`, limiter, async function (req, res) {
       }
     });
   } else {
-    res.status(403).json({ error: "Token invalid" });
+    res.status(403).json({ error: 'Token invalid' });
   }
 });
 ```
@@ -89,7 +89,7 @@ Basically, my blog has the following fields in the modal:
 
 - id
 - slug
-- title 
+- title
 - description
 - tags
 - thumbnail
@@ -173,13 +173,13 @@ Dashboard.getInitialProps = async (context) => {
   let postData = {};
 
   if (context.query && context.query.article) {
-    return fetch(config.appUrl + "/api/graphql", {
-      method: "POST",
+    return fetch(config.appUrl + '/api/graphql', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        operationName: "GetArticle",
+        operationName: 'GetArticle',
         variables: { id: context.query.article },
         query: `query GetArticle {
         article(id: "${context.query.article}") {
@@ -206,16 +206,16 @@ Dashboard.getInitialProps = async (context) => {
         return { postData: responseAsJson.data };
       })
       .catch((e) => {
-        console.error("error generating server side code");
+        console.error('error generating server side code');
         console.error(e);
-        return { postData: { message: "No article id found" } };
+        return { postData: { message: 'No article id found' } };
       });
   } else {
     error = {
-      message: "No article id found",
+      message: 'No article id found',
     };
     loading = false;
-    return { postData: { message: "No article id found" } };
+    return { postData: { message: 'No article id found' } };
   }
 };
 ```
@@ -262,12 +262,12 @@ We pass a bunch of props from this page to the component, which is basically jus
 Here's the code for the PostForm component:
 
 ```javascript
-import React from "react";
+import React from 'react';
 
-const ReactMarkdown = require("react-markdown");
+const ReactMarkdown = require('react-markdown');
 
-import ReactMde from "react-mde";
-import "react-mde/lib/styles/css/react-mde-all.css";
+import ReactMde from 'react-mde';
+import 'react-mde/lib/styles/css/react-mde-all.css';
 
 export default class PostForm extends React.Component {
   render() {
@@ -368,10 +368,10 @@ _handleSave = () => {
     ) {
       var headers = new Headers();
       headers.append(
-        "Authorization",
-        "Bearer " + this.state.user.idToken.jwtToken
+        'Authorization',
+        'Bearer ' + this.state.user.idToken.jwtToken
       );
-      headers.append("Content-Type", "application/json");
+      headers.append('Content-Type', 'application/json');
 
       var raw = JSON.stringify({
         slug: this._slugify(this.state.title),
@@ -385,21 +385,21 @@ _handleSave = () => {
       });
 
       var requestOptions = {
-        method: "POST",
+        method: 'POST',
         headers: headers,
         body: raw,
-        redirect: "follow",
+        redirect: 'follow',
       };
 
-      fetch("/api/admin/content", requestOptions)
+      fetch('/api/admin/content', requestOptions)
         .then((response) => response.text())
         .then((result) => console.log(result))
-        .catch((error) => console.error("error", error));
+        .catch((error) => console.error('error', error));
     } else {
-      console.error("incorrect params");
+      console.error('incorrect params');
     }
   } else {
-    redirect({}, "/login");
+    redirect({}, '/login');
   }
 };
 ```

@@ -1,8 +1,13 @@
 ---
 title: "Building my own bookmarks service: Part 1"
 description: "A new Serverless Lambda that will parse bookmarks data into DynamoDB"
+<<<<<<< Updated upstream
 date: "Monday, August 30 2021 12:53pm"
 updated: "Monday, August 30 2021 2:04pm"
+=======
+date: "2021-08-30T12:53"
+updated: "2021-08-30T14:04"
+>>>>>>> Stashed changes
 archived: true
 ---
 
