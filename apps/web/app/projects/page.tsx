@@ -10,7 +10,7 @@ async function getData() {
   const spotify = await getRecentlyPlayed();
   const projects = await getProjects();
   const featuredRepos = await getGitHubRepos({ limit: 8, offset: 1 });
-  const repos = await getGitHubRepos({ limit: 8, offset: 9 });
+  const repos = await getGitHubRepos({ limit: 8, offset: 2 });
 
   return {
     spotify,
@@ -25,6 +25,8 @@ export default async function Home() {
 
   const firstFeaturedProjects = data?.projects?.slice(0, 3);
   const lastFeaturedProjects = data?.projects?.slice(3);
+
+  // TODO: Add a load more button to load more projects at the end of the list
 
   return (
     <PageLayout>
