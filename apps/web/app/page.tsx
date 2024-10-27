@@ -77,8 +77,8 @@ export default async function Home() {
                 So what is it that you do? 🤔
               </h2>
               <p>
-                I'm not sure that I actually know but here's some of my recent
-                projects:
+                Well quite a few things, here are some of my favourite projects
+                alongside my most recently updated GitHub repos:
               </p>
             </div>
             <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
