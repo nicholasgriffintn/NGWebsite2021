@@ -29,6 +29,8 @@ export function SnippetsList({ gists }: { gists: GitHubGists | undefined }) {
                         <span>Files:</span>
                       </li>
                       {Object.keys(gist.files).map((file, index) => {
+                        if (!gist.files[file]) return null;
+
                         return (
                           <li
                             key={`file-${gist.files[file].filename}-${index}`}

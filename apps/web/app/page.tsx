@@ -63,7 +63,10 @@ export default async function Home() {
           <div className="col-span-5 md:col-span-2 lg:col-span-1 pt-10 lg:pt-5">
             <div>
               <SpotifyWidget data={data?.spotify} />
-              <span id="MusicOpeningWrapperTitle">
+              <span
+                id="MusicOpeningWrapperTitle"
+                className="text-sm text-muted-foreground"
+              >
                 What I&apos;m listening to <ChevronDown />
               </span>
             </div>

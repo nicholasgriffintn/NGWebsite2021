@@ -1,3 +1,5 @@
+import { ChevronDown } from 'lucide-react';
+
 import { PageLayout } from '@/components/PageLayout';
 import { Link } from '@/components/Link';
 import { InnerPage } from '@/components/InnerPage';
@@ -39,9 +41,11 @@ export default async function Home() {
             <div className="text-primary-foreground lg:max-w-[100%] prose">
               <p>
                 It's my aim to spend a big percentage of my personal time on a
-                number of projects. I often work on quite a few different things
-                that you might find interesting, take a look at some of them
-                below.
+                number of projects.
+              </p>
+              <p>
+                I often work on quite a few different things that you might find
+                interesting, take a look at some of them below.
               </p>
               <p>
                 You can also take a look at my{' '}
@@ -65,6 +69,12 @@ export default async function Home() {
                 src="https://nicholasgriffintn.github.io/nicholasgriffintn/github-contribution-grid-snake.svg"
               />
             </picture>
+            <span
+              id="MusicOpeningWrapperTitle"
+              className="text-sm text-muted-foreground"
+            >
+              My GitHub Contributions Graph <ChevronDown />
+            </span>
           </div>
         </div>
         <div className="pt-5 md:pt-20">
