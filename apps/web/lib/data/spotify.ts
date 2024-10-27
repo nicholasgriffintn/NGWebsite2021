@@ -1,11 +1,11 @@
 import type { RecentTracks } from '@/types/spotify';
 
-export async function getRecentlyPlayed(): Promise<RecentTracks | null> {
+export async function getRecentlyPlayed(): Promise<RecentTracks | undefined> {
   const lastFmToken = process.env.LAST_FM_TOKEN;
 
   if (!lastFmToken) {
     console.error('No LastFM token found');
-    return null;
+    return undefined;
   }
 
   const res = await fetch(
@@ -22,8 +22,8 @@ export async function getRecentlyPlayed(): Promise<RecentTracks | null> {
   );
 
   if (!res.ok) {
-    console.error(res.statusText);
-    throw new Error('Error fetching data from Audioscrobbler');
+    console.error('Error fetching data from Audioscrobbler', res.statusText);
+    return;
   }
 
   const data = await res.json();

@@ -7,7 +7,7 @@ import { PageLayout } from '@/components/PageLayout';
 import { SpotifyWidget } from '@/components/SpotifyWidget';
 import { ContactLinks } from '@/components/ContactLinks';
 import { InnerPage } from '@/components/InnerPage';
-import { ProjectCard } from '@/components/ProjectCard';
+import { FeaturedProjectsList } from '@/components/FeaturedProjectsList';
 
 export const revalidate = 60;
 
@@ -81,30 +81,11 @@ export default async function Home() {
                 alongside my most recently updated GitHub repos:
               </p>
             </div>
-            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {firstFeaturedProjects?.map((project) => (
-                <ProjectCard key={project.name} project={project} />
-              ))}
-            </ul>
-            {data?.repos && data.repos.length > 0 && (
-              <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
-                {data.repos.map((repo) => (
-                  <ProjectCard
-                    key={repo.name}
-                    project={{
-                      name: repo.name,
-                      description: repo.description,
-                      url: repo.html_url,
-                    }}
-                  />
-                ))}
-              </ul>
-            )}
-            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mt-4">
-              {lastFeaturedProjects?.map((project) => (
-                <ProjectCard key={project.name} project={project} />
-              ))}
-            </ul>
+            <FeaturedProjectsList
+              firstFeaturedProjects={firstFeaturedProjects}
+              repos={data?.repos}
+              lastFeaturedProjects={lastFeaturedProjects}
+            />
           </div>
         </div>
       </InnerPage>

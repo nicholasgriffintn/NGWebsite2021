@@ -3,7 +3,7 @@ import type { GitHubProjects, GitHubGists } from '@/types/github';
 export async function getGitHubRepos({
   limit = 8,
   offset = 1,
-}): Promise<GitHubProjects | null> {
+}): Promise<GitHubProjects | undefined> {
   const res = await fetch(
     `https://api.github.com/users/nicholasgriffintn/repos?sort=updated&type=public&per_page=${limit}&page=${offset}`,
     {
@@ -18,8 +18,8 @@ export async function getGitHubRepos({
   );
 
   if (!res.ok) {
-    console.error(res.statusText);
-    throw new Error('Error fetching data from GitHub');
+    console.error('Error fetching data from GitHub', res.statusText);
+    return;
   }
 
   const data = await res.json();
@@ -27,7 +27,7 @@ export async function getGitHubRepos({
   return data as GitHubProjects;
 }
 
-export async function getGitHubGists(): Promise<GitHubGists | null> {
+export async function getGitHubGists(): Promise<GitHubGists | undefined> {
   const res = await fetch(
     'https://api.github.com/users/nicholasgriffintn/gists',
     {
@@ -42,8 +42,8 @@ export async function getGitHubGists(): Promise<GitHubGists | null> {
   );
 
   if (!res.ok) {
-    console.error(res.statusText);
-    throw new Error('Error fetching data from GitHub');
+    console.error('Error fetching data from GitHub', res.statusText);
+    return;
   }
 
   const data = await res.json();

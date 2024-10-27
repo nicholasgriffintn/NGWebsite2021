@@ -6,7 +6,7 @@ import './styles.css';
 import ReturnImageFormattingUrl from '@/lib/returnImageFormattingUrl';
 import type { RecentTracks } from '@/types/spotify';
 
-export function SpotifyWidget({ data }: { data: RecentTracks | null }) {
+export function SpotifyWidget({ data }: { data: RecentTracks | undefined }) {
   if (!data) {
     return null;
   }

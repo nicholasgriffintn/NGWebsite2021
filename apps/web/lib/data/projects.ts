@@ -36,6 +36,6 @@ const data: Projects = [
   },
 ];
 
-export async function getProjects(): Promise<Projects | null> {
+export async function getProjects(): Promise<Projects> {
   return data;
 }
