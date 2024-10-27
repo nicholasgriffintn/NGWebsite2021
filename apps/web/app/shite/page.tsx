@@ -2,6 +2,11 @@ import { PageLayout } from '@/components/PageLayout';
 import { Link } from '@/components/Link';
 import { InnerPage } from '@/components/InnerPage';
 
+export const metadata = {
+  title: 'Shite',
+  description: "I don't really know what to do with this domain...",
+};
+
 export default async function Home() {
   return (
     <PageLayout>

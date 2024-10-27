@@ -3,6 +3,12 @@ import { InnerPage } from '@/components/InnerPage';
 import { getGitHubGists } from '@/lib/data/github';
 import { SnippetsList } from '@/components/SnippetsList';
 
+export const metadata = {
+  title: 'Code Snippets',
+  description:
+    'A collection of code snippets that I have made available on Github Gists.',
+};
+
 async function getData() {
   const snippets = await getGitHubGists();
 
@@ -22,7 +28,7 @@ export default async function Home() {
         </h1>
         <div className="grid grid-cols-5 gap-4">
           <div className="col-span-5 md:col-span-3 lg:col-span-3 pt-5">
-            <div className="text-primary-foreground lg:max-w-[100%] prose">
+            <div className="text-primary-foreground lg:max-w-[100%] prose dark:prose-invert">
               <p>
                 These are some random code snippets that I have made available
                 on Github's Gists platform. You'll find a range of things here

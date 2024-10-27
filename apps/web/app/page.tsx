@@ -8,8 +8,17 @@ import { SpotifyWidget } from '@/components/SpotifyWidget';
 import { ContactLinks } from '@/components/ContactLinks';
 import { InnerPage } from '@/components/InnerPage';
 import { ProjectsList } from '@/components/ProjectsList';
+import { buttonVariants } from '@/components/ui/button';
+import { Link } from '@/components/Link';
+
+// TODO: Render non-archived posts on the home page
 
 export const revalidate = 60;
+
+export const metadata = {
+  title: 'Home',
+  description: 'THe personal website of Nicholas Griffin',
+};
 
 async function getData() {
   const spotify = await getRecentlyPlayed();
@@ -71,8 +80,29 @@ export default async function Home() {
           </div>
         </div>
         <div className="mx-break-out pt-5 mt-20 relative">
-          <div className="bg-[#171923] w-full min-h-[240px] absolute top-0 left-0"></div>
+          <div className="bg-[#171923] w-full min-h-[240px] absolute top-0 left-0" />
           <div className="container relative">
+            <div className="text-center pb-5">
+              <h2 className="text-2xl md:text-3xl font-bold text-primary-foreground md:pt-5">
+                What's going on?
+              </h2>
+              <p>
+                Below you will find some of the blog posts that I have wrote (if
+                that is still working), I used to write a lot and I'm looking to
+                write blog posts more about the projects that I am working on.
+                There might not be a lot here but I hope that it will at least
+                be interesting, at least to me.
+              </p>
+              <div className="w-full flex justify-center pt-5">
+                <Link
+                  href="/blog"
+                  className={buttonVariants({ variant: 'outline', size: 'lg' })}
+                  underline={false}
+                >
+                  View all of my blog posts
+                </Link>
+              </div>
+            </div>
             <div className="text-center pb-5">
               <h2 className="text-2xl md:text-3xl font-bold text-primary-foreground md:pt-5">
                 So what is it that you do? 🤔

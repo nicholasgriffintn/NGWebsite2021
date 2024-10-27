@@ -3,6 +3,11 @@ import { InnerPage } from '@/components/InnerPage';
 
 // TODO: Add bookmark submission: https://github.com/nicholasgriffintn/NGWebsite2021/blob/16930e6c23a6a57a2ff61c1f802bcdd2c35aced4/src/pages/bookmarks.js
 
+export const metadata = {
+  title: 'Bookmarks',
+  description: 'A collection of bookmarks that I have saved.',
+};
+
 export default async function Home() {
   return (
     <PageLayout>

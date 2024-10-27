@@ -1,7 +1,10 @@
 import { PageLayout } from '@/components/PageLayout';
-import { ContactLinks } from '@/components/ContactLinks';
-import { Link } from '@/components/Link';
 import { InnerPage } from '@/components/InnerPage';
+
+export const metadata = {
+  title: 'Setup',
+  description: 'My setup for coding, gaming and watching videos.',
+};
 
 export default async function Home() {
   return (
@@ -12,7 +15,7 @@ export default async function Home() {
         </h1>
         <div className="grid grid-cols-5 gap-4">
           <div className="col-span-5 md:col-span-3 lg:col-span-4 pt-5">
-            <div className="text-primary-foreground lg:max-w-[75%] prose">
+            <div className="text-primary-foreground lg:max-w-[75%] prose dark:prose-invert">
               <p>
                 Here&apos;s what I&apos;m coding, gaming and watching videos on.
                 Recently updated for a better Covid experience in 2020.
