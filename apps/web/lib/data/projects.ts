@@ -4,21 +4,21 @@ const data: Projects = [
   {
     name: 'BBC Projects',
     description:
-      'Recently I worked on rebuilding the site to transition it to the new [WebCore](https://www.bbc.co.uk/webarchive/https%3A%2F%2Fwww.bbc.co.uk%2Fblogs%2Finternet%2Fentries%2F8673fe2a-e876-45fc-9a5f-203c049c9f9c) service for a more performant and maintainable site, while renewing it to be more accessible and user friendly. Alongside that, I also spend time working on open source projects such as [SQS Consumer](https://github.com/bbc/sqs-consumer) and my general day job, which involves helping teams enhance their data and experimentation capabilities.',
+      'I participate in a range of projects at the BBC. Most recently, I transitioned the BBC’s Open Source site to the [WebCore](https://www.bbc.co.uk/webarchive/https%3A%2F%2Fwww.bbc.co.uk%2Fblogs%2Finternet%2Fentries%2F8673fe2a-e876-45fc-9a5f-203c049c9f9c) service to enhance performance, maintainability, accessibility, and user experience. I also contribute to open-source projects, such as [SQS Consumer](https://github.com/bbc/sqs-consumer), and help teams improve their experimentation capabilities.',
     url: 'https://bbc.co.uk/opensource',
     image: '/images/projects/bbc_open_source.png',
   },
   {
     name: 'A custom CMS',
     description:
-      'During my time at Accrosoft, I built a custom CMS system that the company used for clients called AccroPress, it is a fully headless CMS system with a React frontend and Node Express backend. It was used by a number of school and job sites around the world as a hosted service. It also provided a number of microservices such as image processing, contact forms, and more.',
+      'At Accrosoft, I developed a custom CMS called AccroPress, a fully headless system with a React frontend and a Node.js/Express backend. Designed as a hosted service, it was used by various school and job sites worldwide. AccroPress also offered several microservices, including image processing, contact forms, and more.',
     url: 'https://accropress.com',
     image: '/images/projects/accropress.png',
   },
   {
     name: 'Careers Sites',
     description:
-      'During my time at Vacancy Filler, I worked with a number of clients like Bouygues Construction UK to launch new careers site initiatives for roles across their organisation, building experiences that attract and help inform potential candidates about roles for them. Other clients that I worked with include brands like Woodland Trust, Longleat, Devonshire Group, and many others.',
+      'While at Vacancy Filler, I collaborated with clients like Bouygues Construction UK to launch career site initiatives that attract and inform potential candidates about roles across their organization. I also worked with brands such as the Woodland Trust, Longleat, and the Devonshire Group, among others.',
     url: 'https://careers.bouygues-construction.co.uk/',
     image: '/images/projects/bouygues.png',
   },
