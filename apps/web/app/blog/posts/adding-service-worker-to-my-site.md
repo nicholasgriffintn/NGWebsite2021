@@ -1,11 +1,7 @@
 ---
 title: "Adding Service Worker to my site"
 description: "Whoops! I forgot to add Service Worker to my site. Probably about time to do that..."
-<<<<<<< Updated upstream
-date: "Sunday, May 19 2019 3:48 pm"
-=======
 date: "2019-05-19T15:48"
->>>>>>> Stashed changes
 archived: true
 ---
 

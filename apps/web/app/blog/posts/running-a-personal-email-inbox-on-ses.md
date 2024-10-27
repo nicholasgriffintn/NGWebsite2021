@@ -1,13 +1,8 @@
 ---
 title: "Running a personal email inbox on SES"
 description: "I'm creating an AWS Lambda service that will receive and process emails"
-<<<<<<< Updated upstream
-date: "Sunday, August 29 2021 8:03 pm"
-update: "Sunday, August 29 2021 8:04 pm"
-=======
 date: "2021-08-29T20:03"
 update: "2021-08-29T20:04"
->>>>>>> Stashed changes
 archived: true
 ---
 

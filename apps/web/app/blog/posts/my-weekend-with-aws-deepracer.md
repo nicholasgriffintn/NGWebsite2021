@@ -1,11 +1,7 @@
 ---
 title: 'My weekend with AWS DeepRacer'
 description: 'Here are the results of my weekend playing around with AWS DeepRacer'
-<<<<<<< Updated upstream
-date: 'Sunday, May 19 2019 3:32 pm'
-=======
 date: "2019-05-19T15:32"
->>>>>>> Stashed changes
 archived: true
 ---
 

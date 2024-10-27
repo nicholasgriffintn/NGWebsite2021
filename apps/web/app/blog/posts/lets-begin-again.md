@@ -1,11 +1,7 @@
 ---
 title: "Let's begin again..."
 description: "Nicholas Griffin V.Something"
-<<<<<<< Updated upstream
-date: "01-04-2019 15:48"
-=======
 date: "2019-04-01T15:48"
->>>>>>> Stashed changes
 archived: true
 ---
 

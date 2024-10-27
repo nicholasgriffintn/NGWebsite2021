@@ -1,11 +1,7 @@
 ---
 title: "Project NG 2020: Securing my website with AWS Cognito"
 description: "Easy website authentication ready for the future"
-<<<<<<< Updated upstream
-date: "Sunday, April 19 2020 3:48 pm"
-=======
 date: "2020-04-19T15:48"
->>>>>>> Stashed changes
 archived: true
 ---
 

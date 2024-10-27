@@ -1,11 +1,7 @@
 ---
 title: "Hosting my static site on S3 with AWS CodePipeline"
 description: "How I'm using AWS CodePipeline to automatically build and push my site to AWS' S3"
-<<<<<<< Updated upstream
-date: "Friday, May 31 2019 3:48 pm"
-=======
 date: "2019-05-31T15:48"
->>>>>>> Stashed changes
 archived: true
 ---
 

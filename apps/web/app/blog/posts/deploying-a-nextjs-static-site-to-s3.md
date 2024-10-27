@@ -1,11 +1,7 @@
 ---
 title: "Deploying a NextJS static site to S3"
 description: "After using NextJS for a static site and deploying it to S3 I noticed a few issues, this post talks about my experience with that."
-<<<<<<< Updated upstream
-date: "Sunday, August 16 2020 3:48 pm"
-=======
 date: "2020-08-16T15:48"
->>>>>>> Stashed changes
 archived: true
 ---
 

@@ -1,11 +1,7 @@
 ---
 title: "Adding two-factor authentication to a NodeJS application"
 description: "Increase the security of your service in less than an hour"
-<<<<<<< Updated upstream
-date: "Friday, May 8 2020 3:48 pm"
-=======
 date: "2020-05-08T15:48"
->>>>>>> Stashed changes
 archived: true
 ---
 

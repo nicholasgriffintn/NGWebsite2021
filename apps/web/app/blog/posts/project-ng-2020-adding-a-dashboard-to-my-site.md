@@ -1,11 +1,7 @@
 ---
 title: "Project NG 2020: Adding a dashboard to my site"
 description: "It's time to expand Project NG 2020 with a new dashboard for publishing and editing content"
-<<<<<<< Updated upstream
-date: "Monday, April 20 2020 3:48 pm"
-=======
 date: "2020-04-20T15:48"
->>>>>>> Stashed changes
 archived: true
 ---
 

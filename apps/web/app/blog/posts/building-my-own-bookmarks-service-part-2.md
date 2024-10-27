@@ -1,13 +1,8 @@
 ---
 title: "Building my own bookmarks service: Part 2"
 description: "Creating a GraphQL service to retrieve bookmarks from DynamoDB"
-<<<<<<< Updated upstream
-date: "Monday, August 30 2021 2:53pm"
-updated: "Monday, August 30 2021 3:17pm"
-=======
 date: "2021-08-30T14:53"
 updated: "2021-08-30T15:17"
->>>>>>> Stashed changes
 archived: true
 ---
 

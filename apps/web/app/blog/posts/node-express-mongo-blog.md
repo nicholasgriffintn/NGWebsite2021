@@ -1,11 +1,7 @@
 ---
 title: "How I built a blog with Node, Express and Mongo"
 description: "Let's get blogging!"
-<<<<<<< Updated upstream
-date: "02-04-2019 15:48"
-=======
 date: "2019-02-04T15:48"
->>>>>>> Stashed changes
 archived: true
 ---
 

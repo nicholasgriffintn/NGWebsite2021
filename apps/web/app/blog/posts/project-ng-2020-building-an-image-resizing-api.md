@@ -1,11 +1,7 @@
 ---
 title: "Project NG 2020: Building an Express Image Resizing API"
 description: "Optimizing my site with automatic image resizing"
-<<<<<<< Updated upstream
-date: "Thursday, June 18 2020 3:48 pm"
-=======
 date: "2020-06-18T15:48"
->>>>>>> Stashed changes
 archived: true
 ---
 
