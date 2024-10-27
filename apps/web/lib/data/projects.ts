@@ -18,7 +18,7 @@ const data: Projects = [
   {
     name: 'Careers Sites',
     description:
-      'During my time at Vacancy Filler, I worked on a number of careers sites, like Bouygues Construction UK who I helped to launch their new initiative for posting careers across the newly established groups, with cross promotion between the companies. I have also worked on a number of others across the UK such as Woodland Trust, Longleat, Devonshire Group, and many more.',
+      'During my time at Vacancy Filler, I worked with a number of clients like Bouygues Construction UK to launch new careers site initiatives for roles across their organisation, building experiences that attract and help inform potential candidates about roles for them. Other clients that I worked with include brands like Woodland Trust, Longleat, Devonshire Group, and many others.',
     url: 'https://careers.bouygues-construction.co.uk/',
     image: '/images/projects/bouygues.png',
   },
