@@ -1,4 +1,4 @@
-import { ChevronDown } from 'lucide-react';
+import { ChevronUp } from 'lucide-react';
 
 import { PageLayout } from '@/components/PageLayout';
 import { Link } from '@/components/Link';
@@ -69,12 +69,10 @@ export default async function Home() {
                 src="https://nicholasgriffintn.github.io/nicholasgriffintn/github-contribution-grid-snake.svg"
               />
             </picture>
-            <span
-              id="MusicOpeningWrapperTitle"
-              className="text-sm text-muted-foreground"
-            >
-              My GitHub Contributions Graph <ChevronDown />
-            </span>
+            <div className="text-sm text-muted-foreground text-center inline-flex justify-center w-full mt-5">
+              <span>My GitHub Contributions Graph</span>
+              <ChevronUp />
+            </div>
           </div>
         </div>
         <div className="pt-5 md:pt-20">

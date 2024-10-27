@@ -1,4 +1,4 @@
-import { ChevronDown } from "lucide-react";
+import { ChevronUp } from 'lucide-react';
 
 import { getRecentlyPlayed } from '@/lib/data/spotify';
 import { getProjects } from '@/lib/data/projects';
@@ -63,12 +63,10 @@ export default async function Home() {
           <div className="col-span-5 md:col-span-2 lg:col-span-1 pt-10 lg:pt-5">
             <div>
               <SpotifyWidget data={data?.spotify} />
-              <span
-                id="MusicOpeningWrapperTitle"
-                className="text-sm text-muted-foreground"
-              >
-                What I&apos;m listening to <ChevronDown />
-              </span>
+              <div className="text-sm text-muted-foreground text-center inline-flex justify-center w-full mt-5">
+                <span>What I&apos;m listening to</span>
+                <ChevronUp />
+              </div>
             </div>
           </div>
         </div>
