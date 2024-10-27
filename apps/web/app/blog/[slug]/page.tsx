@@ -5,6 +5,8 @@ import { InnerPage } from '@/components/InnerPage';
 import { formatDate, getBlogPosts } from '@/lib/blog';
 import { CustomMDX } from '@/components/MDX';
 
+// TODO: The article isn't full width, also the archived message doesn't look great and images aren't full width
+
 export async function generateStaticParams() {
   const posts = getBlogPosts();
 
