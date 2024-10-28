@@ -39,6 +39,8 @@ export function SpotifyWidget({ data }: { data: RecentTracks | undefined }) {
                       objectFit: 'cover',
                     }}
                     unoptimized
+                    width={700}
+                    height={245}
                   />
                 </div>
               ) : null}

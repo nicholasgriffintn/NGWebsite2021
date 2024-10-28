@@ -16,6 +16,8 @@ export function BlogCard({ post }) {
             alt={post.metadata.imageAlt || post.metadata.title}
             className="w-full object-cover"
             loading="lazy"
+            width={700}
+            height={190}
           />
         </div>
       )}

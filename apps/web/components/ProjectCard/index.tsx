@@ -15,6 +15,8 @@ export function ProjectCard({ project }: { project: Project }) {
             alt={project.imageAlt || project.name}
             className="w-full object-cover"
             loading="lazy"
+            width={433}
+            height={190}
           />
         </div>
       )}
