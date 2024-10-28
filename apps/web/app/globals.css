@@ -111,8 +111,13 @@ p {
   margin: 0 0 20px;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  margin: 0 0 .5em;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 0.5em;
 }
 
 pre {
@@ -120,5 +125,43 @@ pre {
   border-width: 1px;
   --tw-shadow: 0 1px 2px 0 #0000000d;
   --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  position: relative;
+
+  picture {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+
+    img {
+      object-fit: cover;
+    }
+  }
+}
+
+.image--loading {
+  background: var(--midground);
+  min-height: 80px;
+}
+
+.image--fill {
+  height: 100%;
+
+  picture {
+    height: 100%;
+  }
+}
+
+.prose img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
 }

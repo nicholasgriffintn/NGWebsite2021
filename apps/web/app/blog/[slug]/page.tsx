@@ -5,6 +5,7 @@ import { InnerPage } from '@/components/InnerPage';
 import { formatDate, getBlogPosts } from '@/lib/blog';
 import { CustomMDX } from '@/components/MDX';
 import { parseMarkdown } from '@/lib/markdown';
+import { Image } from '@/components/Image';
 
 // TODO: The article isn't full width, also the archived message doesn't look great and images aren't full width
 
@@ -108,7 +109,7 @@ export default async function Home({ params }) {
           </div>
           {post.metadata.image && !post.metadata.hideFeaturedImage && (
             <div className="col-span-5 md:col-span-2 lg:col-span-1">
-              <img
+              <Image
                 src={post.metadata.image}
                 alt={post.metadata.imageAlt || post.metadata.title}
                 className="w-full h-full object-cover rounded-lg"

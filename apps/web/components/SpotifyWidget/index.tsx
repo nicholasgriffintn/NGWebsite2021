@@ -1,6 +1,6 @@
-import Image from 'next/image';
 import { Suspense } from 'react';
 
+import { Image } from '@/components/Image';
 import './styles.css';
 
 import ReturnImageFormattingUrl from '@/lib/returnImageFormattingUrl';

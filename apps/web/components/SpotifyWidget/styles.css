@@ -21,6 +21,7 @@
 .spotify-widget-latest-background {
   width: 100%;
   min-height: 244px;
+  height: 244px;
   overflow: hidden;
   background-size: cover;
   background-position: top center;

@@ -3,13 +3,14 @@ import { Link } from '@/components/Link';
 import type { Project } from '@/types/projects';
 import { buttonVariants } from '@/components/ui/button';
 import { parseMarkdown } from '@/lib/markdown';
+import { Image } from '@/components/Image';
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
     <Card key={project.name} className="overflow-hidden">
       {project.image && (
-        <div className="max-h-[190px] min-h-[190px] overflow-hidden">
-          <img
+        <div className="max-h-[190px] min-h-[190px] overflow-hidden h-full">
+          <Image
             src={project.image}
             alt={project.imageAlt || project.name}
             className="w-full object-cover"

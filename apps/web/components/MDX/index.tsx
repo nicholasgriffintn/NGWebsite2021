@@ -1,9 +1,9 @@
-import Image from 'next/image';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { highlight } from 'sugar-high';
 import { createElement } from 'react';
 
 import { Link } from '@/components/Link';
+import { Image } from '@/components/Image';
 
 function Table({ data }) {
   const headers = data.headers.map((header, index) => (

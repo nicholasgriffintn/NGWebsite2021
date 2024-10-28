@@ -4,13 +4,14 @@ import { Link } from '@/components/Link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { parseMarkdown } from '@/lib/markdown';
+import { Image } from '@/components/Image';
 
 export function BlogCard({ post }) {
   return (
     <Card className="overflow-hidden">
       {post.metadata.image && (
-        <div className="max-h-[190px] min-h-[190px] overflow-hidden">
-          <img
+        <div className="max-h-[190px] min-h-[190px] overflow-hidden h-full">
+          <Image
             src={post.metadata.image}
             alt={post.metadata.imageAlt || post.metadata.title}
             className="w-full object-cover"
