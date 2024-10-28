@@ -4,6 +4,7 @@ import { PageLayout } from '@/components/PageLayout';
 import { InnerPage } from '@/components/InnerPage';
 import { formatDate, getBlogPosts } from '@/lib/blog';
 import { CustomMDX } from '@/components/MDX';
+import { parseMarkdown } from '@/lib/markdown';
 
 // TODO: The article isn't full width, also the archived message doesn't look great and images aren't full width
 
@@ -92,7 +93,7 @@ export default async function Home({ params }) {
         <div className="grid grid-cols-5 gap-4">
           <div className="col-span-5 md:col-span-3 lg:col-span-4 pt-5">
             <div className="text-primary-foreground lg:max-w-[75%]">
-              <p>{post.metadata.description}</p>
+              <div>{parseMarkdown(post.metadata.description || '')}</div>
               {post.metadata.date && (
                 <p className="text-sm text-muted-foreground">
                   Published on {formatDate(post.metadata.date)}

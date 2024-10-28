@@ -1,7 +1,7 @@
 ---
 title: "Building My Own A/B Testing Platform"
 description: "Creating an A/B testing platform from scratch was a unique challenge. I wanted to build a tool capable of running both Bayesian and frequentist experiments, that provided a decent foundation to build more from, but a bit scrappy to keep it as a side project. This post walks through the development journey—from the initial concept to key design decisions and the hurdles faced along the way."
-date: "2024-10-27T13:12"
+date: "2024-10-24T13:12"
 image: "/uploads/building-my-own-ab-testing-platform/main.png"
 imageAlt: "A screenshot showing the initial interface on the left and a view of the app running on the right."
 hideFeaturedImage: true

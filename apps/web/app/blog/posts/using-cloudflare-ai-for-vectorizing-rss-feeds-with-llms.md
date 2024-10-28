@@ -1,7 +1,7 @@
 ---
 title: "Using Cloudflare AI for Vectorizing RSS Feeds with LLMs"
 description: "The "llm-rss-vectorise-agent" project explores the power of large language models (LLMs) combined with Cloudflare’s edge infrastructure to analyze, vectorize, and process RSS feed content. This blog post dives into how Cloudflare AI facilitates this project, the choices behind specific LLMs, and the integration techniques that enable efficient, scalable AI-powered applications."
-date: "2024-10-27T13:12"
+date: "2024-10-25T15:36"
 image: "/uploads/using-cloudflare-ai-for-vectorizing-rss-feeds-with-llms/website.png"
 imageAlt: "A screenshot of the website I built for the project, showing the RSS feed content and search functionality."
 hideFeaturedImage: true

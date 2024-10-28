@@ -1,35 +1,14 @@
-import parse from 'html-react-parser';
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/components/Link';
 import type { Project } from '@/types/projects';
 import { buttonVariants } from '@/components/ui/button';
-
-function parseMarkdownLinks(text: string) {
-  return text?.replace(
-    /\[(.*?)\]\((.*?)\)/g,
-    `<a
-      href="$2"
-      target="_blank"
-      rel="noopener noreferer"
-      className="underline text-muted-foreground inline font-bold p-0 transition-colors hover:underline hover:outline-none decoration-1 decoration-skip-ink-none underline-offset-[0.25em] hover:decoration-2"
-    >
-      $1
-    </a>`
-  );
-}
+import { parseMarkdown } from '@/lib/markdown';
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
     <Card key={project.name} className="overflow-hidden">
       {project.image && (
-        <div className="max-h-[190px] overflow-hidden">
+        <div className="max-h-[190px] min-h-[190px] overflow-hidden">
           <img
             src={project.image}
             alt={project.imageAlt || project.name}
@@ -43,9 +22,9 @@ export function ProjectCard({ project }: { project: Project }) {
       </CardHeader>
       <CardContent>
         {project.description && (
-          <CardDescription>
-            {parse(parseMarkdownLinks(project.description))}
-          </CardDescription>
+          <div className="text-sm text-muted-foreground">
+            {parseMarkdown(project.description, true)}
+          </div>
         )}
         <div className="w-full flex justify-left">
           {project.url && (
