@@ -16,6 +16,7 @@ const data: Projects = [
       },
     ],
     image: '/images/projects/bbc_open_source.png',
+    imageAlt: "A screenshot of the BBC's Open Source site",
   },
   {
     name: 'A custom CMS',
@@ -32,6 +33,7 @@ const data: Projects = [
       },
     ],
     image: '/images/projects/accropress.png',
+    imageAlt: 'A screenshot of the AccroPress CMS',
   },
   {
     name: 'Career Sites',
@@ -52,6 +54,7 @@ const data: Projects = [
       },
     ],
     image: '/images/projects/bouygues.png',
+    imageAlt: 'A screenshot of the Bouygues Construction UK career site',
   },
   {
     name: 'TechNutty',

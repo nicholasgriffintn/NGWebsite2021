@@ -1,24 +1,22 @@
 import { formatDate } from '@/lib/blog';
 import { buttonVariants } from '@/components/ui/button';
 import { Link } from '@/components/Link';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { parseMarkdown } from '@/lib/markdown';
 
 export function BlogCard({ post }) {
   return (
     <Card className="overflow-hidden">
       {post.metadata.image && (
-        <img
-          src={post.metadata.image}
-          alt={post.metadata.title}
-          className="w-full"
-        />
+        <div className="max-h-[190px] min-h-[190px] overflow-hidden">
+          <img
+            src={post.metadata.image}
+            alt={post.metadata.imageAlt || post.metadata.title}
+            className="w-full object-cover"
+            loading="lazy"
+          />
+        </div>
       )}
       <CardHeader>
         <CardTitle>
@@ -27,7 +25,9 @@ export function BlogCard({ post }) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <CardDescription>{post.metadata.description}</CardDescription>
+        <div className="text-sm text-muted-foreground">
+          {parseMarkdown(post.metadata.description, true)}
+        </div>
         {post.metadata.date && (
           <p className="text-sm text-muted-foreground">
             Published on {formatDate(post.metadata.date)}

@@ -7,6 +7,7 @@ export type Project = {
     url: string;
   }[];
   image?: string;
+  imageAlt?: string;
 };
 
 export type Projects = Project[];
