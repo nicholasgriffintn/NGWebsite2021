@@ -1,5 +1,9 @@
 import { PageLayout } from '@/components/PageLayout';
 import { InnerPage } from '@/components/InnerPage';
+import { db } from '@/lib/db';
+import { bookmarks as bookmarksTable } from '@/lib/db/schema';
+
+export const runtime = 'edge';
 
 // TODO: Add bookmark submission: https://github.com/nicholasgriffintn/NGWebsite2021/blob/16930e6c23a6a57a2ff61c1f802bcdd2c35aced4/src/pages/bookmarks.js
 
@@ -8,7 +12,19 @@ export const metadata = {
   description: 'A collection of bookmarks that I have saved.',
 };
 
+async function getData() {
+  const bookmarksData = await db.select().from(bookmarksTable);
+
+  return {
+    bookmarks: bookmarksData,
+  };
+}
+
 export default async function Home() {
+  const data = await getData();
+
+  console.log(data);
+
   return (
     <PageLayout>
       <InnerPage>

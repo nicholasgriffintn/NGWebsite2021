@@ -7,6 +7,8 @@ import { CustomMDX } from '@/components/MDX';
 import { parseMarkdown } from '@/lib/markdown';
 import { Image } from '@/components/Image';
 
+export const dynamicParams = false;
+
 // TODO: The article isn't full width, also the archived message doesn't look great and images aren't full width
 
 export async function generateStaticParams() {
