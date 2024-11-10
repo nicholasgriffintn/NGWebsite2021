@@ -43,7 +43,7 @@ export default async function Home() {
                   {data.bookmarks.map((bookmark) => (
                     <li key={bookmark.id}>
                       <a
-                        href={bookmark.url}
+                        href={bookmark.url || '#'}
                         className="text-primary-foreground underline"
                       >
                         {bookmark.title}

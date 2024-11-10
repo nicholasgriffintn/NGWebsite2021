@@ -18,7 +18,14 @@ export const db = drizzle(async (sql: unknown, params: unknown, method: string) 
     body: JSON.stringify({ sql, params, method }),
   });
 
-  const data = await res.json();
+  const data: {
+    success: boolean;
+    errors: string[];
+    result: {
+      success: boolean;
+      results: { [key: string]: any }[];
+    }[];
+  } = await res.json();
 
   if (res.status !== 200) {
     throw new Error(
@@ -36,12 +43,12 @@ export const db = drizzle(async (sql: unknown, params: unknown, method: string) 
 
   const qResult = data.result[0];
 
-  if (!qResult.success) {
+  if (!qResult?.success) {
     throw new Error(
       `Error from sqlite proxy server: \n${JSON.stringify(data)}`
     );
   }
 
   // https://orm.drizzle.team/docs/get-started-sqlite#http-proxy
-  return { rows: qResult.results.map((r: any) => Object.values(r)) };
+  return { rows: qResult?.results?.map((r: any) => Object.values(r)) };
 });
