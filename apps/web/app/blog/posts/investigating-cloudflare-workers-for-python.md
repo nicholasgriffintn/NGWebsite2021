@@ -129,6 +129,8 @@ I tried to use the API instead but unfortunately, it seems that the Python Worke
 
 When I have a bit more time I'll be coming back to this, so come back for any updates.
 
+You can also check out the code for this project [here](https://github.com/nicholasgriffintn/genai-rag-ebooks).
+
 ## Still todo
 
 - Figure out how to get AI to work with Python Workers
