@@ -2,7 +2,7 @@
 title: Investigating Cloudflare Workers for Python [WIP]
 description: I do quite a few things in Python, in particular, it's a great language for data projects. Recently Cloudflare added beta support for Python in their Workers platform, so I thought I'd investigate, but for that, I needed a cool project to work on, so not only is this a post about exploring the support for Python in Cloudflare Workers, but it's also about building a chatbot that can interact with eBooks, if Cloudflare Workers with Python actually works anyway...
 date: "2024-11-10"
-updated: "2024-11-11"
+updated: "2024-11-10"
 ---
 
 To kick things off, I needed a new project idea to work on.
