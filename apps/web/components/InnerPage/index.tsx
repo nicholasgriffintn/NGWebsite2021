@@ -1,9 +1,23 @@
-export function InnerPage({ children }: { children: React.ReactNode }) {
+import clsx from 'clsx';
+
+export function InnerPage({
+  children,
+  isFullPage,
+}: {
+  children: React.ReactNode;
+  isFullPage: boolean;
+}) {
+  const classes = clsx({
+    container: !isFullPage,
+    'pt-[59px]': true,
+    'text-left': true,
+  });
+
   return (
-    <div className="container pt-[59px] text-left">
-      <div className="pt-5 md:pt-10"></div>
+    <div className={classes}>
+      {isFullPage && <div className="pt-5 md:pt-10"></div>}
       {children}
-      <div className="pt-5 md:pb-10"></div>
+      {isFullPage && <div className="pt-5 md:pt-10"></div>}
     </div>
   );
 }
