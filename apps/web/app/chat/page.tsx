@@ -77,6 +77,7 @@ export default async function Chat() {
     <PageLayout>
       <InnerPage isFullPage>
         <div className="container">
+          <h1>Chat</h1>
           <ChatInterface
             initialChats={data.chatHistory}
             onSendMessage={onCreateChat}
