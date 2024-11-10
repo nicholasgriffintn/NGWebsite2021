@@ -38,13 +38,25 @@ export default async function Home() {
                 Here you'll find a list of the things that I'm currently
                 reading, or aiming to read soon.
               </p>
+              {data.bookmarks.length !== 0 ? (
+                <ul>
+                  {data.bookmarks.map((bookmark) => (
+                    <li key={bookmark.id}>
+                      <a
+                        href={bookmark.url}
+                        className="text-primary-foreground underline"
+                      >
+                        {bookmark.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No bookmarks found.</p>
+              )}
             </div>
           </div>
         </div>
-        <p className="bg-[#555] mt-6 p-4">
-          Sorry, I'm currently working on rebuilding the bookmarks list for this
-          page.
-        </p>
       </InnerPage>
     </PageLayout>
   );
