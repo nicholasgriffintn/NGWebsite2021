@@ -63,12 +63,14 @@ export default async function Chat() {
       return notFound();
     }
 
-    await createChat({
+    const response = await createChat({
       token,
       chatId,
       message,
       model,
     });
+
+    return response;
   }
 
   return (

@@ -18,14 +18,16 @@ import { ChatList, ChatItem } from '@/types/chat';
 
 export function ChatInterface({
   initialChats = [],
-  onSendMessage = async () => {},
+  onSendMessage = async () => {
+    return '';
+  },
 }: {
   initialChats?: ChatList;
   onSendMessage?: (
     chatId: string,
     message: string,
     model: string
-  ) => Promise<void>;
+  ) => Promise<string>;
 }) {
   const [chats, setChats] = React.useState<ChatList>(initialChats);
   const [activeChat, setActiveChat] = React.useState<string | null>(null);
@@ -71,6 +73,12 @@ export function ChatInterface({
               role: 'user' as const,
               createdAt: new Date().toISOString(),
             },
+            {
+              id: Math.random().toString(36).substring(7),
+              content: 'Typing...',
+              role: 'assistant' as const,
+              createdAt: new Date().toISOString(),
+            },
           ],
         };
       }
@@ -80,7 +88,28 @@ export function ChatInterface({
     setChats(updatedChats);
     setInput('');
 
-    await onSendMessage(activeChat, input, selectedModel);
+    const apiResponse = await onSendMessage(activeChat, input, selectedModel);
+
+    const updatedChatsWithResponse = chats.map((chat) => {
+      if (chat.id === activeChat) {
+        const messages = chat.messages || [];
+        return {
+          ...chat,
+          messages: [
+            ...messages,
+            {
+              id: Math.random().toString(36).substring(7),
+              content: apiResponse,
+              role: 'assistant' as const,
+              createdAt: new Date().toISOString(),
+            },
+          ],
+        };
+      }
+      return chat;
+    });
+
+    setChats(updatedChatsWithResponse);
   };
 
   const currentChat = chats.find((chat) => chat.id === activeChat);
