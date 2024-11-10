@@ -417,29 +417,26 @@ import { getWeatherForLocation } from '../lib/weather';
 import { IFunction, IRequest } from '../types';
 
 export const get_weather: IFunction = {
-	type: 'function',
-	function: {
-		name: 'get_weather',
-		description: 'Get the current weather for a location',
-		parameters: {
-			type: 'object',
-			properties: {
-				longitude: {
-					type: 'number',
-					description: 'The longitude to get the weather for',
-				},
-				latitude: {
-					type: 'number',
-					description: 'The latitude to get the weather for',
-				},
+	name: 'get_weather',
+	description: 'Get the current weather for a location',
+	parameters: {
+		type: 'object',
+		properties: {
+			longitude: {
+				type: 'number',
+				description: 'The longitude to get the weather for',
+			},
+			latitude: {
+				type: 'number',
+				description: 'The latitude to get the weather for',
 			},
 		},
 	},
-	async execute(args: any, req: IRequest) {
+	function: async (args: any, req: IRequest) => {
 		const location = { longitude: args.longitude, latitude: args.latitude };
 
 		if (!location.longitude || !location.latitude) {
-      return '';
+			throw new Error('Missing longitude or latitude');
 		}
 
 		return await getWeatherForLocation(req.env, location);
@@ -489,13 +486,25 @@ export const handleFunctions = async (functionName: string, args: unknown, reque
 	if (!foundFunction) {
 		return '';
 	}
-	return foundFunction.execute(args, request);
+	return foundFunction.function(args, request);
 };
 ```
 
-This also has a method called `handleFunctions`, when the AI responds with a function call, we will need to use this to get a response from the function.
+This also has a method called `handleFunctions`, when the AI responds with a function call, this is for traditional function calling, which is a bit different to embedded function calling.
 
-To do this, we need to adjust our `handleChat` function to check if the response is a function call and then call the function.
+In most cases, we'll be using embedded and when we do use that, we won't need to do anything else, for traditional, the model will return a list of `tool_calls` like this:
+
+```json
+{
+  "name": "get_weather",
+  "arguments": {
+    "latitude": 51.5074,
+    "longitude": 0.1278
+  }
+}
+```
+
+We need to be able to handle this in the `handleChat` function, like so:
 
 ```typescript
 import { availableFunctions, handleFunctions } from './functions';
