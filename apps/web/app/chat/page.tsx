@@ -10,8 +10,10 @@ export const metadata = {
 export default function Chat() {
   return (
     <PageLayout>
-      <InnerPage>
-        <ChatInterface />
+      <InnerPage isFullPage>
+        <div className="container">
+          <ChatInterface />
+        </div>
       </InnerPage>
     </PageLayout>
   );

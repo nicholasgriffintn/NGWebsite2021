@@ -2,10 +2,10 @@ import clsx from 'clsx';
 
 export function InnerPage({
   children,
-  isFullPage,
+  isFullPage = false,
 }: {
   children: React.ReactNode;
-  isFullPage: boolean;
+  isFullPage?: boolean;
 }) {
   const classes = clsx({
     container: !isFullPage,
@@ -15,9 +15,9 @@ export function InnerPage({
 
   return (
     <div className={classes}>
-      {isFullPage && <div className="pt-5 md:pt-10"></div>}
+      {!isFullPage && <div className="pt-5 md:pt-10"></div>}
       {children}
-      {isFullPage && <div className="pt-5 md:pt-10"></div>}
+      {!isFullPage && <div className="pt-5 md:pt-10"></div>}
     </div>
   );
 }
