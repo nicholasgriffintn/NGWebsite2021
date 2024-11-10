@@ -95,7 +95,7 @@ export function ChatInterface({
   const currentChat = chats.find((chat) => chat.id === activeChat);
 
   return (
-    <div className="flex h-[calc(100vh-60px)] bg-background w-full overflow-hidden">
+    <div className="flex h-[calc(100vh-120px)] bg-background w-full overflow-hidden">
       {/* Sidebar */}
       <div className="w-72 border-r border-border/50 bg-muted/10">
         <div className="p-4">
