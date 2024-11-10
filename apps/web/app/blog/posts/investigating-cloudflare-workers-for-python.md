@@ -2,6 +2,7 @@
 title: Investigating Cloudflare Workers for Python [WIP]
 description: I do quite a few things in Python, in particular, it's a great language for data projects. Recently Cloudflare added beta support for Python in their Workers platform, so I thought I'd investigate, but for that, I needed a cool project to work on, so not only is this a post about exploring the support for Python in Cloudflare Workers, but it's also about building a chatbot that can interact with eBooks, if Cloudflare Workers with Python actually works anyway...
 date: "2024-11-10"
+updated: "2024-11-11"
 ---
 
 To kick things off, I needed a new project idea to work on.
@@ -45,7 +46,43 @@ compatibility_flags = ["python_workers"]
 compatibility_date = "2024-01-29"
 ```
 
-Then you can run `npx wrangler@latest dev --remote` to start the server on `http://localhost:8787`.
+Then you can run `npx wrangler@latest dev --local  --persist-to="./data/` to start the server on `http://localhost:8787`.
+
+## Integrating fastAPI
+
+For this project, we'll need a frontend and a few APIs that can be called to interact with the chatbot, to do this, I'll be using [fastAPI](https://fastapi.tiangolo.com/) which is a Python API framework.
+
+To integrate this, first I installed it with `uv add fastapi` and then I added the following code to the `main.py` file:
+
+```python
+from fastapi import FastAPI, Request
+
+async def on_fetch(request, env):
+    import asgi
+
+    return await asgi.fetch(app, request, env)
+
+
+app = FastAPI()
+```
+
+Then we add a placeholder homepage route:
+
+```python
+@app.get("/")
+async def homepage():
+    return {"message": "Hello, World!"}
+```
+
+And a route for ingesting the book:
+
+```python
+@app.post("/ingest")
+async def ingest(req: Request):
+    return {"message": "Ingesting the book"}
+```
+
+These will be expanded in later stages.
 
 ## Ingesting the book
 
@@ -70,6 +107,12 @@ book_text = await env.BOOKS.get(book_key);
 ```
 
 This returns the contents of the book as a string.
+
+For local development, we need to persist this in storage like so:
+
+```bash
+npx wrangler kv:key put alice-in-wonderland "<BOOK_TEXT>" --binding BOOKS --local --persist-to data --preview
+```
 
 I then need to split the initial copyright information and the end contents of the download from Project Gutenberg as I don't want this text to end up as embeddings in the AI.
 
@@ -125,7 +168,9 @@ inserted = await env.VECTORIZE.upsert(vectors)
 
 However, this is where I got stuck, using `env.AI` here doesn't seem to like how I was passing the data as I was getting this error: `ERROR:main:AiError: 5006: must have required property 'text'`.
 
-I tried to use the API instead but unfortunately, it seems that the Python Workers don't support `requirements.txt` yet, so this is where I'll be leaving this post, for now.
+So instead I opted to use the API directly, this is not ideal but it works for now, outside of having to use a dependency, given that Cloudflare doesn't support external dependencies yet, however, we are already using faatAPI, so the worker already can't be deployed until they have that support.
+
+However, I still can't get that to work for some reason, getting an error: `Failed to establish a new connection: [Errno 50] Protocol not available'`.
 
 When I have a bit more time I'll be coming back to this, so come back for any updates.
 
