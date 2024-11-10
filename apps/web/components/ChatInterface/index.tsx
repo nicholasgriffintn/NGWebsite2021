@@ -14,35 +14,25 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
-interface Message {
-  id: string;
-  content: string;
-  role: 'user' | 'assistant';
-  createdAt: string;
-}
-
-interface Chat {
-  id: string;
-  title: string;
-  messages: Message[];
-  model: string;
-}
+import { ChatList, ChatItem } from '@/types/chat';
 
 export function ChatInterface({
   initialChats = [],
   onSendMessage = async () => {},
 }: {
-  initialChats?: Chat[];
+  initialChats?: ChatList;
   onSendMessage?: (
     chatId: string,
     message: string,
     model: string
   ) => Promise<void>;
 }) {
-  const [chats, setChats] = React.useState<Chat[]>(initialChats);
+  const [chats, setChats] = React.useState<ChatList>(initialChats);
   const [activeChat, setActiveChat] = React.useState<string | null>(null);
   const [input, setInput] = React.useState('');
-  const [selectedModel, setSelectedModel] = React.useState('gpt-3.5-turbo');
+  const [selectedModel, setSelectedModel] = React.useState(
+    'hermes-2-pro-mistral-7b'
+  );
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -54,7 +44,7 @@ export function ChatInterface({
   }, [chats]);
 
   const createNewChat = () => {
-    const newChat: Chat = {
+    const newChat: ChatItem = {
       id: Math.random().toString(36).substring(7),
       title: 'New Chat',
       messages: [],
@@ -70,10 +60,11 @@ export function ChatInterface({
 
     const updatedChats = chats.map((chat) => {
       if (chat.id === activeChat) {
+        const messages = chat.messages || [];
         return {
           ...chat,
           messages: [
-            ...chat.messages,
+            ...messages,
             {
               id: Math.random().toString(36).substring(7),
               content: input,
@@ -93,6 +84,7 @@ export function ChatInterface({
   };
 
   const currentChat = chats.find((chat) => chat.id === activeChat);
+  const currentChatMessages = currentChat?.messages || [];
 
   return (
     <div className="flex h-[calc(100vh-120px)] bg-background w-full overflow-hidden">
@@ -136,7 +128,7 @@ export function ChatInterface({
             {/* Messages */}
             <ScrollArea className="flex-1 p-4">
               <div className="space-y-4">
-                {currentChat?.messages.map((message) => (
+                {currentChatMessages.map((message) => (
                   <div
                     key={message.id}
                     className={cn(
@@ -168,9 +160,15 @@ export function ChatInterface({
                     <SelectValue placeholder="Select model" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo</SelectItem>
-                    <SelectItem value="gpt-4">GPT-4</SelectItem>
-                    <SelectItem value="claude-2">Claude 2</SelectItem>
+                    <SelectItem value="hermes-2-pro-mistral-7b">
+                      Hermes 2 Pro - Mistral 7B
+                    </SelectItem>
+                    <SelectItem value="llama-3.1-70b-instruct">
+                      Llama 3.1 - 70B Instruct
+                    </SelectItem>
+                    <SelectItem value="llama-3.2-3b-instruct">
+                      Llama 3.2 - 3B Instruct
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
