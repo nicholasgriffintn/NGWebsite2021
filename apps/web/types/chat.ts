@@ -1,8 +1,25 @@
 export type ChatRole = 'user' | 'assistant';
 
+export interface WeatherData {
+  name: string;
+  main: {
+    temp: number;
+    feels_like: number;
+    humidity: number;
+  };
+  weather: Array<{
+    main: string;
+    description: string;
+  }>;
+  wind: {
+    speed: number;
+  };
+}
+
 export interface ChatMessage {
   id: string;
-  content: string;
+  name?: string;
+  content?: string;
   role: ChatRole;
   timestamp?: number;
   model?: string;
@@ -12,7 +29,9 @@ export interface ChatMessage {
     };
     name: string;
   }[];
+  status?: string;
   logId?: string;
+  data?: any;
 }
 
 export interface ChatKey {

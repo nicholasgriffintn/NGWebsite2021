@@ -1,14 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import {
-  Copy,
-  MessageSquare,
-  Send,
-  Hammer,
-  ThumbsUp,
-  ThumbsDown,
-} from 'lucide-react';
+import { Send, MessageSquare } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -19,20 +13,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
-
+import { MessageComponent } from '@/components/ChatInterface/MessageComponent';
 import { ChatMessage, ChatKey, ChatModel } from '@/types/chat';
 
 interface Props {
   initialChatKeys?: ChatKey[];
   models?: ChatModel[];
-  onChatSelect?: (chatId: string) => Promise<any | ChatMessage[]>;
+  onChatSelect?: (chatId: string) => Promise<ChatMessage[]>;
   onSendMessage?: (
     chatId: string,
     message: string,
     model: string
-  ) => Promise<any | ChatMessage>;
+  ) => Promise<ChatMessage[]>;
   onReaction?: (
     messageId: string,
     logId: string,
@@ -50,7 +43,7 @@ export function ChatInterface({
     { id: 'llama-3.2-3b-instruct', name: 'Llama 3.2 - 3B Instruct' },
   ],
   onChatSelect = async () => [],
-  onSendMessage = async () => ({ id: '1', content: '', role: 'assistant' }),
+  onSendMessage = async () => [],
   onReaction = async () => {},
   onNewChat = async () => 'new-chat-id',
   suggestions = ['What do you do?', 'Tell me a joke'],
@@ -58,7 +51,7 @@ export function ChatInterface({
   const [chatKeys, setChatKeys] = React.useState<ChatKey[]>(initialChatKeys);
   const [selectedChat, setSelectedChat] = React.useState<string | null>(null);
   const [selectedModel, setSelectedModel] = React.useState<string>(
-    models?.[0]?.id || ''
+    models[0]?.id || ''
   );
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
   const [input, setInput] = React.useState('');
@@ -73,59 +66,6 @@ export function ChatInterface({
   React.useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  const handleChatSelect = async (chatId: string) => {
-    setIsLoading(true);
-    setSelectedChat(chatId);
-    setMessages([]); // Clear messages while loading
-    try {
-      const chatMessages = await onChatSelect(chatId);
-      setMessages(chatMessages);
-    } catch (error) {
-      console.error('Error loading chat:', error);
-    }
-    setIsLoading(false);
-  };
-
-  const handleSendMessage = async (content: string) => {
-    if (!content.trim()) return;
-
-    setInput('');
-    const newUserMessage = {
-      id: Date.now().toString(),
-      content,
-      role: 'user' as const,
-    };
-    setMessages((prev) => [...prev, newUserMessage]);
-
-    setIsLoading(true);
-    setMessages((prev) => [
-      ...prev,
-      { id: 'loading', content: '...', role: 'assistant' },
-    ]);
-
-    try {
-      let chatId = selectedChat;
-      if (!chatId) {
-        chatId = await onNewChat(content);
-        setSelectedChat(chatId);
-        const newChatKey: ChatKey = {
-          id: chatId,
-          title: content.slice(0, 30) + (content.length > 30 ? '...' : ''),
-        };
-        setChatKeys((prev) => [newChatKey, ...prev]);
-      }
-      const response = await onSendMessage(chatId, content, selectedModel);
-      setMessages((prev) => [
-        ...prev.filter((msg) => msg.id !== 'loading'),
-        response,
-      ]);
-    } catch (error) {
-      console.error('Error sending message:', error);
-      setMessages((prev) => prev.filter((msg) => msg.id !== 'loading'));
-    }
-    setIsLoading(false);
-  };
 
   const handleNewChat = async () => {
     setSelectedChat(null);
@@ -143,38 +83,87 @@ export function ChatInterface({
     }
   };
 
-  const handleCopy = async (id: string, content: string) => {
+  const handleChatSelect = async (chatId: string) => {
+    setIsLoading(true);
+    setSelectedChat(chatId);
+    setMessages([]);
     try {
-      onReaction(id, '', 'copy');
-      await navigator.clipboard.writeText(content);
+      const chatMessages = await onChatSelect(chatId);
+      setMessages(chatMessages);
+    } catch (error) {
+      console.error('Error loading chat:', error);
+    }
+    setIsLoading(false);
+  };
+
+  const handleSendMessage = async (content: string) => {
+    if (!content.trim()) return;
+
+    setInput('');
+    const newUserMessage: ChatMessage = {
+      id: Math.random().toString(36).substring(7),
+      role: 'user',
+      content,
+    };
+    setMessages((prev) => [...prev, newUserMessage]);
+
+    const tempMessage: ChatMessage = {
+      status: 'loading',
+      id: 'temp-' + Math.random().toString(36).substring(7),
+      role: 'assistant',
+      content: 'thinking...',
+    };
+    setMessages((prev) => [...prev, tempMessage]);
+
+    setIsLoading(true);
+    try {
+      const chatId = selectedChat || (await onNewChat(content));
+      if (!selectedChat) {
+        setSelectedChat(chatId);
+        setChatKeys((prev) => [...prev, { id: chatId, title: content }]);
+      }
+      const responseMessages = await onSendMessage(
+        chatId,
+        content,
+        selectedModel
+      );
+
+      setMessages((prev) => prev.filter((msg) => msg.id !== tempMessage.id));
+      setMessages((prev) => [...prev, ...responseMessages]);
+    } catch (error) {
+      console.error('Error sending message:', error);
       toast({
-        title: 'Copied to clipboard',
-        description: 'The message has been copied to your clipboard.',
-      });
-    } catch (err) {
-      console.error('Failed to copy text: ', err);
-      toast({
-        title: 'Copy failed',
-        description:
-          'There was an error copying the message to your clipboard.',
+        title: 'Error',
+        description: 'Failed to send message. Please try again.',
         variant: 'destructive',
       });
+      setMessages((prev) => prev.filter((msg) => msg.id !== tempMessage.id));
     }
+    setIsLoading(false);
   };
 
   const handleReaction = async (
-    id: string,
+    messageId: string,
+    content: string,
     logId: string,
     reaction: string
   ) => {
     try {
-      onReaction(id, logId, reaction);
-      toast({
-        title: 'Reaction recorded',
-        description: 'Your reaction has been recorded.',
-      });
+      await onReaction(messageId, logId, reaction);
+      if (reaction === 'copy') {
+        await navigator.clipboard.writeText(content);
+        toast({
+          title: 'Copied to clipboard',
+          description: 'The message has been copied to your clipboard.',
+        });
+      } else {
+        toast({
+          title: 'Reaction recorded',
+          description: 'Your reaction has been recorded.',
+        });
+      }
     } catch (err) {
-      console.error('Failed to record reaction: ', err);
+      console.error('Failed to record reaction:', err);
       toast({
         title: 'Reaction failed',
         description: 'There was an error recording your reaction.',
@@ -185,34 +174,43 @@ export function ChatInterface({
 
   return (
     <div className="flex h-[calc(100vh-120px)] bg-background overflow-hidden">
-      <div className="w-64 border-r bg-muted/20">
-        <div className="p-4 space-y-2">
-          <Button
-            variant="ghost"
-            className="w-full justify-start"
-            onClick={handleNewChat}
-          >
-            <MessageSquare className="mr-2 h-4 w-4" />
-            New Chat
-          </Button>
-          <hr className="border-t border-muted" />
-          {chatKeys.length === 0 && (
-            <p className="text-sm text-center">No previous chats were found.</p>
-          )}
-          {chatKeys.map((chat) => (
+      <div className="w-64 border-r bg-muted/20 flex flex-col h-full">
+        <div className="p-4 space-y-2 h-full">
+          <div className="p-0">
             <Button
-              key={chat.id}
-              variant={selectedChat === chat.id ? 'secondary' : 'ghost'}
-              disabled={selectedChat === chat.id}
-              className="w-full justify-start text-sm text-ellipsis overflow-hidden"
-              onClick={() => handleChatSelect(chat.id)}
+              variant="ghost"
+              className="w-full justify-start"
+              onClick={handleNewChat}
             >
-              {chat.title}
+              <MessageSquare className="mr-2 h-4 w-4" />
+              New Chat
             </Button>
-          ))}
+          </div>
+          <ScrollArea className="flex-1 h-[calc(100vh-340px)]">
+            <div className="px-4 space-y-2">
+              <hr className="border-t border-muted mb-2" />
+              {chatKeys.length === 0 && (
+                <p className="text-sm text-center">
+                  No previous chats were found.
+                </p>
+              )}
+              {chatKeys.map((chat) => (
+                <button
+                  key={chat.id}
+                  onClick={() => handleChatSelect(chat.id)}
+                  className={`w-full rounded p-2 text-left ${
+                    selectedChat === chat.id
+                      ? 'bg-primary text-primary-foreground'
+                      : 'hover:bg-muted'
+                  }`}
+                >
+                  {chat.title}
+                </button>
+              ))}
+            </div>
+          </ScrollArea>
         </div>
       </div>
-
       <div className="flex-1 flex flex-col">
         <ScrollArea className="flex-1 p-4">
           {isLoading && !messages.length ? (
@@ -240,139 +238,20 @@ export function ChatInterface({
               </div>
             </div>
           ) : (
-            messages.map((message) => {
-              if (message.tool_calls) {
-                console.log(message.tool_calls);
-
-                return (
-                  <div key={message.id} className="mb-4 group relative">
-                    <div
-                      className={cn('flex items-start gap-3', {
-                        'justify-end': message.role === 'user',
-                      })}
-                    >
-                      <p className="text-sm mb-0 text-muted-foreground flex">
-                        <Hammer className="h-4 w-4 mr-2" />
-                        Used tool(s):{' '}
-                        {message.tool_calls.map((tool_call) => (
-                          <span
-                            key={`${message.id}_${tool_call.name}`}
-                            className="text-sm"
-                          >
-                            {tool_call.name}
-                          </span>
-                        ))}
-                      </p>
-                    </div>
-                  </div>
-                );
-              }
-
-              if (!message.role || !message.content) return null;
-
-              return (
-                <div key={message.id} className="mb-4 group relative">
-                  <div
-                    className={cn('flex items-start gap-3', {
-                      'justify-end': message.role === 'user',
-                    })}
-                  >
-                    {message.role === 'assistant' && (
-                      <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-md bg-muted">
-                        A
-                      </div>
-                    )}
-                    <div
-                      className={cn(
-                        'rounded-lg px-4 py-2 max-w-[85%] space-y-2 relative',
-                        {
-                          'bg-primary text-primary-foreground':
-                            message.role === 'user',
-                          'bg-muted': message.role === 'assistant',
-                        }
-                      )}
-                    >
-                      <p className="text-sm mb-0">{message.content}</p>
-                      {message.role === 'assistant' &&
-                        message.id !== 'loading' && (
-                          <div className="flex gap-2">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8"
-                              onClick={() =>
-                                handleCopy(message.id, message.content)
-                              }
-                            >
-                              <Copy className="h-4 w-4" />
-                              <span className="sr-only">Copy message</span>
-                            </Button>
-                            {message.logId && (
-                              <>
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="h-8 w-8"
-                                  onClick={() =>
-                                    handleReaction(
-                                      message.id,
-                                      message.logId || '',
-                                      'thumbsUp'
-                                    )
-                                  }
-                                >
-                                  <ThumbsUp className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="h-8 w-8"
-                                  onClick={() =>
-                                    handleReaction(
-                                      message.id,
-                                      message.logId || '',
-                                      'thumbsDown'
-                                    )
-                                  }
-                                >
-                                  <ThumbsDown className="h-4 w-4" />
-                                </Button>
-                              </>
-                            )}
-                          </div>
-                        )}
-                    </div>
-                  </div>
-                  {(message.timestamp || message.model) && (
-                    <div
-                      className={`absolute top-full ${
-                        message.role === 'assistant' ? 'left-0' : 'right-0'
-                      } mt-1 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out z-10`}
-                    >
-                      <div className="flex items-center space-x-2 bg-background/80 backdrop-blur-sm rounded px-2 py-1 text-xs text-muted-foreground">
-                        {message.timestamp && (
-                          <span>
-                            {new Date(message.timestamp).toLocaleString()}
-                          </span>
-                        )}
-                        {message.model && (
-                          <>
-                            <span>•</span>
-                            <span className="font-medium">{message.model}</span>
-                          </>
-                        )}
-                        {message.logId && (
-                          <>
-                            <span>•</span>
-                            <span className="font-medium">{message.logId}</span>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })
+            messages.map((message, index) => (
+              <MessageComponent
+                key={index}
+                message={message}
+                onReaction={(reaction) =>
+                  handleReaction(
+                    message.id,
+                    message.content || '',
+                    message.logId || '',
+                    reaction
+                  )
+                }
+              />
+            ))
           )}
           <div ref={messagesEndRef} />
         </ScrollArea>

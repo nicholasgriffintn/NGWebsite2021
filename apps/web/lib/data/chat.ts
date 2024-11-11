@@ -1,11 +1,8 @@
-import type { ChatList } from '@/types/chat';
-import { baseUrl } from '../../app/sitemap';
+import type { ChatList, ChatMessage } from '@/types/chat';
 
-export async function getChat({
-  id,
+export async function getChatKeys({
   token,
 }: {
-  id?: string;
   token: string;
 }): Promise<ChatList | undefined> {
   if (!token) {
@@ -17,7 +14,7 @@ export async function getChat({
     process.env.NODE_ENV === 'development'
       ? 'http://localhost:8787'
       : 'https://assistant.nicholasgriffin.workers.dev';
-  const url = `${baseUrl}/chat${id ? `/${id}` : ''}`;
+  const url = `${baseUrl}/chat`;
 
   const res = await fetch(url, {
     headers: {
@@ -34,10 +31,6 @@ export async function getChat({
 
   const data: any = await res.json();
 
-  if (id) {
-    return data.response;
-  }
-
   const keys = data?.response?.keys;
 
   if (!keys) {
@@ -48,12 +41,50 @@ export async function getChat({
   const chatList = keys?.map((chat) => {
     return {
       ...chat,
-      id: chat.name,
+      id: chat.id || chat.name,
       title: chat.title || chat.name || '',
     };
   });
 
   return chatList;
+}
+
+export async function getChat({
+  id,
+  token,
+}: {
+  id: string;
+  token: string;
+}): Promise<ChatMessage[]> {
+  if (!token || !id) {
+    console.error('No token or id provided');
+    return [];
+  }
+
+  const baseUrl =
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:8787'
+      : 'https://assistant.nicholasgriffin.workers.dev';
+  const url = `${baseUrl}/chat/${id}`;
+
+  const res = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      'User-Agent': 'NGWeb',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    console.error('Error fetching data from AI', res.statusText);
+    return [];
+  }
+
+  const data: ChatMessage[] = await res.json();
+
+  console.log('Chat data', data);
+
+  return data;
 }
 
 export async function createChat({
@@ -66,10 +97,10 @@ export async function createChat({
   chatId: string;
   message: string;
   model?: string;
-}): Promise<string> {
+}): Promise<ChatMessage[]> {
   if (!token || !chatId || !message) {
     console.error('No token provided');
-    return '';
+    return [];
   }
 
   const baseUrl =
@@ -93,14 +124,12 @@ export async function createChat({
 
   if (!res.ok) {
     console.error('Error fetching data from AI', res.statusText);
-    return '';
+    return [];
   }
 
-  const data: {
-    response: string;
-  } = await res.json();
+  const data: ChatMessage[] = await res.json();
 
-  return data.response;
+  return data;
 }
 
 export async function sendFeedback({

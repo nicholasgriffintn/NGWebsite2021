@@ -4,8 +4,12 @@ import { notFound } from 'next/navigation';
 import { PageLayout } from '@/components/PageLayout';
 import { ChatInterface } from '@/components/ChatInterface';
 import { InnerPage } from '@/components/InnerPage';
-import { getChat, createChat, sendFeedback } from '@/lib/data/chat';
-import { ChatRole } from '@/types/chat';
+import {
+  getChatKeys,
+  getChat,
+  createChat,
+  sendFeedback,
+} from '@/lib/data/chat';
 
 export const dynamic = 'force-dynamic';
 
@@ -37,7 +41,7 @@ async function getData() {
     return notFound();
   }
 
-  const chatHistory = await getChat({ token });
+  const chatHistory = await getChatKeys({ token });
   return { chatHistory };
 }
 
@@ -49,15 +53,12 @@ export default async function Chat() {
 
     const token = await validateToken();
     if (!token) {
-      return {};
+      console.error('No token found');
+      return [];
     }
 
     const response = await createChat({ token, chatId, message, model });
-    return {
-      id: Math.random().toString(36).substring(7),
-      content: response,
-      role: 'assistant' as ChatRole,
-    };
+    return Array.isArray(response) ? response : [response];
   }
 
   async function onChatSelect(chatId: string) {
@@ -65,10 +66,12 @@ export default async function Chat() {
 
     const token = await validateToken();
     if (!token) {
-      return {};
+      console.error('No token found');
+      return [];
     }
 
-    return await getChat({ token, id: chatId });
+    const chatMessages = await getChat({ token, id: chatId });
+    return Array.isArray(chatMessages) ? chatMessages : [];
   }
 
   async function handleNewChat(content: string) {
@@ -85,7 +88,7 @@ export default async function Chat() {
 
     const token = await validateToken();
     if (!token) {
-      return {};
+      return;
     }
 
     if (reaction === 'thumbsUp') {
@@ -95,8 +98,6 @@ export default async function Chat() {
     if (reaction === 'thumbsDown') {
       return await sendFeedback({ token, logId, feedback: 'negative' });
     }
-
-    return {};
   }
 
   return (
