@@ -4,6 +4,8 @@ export interface ChatMessage {
   id: string;
   content: string;
   role: ChatRole;
+  timestamp?: number;
+  model?: string;
 }
 
 export interface ChatKey {

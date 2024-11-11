@@ -212,45 +212,63 @@ export function ChatInterface({
               if (!message.role) return null;
 
               return (
-                <div
-                  key={message.id}
-                  className={cn('flex items-start gap-3 mb-4', {
-                    'justify-end': message.role === 'user',
-                  })}
-                >
-                  {message.role === 'assistant' && (
-                    <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-md bg-muted">
-                      A
+                <div key={message.id} className="mb-4 group relative">
+                  <div
+                    className={cn('flex items-start gap-3', {
+                      'justify-end': message.role === 'user',
+                    })}
+                  >
+                    {message.role === 'assistant' && (
+                      <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-md bg-muted">
+                        A
+                      </div>
+                    )}
+                    <div
+                      className={cn(
+                        'rounded-lg px-4 py-2 max-w-[85%] space-y-2 relative',
+                        {
+                          'bg-primary text-primary-foreground':
+                            message.role === 'user',
+                          'bg-muted': message.role === 'assistant',
+                        }
+                      )}
+                    >
+                      <p className="text-sm">{message.content}</p>
+                      {message.role === 'assistant' &&
+                        message.id !== 'loading' && (
+                          <div className="flex gap-2">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                              onClick={() =>
+                                handleCopy(message.id, message.content)
+                              }
+                            >
+                              <Copy className="h-4 w-4" />
+                              <span className="sr-only">Copy message</span>
+                            </Button>
+                          </div>
+                        )}
+                    </div>
+                  </div>
+                  {(message.timestamp || message.model) && (
+                    <div className="absolute bottom-0 right-0 mb-2 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out">
+                      <div className="flex items-center space-x-2 bg-background/80 backdrop-blur-sm rounded px-2 py-1 text-xs text-muted-foreground">
+                        {message.timestamp && (
+                          <span>
+                            {new Date(message.timestamp).toLocaleString()}
+                          </span>
+                        )}
+                        {message.model && (
+                          <>
+                            <span>•</span>
+                            <span className="font-medium">{message.model}</span>
+                          </>
+                        )}
+                      </div>
                     </div>
                   )}
-                  <div
-                    className={cn(
-                      'rounded-lg px-4 py-2 max-w-[85%] space-y-2',
-                      {
-                        'bg-primary text-primary-foreground':
-                          message.role === 'user',
-                        'bg-muted': message.role === 'assistant',
-                      }
-                    )}
-                  >
-                    <p className="text-sm">{message.content}</p>
-                    {message.role === 'assistant' &&
-                      message.id !== 'loading' && (
-                        <div className="flex gap-2">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8"
-                            onClick={() =>
-                              handleCopy(message.id, message.content)
-                            }
-                          >
-                            <Copy className="h-4 w-4" />
-                            <span className="sr-only">Copy message</span>
-                          </Button>
-                        </div>
-                      )}
-                  </div>
                 </div>
               );
             })
