@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Copy, MessageSquare, Send, ThumbsDown, ThumbsUp } from 'lucide-react';
+import { Copy, MessageSquare, Send, Hammer } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -209,7 +209,34 @@ export function ChatInterface({
             </div>
           ) : (
             messages.map((message) => {
-              if (!message.role) return null;
+              if (message.tool_calls) {
+                console.log(message.tool_calls);
+
+                return (
+                  <div key={message.id} className="mb-4 group relative">
+                    <div
+                      className={cn('flex items-start gap-3', {
+                        'justify-end': message.role === 'user',
+                      })}
+                    >
+                      <p className="text-sm mb-0 text-muted-foreground flex">
+                        <Hammer className="h-4 w-4 mr-2" />
+                        Used tool(s):{' '}
+                        {message.tool_calls.map((tool_call) => (
+                          <span
+                            key={`${message.id}_${tool_call.name}`}
+                            className="text-sm"
+                          >
+                            {tool_call.name}
+                          </span>
+                        ))}
+                      </p>
+                    </div>
+                  </div>
+                );
+              }
+
+              if (!message.role || !message.content) return null;
 
               return (
                 <div key={message.id} className="mb-4 group relative">

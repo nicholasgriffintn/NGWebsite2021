@@ -6,6 +6,12 @@ export interface ChatMessage {
   role: ChatRole;
   timestamp?: number;
   model?: string;
+  tool_calls?: {
+    arguments: {
+      [key: string]: string;
+    };
+    name: string;
+  }[];
 }
 
 export interface ChatKey {
