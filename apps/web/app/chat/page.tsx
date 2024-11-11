@@ -5,6 +5,7 @@ import { PageLayout } from '@/components/PageLayout';
 import { ChatInterface } from '@/components/ChatInterface';
 import { InnerPage } from '@/components/InnerPage';
 import { getChat, createChat } from '@/lib/data/chat';
+import { ChatRole } from '@/types/chat';
 
 export const metadata = {
   title: 'Chat',
@@ -48,7 +49,7 @@ export default async function Chat() {
     const systemAuthToken = process.env.AUTH_TOKEN || '';
 
     if (!systemAuthToken) {
-      return notFound();
+      return {};
     }
 
     const cookieStore = await cookies();
@@ -56,11 +57,11 @@ export default async function Chat() {
     const token = userAuthToken?.value;
 
     if (!token) {
-      return notFound();
+      return {};
     }
 
     if (token !== systemAuthToken) {
-      return notFound();
+      return {};
     }
 
     const response = await createChat({
@@ -70,6 +71,39 @@ export default async function Chat() {
       model,
     });
 
+    return {
+      id: Math.random().toString(36).substring(7),
+      content: response,
+      role: 'assistant' as ChatRole,
+    };
+  }
+
+  async function onChatSelect(chatId: string) {
+    'use server';
+
+    const systemAuthToken = process.env.AUTH_TOKEN || '';
+
+    if (!systemAuthToken) {
+      return {};
+    }
+
+    const cookieStore = await cookies();
+    const userAuthToken = cookieStore.get('authToken');
+    const token = userAuthToken?.value;
+
+    if (!token) {
+      return {};
+    }
+
+    if (token !== systemAuthToken) {
+      return {};
+    }
+
+    const response = await getChat({
+      token,
+      id: chatId,
+    });
+
     return response;
   }
 
@@ -77,10 +111,10 @@ export default async function Chat() {
     <PageLayout>
       <InnerPage isFullPage>
         <div className="container">
-          <h1>Chat</h1>
           <ChatInterface
-            initialChats={data.chatHistory}
+            chatKeys={data.chatHistory}
             onSendMessage={onCreateChat}
+            onChatSelect={onChatSelect}
           />
         </div>
       </InnerPage>

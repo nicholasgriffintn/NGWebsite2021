@@ -12,35 +12,38 @@ export async function getChat({
     return;
   }
 
-  const res = await fetch(
-    `https://assistant.nicholasgriffin.workers.dev/chat${id ? `/${id}` : ''}`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': 'NGWeb',
-        Authorization: `Bearer ${token}`,
-      },
-      next: {
-        revalidate: 60,
-      },
-    }
-  );
+  const url = `https://assistant.nicholasgriffin.workers.dev/chat${
+    id ? `/${id}` : ''
+  }`;
+
+  const res = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      'User-Agent': 'NGWeb',
+      Authorization: `Bearer ${token}`,
+    },
+    next: {
+      revalidate: 60,
+    },
+  });
 
   if (!res.ok) {
     console.error('Error fetching data from GitHub', res.statusText);
     return;
   }
 
-  const data: {
-    response: {
-      keys: ChatList;
-    };
-  } = await res.json();
+  const data: any = await res.json();
+
+  console.log('Chat data', data);
+
+  if (id) {
+    return data.response;
+  }
 
   const chatList = data?.response?.keys?.map((chat) => {
     return {
       ...chat,
-      id: chat.id || chat.name || '',
+      id: chat.id || Math.random().toString(36).substring(7),
       title: chat.title || chat.name || '',
     };
   });

@@ -1,16 +1,20 @@
+export type ChatRole = 'user' | 'assistant';
+
 export interface ChatMessage {
   id: string;
   content: string;
-  role: 'user' | 'assistant';
-  createdAt: string;
+  role: ChatRole;
 }
 
-export type ChatItem = {
+export interface ChatKey {
   id: string;
   title: string;
   name?: string;
-  messages?: ChatMessage[];
-  model: string;
-};
+}
 
-export type ChatList = ChatItem[];
+export type ChatList = ChatKey[];
+
+export interface ChatModel {
+  id: string;
+  name: string;
+}

@@ -1,8 +1,10 @@
 'use client';
 
 import * as React from 'react';
-import { MessageSquarePlus, Send, Plus } from 'lucide-react';
+import { Copy, MessageSquare, Send, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Select,
   SelectContent,
@@ -10,31 +12,42 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
-import { ChatList, ChatItem } from '@/types/chat';
+import { ChatMessage, ChatKey, ChatModel } from '@/types/chat';
 
-export function ChatInterface({
-  initialChats = [],
-  onSendMessage = async () => {
-    return '';
-  },
-}: {
-  initialChats?: ChatList;
+interface Props {
+  chatKeys?: ChatKey[];
+  models?: ChatModel[];
+  onChatSelect?: (chatId: string) => Promise<ChatMessage[]>;
   onSendMessage?: (
     chatId: string,
     message: string,
     model: string
-  ) => Promise<string>;
-}) {
-  const [chats, setChats] = React.useState<ChatList>(initialChats);
-  const [activeChat, setActiveChat] = React.useState<string | null>(null);
-  const [input, setInput] = React.useState('');
-  const [selectedModel, setSelectedModel] = React.useState(
-    'hermes-2-pro-mistral-7b'
+  ) => Promise<ChatMessage>;
+  onReaction?: (messageId: string, reaction: string) => Promise<void>;
+  suggestions?: string[];
+}
+
+export function ChatInterface({
+  chatKeys = [],
+  models = [
+    { id: 'hermes-2-pro-mistral-7b', name: 'Hermes 2 Pro - Mistral 7B' },
+    { id: 'llama-3.1-70b-instruct', name: 'Llama 3.1 - 70B Instruct' },
+    { id: 'llama-3.2-3b-instruct', name: 'Llama 3.2 - 3B Instruct' },
+  ],
+  onChatSelect = async () => [],
+  onSendMessage = async () => ({ id: '1', content: '', role: 'assistant' }),
+  onReaction = async () => {},
+  suggestions = ['What do you do?', 'Tell me a joke'],
+}: Props) {
+  const [selectedChat, setSelectedChat] = React.useState<string | null>(null);
+  const [selectedModel, setSelectedModel] = React.useState<string>(
+    models?.[0]?.id || ''
   );
+  const [messages, setMessages] = React.useState<ChatMessage[]>([]);
+  const [input, setInput] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -43,188 +56,221 @@ export function ChatInterface({
 
   React.useEffect(() => {
     scrollToBottom();
-  }, [chats]);
+  }, [messages]);
 
-  const createNewChat = () => {
-    const newChat: ChatItem = {
-      id: Math.random().toString(36).substring(7),
-      title: 'New Chat',
-      messages: [],
-      model: selectedModel,
-    };
-    setChats([...chats, newChat]);
-    setActiveChat(newChat.id);
+  const handleChatSelect = async (chatId: string) => {
+    setIsLoading(true);
+    setSelectedChat(chatId);
+    setMessages([]); // Clear messages while loading
+    try {
+      const chatMessages = await onChatSelect(chatId);
+      setMessages(chatMessages);
+    } catch (error) {
+      console.error('Error loading chat:', error);
+    }
+    setIsLoading(false);
   };
 
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || !activeChat) return;
+  const handleSendMessage = async (content: string) => {
+    if (!content.trim() || !selectedChat) return;
 
-    const updatedChats = chats.map((chat) => {
-      if (chat.id === activeChat) {
-        const messages = chat.messages || [];
-        return {
-          ...chat,
-          messages: [
-            ...messages,
-            {
-              id: Math.random().toString(36).substring(7),
-              content: input,
-              role: 'user' as const,
-              createdAt: new Date().toISOString(),
-            },
-            {
-              id: Math.random().toString(36).substring(7),
-              content: 'Typing...',
-              role: 'assistant' as const,
-              createdAt: new Date().toISOString(),
-            },
-          ],
-        };
-      }
-      return chat;
-    });
-
-    setChats(updatedChats);
     setInput('');
+    const newUserMessage = {
+      id: Date.now().toString(),
+      content,
+      role: 'user' as const,
+    };
+    setMessages((prev) => [...prev, newUserMessage]);
 
-    const apiResponse = await onSendMessage(activeChat, input, selectedModel);
+    setIsLoading(true);
+    setMessages((prev) => [
+      ...prev,
+      { id: 'loading', content: '...', role: 'assistant' },
+    ]);
 
-    const updatedChatsWithResponse = chats.map((chat) => {
-      if (chat.id === activeChat) {
-        const messages = chat.messages || [];
-        return {
-          ...chat,
-          messages: [
-            ...messages,
-            {
-              id: Math.random().toString(36).substring(7),
-              content: apiResponse,
-              role: 'assistant' as const,
-              createdAt: new Date().toISOString(),
-            },
-          ],
-        };
-      }
-      return chat;
-    });
-
-    setChats(updatedChatsWithResponse);
+    try {
+      const response = await onSendMessage(
+        selectedChat,
+        content,
+        selectedModel
+      );
+      setMessages((prev) => [
+        ...prev.filter((msg) => msg.id !== 'loading'),
+        response,
+      ]);
+    } catch (error) {
+      console.error('Error sending message:', error);
+      setMessages((prev) => prev.filter((msg) => msg.id !== 'loading'));
+    }
+    setIsLoading(false);
   };
 
-  const currentChat = chats.find((chat) => chat.id === activeChat);
-  const currentChatMessages = currentChat?.messages || [];
+  const handleReaction = async (messageId: string, reaction: string) => {
+    try {
+      await onReaction(messageId, reaction);
+    } catch (error) {
+      console.error('Error setting reaction:', error);
+    }
+  };
+
+  const handleNewChat = () => {
+    setSelectedChat(null);
+    setMessages([]);
+  };
 
   return (
-    <div className="flex h-[calc(100vh-120px)] bg-background w-full overflow-hidden">
-      {/* Sidebar */}
-      <div className="w-72 border-r border-border/50 bg-muted/10">
-        <div className="p-4">
+    <div className="flex h-[calc(100vh-120px)] bg-background overflow-hidden">
+      <div className="w-64 border-r bg-muted/20">
+        <div className="p-4 space-y-2">
           <Button
-            onClick={createNewChat}
-            variant="secondary"
-            className="w-full justify-start gap-2 bg-primary/10 hover:bg-primary/20"
+            variant="ghost"
+            className="w-full justify-start"
+            onClick={handleNewChat}
           >
-            <Plus className="h-4 w-4" />
+            <MessageSquare className="mr-2 h-4 w-4" />
             New Chat
           </Button>
+          <hr className="border-t border-muted" />
+          {chatKeys.length === 0 && (
+            <p className="text-sm text-center">No previous chats were found.</p>
+          )}
+          {chatKeys.map((chat) => (
+            <Button
+              key={chat.id}
+              variant={selectedChat === chat.id ? 'secondary' : 'ghost'}
+              className="w-full justify-start text-sm"
+              onClick={() => handleChatSelect(chat.id)}
+            >
+              {chat.title}
+            </Button>
+          ))}
         </div>
-        <ScrollArea className="h-[calc(100vh-132px)]">
-          <div className="space-y-1 p-2">
-            {chats.map((chat) => (
-              <button
-                key={chat.id}
-                onClick={() => setActiveChat(chat.id)}
-                className={cn(
-                  'w-full rounded-lg px-4 py-3 text-left text-sm transition-colors hover:bg-accent/50',
-                  activeChat === chat.id && 'bg-accent text-accent-foreground'
-                )}
-              >
-                <div className="flex items-center gap-2">
-                  <MessageSquarePlus className="h-4 w-4" />
-                  <span className="line-clamp-1">{chat.title}</span>
-                </div>
-              </button>
-            ))}
-          </div>
-        </ScrollArea>
       </div>
 
-      {/* Main Chat Area */}
-      <div className="flex flex-1 flex-col bg-gradient-to-b from-background to-background/50">
-        {activeChat ? (
-          <>
-            {/* Messages */}
-            <ScrollArea className="flex-1 p-4">
-              <div className="space-y-4">
-                {currentChatMessages.map((message) => (
+      <div className="flex-1 flex flex-col">
+        <ScrollArea className="flex-1 p-4">
+          {isLoading && !messages.length ? (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center space-y-2">
+                <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto animate-pulse">
+                  A
+                </div>
+                <h2 className="text-2xl font-semibold">
+                  Please wait while I retrieve the chat history...
+                </h2>
+              </div>
+            </div>
+          ) : !selectedChat || (!isLoading && !messages.length) ? (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center space-y-2">
+                <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto">
+                  A
+                </div>
+                <h2 className="text-2xl font-semibold">
+                  How can I help you today?
+                </h2>
+              </div>
+            </div>
+          ) : (
+            messages.map((message) => {
+              if (!message.role) return null;
+
+              return (
+                <div
+                  key={message.id}
+                  className={cn('flex items-start gap-3 mb-4', {
+                    'justify-end': message.role === 'user',
+                  })}
+                >
+                  {message.role === 'assistant' && (
+                    <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-md bg-muted">
+                      A
+                    </div>
+                  )}
                   <div
-                    key={message.id}
                     className={cn(
-                      'flex',
-                      message.role === 'user' ? 'justify-end' : 'justify-start'
+                      'rounded-lg px-4 py-2 max-w-[85%] space-y-2',
+                      {
+                        'bg-primary text-primary-foreground':
+                          message.role === 'user',
+                        'bg-muted': message.role === 'assistant',
+                      }
                     )}
                   >
-                    <div
-                      className={cn(
-                        'rounded-2xl px-4 py-2 max-w-[80%]',
-                        message.role === 'user'
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-muted/50 text-foreground'
+                    <p className="text-sm">{message.content}</p>
+                    {message.role === 'assistant' &&
+                      message.id !== 'loading' && (
+                        <div className="flex gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() => handleReaction(message.id, 'copy')}
+                          >
+                            <Copy className="h-4 w-4" />
+                            <span className="sr-only">Copy message</span>
+                          </Button>
+                        </div>
                       )}
-                    >
-                      {message.content}
-                    </div>
                   </div>
-                ))}
-                <div ref={messagesEndRef} />
-              </div>
-            </ScrollArea>
+                </div>
+              );
+            })
+          )}
+          <div ref={messagesEndRef} />
+        </ScrollArea>
 
-            {/* Input Area */}
-            <div className="border-t border-border/50 bg-background/50 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/50">
-              <div className="mb-4">
-                <Select value={selectedModel} onValueChange={setSelectedModel}>
-                  <SelectTrigger className="bg-background/50 backdrop-blur supports-[backdrop-filter]:bg-background/50">
-                    <SelectValue placeholder="Select model" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="hermes-2-pro-mistral-7b">
-                      Hermes 2 Pro - Mistral 7B
-                    </SelectItem>
-                    <SelectItem value="llama-3.1-70b-instruct">
-                      Llama 3.1 - 70B Instruct
-                    </SelectItem>
-                    <SelectItem value="llama-3.2-3b-instruct">
-                      Llama 3.2 - 3B Instruct
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <form onSubmit={handleSendMessage} className="flex gap-2">
-                <Input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Type your message..."
-                  className="flex-1 bg-background/50 backdrop-blur supports-[backdrop-filter]:bg-background/50"
-                />
-                <Button type="submit" size="icon" className="shrink-0">
-                  <Send className="h-4 w-4" />
-                  <span className="sr-only">Send message</span>
-                </Button>
-              </form>
-            </div>
-          </>
-        ) : (
-          <div className="flex flex-1 items-center justify-center">
-            <div className="text-center space-y-2">
-              <MessageSquarePlus className="h-12 w-12 mx-auto text-muted-foreground/50" />
-              <p className="text-lg text-muted-foreground">
-                Select a chat or create a new one to get started
-              </p>
-            </div>
+        {(!selectedChat || (!isLoading && !messages.length)) && (
+          <div className="px-4 py-2 grid grid-cols-2 gap-2">
+            {suggestions.map((suggestion) => (
+              <Button
+                key={suggestion}
+                variant="outline"
+                className="text-sm"
+                onClick={() => handleSendMessage(suggestion)}
+              >
+                {suggestion}
+              </Button>
+            ))}
           </div>
         )}
+
+        <div className="p-4 border-t space-y-4">
+          <Select value={selectedModel} onValueChange={setSelectedModel}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a model" />
+            </SelectTrigger>
+            <SelectContent>
+              {models.map((model) => (
+                <SelectItem key={model.id} value={model.id}>
+                  {model.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+            className="flex gap-2"
+          >
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Write a message..."
+              className="flex-1"
+            />
+            <Button
+              type="button"
+              size="icon"
+              disabled={!input.trim() || isLoading || !selectedChat}
+              onClick={() => handleSendMessage(input)}
+            >
+              <Send className="h-4 w-4" />
+              <span className="sr-only">Send message</span>
+            </Button>
+          </form>
+        </div>
       </div>
     </div>
   );
