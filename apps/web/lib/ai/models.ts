@@ -7,4 +7,5 @@ export const modelsOptions = [
   { id: 'claude-3-5-sonnet', name: 'Claude 3.5 - Sonnet' },
   { id: 'claude-3.5-haiku', name: 'Claude 3.5 - Haiku' },
   { id: 'claude-3.5-opus', name: 'Claude 3.5 - Opus' },
+  { id: 'grok', name: 'Grok' },
 ];
