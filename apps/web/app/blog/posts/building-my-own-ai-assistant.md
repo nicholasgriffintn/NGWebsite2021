@@ -264,7 +264,7 @@ export const handleChat = async (req: IRequest): Promise<string> => {
 };
 ```
 
-userMessages will be an array of strings straight from the KV store, so we will need to map over these and then remove any system messages.
+Then we just need to add these to our messages array and return the response.
 
 ```typescript
 export const handleChat = async (req: IRequest): Promise<string> => {
@@ -278,7 +278,7 @@ export const handleChat = async (req: IRequest): Promise<string> => {
 			role: 'system',
 			content: systemPrompt,
 		},
-		...userMessages.filter((message) => message.role === 'user'),
+		...userMessages,
 	];
 };
 ```
