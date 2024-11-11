@@ -20,12 +20,12 @@ import { ChatMessage, ChatKey, ChatModel } from '@/types/chat';
 interface Props {
   initialChatKeys?: ChatKey[];
   models?: ChatModel[];
-  onChatSelect?: (chatId: string) => Promise<ChatMessage[]>;
+  onChatSelect?: (chatId: string) => Promise<any | ChatMessage[]>;
   onSendMessage?: (
     chatId: string,
     message: string,
     model: string
-  ) => Promise<ChatMessage>;
+  ) => Promise<any | ChatMessage>;
   onReaction?: (messageId: string, reaction: string) => Promise<void>;
   onNewChat?: (content: string) => Promise<string>;
   suggestions?: string[];
