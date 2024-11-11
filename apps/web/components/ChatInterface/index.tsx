@@ -233,7 +233,7 @@ export function ChatInterface({
                         }
                       )}
                     >
-                      <p className="text-sm">{message.content}</p>
+                      <p className="text-sm mb-0">{message.content}</p>
                       {message.role === 'assistant' &&
                         message.id !== 'loading' && (
                           <div className="flex gap-2">
