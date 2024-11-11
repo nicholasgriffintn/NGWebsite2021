@@ -15,9 +15,6 @@ export async function getRecentlyPlayed(): Promise<RecentTracks | undefined> {
         'Content-Type': 'application/json',
         'User-Agent': 'NGWeb',
       },
-      next: {
-        revalidate: 60,
-      },
     }
   );
 

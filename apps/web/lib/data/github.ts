@@ -11,9 +11,6 @@ export async function getGitHubRepos({
         'Content-Type': 'application/json',
         'User-Agent': 'NGWeb',
       },
-      next: {
-        revalidate: 60,
-      },
     }
   );
 

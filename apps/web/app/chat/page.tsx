@@ -81,6 +81,8 @@ export default async function Chat() {
   async function onChatSelect(chatId: string) {
     'use server';
 
+    console.log('Selecting chat', chatId);
+
     const systemAuthToken = process.env.AUTH_TOKEN || '';
 
     if (!systemAuthToken) {
@@ -107,14 +109,21 @@ export default async function Chat() {
     return response;
   }
 
+  async function handleNewChat(content: string) {
+    'use server';
+
+    return Math.random().toString(36).substring(7);
+  }
+
   return (
     <PageLayout>
       <InnerPage isFullPage>
         <div className="container">
           <ChatInterface
-            chatKeys={data.chatHistory}
+            initialChatKeys={data.chatHistory}
             onSendMessage={onCreateChat}
             onChatSelect={onChatSelect}
+            onNewChat={handleNewChat}
           />
         </div>
       </InnerPage>

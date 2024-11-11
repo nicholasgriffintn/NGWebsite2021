@@ -22,28 +22,30 @@ export async function getChat({
       'User-Agent': 'NGWeb',
       Authorization: `Bearer ${token}`,
     },
-    next: {
-      revalidate: 60,
-    },
   });
 
   if (!res.ok) {
-    console.error('Error fetching data from GitHub', res.statusText);
+    console.error('Error fetching data from AI', res.statusText);
     return;
   }
 
   const data: any = await res.json();
 
-  console.log('Chat data', data);
-
   if (id) {
     return data.response;
   }
 
-  const chatList = data?.response?.keys?.map((chat) => {
+  const keys = data?.response?.keys;
+
+  if (!keys) {
+    console.error('No keys found in response');
+    return;
+  }
+
+  const chatList = keys?.map((chat) => {
     return {
       ...chat,
-      id: chat.id || Math.random().toString(36).substring(7),
+      id: chat.name,
       title: chat.title || chat.name || '',
     };
   });
@@ -89,7 +91,7 @@ export async function createChat({
   );
 
   if (!res.ok) {
-    console.error('Error fetching data from GitHub', res.statusText);
+    console.error('Error fetching data from AI', res.statusText);
     return '';
   }
 

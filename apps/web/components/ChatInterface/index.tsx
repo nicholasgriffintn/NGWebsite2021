@@ -13,11 +13,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 import { ChatMessage, ChatKey, ChatModel } from '@/types/chat';
 
 interface Props {
-  chatKeys?: ChatKey[];
+  initialChatKeys?: ChatKey[];
   models?: ChatModel[];
   onChatSelect?: (chatId: string) => Promise<ChatMessage[]>;
   onSendMessage?: (
@@ -26,11 +27,12 @@ interface Props {
     model: string
   ) => Promise<ChatMessage>;
   onReaction?: (messageId: string, reaction: string) => Promise<void>;
+  onNewChat?: (content: string) => Promise<string>;
   suggestions?: string[];
 }
 
 export function ChatInterface({
-  chatKeys = [],
+  initialChatKeys = [],
   models = [
     { id: 'hermes-2-pro-mistral-7b', name: 'Hermes 2 Pro - Mistral 7B' },
     { id: 'llama-3.1-70b-instruct', name: 'Llama 3.1 - 70B Instruct' },
@@ -39,8 +41,10 @@ export function ChatInterface({
   onChatSelect = async () => [],
   onSendMessage = async () => ({ id: '1', content: '', role: 'assistant' }),
   onReaction = async () => {},
+  onNewChat = async () => 'new-chat-id',
   suggestions = ['What do you do?', 'Tell me a joke'],
 }: Props) {
+  const [chatKeys, setChatKeys] = React.useState<ChatKey[]>(initialChatKeys);
   const [selectedChat, setSelectedChat] = React.useState<string | null>(null);
   const [selectedModel, setSelectedModel] = React.useState<string>(
     models?.[0]?.id || ''
@@ -49,6 +53,7 @@ export function ChatInterface({
   const [input, setInput] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -72,7 +77,7 @@ export function ChatInterface({
   };
 
   const handleSendMessage = async (content: string) => {
-    if (!content.trim() || !selectedChat) return;
+    if (!content.trim()) return;
 
     setInput('');
     const newUserMessage = {
@@ -89,11 +94,17 @@ export function ChatInterface({
     ]);
 
     try {
-      const response = await onSendMessage(
-        selectedChat,
-        content,
-        selectedModel
-      );
+      let chatId = selectedChat;
+      if (!chatId) {
+        chatId = await onNewChat(content);
+        setSelectedChat(chatId);
+        const newChatKey: ChatKey = {
+          id: chatId,
+          title: content.slice(0, 30) + (content.length > 30 ? '...' : ''),
+        };
+        setChatKeys((prev) => [newChatKey, ...prev]);
+      }
+      const response = await onSendMessage(chatId, content, selectedModel);
       setMessages((prev) => [
         ...prev.filter((msg) => msg.id !== 'loading'),
         response,
@@ -105,17 +116,39 @@ export function ChatInterface({
     setIsLoading(false);
   };
 
-  const handleReaction = async (messageId: string, reaction: string) => {
+  const handleNewChat = async () => {
+    setSelectedChat(null);
+    setMessages([]);
     try {
-      await onReaction(messageId, reaction);
+      const newChatId = await onNewChat('');
+      setSelectedChat(newChatId);
+      const newChatKey: ChatKey = {
+        id: newChatId,
+        title: 'New Chat',
+      };
+      setChatKeys((prev) => [newChatKey, ...prev]);
     } catch (error) {
-      console.error('Error setting reaction:', error);
+      console.error('Error creating new chat:', error);
     }
   };
 
-  const handleNewChat = () => {
-    setSelectedChat(null);
-    setMessages([]);
+  const handleCopy = async (id: string, content: string) => {
+    try {
+      onReaction(id, 'copy');
+      await navigator.clipboard.writeText(content);
+      toast({
+        title: 'Copied to clipboard',
+        description: 'The message has been copied to your clipboard.',
+      });
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+      toast({
+        title: 'Copy failed',
+        description:
+          'There was an error copying the message to your clipboard.',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
@@ -138,6 +171,7 @@ export function ChatInterface({
             <Button
               key={chat.id}
               variant={selectedChat === chat.id ? 'secondary' : 'ghost'}
+              disabled={selectedChat === chat.id}
               className="w-full justify-start text-sm"
               onClick={() => handleChatSelect(chat.id)}
             >
@@ -156,11 +190,13 @@ export function ChatInterface({
                   A
                 </div>
                 <h2 className="text-2xl font-semibold">
-                  Please wait while I retrieve the chat history...
+                  {selectedChat
+                    ? 'Please wait while I retrieve the chat history...'
+                    : 'Starting a new chat...'}
                 </h2>
               </div>
             </div>
-          ) : !selectedChat || (!isLoading && !messages.length) ? (
+          ) : !messages.length ? (
             <div className="flex items-center justify-center h-full">
               <div className="text-center space-y-2">
                 <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto">
@@ -205,7 +241,9 @@ export function ChatInterface({
                             variant="ghost"
                             size="icon"
                             className="h-8 w-8"
-                            onClick={() => handleReaction(message.id, 'copy')}
+                            onClick={() =>
+                              handleCopy(message.id, message.content)
+                            }
                           >
                             <Copy className="h-4 w-4" />
                             <span className="sr-only">Copy message</span>
@@ -220,7 +258,7 @@ export function ChatInterface({
           <div ref={messagesEndRef} />
         </ScrollArea>
 
-        {(!selectedChat || (!isLoading && !messages.length)) && (
+        {!messages.length && !isLoading && (
           <div className="px-4 py-2 grid grid-cols-2 gap-2">
             {suggestions.map((suggestion) => (
               <Button
@@ -251,6 +289,7 @@ export function ChatInterface({
           <form
             onSubmit={(e) => {
               e.preventDefault();
+              handleSendMessage(input);
             }}
             className="flex gap-2"
           >
@@ -261,10 +300,9 @@ export function ChatInterface({
               className="flex-1"
             />
             <Button
-              type="button"
+              type="submit"
               size="icon"
-              disabled={!input.trim() || isLoading || !selectedChat}
-              onClick={() => handleSendMessage(input)}
+              disabled={!input.trim() || isLoading}
             >
               <Send className="h-4 w-4" />
               <span className="sr-only">Send message</span>
