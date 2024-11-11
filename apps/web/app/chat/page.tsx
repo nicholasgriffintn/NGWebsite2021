@@ -7,6 +7,8 @@ import { InnerPage } from '@/components/InnerPage';
 import { getChat, createChat } from '@/lib/data/chat';
 import { ChatRole } from '@/types/chat';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Chat',
   description: 'Start a chat with my assistant.',
