@@ -12,6 +12,7 @@ export interface ChatMessage {
     };
     name: string;
   }[];
+  logId?: string;
 }
 
 export interface ChatKey {

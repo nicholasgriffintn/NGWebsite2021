@@ -102,3 +102,44 @@ export async function createChat({
 
   return data.response;
 }
+
+export async function sendFeedback({
+  token,
+  logId,
+  feedback,
+}: {
+  token: string;
+  logId: string;
+  feedback: string;
+}): Promise<void> {
+  if (!token || !logId || !feedback) {
+    console.error('No token provided');
+    return;
+  }
+
+  const baseUrl =
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:8787'
+      : 'https://assistant.nicholasgriffin.workers.dev';
+  const res = await fetch(`${baseUrl}/chat/feedback`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'User-Agent': 'NGWeb',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      logId,
+      feedback: feedback === 'positive' ? 1 : -1,
+    }),
+  });
+
+  if (!res.ok) {
+    console.error('Error fetching data from AI', res.statusText);
+    return;
+  }
+
+  const data = await res.json();
+
+  console.log('Feedback response', data);
+}

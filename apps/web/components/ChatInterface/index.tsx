@@ -1,7 +1,14 @@
 'use client';
 
 import * as React from 'react';
-import { Copy, MessageSquare, Send, Hammer } from 'lucide-react';
+import {
+  Copy,
+  MessageSquare,
+  Send,
+  Hammer,
+  ThumbsUp,
+  ThumbsDown,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -26,7 +33,11 @@ interface Props {
     message: string,
     model: string
   ) => Promise<any | ChatMessage>;
-  onReaction?: (messageId: string, reaction: string) => Promise<void>;
+  onReaction?: (
+    messageId: string,
+    logId: string,
+    reaction: string
+  ) => Promise<void>;
   onNewChat?: (content: string) => Promise<string>;
   suggestions?: string[];
 }
@@ -134,7 +145,7 @@ export function ChatInterface({
 
   const handleCopy = async (id: string, content: string) => {
     try {
-      onReaction(id, 'copy');
+      onReaction(id, '', 'copy');
       await navigator.clipboard.writeText(content);
       toast({
         title: 'Copied to clipboard',
@@ -146,6 +157,27 @@ export function ChatInterface({
         title: 'Copy failed',
         description:
           'There was an error copying the message to your clipboard.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleReaction = async (
+    id: string,
+    logId: string,
+    reaction: string
+  ) => {
+    try {
+      onReaction(id, logId, reaction);
+      toast({
+        title: 'Reaction recorded',
+        description: 'Your reaction has been recorded.',
+      });
+    } catch (err) {
+      console.error('Failed to record reaction: ', err);
+      toast({
+        title: 'Reaction failed',
+        description: 'There was an error recording your reaction.',
         variant: 'destructive',
       });
     }
@@ -275,6 +307,38 @@ export function ChatInterface({
                               <Copy className="h-4 w-4" />
                               <span className="sr-only">Copy message</span>
                             </Button>
+                            {message.logId && (
+                              <>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8"
+                                  onClick={() =>
+                                    handleReaction(
+                                      message.id,
+                                      message.logId || '',
+                                      'thumbsUp'
+                                    )
+                                  }
+                                >
+                                  <ThumbsUp className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8"
+                                  onClick={() =>
+                                    handleReaction(
+                                      message.id,
+                                      message.logId || '',
+                                      'thumbsDown'
+                                    )
+                                  }
+                                >
+                                  <ThumbsDown className="h-4 w-4" />
+                                </Button>
+                              </>
+                            )}
                           </div>
                         )}
                     </div>
@@ -295,6 +359,12 @@ export function ChatInterface({
                           <>
                             <span>•</span>
                             <span className="font-medium">{message.model}</span>
+                          </>
+                        )}
+                        {message.logId && (
+                          <>
+                            <span>•</span>
+                            <span className="font-medium">{message.logId}</span>
                           </>
                         )}
                       </div>

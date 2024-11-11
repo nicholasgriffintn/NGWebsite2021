@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { PageLayout } from '@/components/PageLayout';
 import { ChatInterface } from '@/components/ChatInterface';
 import { InnerPage } from '@/components/InnerPage';
-import { getChat, createChat } from '@/lib/data/chat';
+import { getChat, createChat, sendFeedback } from '@/lib/data/chat';
 import { ChatRole } from '@/types/chat';
 
 export const dynamic = 'force-dynamic';
@@ -63,8 +63,6 @@ export default async function Chat() {
   async function onChatSelect(chatId: string) {
     'use server';
 
-    console.log('Selecting chat', chatId);
-
     const token = await validateToken();
     if (!token) {
       return {};
@@ -78,6 +76,29 @@ export default async function Chat() {
     return Math.random().toString(36).substring(7);
   }
 
+  async function handleReaction(
+    chatId: string,
+    logId: string,
+    reaction: string
+  ) {
+    'use server';
+
+    const token = await validateToken();
+    if (!token) {
+      return {};
+    }
+
+    if (reaction === 'thumbsUp') {
+      return await sendFeedback({ token, logId, feedback: 'positive' });
+    }
+
+    if (reaction === 'thumbsDown') {
+      return await sendFeedback({ token, logId, feedback: 'negative' });
+    }
+
+    return {};
+  }
+
   return (
     <PageLayout>
       <InnerPage isFullPage>
@@ -87,6 +108,7 @@ export default async function Chat() {
             onSendMessage={onCreateChat}
             onChatSelect={onChatSelect}
             onNewChat={handleNewChat}
+            onReaction={handleReaction}
           />
         </div>
       </InnerPage>
