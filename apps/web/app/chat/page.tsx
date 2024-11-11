@@ -14,32 +14,31 @@ export const metadata = {
   description: 'Start a chat with my assistant.',
 };
 
-async function getData() {
+async function validateToken() {
   const systemAuthToken = process.env.AUTH_TOKEN || '';
-
   if (!systemAuthToken) {
-    return notFound();
+    return null;
   }
 
   const cookieStore = await cookies();
   const userAuthToken = cookieStore.get('authToken');
   const token = userAuthToken?.value;
 
+  if (!token || token !== systemAuthToken) {
+    return null;
+  }
+
+  return token;
+}
+
+async function getData() {
+  const token = await validateToken();
   if (!token) {
     return notFound();
   }
 
-  if (token !== systemAuthToken) {
-    return notFound();
-  }
-
-  const chatHistory = await getChat({
-    token,
-  });
-
-  return {
-    chatHistory,
-  };
+  const chatHistory = await getChat({ token });
+  return { chatHistory };
 }
 
 export default async function Chat() {
@@ -48,31 +47,12 @@ export default async function Chat() {
   async function onCreateChat(chatId: string, message: string, model: string) {
     'use server';
 
-    const systemAuthToken = process.env.AUTH_TOKEN || '';
-
-    if (!systemAuthToken) {
-      return {};
-    }
-
-    const cookieStore = await cookies();
-    const userAuthToken = cookieStore.get('authToken');
-    const token = userAuthToken?.value;
-
+    const token = await validateToken();
     if (!token) {
       return {};
     }
 
-    if (token !== systemAuthToken) {
-      return {};
-    }
-
-    const response = await createChat({
-      token,
-      chatId,
-      message,
-      model,
-    });
-
+    const response = await createChat({ token, chatId, message, model });
     return {
       id: Math.random().toString(36).substring(7),
       content: response,
@@ -85,35 +65,16 @@ export default async function Chat() {
 
     console.log('Selecting chat', chatId);
 
-    const systemAuthToken = process.env.AUTH_TOKEN || '';
-
-    if (!systemAuthToken) {
-      return {};
-    }
-
-    const cookieStore = await cookies();
-    const userAuthToken = cookieStore.get('authToken');
-    const token = userAuthToken?.value;
-
+    const token = await validateToken();
     if (!token) {
       return {};
     }
 
-    if (token !== systemAuthToken) {
-      return {};
-    }
-
-    const response = await getChat({
-      token,
-      id: chatId,
-    });
-
-    return response;
+    return await getChat({ token, id: chatId });
   }
 
   async function handleNewChat(content: string) {
     'use server';
-
     return Math.random().toString(36).substring(7);
   }
 
