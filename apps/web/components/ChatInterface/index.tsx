@@ -16,6 +16,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { MessageComponent } from '@/components/ChatInterface/MessageComponent';
 import { ChatMessage, ChatKey, ChatModel } from '@/types/chat';
+import { modelsOptions, defaultModel } from '@/lib/ai/models';
 
 interface Props {
   initialChatKeys?: ChatKey[];
@@ -37,11 +38,7 @@ interface Props {
 
 export function ChatInterface({
   initialChatKeys = [],
-  models = [
-    { id: 'hermes-2-pro-mistral-7b', name: 'Hermes 2 Pro - Mistral 7B' },
-    { id: 'llama-3.1-70b-instruct', name: 'Llama 3.1 - 70B Instruct' },
-    { id: 'llama-3.2-3b-instruct', name: 'Llama 3.2 - 3B Instruct' },
-  ],
+  models = modelsOptions,
   onChatSelect = async () => [],
   onSendMessage = async () => [],
   onReaction = async () => {},
@@ -50,9 +47,8 @@ export function ChatInterface({
 }: Props) {
   const [chatKeys, setChatKeys] = React.useState<ChatKey[]>(initialChatKeys);
   const [selectedChat, setSelectedChat] = React.useState<string | null>(null);
-  const [selectedModel, setSelectedModel] = React.useState<string>(
-    models[0]?.id || ''
-  );
+  const [selectedModel, setSelectedModel] =
+    React.useState<string>(defaultModel);
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
   const [input, setInput] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
