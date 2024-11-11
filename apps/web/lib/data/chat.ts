@@ -82,8 +82,6 @@ export async function getChat({
 
   const data: ChatMessage[] = await res.json();
 
-  console.log('Chat data', data);
-
   return data;
 }
 
@@ -169,6 +167,4 @@ export async function sendFeedback({
   }
 
   const data = await res.json();
-
-  console.log('Feedback response', data);
 }
