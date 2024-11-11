@@ -16,6 +16,7 @@ async function getData() {
   const systemAuthToken = process.env.AUTH_TOKEN || '';
 
   if (!systemAuthToken) {
+    console.log('No system auth token found');
     return notFound();
   }
 
@@ -24,10 +25,15 @@ async function getData() {
   const token = userAuthToken?.value;
 
   if (!token) {
+    console.log('No user auth token found');
     return notFound();
   }
 
   if (token !== systemAuthToken) {
+    console.log({
+      token,
+      systemAuthToken,
+    });
     return notFound();
   }
 
