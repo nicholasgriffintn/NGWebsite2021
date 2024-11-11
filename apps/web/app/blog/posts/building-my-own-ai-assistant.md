@@ -2,6 +2,10 @@
 title: "Building My Own AI Assistant"
 description: "Like many people, I've been using tools like ChatGPT for some time now and they're great, however, they lock you down to a third party service that you need to pay monthly for to get a good service and they aren't as fun given that you can't really customise them. With this project, I'm going to build my own using Cloudflare AI. It will be capable of full conversations alongside being able to query for external data."
 date: "2024-11-10"
+updated: "2024-11-11"
+image: "/uploads/building-my-own-ai-assistant/featured.png"
+imageAlt: "A screenshot of the chat interface that I built for my AI assistant"
+hideFeaturedImage: true
 ---
 
 > If you'd like to skip straight to the code, you can find it [here](https://github.com/nicholasgriffintn/assistant).
@@ -543,13 +547,30 @@ export const handleChat = async (req: IRequest): Promise<string> => {
 };
 ```
 
+## Building the frontend
+
+Now we need some sort of frontend to make this all work.
+
+I didn't really want tot spend too much time on this as it's only going to be for me and honestly, I don't think that's really the interesting part, but if you'd like to see what I did, you can find the code [here](https://github.com/nicholasgriffintn/website/blob/main/apps/web/app/chat/page.tsx).
+
+It looks like this:
+
+![A screenshot of the chat interface that I built for my AI assistant](/uploads/building-my-own-ai-assistant/featured.png)
+
+It's pretty basic right now.
+
+On the left we have a sidebar which shows the conversation history, this is retrieved from an api route that I added to the worker which will return a list of the keys from the KV store.
+
+On the right we have the chat interface, this is where the user can input their message and then see the response from the AI, this gets messages from another API route and then adds new one as the user sends messages or the AI responds.
+
 ## Next steps
 
-This is just the start of the project, there's a lot more to do, including:
+This is just the start of the project, there's a few more bits that I can do, such as:
 
-- Adding a frontend to the project
 - Expanding the capabilities with more functions
 - Adding in other useful services like code suggestions or image generation / recognition.
 - I also think a summarisation service for YouTube and articles would be useful.
+
+I might not write about these, but if they do end up interesting, I might do.
 
 Until then, you can find the code for this project [here](https://github.com/nicholasgriffintn/assistant).
