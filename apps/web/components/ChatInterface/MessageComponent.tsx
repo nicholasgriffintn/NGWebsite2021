@@ -54,30 +54,8 @@ const AnalysisContent = ({ content }: { content: string }) => {
     null;
 
   return (
-    <div className="flex items-start justify-between gap-2">
-      {cleanedAnswer && (
-        <div className="flex-grow prose dark:prose-invert overflow-hidden">
-          <div className="break-words">{cleanedAnswer}</div>
-        </div>
-      )}
-      {cleanedAnalysis && (
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="flex-shrink-0 mt-1"
-              aria-label="View analysis"
-            >
-              <Info className="h-4 w-4" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-80">
-            <div className="font-medium">Analysis</div>
-            <p className="mt-2 text-sm break-words">{cleanedAnalysis}</p>
-          </PopoverContent>
-        </Popover>
-      )}
+    <div className="flex-grow prose dark:prose-invert overflow-hidden">
+      <div className="break-words">{cleanedAnswer}</div>
     </div>
   );
 };
@@ -94,6 +72,14 @@ const MessageContent = ({
   if (!message.content) {
     return null;
   }
+
+  const cleanedAnalysis =
+    (message.content.startsWith('<analysis>') &&
+      message.content
+        .split('</analysis>')?.[0]
+        ?.replace('<analysis>', '')
+        .trim()) ||
+    null;
 
   return (
     <div
@@ -119,6 +105,24 @@ const MessageContent = ({
       </div>
       {message.role === 'assistant' && message.status !== 'loading' && (
         <div className="flex gap-2 pt-2">
+          {cleanedAnalysis && (
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-6 w-6 transition-all duration-200 ease-in-out hover:bg-primary hover:text-primary-foreground hover:scale-110"
+                  aria-label="View analysis"
+                >
+                  <Info className="h-4 w-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80">
+                <div className="font-medium">Analysis</div>
+                <p className="mt-2 text-sm break-words">{cleanedAnalysis}</p>
+              </PopoverContent>
+            </Popover>
+          )}
           <Button
             variant="ghost"
             size="icon"
