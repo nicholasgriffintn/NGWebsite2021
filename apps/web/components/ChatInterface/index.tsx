@@ -253,7 +253,7 @@ export function ChatInterface({
                     </div>
                   </div>
                   {(message.timestamp || message.model) && (
-                    <div className="absolute bottom-0 right-0 mb-2 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out">
+                    <div className="absolute top-full right-0 mt-1 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out z-10">
                       <div className="flex items-center space-x-2 bg-background/80 backdrop-blur-sm rounded px-2 py-1 text-xs text-muted-foreground">
                         {message.timestamp && (
                           <span>
