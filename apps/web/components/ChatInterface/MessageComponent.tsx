@@ -149,7 +149,7 @@ const MessageContent = ({
                   <Info className="h-4 w-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-80">
+              <PopoverContent className="w-80 max-h-60 overflow-scroll">
                 <div className="font-medium">Analysis</div>
                 <p className="mt-2 text-sm break-words">{cleanedAnalysis}</p>
               </PopoverContent>
