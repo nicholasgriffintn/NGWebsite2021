@@ -26,12 +26,6 @@ export function Header() {
             <Link href="/projects" underline={false}>
               Projects
             </Link>
-            <Link href="/bookmarks" underline={false}>
-              Bookmarks
-            </Link>
-            <Link href="/setup" underline={false}>
-              Setup
-            </Link>
             <Link href="/contact" underline={false}>
               Contact
             </Link>
