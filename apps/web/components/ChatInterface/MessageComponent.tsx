@@ -80,7 +80,7 @@ const AnalysisContent = ({
   return (
     <div className="flex-grow prose dark:prose-invert overflow-hidden">
       <div className="break-words">
-        {replaceCitations(cleanedAnswer, citations)}
+        {parseMarkdown(replaceCitations(cleanedAnswer, citations))}
       </div>
     </div>
   );
