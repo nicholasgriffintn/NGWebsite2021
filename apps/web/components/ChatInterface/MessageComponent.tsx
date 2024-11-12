@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/popover';
 import { WeatherCard } from '@/components/ChatInterface/Cards/WeatherCard';
 import type { ChatMessage } from '@/types/chat';
+import { parseMarkdown } from '@/lib/markdown';
 
 interface MessageProps {
   message: ChatMessage;
@@ -37,7 +38,7 @@ const replaceCitations = (text: string, citations: string[]) => {
   return text.replace(/\[(\d+)\]/g, (match, number) => {
     const index = parseInt(number, 10) - 1;
     if (citations[index]) {
-      return `<a href="${citations[index]}" target="_blank" rel="noopener noreferrer">[${number}]</a>`;
+      return `![#${number}](${citations[index]})`;
     }
     return match;
   });
@@ -53,8 +54,7 @@ const FormattedContent = ({
   <div className="break-words whitespace-pre-wrap">
     {content.split('\n').map((line, index) => (
       <React.Fragment key={index}>
-        {replaceCitations(line, citations)}
-        {index < content.split('\n').length - 1 && <br />}
+        {parseMarkdown(replaceCitations(line, citations))}
       </React.Fragment>
     ))}
   </div>
