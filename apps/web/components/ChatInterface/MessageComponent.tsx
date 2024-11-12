@@ -137,6 +137,11 @@ const MessageContent = ({
             )}
             {message.name === 'create_image' && message.data.output?.length && (
               <>
+                <span className="font-medium">
+                  Note: If the image doesn't immediately display, please
+                  reselect the chat in a couple seconds, we don't auto refresh
+                  these just yet.
+                </span>
                 {message.data.output.map((image, index) => (
                   <img
                     key={index}
@@ -152,6 +157,11 @@ const MessageContent = ({
             )}
             {message.name === 'create_video' && message.data.output?.length && (
               <>
+                <span className="font-medium">
+                  Note: If the image doesn't immediately display, please
+                  reselect the chat in a couple seconds, we don't auto refresh
+                  these just yet.
+                </span>
                 {message.data.output.map((video, index) => (
                   <video
                     key={index}
@@ -168,6 +178,11 @@ const MessageContent = ({
             )}
             {message.name === 'create_audio' && message.data.output?.length && (
               <>
+                <span className="font-medium">
+                  Note: If the image doesn't immediately display, please
+                  reselect the chat in a couple seconds, we don't auto refresh
+                  these just yet.
+                </span>
                 {message.data.output.map((audio, index) => (
                   <audio key={index} controls className="rounded-md">
                     <source src={audio} type="audio/mpeg" />
