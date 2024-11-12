@@ -106,8 +106,6 @@ const MessageContent = ({
       content.split('</analysis>')?.[0]?.replace('<analysis>', '').trim()) ||
     null;
 
-  console.log(message);
-
   return (
     <div
       className={cn(
