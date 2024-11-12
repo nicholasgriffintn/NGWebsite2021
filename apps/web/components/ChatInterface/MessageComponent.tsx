@@ -55,7 +55,9 @@ const FormattedContent = ({
   <div className="break-words whitespace-pre-wrap">
     {content.split('\n').map((line, index) => (
       <React.Fragment key={index}>
-        {parseMarkdown(replaceCitations(line, citations))}
+        {parseMarkdown(replaceCitations(line, citations), false, {
+          p: 'm-0',
+        })}
       </React.Fragment>
     ))}
   </div>
@@ -81,7 +83,9 @@ const AnalysisContent = ({
   return (
     <div className="flex-grow prose dark:prose-invert overflow-hidden">
       <div className="break-words">
-        {parseMarkdown(replaceCitations(cleanedAnswer, citations))}
+        {parseMarkdown(replaceCitations(cleanedAnswer, citations), false, {
+          p: 'm-0',
+        })}
       </div>
     </div>
   );

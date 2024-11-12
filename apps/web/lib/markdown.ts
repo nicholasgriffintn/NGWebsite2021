@@ -3,7 +3,11 @@ import parse from 'html-react-parser';
 const URL_REGEX =
   /(^|\s)((?:(?:https?:\/\/(www\.)?)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*))/g;
 
-export function parseMarkdown(input: string, muted = false) {
+export function parseMarkdown(
+  input: string,
+  muted = false,
+  classNames: { p?: string } = {}
+) {
   if (!input) return input;
 
   const linkClassName = `underline text-${
@@ -30,7 +34,7 @@ export function parseMarkdown(input: string, muted = false) {
       )
       .replace(/(\*\*|__)(?=\S)(.+?[*_]*)(?=\S)\1/gm, '<strong>$2</strong>');
 
-    return `<p>${html}</p>`;
+    return `<p class=${classNames.p}>${html}</p>`;
   });
 
   // Join the paragraphs back together
