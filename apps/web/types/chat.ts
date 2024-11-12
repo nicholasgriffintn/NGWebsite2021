@@ -19,7 +19,7 @@ export interface WeatherData {
 export interface ChatMessage {
   id: string;
   name?: string;
-  content?: string;
+  content?: string | { prompt: string; analysis: string };
   role: ChatRole;
   timestamp?: number;
   model?: string;

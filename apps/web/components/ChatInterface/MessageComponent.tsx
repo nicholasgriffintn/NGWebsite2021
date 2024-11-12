@@ -99,8 +99,11 @@ const MessageContent = ({
     return null;
   }
 
+  const isContentAString = typeof message.content === 'string';
+
   const cleanedAnalysis =
-    (message.content.startsWith('<analysis>') &&
+    (typeof message.content === 'string' &&
+      message.content.startsWith('<analysis>') &&
       message.content
         .split('</analysis>')?.[0]
         ?.replace('<analysis>', '')
@@ -119,6 +122,7 @@ const MessageContent = ({
     >
       <div className="overflow-x-auto">
         {message.role === 'assistant' &&
+        typeof message.content === 'string' &&
         message.content.includes('<analysis>') &&
         message.content.includes('<answer>') ? (
           <AnalysisContent
@@ -127,7 +131,11 @@ const MessageContent = ({
           />
         ) : (
           <FormattedContent
-            content={message.content}
+            content={
+              typeof message.content === 'string'
+                ? message.content
+                : message.content.prompt
+            }
             citations={message.citations || []}
           />
         )}

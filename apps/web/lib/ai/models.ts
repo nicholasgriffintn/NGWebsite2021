@@ -22,4 +22,5 @@ export const modelsOptions = [
     id: 'llama-3.1-sonar-huge-128k-online',
     name: 'Llama 3.1 - Sonar Huge 128k Online',
   },
+  { id: 'flux', name: 'Flux' },
 ];
