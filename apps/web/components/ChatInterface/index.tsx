@@ -34,6 +34,7 @@ interface Props {
   ) => Promise<void>;
   onNewChat?: (content: string) => Promise<string>;
   suggestions?: string[];
+  hasErrored?: boolean;
 }
 
 export function ChatInterface({
@@ -44,6 +45,7 @@ export function ChatInterface({
   onReaction = async () => {},
   onNewChat = async () => 'new-chat-id',
   suggestions = ['What do you do?', 'Tell me a joke'],
+  hasErrored = false,
 }: Props) {
   const [chatKeys, setChatKeys] = React.useState<ChatKey[]>(initialChatKeys);
   const [selectedChat, setSelectedChat] = React.useState<string | null>(null);
@@ -167,8 +169,6 @@ export function ChatInterface({
       });
     }
   };
-
-  const hasErrored = !isLoading && selectedChat && !messages.length;
 
   return (
     <div className="flex h-[calc(100vh-120px)] bg-background overflow-hidden">
