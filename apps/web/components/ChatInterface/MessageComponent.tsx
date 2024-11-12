@@ -88,17 +88,14 @@ const AnalysisContent = ({
 
 const MessageContent = ({
   message,
+  content,
   onReaction,
 }: {
   message: ChatMessage;
+  content: string;
   onReaction: (reaction: string) => void;
 }) => {
   const isFunction = message.name;
-
-  const content =
-    typeof message.content === 'string'
-      ? message.content
-      : message?.content?.prompt || '';
 
   if (!content) {
     return null;
@@ -108,6 +105,8 @@ const MessageContent = ({
     (content.includes('<analysis>') &&
       content.split('</analysis>')?.[0]?.replace('<analysis>', '').trim()) ||
     null;
+
+  console.log(message);
 
   return (
     <div
@@ -133,10 +132,51 @@ const MessageContent = ({
             citations={message.citations || []}
           />
         )}
-        {isFunction && (
+        {isFunction && message.data && (
           <div className="pt-2">
-            {message.name === 'get_weather' && message.data && (
+            {message.name === 'get_weather' && (
               <WeatherCard data={message.data} />
+            )}
+            {message.name === 'create_image' && (
+              <>
+                {message.data.output.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt={`Generated image for prompt ${message.data.input.prompt}`}
+                    width={message.data.input.width}
+                    height={message.data.input.height}
+                    className="rounded-md"
+                    loading="lazy"
+                  />
+                ))}
+              </>
+            )}
+            {message.name === 'create_video' && (
+              <>
+                {message.data.output.map((video, index) => (
+                  <video
+                    key={index}
+                    controls
+                    className="rounded-md"
+                    width={message.data.input.width}
+                    height={message.data.input.height}
+                  >
+                    <source src={video} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                ))}
+              </>
+            )}
+            {message.name === 'create_audio' && (
+              <>
+                {message.data.output.map((audio, index) => (
+                  <audio key={index} controls className="rounded-md">
+                    <source src={audio} type="audio/mpeg" />
+                    Your browser does not support the audio tag.
+                  </audio>
+                ))}
+              </>
             )}
           </div>
         )}
@@ -233,10 +273,11 @@ export function MessageComponent({ message, onReaction }: MessageProps) {
     return <ToolCallMessage message={message} />;
   }
 
-  const content =
-    typeof message.content === 'string'
-      ? message.content
-      : message?.content?.prompt || '';
+  const content = Array.isArray(message.content)
+    ? message.content.join('\n')
+    : typeof message.content === 'string'
+    ? message.content
+    : message?.content?.prompt || '';
 
   if (!message.role || !content) {
     return null;
@@ -254,7 +295,11 @@ export function MessageComponent({ message, onReaction }: MessageProps) {
             A
           </div>
         )}
-        <MessageContent message={message} onReaction={onReaction} />
+        <MessageContent
+          message={message}
+          content={content}
+          onReaction={onReaction}
+        />
       </div>
       {message.timestamp && <MessageTimestamp message={message} />}
     </div>
