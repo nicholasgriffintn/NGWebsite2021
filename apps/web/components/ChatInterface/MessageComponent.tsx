@@ -135,60 +135,63 @@ const MessageContent = ({
             {message.name === 'get_weather' && (
               <WeatherCard data={message.data} />
             )}
-            {message.name === 'create_image' && message.data.output?.length && (
+            {message.name === 'create_image' && (
               <>
                 <span className="font-medium">
                   Note: If the image doesn't immediately display, please
                   reselect the chat in a couple seconds, we don't auto refresh
                   these just yet.
                 </span>
-                {message.data.output.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    alt={`Generated image for prompt ${message.data.input.prompt}`}
-                    width={message.data.input.width}
-                    height={message.data.input.height}
-                    className="rounded-md"
-                    loading="lazy"
-                  />
-                ))}
+                {message.data.output?.length &&
+                  message.data.output.map((image, index) => (
+                    <img
+                      key={index}
+                      src={image}
+                      alt={`Generated image for prompt ${message.data.input.prompt}`}
+                      width={message.data.input.width}
+                      height={message.data.input.height}
+                      className="rounded-md"
+                      loading="lazy"
+                    />
+                  ))}
               </>
             )}
-            {message.name === 'create_video' && message.data.output?.length && (
+            {message.name === 'create_video' && (
               <>
                 <span className="font-medium">
-                  Note: If the image doesn't immediately display, please
+                  Note: If the video player doesn't immediately display, please
                   reselect the chat in a couple seconds, we don't auto refresh
                   these just yet.
                 </span>
-                {message.data.output.map((video, index) => (
-                  <video
-                    key={index}
-                    controls
-                    className="rounded-md"
-                    width={message.data.input.width}
-                    height={message.data.input.height}
-                  >
-                    <source src={video} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                ))}
+                {message.data.output?.length &&
+                  message.data.output.map((video, index) => (
+                    <video
+                      key={index}
+                      controls
+                      className="rounded-md"
+                      width={message.data.input.width}
+                      height={message.data.input.height}
+                    >
+                      <source src={video} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  ))}
               </>
             )}
-            {message.name === 'create_audio' && message.data.output?.length && (
+            {message.name === 'create_music' && (
               <>
                 <span className="font-medium">
-                  Note: If the image doesn't immediately display, please
+                  Note: If the audio player doesn't immediately display, please
                   reselect the chat in a couple seconds, we don't auto refresh
                   these just yet.
                 </span>
-                {message.data.output.map((audio, index) => (
-                  <audio key={index} controls className="rounded-md">
-                    <source src={audio} type="audio/mpeg" />
-                    Your browser does not support the audio tag.
-                  </audio>
-                ))}
+                {message.data.output?.length &&
+                  message.data.output.map((audio, index) => (
+                    <audio key={index} controls className="rounded-md">
+                      <source src={audio} type="audio/mpeg" />
+                      Your browser does not support the audio tag.
+                    </audio>
+                  ))}
               </>
             )}
           </div>
