@@ -8,4 +8,6 @@ export const modelsOptions = [
   { id: 'claude-3.5-haiku', name: 'Claude 3.5 - Haiku' },
   { id: 'claude-3.5-opus', name: 'Claude 3.5 - Opus' },
   { id: 'grok', name: 'Grok' },
+  { id: 'mistral-nemo', name: 'Mistral Nemo' },
+  { id: 'smollm2-1.7b-instruct', name: 'SmolLM2 - 1.7B Instruct' },
 ];
