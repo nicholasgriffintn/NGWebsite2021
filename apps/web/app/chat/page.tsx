@@ -1,5 +1,4 @@
-import { cookies } from 'next/headers';
-import { notFound } from 'next/navigation';
+import { withPageAuthRequired, getSession } from '@auth0/nextjs-auth0';
 
 import { PageLayout } from '@/components/PageLayout';
 import { ChatInterface } from '@/components/ChatInterface';
@@ -18,101 +17,78 @@ export const metadata = {
   description: 'Start a chat with my assistant.',
 };
 
-async function validateToken() {
-  const systemAuthToken = process.env.AUTH_TOKEN || '';
-  if (!systemAuthToken) {
-    return null;
-  }
-
-  const cookieStore = await cookies();
-  const userAuthToken = cookieStore.get('authToken');
-  const token = userAuthToken?.value;
-
-  if (!token || token !== systemAuthToken) {
-    return null;
-  }
-
-  return token;
-}
-
-async function getData() {
-  const token = await validateToken();
-  if (!token) {
-    return notFound();
-  }
-
+async function getData(token) {
   const chatHistory = await getChatKeys({ token });
   return { chatHistory };
 }
 
-export default async function Chat() {
-  const data = await getData();
+export default withPageAuthRequired(
+  async function Chat() {
+    const session = await getSession();
 
-  async function onCreateChat(chatId: string, message: string, model: string) {
-    'use server';
+    const token = process.env.AUTH_TOKEN || '';
+    const data = await getData(token);
 
-    const token = await validateToken();
-    if (!token) {
-      console.error('No token found');
-      return [];
+    async function onCreateChat(
+      chatId: string,
+      message: string,
+      model: string
+    ) {
+      ('use server');
+
+      const response = await createChat({
+        token,
+        chatId,
+        message,
+        model,
+        session,
+      });
+      return Array.isArray(response) ? response : [response];
     }
 
-    const response = await createChat({ token, chatId, message, model });
-    return Array.isArray(response) ? response : [response];
-  }
+    async function onChatSelect(chatId: string) {
+      ('use server');
 
-  async function onChatSelect(chatId: string) {
-    'use server';
-
-    const token = await validateToken();
-    if (!token) {
-      console.error('No token found');
-      return [];
+      const chatMessages = await getChat({ token, id: chatId, session });
+      return Array.isArray(chatMessages) ? chatMessages : [];
     }
 
-    const chatMessages = await getChat({ token, id: chatId });
-    return Array.isArray(chatMessages) ? chatMessages : [];
-  }
-
-  async function handleNewChat(content: string) {
-    'use server';
-    return Math.random().toString(36).substring(7);
-  }
-
-  async function handleReaction(
-    chatId: string,
-    logId: string,
-    reaction: string
-  ) {
-    'use server';
-
-    const token = await validateToken();
-    if (!token) {
-      return;
+    async function handleNewChat(content: string) {
+      'use server';
+      return Math.random().toString(36).substring(7);
     }
 
-    if (reaction === 'thumbsUp') {
-      return await sendFeedback({ token, logId, feedback: 'positive' });
+    async function handleReaction(
+      chatId: string,
+      logId: string,
+      reaction: string
+    ) {
+      ('use server');
+
+      if (reaction === 'thumbsUp') {
+        return await sendFeedback({ token, logId, feedback: 'positive' });
+      }
+
+      if (reaction === 'thumbsDown') {
+        return await sendFeedback({ token, logId, feedback: 'negative' });
+      }
     }
 
-    if (reaction === 'thumbsDown') {
-      return await sendFeedback({ token, logId, feedback: 'negative' });
-    }
-  }
-
-  return (
-    <PageLayout>
-      <InnerPage isFullPage>
-        <div className="container">
-          <ChatInterface
-            initialChatKeys={data.chatHistory}
-            onSendMessage={onCreateChat}
-            onChatSelect={onChatSelect}
-            onNewChat={handleNewChat}
-            onReaction={handleReaction}
-          />
-        </div>
-      </InnerPage>
-    </PageLayout>
-  );
-}
+    return (
+      <PageLayout>
+        <InnerPage isFullPage>
+          <div className="container">
+            <ChatInterface
+              initialChatKeys={data.chatHistory}
+              onSendMessage={onCreateChat}
+              onChatSelect={onChatSelect}
+              onNewChat={handleNewChat}
+              onReaction={handleReaction}
+            />
+          </div>
+        </InnerPage>
+      </PageLayout>
+    );
+  },
+  { returnTo: '/chat' }
+);

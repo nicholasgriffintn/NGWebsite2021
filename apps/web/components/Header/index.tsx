@@ -1,8 +1,12 @@
-import { Link } from "@/components/Link";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { getSession } from '@auth0/nextjs-auth0';
 
-export function Header() {
-	return (
+import { Link } from '@/components/Link';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+
+export async function Header() {
+  const session = await getSession();
+
+  return (
     <header className="fixed w-full z-50">
       <div className="w-full min-h-[3px] bg-gradient-to-r from-[#093054] to-[#061e35]" />
       <div className="bg-[#171923] shadow">
@@ -26,15 +30,28 @@ export function Header() {
             <Link href="/projects" underline={false}>
               Projects
             </Link>
-            <Link href="/bookmarks" underline={false}>
-              Bookmarks
-            </Link>
-            <Link href="/setup" underline={false}>
-              Setup
-            </Link>
             <Link href="/contact" underline={false}>
               Contact
             </Link>
+            {!session?.user?.email ? (
+              <Link href="/api/auth/login" underline={false}>
+                Login
+              </Link>
+            ) : (
+              <>
+                <Avatar>
+                  <AvatarImage
+                    src={session.user.picture}
+                    alt={`Profile picture of ${session.user.name}`}
+                  />
+                  <AvatarFallback>{session.user.nickname}</AvatarFallback>
+                </Avatar>
+                <span className="sr-only">Home</span>
+                <Link href="/api/auth/logout" underline={false}>
+                  Logout
+                </Link>
+              </>
+            )}
           </nav>
         </div>
       </div>
