@@ -135,7 +135,7 @@ const MessageContent = ({
             {message.name === 'get_weather' && (
               <WeatherCard data={message.data} />
             )}
-            {message.name === 'create_image' && (
+            {message.name === 'create_image' && message.data.output?.length && (
               <>
                 {message.data.output.map((image, index) => (
                   <img
@@ -150,7 +150,7 @@ const MessageContent = ({
                 ))}
               </>
             )}
-            {message.name === 'create_video' && (
+            {message.name === 'create_video' && message.data.output?.length && (
               <>
                 {message.data.output.map((video, index) => (
                   <video
@@ -166,7 +166,7 @@ const MessageContent = ({
                 ))}
               </>
             )}
-            {message.name === 'create_audio' && (
+            {message.name === 'create_audio' && message.data.output?.length && (
               <>
                 {message.data.output.map((audio, index) => (
                   <audio key={index} controls className="rounded-md">
