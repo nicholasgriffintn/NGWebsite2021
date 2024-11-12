@@ -131,8 +131,12 @@ const MessageContent = ({
             citations={message.citations || []}
           />
         )}
-        {isFunction && message.name === 'get_weather' && message.data && (
-          <WeatherCard data={message.data} />
+        {isFunction && (
+          <div className="pt-2">
+            {message.name === 'get_weather' && message.data && (
+              <WeatherCard data={message.data} />
+            )}
+          </div>
         )}
       </div>
       {message.role === 'assistant' && message.status !== 'loading' && (
