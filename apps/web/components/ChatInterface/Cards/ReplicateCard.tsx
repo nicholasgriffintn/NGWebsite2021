@@ -11,7 +11,9 @@ const ImageOutput = ({ output, data }: { output: any[]; data: any }) => (
   <>
     <span className="font-medium">
       Note: If the image doesn't immediately display, please reselect the chat
-      in a couple seconds, we don't auto refresh these just yet.
+      in a couple seconds, we don't auto refresh these just yet. Also, these are
+      currently deleted after an hour, we'll look at saving them in our own
+      storage as this solution expands.
     </span>
     {output.length &&
       output.map((image, index) => (
@@ -32,7 +34,9 @@ const VideoOutput = ({ output, data }: { output: any[]; data: any }) => (
   <>
     <span className="font-medium">
       Note: If the video player doesn't immediately display, please reselect the
-      chat in a couple seconds, we don't auto refresh these just yet.
+      chat in a couple seconds, we don't auto refresh these just yet. Also,
+      these are currently deleted after an hour, we'll look at saving them in
+      our own storage as this solution expands.
     </span>
     {output.length &&
       output.map((video, index) => (
@@ -54,7 +58,9 @@ const AudioOutput = ({ output, data }: { output: any[]; data: any }) => (
   <>
     <span className="font-medium">
       Note: If the audio player doesn't immediately display, please reselect the
-      chat in a couple seconds, we don't auto refresh these just yet.
+      chat in a couple seconds, we don't auto refresh these just yet. Also,
+      these are currently deleted after an hour, we'll look at saving them in
+      our own storage as this solution expands.
     </span>
     {output.length &&
       output.map((audio, index) => (
