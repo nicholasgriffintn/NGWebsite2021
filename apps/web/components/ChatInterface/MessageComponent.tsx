@@ -33,29 +33,55 @@ const ToolCallMessage = ({ message }: { message: ChatMessage }) => (
   </div>
 );
 
-const FormattedContent = ({ content }: { content: string }) => (
+const replaceCitations = (text: string, citations: string[]) => {
+  return text.replace(/\[(\d+)\]/g, (match, number) => {
+    const index = parseInt(number, 10) - 1;
+    if (citations[index]) {
+      return `<a href="${citations[index]}" target="_blank" rel="noopener noreferrer">[${number}]</a>`;
+    }
+    return match;
+  });
+};
+
+const FormattedContent = ({
+  content,
+  citations,
+}: {
+  content: string;
+  citations: string[];
+}) => (
   <div className="break-words whitespace-pre-wrap">
     {content.split('\n').map((line, index) => (
       <React.Fragment key={index}>
-        {line}
+        {replaceCitations(line, citations)}
         {index < content.split('\n').length - 1 && <br />}
       </React.Fragment>
     ))}
   </div>
 );
 
-const AnalysisContent = ({ content }: { content: string }) => {
-  const [analysis, answer] = content.split('</analysis>');
-  const cleanedAnalysis =
-    (analysis && analysis.replace('<analysis>', '').trim()) || null;
+const AnalysisContent = ({
+  content,
+  citations,
+}: {
+  content: string;
+  citations: string[];
+}) => {
+  const [_, answer] = content.split('</analysis>');
   const cleanedAnswer =
     (answer &&
       answer.replace('<answer>', '').replace('</answer>', '').trim()) ||
     null;
 
+  if (!cleanedAnswer) {
+    return null;
+  }
+
   return (
     <div className="flex-grow prose dark:prose-invert overflow-hidden">
-      <div className="break-words">{cleanedAnswer}</div>
+      <div className="break-words">
+        {replaceCitations(cleanedAnswer, citations)}
+      </div>
     </div>
   );
 };
@@ -95,9 +121,15 @@ const MessageContent = ({
         {message.role === 'assistant' &&
         message.content.includes('<analysis>') &&
         message.content.includes('<answer>') ? (
-          <AnalysisContent content={message.content} />
+          <AnalysisContent
+            content={message.content}
+            citations={message.citations || []}
+          />
         ) : (
-          <FormattedContent content={message.content} />
+          <FormattedContent
+            content={message.content}
+            citations={message.citations || []}
+          />
         )}
         {isFunction && message.name === 'get_weather' && message.data && (
           <WeatherCard data={message.data} />

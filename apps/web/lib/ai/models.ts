@@ -10,4 +10,16 @@ export const modelsOptions = [
   { id: 'grok', name: 'Grok' },
   { id: 'mistral-nemo', name: 'Mistral Nemo' },
   { id: 'smollm2-1.7b-instruct', name: 'SmolLM2 - 1.7B Instruct' },
+  {
+    id: 'llama-3.1-sonar-small-128k-online',
+    name: 'Llama 3.1 - Sonar Small 128k Online',
+  },
+  {
+    id: 'llama-3.1-sonar-large-128k-online',
+    name: 'Llama 3.1 - Sonar Large 128k Online',
+  },
+  {
+    id: 'llama-3.1-sonar-huge-128k-online',
+    name: 'Llama 3.1 - Sonar Huge 128k Online',
+  },
 ];

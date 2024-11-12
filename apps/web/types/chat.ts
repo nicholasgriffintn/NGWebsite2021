@@ -32,6 +32,7 @@ export interface ChatMessage {
   status?: string;
   logId?: string;
   data?: any;
+  citations?: string[];
 }
 
 export interface ChatKey {
