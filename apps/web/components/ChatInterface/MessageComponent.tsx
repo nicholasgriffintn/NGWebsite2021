@@ -52,14 +52,16 @@ const FormattedContent = ({
   content: string;
   citations: string[];
 }) => (
-  <div className="break-words whitespace-pre-wrap">
-    {content.split('\n').map((line, index) => (
-      <React.Fragment key={index}>
-        {parseMarkdown(replaceCitations(line, citations), false, {
-          p: 'm-0',
-        })}
-      </React.Fragment>
-    ))}
+  <div className="flex-grow prose dark:prose-invert overflow-hidden">
+    <div className="break-words">
+      {content.split('\n').map((line, index) => (
+        <React.Fragment key={index}>
+          {parseMarkdown(replaceCitations(line, citations), false, {
+            p: 'm-0',
+          })}
+        </React.Fragment>
+      ))}
+    </div>
   </div>
 );
 
@@ -80,15 +82,7 @@ const AnalysisContent = ({
     return null;
   }
 
-  return (
-    <div className="flex-grow prose dark:prose-invert overflow-hidden">
-      <div className="break-words">
-        {parseMarkdown(replaceCitations(cleanedAnswer, citations), false, {
-          p: 'm-0',
-        })}
-      </div>
-    </div>
-  );
+  return <FormattedContent content={cleanedAnswer} citations={citations} />;
 };
 
 const MessageContent = ({
@@ -168,7 +162,9 @@ const MessageContent = ({
               </PopoverTrigger>
               <PopoverContent className="w-80 max-h-60 overflow-scroll">
                 <div className="font-medium">Analysis</div>
-                <p className="mt-2 text-sm break-words">{cleanedAnalysis}</p>
+                <div className="mt-2 text-sm break-words">
+                  {parseMarkdown(cleanedAnalysis)}
+                </div>
               </PopoverContent>
             </Popover>
           )}
