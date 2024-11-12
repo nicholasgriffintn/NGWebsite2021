@@ -105,7 +105,9 @@ const MessageContent = ({
   }
 
   const cleanedAnalysis =
-    content.split('</analysis>')?.[0]?.replace('<analysis>', '').trim() || null;
+    (content.includes('<analysis>') &&
+      content.split('</analysis>')?.[0]?.replace('<analysis>', '').trim()) ||
+    null;
 
   return (
     <div
