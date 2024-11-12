@@ -95,20 +95,17 @@ const MessageContent = ({
 }) => {
   const isFunction = message.name;
 
-  if (!message.content) {
+  const content =
+    typeof message.content === 'string'
+      ? message.content
+      : message?.content?.prompt || '';
+
+  if (!content) {
     return null;
   }
 
-  const isContentAString = typeof message.content === 'string';
-
   const cleanedAnalysis =
-    (typeof message.content === 'string' &&
-      message.content.startsWith('<analysis>') &&
-      message.content
-        .split('</analysis>')?.[0]
-        ?.replace('<analysis>', '')
-        .trim()) ||
-    null;
+    content.split('</analysis>')?.[0]?.replace('<analysis>', '').trim() || null;
 
   return (
     <div
@@ -122,20 +119,15 @@ const MessageContent = ({
     >
       <div className="overflow-x-auto">
         {message.role === 'assistant' &&
-        typeof message.content === 'string' &&
-        message.content.includes('<analysis>') &&
-        message.content.includes('<answer>') ? (
+        content.includes('<analysis>') &&
+        content.includes('<answer>') ? (
           <AnalysisContent
-            content={message.content}
+            content={content}
             citations={message.citations || []}
           />
         ) : (
           <FormattedContent
-            content={
-              typeof message.content === 'string'
-                ? message.content
-                : message.content.prompt
-            }
+            content={content}
             citations={message.citations || []}
           />
         )}
@@ -235,7 +227,12 @@ export function MessageComponent({ message, onReaction }: MessageProps) {
     return <ToolCallMessage message={message} />;
   }
 
-  if (!message.role || !message.content) {
+  const content =
+    typeof message.content === 'string'
+      ? message.content
+      : message?.content?.prompt || '';
+
+  if (!message.role || !content) {
     return null;
   }
 

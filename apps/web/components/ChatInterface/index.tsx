@@ -238,14 +238,19 @@ export function ChatInterface({
               <MessageComponent
                 key={index}
                 message={message}
-                onReaction={(reaction) =>
-                  handleReaction(
+                onReaction={(reaction) => {
+                  const content =
+                    typeof message.content === 'string'
+                      ? message.content
+                      : message?.content?.prompt || '';
+
+                  return handleReaction(
                     message.id,
-                    message.content || '',
+                    content,
                     message.logId || '',
                     reaction
-                  )
-                }
+                  );
+                }}
               />
             ))
           )}
