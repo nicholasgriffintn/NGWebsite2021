@@ -105,6 +105,7 @@ export async function createChat({
     process.env.NODE_ENV === 'development'
       ? 'http://localhost:8787'
       : 'https://assistant.nicholasgriffin.workers.dev';
+
   const res = await fetch(`${baseUrl}/chat`, {
     method: 'POST',
     headers: {
@@ -114,7 +115,12 @@ export async function createChat({
     },
     body: JSON.stringify({
       chat_id: chatId,
-      input: message,
+      input:
+        model === 'flux'
+          ? {
+              prompt: message,
+            }
+          : message,
       date: new Date().toISOString(),
       model: model || 'hermes-2-pro-mistral-7b',
     }),
