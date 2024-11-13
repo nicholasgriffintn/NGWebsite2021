@@ -1,8 +1,11 @@
-import { Link } from "@/components/Link";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Link } from '@/components/Link';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { auth0 } from '@/lib/auth0';
 
-export function Header() {
-	return (
+export async function Header() {
+  const session = await auth0.getSession();
+
+  return (
     <header className="fixed w-full z-50">
       <div className="w-full min-h-[3px] bg-gradient-to-r from-[#093054] to-[#061e35]" />
       <div className="bg-[#171923] shadow">
@@ -29,6 +32,25 @@ export function Header() {
             <Link href="/contact" underline={false}>
               Contact
             </Link>
+            {!session?.user?.email ? (
+              <Link href="/auth/login" underline={false}>
+                Login
+              </Link>
+            ) : (
+              <>
+                <Avatar>
+                  <AvatarImage
+                    src={session.user.picture}
+                    alt={`Profile picture of ${session.user.name}`}
+                  />
+                  <AvatarFallback>{session.user.nickname}</AvatarFallback>
+                </Avatar>
+                <span className="sr-only">Home</span>
+                <Link href="/auth/logout" underline={false}>
+                  Logout
+                </Link>
+              </>
+            )}
           </nav>
         </div>
       </div>
