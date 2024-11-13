@@ -1,5 +1,3 @@
-import type { Session } from '@auth0/nextjs-auth0';
-
 import type { ChatList, ChatMessage } from '@/types/chat';
 
 export async function getChatKeys({
@@ -58,7 +56,7 @@ export async function getChat({
 }: {
   id: string;
   token: string;
-  session?: Session | null;
+  session?: any;
 }): Promise<ChatMessage[]> {
   if (!token || !id) {
     console.error('No token or id provided');
@@ -101,7 +99,7 @@ export async function createChat({
   chatId: string;
   message: string;
   model?: string;
-  session?: Session | null;
+  session?: any;
 }): Promise<ChatMessage[]> {
   if (!token || !chatId || !message) {
     console.error('No token provided');

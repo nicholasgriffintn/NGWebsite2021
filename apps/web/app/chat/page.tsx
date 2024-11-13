@@ -1,4 +1,4 @@
-import { withPageAuthRequired, getSession } from '@auth0/nextjs-auth0';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
 import { PageLayout } from '@/components/PageLayout';
 import { ChatInterface } from '@/components/ChatInterface';
@@ -9,6 +9,7 @@ import {
   createChat,
   sendFeedback,
 } from '@/lib/data/chat';
+import { auth0 } from '@/lib/auth0';
 
 export const dynamic = 'force-dynamic';
 
@@ -24,7 +25,7 @@ async function getData(token) {
 
 export default withPageAuthRequired(
   async function Chat() {
-    const session = await getSession();
+    const session = await auth0.getSession();
 
     const token = process.env.AUTH_TOKEN || '';
     const data = await getData(token);

@@ -1,10 +1,9 @@
-import { getSession } from '@auth0/nextjs-auth0';
-
 import { Link } from '@/components/Link';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { auth0 } from '@/lib/auth0';
 
 export async function Header() {
-  const session = await getSession();
+  const session = await auth0.getSession();
 
   return (
     <header className="fixed w-full z-50">
@@ -34,7 +33,7 @@ export async function Header() {
               Contact
             </Link>
             {!session?.user?.email ? (
-              <Link href="/api/auth/login" underline={false}>
+              <Link href="/auth/login" underline={false}>
                 Login
               </Link>
             ) : (
@@ -47,7 +46,7 @@ export async function Header() {
                   <AvatarFallback>{session.user.nickname}</AvatarFallback>
                 </Avatar>
                 <span className="sr-only">Home</span>
-                <Link href="/api/auth/logout" underline={false}>
+                <Link href="/auth/logout" underline={false}>
                   Logout
                 </Link>
               </>
