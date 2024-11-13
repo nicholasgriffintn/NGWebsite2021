@@ -33,9 +33,9 @@ export const modelsOptions = [
   { id: 'una-cybertron-7b-v2', name: 'Una Cybertron 7B V2' },
   { id: 'llama-3.1-70b-instruct', name: 'Llama 3.1 - 70B Instruct' },
   { id: 'llama-3.2-1b-instruct', name: 'Llama 3.2 - 1B Instruct' },
-  { id: 'mistral-nemo', name: 'Mistral Nemo (Huggingface)' },
+  { id: 'mistral-nemo', name: 'Mistral Nemo (Hugging Face)' },
   {
     id: 'smollm2-1.7b-instruct',
-    name: 'SmolLM2 - 1.7B Instruct (Huggingface)',
+    name: 'SmolLM2 - 1.7B Instruct (Hugging Face)',
   },
 ];
