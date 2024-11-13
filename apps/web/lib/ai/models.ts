@@ -29,11 +29,6 @@ export const modelsOptions = [
   { id: 'tinyllama', name: 'TinyLlama' },
   { id: 'una-cybertron-7b-v2', name: 'Una Cybertron 7B V2' },
   { id: 'deepseek-coder-6.7b', name: 'DeepSeek Coder 6.7B' },
-  { id: 'stable-diffusion-1.5-img2img', name: 'Stable Diffusion 1.5 Img2Img' },
-  {
-    id: 'stable-diffusion-1.5-inpainting',
-    name: 'Stable Diffusion 1.5 Inpainting',
-  },
   { id: 'stable-diffusion-xl-base-1.0', name: 'Stable Diffusion XL Base 1.0' },
   {
     id: 'stable-diffusion-xl-lightning',
