@@ -34,7 +34,7 @@ export const modelsOptions = [
     id: 'stable-diffusion-1.5-inpainting',
     name: 'Stable Diffusion 1.5 Inpainting',
   },
-  { id: 'stable-diffusion-cl-base-1.0', name: 'Stable Diffusion CL Base 1.0' },
+  { id: 'stable-diffusion-xl-base-1.0', name: 'Stable Diffusion XL Base 1.0' },
   {
     id: 'stable-diffusion-xl-lightning',
     name: 'Stable Diffusion XL Lightning',
