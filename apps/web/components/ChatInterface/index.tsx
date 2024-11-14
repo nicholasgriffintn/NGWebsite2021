@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Menu } from 'lucide-react';
 
-import { ChatMessage, ChatKey, ChatModel } from '@/types/chat';
+import { ChatMessage, ChatKey } from '@/types/chat';
 import { ChatSidebar } from '@/components/ChatInterface/Sidebar';
 import { ChatWindow } from '@/components/ChatInterface/Window';
+import { Button } from '@/components/ui/button';
 
 interface Props {
   initialChatKeys?: ChatKey[];
@@ -39,6 +41,7 @@ export function ChatInterface({
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const handleNewChat = async () => {
     setSelectedChat(null);
@@ -69,29 +72,56 @@ export function ChatInterface({
     setIsLoading(false);
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSidebarOpen(window.innerWidth >= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div className="flex h-[calc(100vh-120px)] bg-background overflow-hidden">
-      <ChatSidebar
-        selectedChat={selectedChat}
-        chatKeys={chatKeys}
-        handleChatSelect={handleChatSelect}
-        handleNewChat={handleNewChat}
-      />
-      <ChatWindow
-        messages={messages}
-        setMessages={setMessages}
-        isLoading={isLoading}
-        setIsLoading={setIsLoading}
-        hasErrored={hasErrored}
-        selectedChat={selectedChat}
-        suggestions={suggestions}
-        onNewChat={onNewChat}
-        onReaction={onReaction}
-        onSendMessage={onSendMessage}
-        setSelectedChat={setSelectedChat}
-        setChatKeys={setChatKeys}
-        onTranscribe={onTranscribe}
-      />
+      <div
+        className={`${
+          isSidebarOpen ? 'block' : 'hidden'
+        } md:block md:w-64 flex-shrink-0`}
+      >
+        <ChatSidebar
+          selectedChat={selectedChat}
+          chatKeys={chatKeys}
+          handleChatSelect={handleChatSelect}
+          handleNewChat={handleNewChat}
+        />
+      </div>
+      <div className="flex-grow flex flex-col">
+        <div className="p-4 border-b md:hidden">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
+            <Menu className="h-6 w-6" />
+            <span className="sr-only">Toggle sidebar</span>
+          </Button>
+        </div>
+        <ChatWindow
+          messages={messages}
+          setMessages={setMessages}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          hasErrored={hasErrored}
+          selectedChat={selectedChat}
+          suggestions={suggestions}
+          onNewChat={onNewChat}
+          onReaction={onReaction}
+          onSendMessage={onSendMessage}
+          setSelectedChat={setSelectedChat}
+          setChatKeys={setChatKeys}
+          onTranscribe={onTranscribe}
+        />
+      </div>
     </div>
   );
 }
