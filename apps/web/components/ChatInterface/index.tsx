@@ -45,17 +45,6 @@ export function ChatInterface({
   const handleNewChat = async () => {
     setSelectedChat(null);
     setMessages([]);
-    try {
-      const newChatId = await onNewChat('');
-      setSelectedChat(newChatId);
-      const newChatKey: ChatKey = {
-        id: newChatId,
-        title: 'New Chat',
-      };
-      setChatKeys((prev) => [newChatKey, ...prev]);
-    } catch (error) {
-      console.error('Error creating new chat:', error);
-    }
   };
 
   const handleChatSelect = async (chatId: string) => {
