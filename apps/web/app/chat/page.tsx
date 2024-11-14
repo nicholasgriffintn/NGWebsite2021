@@ -118,7 +118,16 @@ export default async function Chat() {
 
   async function handleNewChat(content: string) {
     'use server';
-    return Math.random().toString(36).substring(7);
+
+    if (!content) {
+      return `New chat (${Math.random().toString(36).substring(7)})`;
+    }
+
+    const shortContent = content.trim().substring(0, 36);
+    const contentTitle = `${shortContent}${
+      content.length > shortContent.length ? '...' : ''
+    }`;
+    return contentTitle;
   }
 
   async function handleReaction(

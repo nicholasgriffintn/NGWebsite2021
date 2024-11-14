@@ -80,10 +80,10 @@ export function ChatWindow({
   const [isRecording, setIsRecording] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const chunksRef = useRef<Blob[]>([]);
   const [selectedModel, setSelectedModel] = useState<string>(defaultModel);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chunksRef = useRef<Blob[]>([]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -96,6 +96,7 @@ export function ChatWindow({
   const handleSendMessage = async (content: string) => {
     if (!content.trim() || isLoading) return;
 
+    setIsLoading(true);
     setInput('');
     const newUserMessage: ChatMessage = {
       id: Math.random().toString(36).substring(7),
@@ -111,8 +112,6 @@ export function ChatWindow({
       content: 'thinking...',
     };
     setMessages((prev) => [...prev, tempMessage]);
-
-    setIsLoading(true);
 
     try {
       const chatId = selectedChat || (await onNewChat(content));
