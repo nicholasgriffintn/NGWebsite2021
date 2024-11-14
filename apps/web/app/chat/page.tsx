@@ -1,9 +1,4 @@
-import { cookies } from 'next/headers';
-import Form from 'next/form';
 import { revalidatePath } from 'next/cache';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 
 import { PageLayout } from '@/components/PageLayout';
 import { ChatInterface } from '@/components/ChatInterface';
@@ -15,6 +10,8 @@ import {
   sendFeedback,
   sendTranscription,
 } from '@/lib/data/chat';
+import { validateToken, logIn } from '@/lib/auth';
+import { LoginForm } from '@/components/ChatInterface/LoginForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,23 +19,6 @@ export const metadata = {
   title: 'Chat',
   description: 'Start a chat with my assistant.',
 };
-
-async function validateToken() {
-  const systemAuthToken = process.env.AUTH_TOKEN || '';
-  if (!systemAuthToken) {
-    return null;
-  }
-
-  const cookieStore = await cookies();
-  const userAuthToken = cookieStore.get('authToken');
-  const token = userAuthToken?.value;
-
-  if (!token || token !== systemAuthToken) {
-    return null;
-  }
-
-  return token;
-}
 
 async function getData(token: string) {
   const chatHistory = await getChatKeys({ token });
@@ -48,16 +28,11 @@ async function getData(token: string) {
 export default async function Chat() {
   const token = await validateToken();
 
-  async function logIn(formData: FormData) {
+  async function handleLogIn(formData: FormData) {
     'use server';
-
     const token = formData.get('token') as string;
-
     if (token) {
-      const cookieStore = await cookies();
-      cookieStore.set('authToken', token, {
-        maxAge: 60 * 60 * 24 * 30,
-      });
+      await logIn(token);
       revalidatePath('/chat');
     }
   }
@@ -71,16 +46,10 @@ export default async function Chat() {
           </h1>
           <div className="grid grid-cols-5 gap-4">
             <div className="col-span-5 md:col-span-3 lg:col-span-3 pt-5">
-              <div className="text-primary-foreground lg:max-w-[100%] prose dark:prose-invert">
-                <p>Enter your token to log in:</p>
-                <Form action={logIn}>
-                  <Label htmlFor="token">Token</Label>
-                  <Input placeholder="Enter your token" name="token" />
-                  <Button className="mt-5" type="submit">
-                    Submit
-                  </Button>
-                </Form>
-              </div>
+              <p className="text-red-600">
+                Access denied. Please enter a valid token.
+              </p>
+              <LoginForm onSubmit={handleLogIn} />
             </div>
           </div>
         </InnerPage>

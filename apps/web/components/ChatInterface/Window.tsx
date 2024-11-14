@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, Fragment } from 'react';
 import { Send, Square, Mic, Loader2, Menu, Info } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -21,6 +21,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { formatDate } from '@/lib/dates';
+import { DateSeparator } from '@/components/DateSeparator';
 
 const modelDetails = modelsOptions.reduce((acc, model) => {
   acc[model.id] = model;
@@ -224,6 +226,218 @@ export function ChatWindow({
   };
 
   const isMobileSidebarOpen = !isDesktop && isSidebarOpen;
+  let lastDate = null;
+
+  const renderMessages = () => {
+    if (isLoading && !messages.length) {
+      return (
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center space-y-2">
+            <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto animate-pulse">
+              A
+            </div>
+            <h2 className="text-2xl font-semibold">
+              {selectedChat
+                ? 'Please wait while I retrieve the chat history...'
+                : 'Starting a new chat...'}
+            </h2>
+          </div>
+        </div>
+      );
+    }
+
+    if (hasErrored) {
+      return (
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center space-y-2">
+            <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto">
+              A
+            </div>
+            <h2 className="text-2xl font-semibold">
+              Something has gone wrong...
+            </h2>
+          </div>
+        </div>
+      );
+    }
+
+    if (!messages.length) {
+      return (
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center space-y-2">
+            <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto">
+              A
+            </div>
+            <h2 className="text-2xl font-semibold">
+              How can I help you today?
+            </h2>
+          </div>
+        </div>
+      );
+    }
+
+    return messages.map((message, index) => {
+      const messageDate = message.timestamp
+        ? new Date(message.timestamp)
+        : undefined;
+      const showDate = messageDate && lastDate !== formatDate(messageDate);
+      lastDate = messageDate && formatDate(messageDate);
+
+      return (
+        <Fragment key={message.id}>
+          {showDate && <DateSeparator date={messageDate} />}
+          <MessageComponent
+            key={index}
+            message={message}
+            onReaction={(reaction) => {
+              const content =
+                typeof message.content === 'string'
+                  ? message.content
+                  : message?.content?.prompt || '';
+
+              return handleReaction(
+                message.id,
+                content,
+                message.logId || '',
+                reaction
+              );
+            }}
+          />
+        </Fragment>
+      );
+    });
+  };
+
+  const renderSuggestions = () => {
+    if (!hasErrored && !messages.length && !isLoading) {
+      return (
+        <div className="px-4 py-2 grid grid-cols-1 lg:grid-cols-2 gap-2">
+          {suggestions.map((suggestion) => (
+            <Button
+              key={suggestion}
+              variant="outline"
+              className="text-sm"
+              onClick={() => handleSendMessage(suggestion)}
+              disabled={isTranscribing || isLoading || isMobileSidebarOpen}
+            >
+              {suggestion}
+            </Button>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const renderModelSelect = () => (
+    <div className="flex gap-2">
+      <Select
+        value={selectedModel}
+        onValueChange={setSelectedModel}
+        disabled={isTranscribing || isLoading || isMobileSidebarOpen}
+      >
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder="Select a model" />
+        </SelectTrigger>
+        <SelectContent>
+          {models.map((model) => (
+            <SelectItem key={model.id} value={model.id}>
+              {model.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      {modelDetails[selectedModel]?.description && (
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-10 w-10 transition-all duration-200 ease-in-out hover:bg-primary hover:text-primary-foreground hover:scale-110"
+              aria-label="View model information"
+            >
+              <Info className="h-4 w-4" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-80 max-h-60 overflow-scroll">
+            <div className="font-medium">Model Description</div>
+            <div className="mt-2 text-sm break-words">
+              <p>{modelDetails[selectedModel].description}</p>
+              {modelDetails[selectedModel].capabilities && (
+                <div className="mt-2">
+                  <div className="font-medium">Capabilities</div>
+                  <div className="mt-2">
+                    {modelDetails[selectedModel].capabilities.map(
+                      (capability) => (
+                        <div key={capability} className="text-sm">
+                          {capability}
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </PopoverContent>
+        </Popover>
+      )}
+    </div>
+  );
+
+  const renderTranscribingIndicator = () =>
+    isTranscribing && (
+      <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
+        <Loader2 className="h-4 w-4 animate-spin" />
+        <span>Transcribing audio...</span>
+      </div>
+    );
+
+  const renderForm = () => (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSendMessage(input);
+      }}
+      className="flex gap-2"
+    >
+      <Input
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="Write a message..."
+        className="flex-1"
+        disabled={
+          isRecording || isTranscribing || isLoading || isMobileSidebarOpen
+        }
+      />
+      <Button
+        type="button"
+        size="icon"
+        variant="outline"
+        disabled={isTranscribing || isLoading || isMobileSidebarOpen}
+        onClick={isRecording ? stopRecording : startRecording}
+        className={isRecording ? 'bg-red-500 hover:bg-red-600' : ''}
+      >
+        {isRecording ? (
+          <Square className="h-4 w-4" />
+        ) : (
+          <Mic className="h-4 w-4" />
+        )}
+        <span className="sr-only">
+          {isRecording ? 'Stop recording' : 'Start recording'}
+        </span>
+      </Button>
+      <Button
+        type="submit"
+        size="icon"
+        disabled={
+          !input.trim() || isTranscribing || isLoading || isMobileSidebarOpen
+        }
+      >
+        <Send className="h-4 w-4" />
+        <span className="sr-only">Send message</span>
+      </Button>
+    </form>
+  );
 
   return (
     <div className="flex-1 flex flex-col">
@@ -238,192 +452,17 @@ export function ChatWindow({
         </Button>
       </div>
       <ScrollArea className={`flex-1 p-4 ${isMobileSidebarOpen ? 'blur' : ''}`}>
-        {isLoading && !messages.length ? (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center space-y-2">
-              <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto animate-pulse">
-                A
-              </div>
-              <h2 className="text-2xl font-semibold">
-                {selectedChat
-                  ? 'Please wait while I retrieve the chat history...'
-                  : 'Starting a new chat...'}
-              </h2>
-            </div>
-          </div>
-        ) : hasErrored ? (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center space-y-2">
-              <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto">
-                A
-              </div>
-              <h2 className="text-2xl font-semibold">
-                Something has gone wrong...
-              </h2>
-            </div>
-          </div>
-        ) : !messages.length ? (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center space-y-2">
-              <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto">
-                A
-              </div>
-              <h2 className="text-2xl font-semibold">
-                How can I help you today?
-              </h2>
-            </div>
-          </div>
-        ) : (
-          messages.map((message, index) => (
-            <MessageComponent
-              key={index}
-              message={message}
-              onReaction={(reaction) => {
-                const content =
-                  typeof message.content === 'string'
-                    ? message.content
-                    : message?.content?.prompt || '';
-
-                return handleReaction(
-                  message.id,
-                  content,
-                  message.logId || '',
-                  reaction
-                );
-              }}
-            />
-          ))
-        )}
+        {renderMessages()}
         <div ref={messagesEndRef} />
       </ScrollArea>
 
       <div className={isMobileSidebarOpen ? 'blur' : ''}>
-        {!hasErrored && !messages.length && !isLoading && (
-          <div className="px-4 py-2 grid grid-cols-1 lg:grid-cols-2 gap-2">
-            {suggestions.map((suggestion) => (
-              <Button
-                key={suggestion}
-                variant="outline"
-                className="text-sm"
-                onClick={() => handleSendMessage(suggestion)}
-                disabled={isTranscribing || isLoading || isMobileSidebarOpen}
-              >
-                {suggestion}
-              </Button>
-            ))}
-          </div>
-        )}
-
+        {renderSuggestions()}
         {!hasErrored && (
           <div className="p-4 border-t space-y-4">
-            <div className="flex gap-2">
-              <Select
-                value={selectedModel}
-                onValueChange={setSelectedModel}
-                disabled={isTranscribing || isLoading || isMobileSidebarOpen}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a model" />
-                </SelectTrigger>
-                <SelectContent>
-                  {models.map((model) => (
-                    <SelectItem key={model.id} value={model.id}>
-                      {model.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {modelDetails[selectedModel]?.description && (
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="h-10 w-10 transition-all duration-200 ease-in-out hover:bg-primary hover:text-primary-foreground hover:scale-110"
-                      aria-label="View model information"
-                    >
-                      <Info className="h-4 w-4" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-80 max-h-60 overflow-scroll">
-                    <div className="font-medium">Model Description</div>
-                    <div className="mt-2 text-sm break-words">
-                      <p>{modelDetails[selectedModel].description}</p>
-                      {modelDetails[selectedModel].capabilities && (
-                        <div className="mt-2">
-                          <div className="font-medium">Capabilities</div>
-                          <div className="mt-2">
-                            {modelDetails[selectedModel].capabilities.map(
-                              (capability) => (
-                                <div key={capability} className="text-sm">
-                                  {capability}
-                                </div>
-                              )
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </PopoverContent>
-                </Popover>
-              )}
-            </div>
-            {isTranscribing && (
-              <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
-                <Loader2 className="h-4 w-4 animate-spin" />
-                <span>Transcribing audio...</span>
-              </div>
-            )}
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSendMessage(input);
-              }}
-              className="flex gap-2"
-            >
-              <Input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Write a message..."
-                className="flex-1"
-                disabled={
-                  isRecording ||
-                  isTranscribing ||
-                  isLoading ||
-                  isMobileSidebarOpen
-                }
-              />
-              <Button
-                type="button"
-                size="icon"
-                variant="outline"
-                disabled={isTranscribing || isLoading || isMobileSidebarOpen}
-                onClick={isRecording ? stopRecording : startRecording}
-                className={isRecording ? 'bg-red-500 hover:bg-red-600' : ''}
-              >
-                {isRecording ? (
-                  <Square className="h-4 w-4" />
-                ) : (
-                  <Mic className="h-4 w-4" />
-                )}
-                <span className="sr-only">
-                  {isRecording ? 'Stop recording' : 'Start recording'}
-                </span>
-              </Button>
-              <Button
-                type="submit"
-                size="icon"
-                disabled={
-                  !input.trim() ||
-                  isTranscribing ||
-                  isLoading ||
-                  isMobileSidebarOpen
-                }
-              >
-                <Send className="h-4 w-4" />
-                <span className="sr-only">Send message</span>
-              </Button>
-            </form>
+            {renderModelSelect()}
+            {renderTranscribingIndicator()}
+            {renderForm()}
           </div>
         )}
       </div>
