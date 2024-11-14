@@ -83,26 +83,24 @@ export function ChatInterface({
           handleNewChat={handleNewChat}
         />
       </div>
-      <div className="flex-grow flex flex-col">
-        <ChatWindow
-          messages={messages}
-          setMessages={setMessages}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-          hasErrored={hasErrored}
-          selectedChat={selectedChat}
-          suggestions={suggestions}
-          onNewChat={onNewChat}
-          onReaction={onReaction}
-          onSendMessage={onSendMessage}
-          setSelectedChat={setSelectedChat}
-          setChatKeys={setChatKeys}
-          onTranscribe={onTranscribe}
-          isDesktop={isDesktop}
-          isSidebarOpen={isSidebarOpen}
-          setIsSidebarOpen={setIsSidebarOpen}
-        />
-      </div>
+      <ChatWindow
+        messages={messages}
+        setMessages={setMessages}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+        hasErrored={hasErrored}
+        selectedChat={selectedChat}
+        suggestions={suggestions}
+        onNewChat={onNewChat}
+        onReaction={onReaction}
+        onSendMessage={onSendMessage}
+        setSelectedChat={setSelectedChat}
+        setChatKeys={setChatKeys}
+        onTranscribe={onTranscribe}
+        isDesktop={isDesktop}
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
     </div>
   );
 }
