@@ -90,6 +90,7 @@ export async function getChat({
     return data;
   } catch (error) {
     console.error('Error getting chat', error);
+    return [];
   }
 }
 
@@ -145,6 +146,7 @@ export async function createChat({
     return data;
   } catch (error) {
     console.error('Error creating chat', error);
+    return [];
   }
 }
 
