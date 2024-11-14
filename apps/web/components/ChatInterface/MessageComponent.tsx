@@ -108,7 +108,7 @@ const MessageContent = ({
   return (
     <div
       className={cn(
-        'rounded-lg px-4 py-2 max-w-[85%] space-y-2 relative overflow-hidden',
+        'rounded-lg px-4 py-2 space-y-2 relative w-full max-w-[640px]',
         {
           'bg-primary text-primary-foreground': message.role === 'user',
           'bg-muted': message.role === 'assistant',
@@ -130,7 +130,7 @@ const MessageContent = ({
           />
         )}
         {isFunction && message.data && (
-          <div className="pt-2">
+          <div className="pt-2 w-full">
             {message.name === 'get_weather' && (
               <WeatherCard data={message.data} />
             )}

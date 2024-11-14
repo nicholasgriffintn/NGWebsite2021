@@ -440,7 +440,7 @@ export function ChatWindow({
   );
 
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex-1 flex flex-col w-full">
       <div className="p-4 border-b md:hidden">
         <Button
           variant="ghost"
