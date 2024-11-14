@@ -1,12 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Menu } from 'lucide-react';
 
 import { ChatMessage, ChatKey } from '@/types/chat';
 import { ChatSidebar } from '@/components/ChatInterface/Sidebar';
 import { ChatWindow } from '@/components/ChatInterface/Window';
-import { Button } from '@/components/ui/button';
 
 interface Props {
   initialChatKeys?: ChatKey[];
@@ -41,7 +39,8 @@ export function ChatInterface({
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isDesktop, setIsDesktop] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleNewChat = async () => {
     setSelectedChat(null);
@@ -74,7 +73,7 @@ export function ChatInterface({
 
   useEffect(() => {
     const handleResize = () => {
-      setIsSidebarOpen(window.innerWidth >= 768);
+      setIsDesktop(window.innerWidth >= 768);
     };
     window.addEventListener('resize', handleResize);
     handleResize();
@@ -82,7 +81,7 @@ export function ChatInterface({
   }, []);
 
   return (
-    <div className="flex h-[calc(100vh-120px)] bg-background overflow-hidden">
+    <div className="flex h-[calc(100vh-120px-env(safe-area-inset-top)-env(safe-area-inset-bottom))] bg-background overflow-hidden">
       <div
         className={`${
           isSidebarOpen ? 'block' : 'hidden'
@@ -96,16 +95,6 @@ export function ChatInterface({
         />
       </div>
       <div className="flex-grow flex flex-col">
-        <div className="p-4 border-b md:hidden">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          >
-            <Menu className="h-6 w-6" />
-            <span className="sr-only">Toggle sidebar</span>
-          </Button>
-        </div>
         <ChatWindow
           messages={messages}
           setMessages={setMessages}
@@ -120,6 +109,9 @@ export function ChatInterface({
           setSelectedChat={setSelectedChat}
           setChatKeys={setChatKeys}
           onTranscribe={onTranscribe}
+          isDesktop={isDesktop}
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
         />
       </div>
     </div>

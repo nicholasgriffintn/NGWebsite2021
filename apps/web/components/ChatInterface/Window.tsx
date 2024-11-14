@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { useState, useRef, useEffect } from 'react';
-import { Send, Square, Mic, Loader2 } from 'lucide-react';
+import { Send, Square, Mic, Loader2, Menu } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -40,6 +40,9 @@ interface Props {
   setChatKeys: Dispatch<SetStateAction<ChatKey[]>>;
   models?: { id: string; name: string }[];
   onTranscribe: (audioBlob: Blob) => Promise<string>;
+  isDesktop: boolean;
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export function ChatWindow({
@@ -57,6 +60,9 @@ export function ChatWindow({
   setChatKeys,
   models = modelsOptions,
   onTranscribe,
+  isDesktop,
+  isSidebarOpen,
+  setIsSidebarOpen,
 }: Props) {
   const { toast } = useToast();
 
@@ -208,9 +214,21 @@ export function ChatWindow({
     }
   };
 
+  const isMobileSidebarOpen = !isDesktop && isSidebarOpen;
+
   return (
     <div className="flex-1 flex flex-col">
-      <ScrollArea className="flex-1 p-4">
+      <div className="p-4 border-b md:hidden">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        >
+          <Menu className="h-6 w-6" />
+          <span className="sr-only">Toggle sidebar</span>
+        </Button>
+      </div>
+      <ScrollArea className={`flex-1 p-4 ${isMobileSidebarOpen ? 'blur' : ''}`}>
         {isLoading && !messages.length ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center space-y-2">
@@ -270,82 +288,100 @@ export function ChatWindow({
         <div ref={messagesEndRef} />
       </ScrollArea>
 
-      {!hasErrored && !messages.length && !isLoading && (
-        <div className="px-4 py-2 grid grid-cols-2 gap-2">
-          {suggestions.map((suggestion) => (
-            <Button
-              key={suggestion}
-              variant="outline"
-              className="text-sm"
-              onClick={() => handleSendMessage(suggestion)}
-            >
-              {suggestion}
-            </Button>
-          ))}
-        </div>
-      )}
+      <div className={isMobileSidebarOpen ? 'blur' : ''}>
+        {!hasErrored && !messages.length && !isLoading && (
+          <div className="px-4 py-2 grid grid-cols-1 lg:grid-cols-2 gap-2">
+            {suggestions.map((suggestion) => (
+              <Button
+                key={suggestion}
+                variant="outline"
+                className="text-sm"
+                onClick={() => handleSendMessage(suggestion)}
+                disabled={isTranscribing || isLoading || isMobileSidebarOpen}
+              >
+                {suggestion}
+              </Button>
+            ))}
+          </div>
+        )}
 
-      {!hasErrored && (
-        <div className="p-4 border-t space-y-4">
-          <Select value={selectedModel} onValueChange={setSelectedModel}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a model" />
-            </SelectTrigger>
-            <SelectContent>
-              {models.map((model) => (
-                <SelectItem key={model.id} value={model.id}>
-                  {model.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {isTranscribing && (
-            <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              <span>Transcribing audio...</span>
-            </div>
-          )}
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSendMessage(input);
-            }}
-            className="flex gap-2"
-          >
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Write a message..."
-              className="flex-1"
-              disabled={isRecording || isTranscribing || isLoading}
-            />
-            <Button
-              type="button"
-              size="icon"
-              variant="outline"
-              onClick={isRecording ? stopRecording : startRecording}
-              className={isRecording ? 'bg-red-500 hover:bg-red-600' : ''}
+        {!hasErrored && (
+          <div className="p-4 border-t space-y-4">
+            <Select
+              value={selectedModel}
+              onValueChange={setSelectedModel}
+              disabled={isTranscribing || isLoading || isMobileSidebarOpen}
             >
-              {isRecording ? (
-                <Square className="h-4 w-4" />
-              ) : (
-                <Mic className="h-4 w-4" />
-              )}
-              <span className="sr-only">
-                {isRecording ? 'Stop recording' : 'Start recording'}
-              </span>
-            </Button>
-            <Button
-              type="submit"
-              size="icon"
-              disabled={!input.trim() || isLoading}
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a model" />
+              </SelectTrigger>
+              <SelectContent>
+                {models.map((model) => (
+                  <SelectItem key={model.id} value={model.id}>
+                    {model.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {isTranscribing && (
+              <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span>Transcribing audio...</span>
+              </div>
+            )}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSendMessage(input);
+              }}
+              className="flex gap-2"
             >
-              <Send className="h-4 w-4" />
-              <span className="sr-only">Send message</span>
-            </Button>
-          </form>
-        </div>
-      )}
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Write a message..."
+                className="flex-1"
+                disabled={
+                  isRecording ||
+                  isTranscribing ||
+                  isLoading ||
+                  isMobileSidebarOpen
+                }
+              />
+              <Button
+                type="button"
+                size="icon"
+                variant="outline"
+                disabled={isTranscribing || isLoading || isMobileSidebarOpen}
+                onClick={isRecording ? stopRecording : startRecording}
+                className={isRecording ? 'bg-red-500 hover:bg-red-600' : ''}
+              >
+                {isRecording ? (
+                  <Square className="h-4 w-4" />
+                ) : (
+                  <Mic className="h-4 w-4" />
+                )}
+                <span className="sr-only">
+                  {isRecording ? 'Stop recording' : 'Start recording'}
+                </span>
+              </Button>
+              <Button
+                type="submit"
+                size="icon"
+                disabled={
+                  !input.trim() ||
+                  isTranscribing ||
+                  isLoading ||
+                  isMobileSidebarOpen
+                }
+              >
+                <Send className="h-4 w-4" />
+                <span className="sr-only">Send message</span>
+              </Button>
+            </form>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
