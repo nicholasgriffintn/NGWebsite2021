@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { useState, useRef, useEffect } from 'react';
-import { Send, Square, Mic, Loader2, Menu } from 'lucide-react';
+import { Send, Square, Mic, Loader2, Menu, Info } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,6 +16,16 @@ import { MessageComponent } from '@/components/ChatInterface/MessageComponent';
 import { useToast } from '@/hooks/use-toast';
 import { ChatKey, ChatMessage } from '@/types/chat';
 import { modelsOptions, defaultModel } from '@/lib/ai/models';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+
+const modelDetails = modelsOptions.reduce((acc, model) => {
+  acc[model.id] = model;
+  return acc;
+}, {});
 
 interface Props {
   messages: ChatMessage[];
@@ -307,22 +317,58 @@ export function ChatWindow({
 
         {!hasErrored && (
           <div className="p-4 border-t space-y-4">
-            <Select
-              value={selectedModel}
-              onValueChange={setSelectedModel}
-              disabled={isTranscribing || isLoading || isMobileSidebarOpen}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a model" />
-              </SelectTrigger>
-              <SelectContent>
-                {models.map((model) => (
-                  <SelectItem key={model.id} value={model.id}>
-                    {model.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="flex gap-2">
+              <Select
+                value={selectedModel}
+                onValueChange={setSelectedModel}
+                disabled={isTranscribing || isLoading || isMobileSidebarOpen}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a model" />
+                </SelectTrigger>
+                <SelectContent>
+                  {models.map((model) => (
+                    <SelectItem key={model.id} value={model.id}>
+                      {model.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {modelDetails[selectedModel]?.description && (
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-10 w-10 transition-all duration-200 ease-in-out hover:bg-primary hover:text-primary-foreground hover:scale-110"
+                      aria-label="View model information"
+                    >
+                      <Info className="h-4 w-4" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80 max-h-60 overflow-scroll">
+                    <div className="font-medium">Model Description</div>
+                    <div className="mt-2 text-sm break-words">
+                      <p>{modelDetails[selectedModel].description}</p>
+                      {modelDetails[selectedModel].capabilities && (
+                        <div className="mt-2">
+                          <div className="font-medium">Capabilities</div>
+                          <div className="mt-2">
+                            {modelDetails[selectedModel].capabilities.map(
+                              (capability) => (
+                                <div key={capability} className="text-sm">
+                                  {capability}
+                                </div>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              )}
+            </div>
             {isTranscribing && (
               <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
                 <Loader2 className="h-4 w-4 animate-spin" />
