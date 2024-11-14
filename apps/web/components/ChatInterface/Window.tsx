@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { useState, useRef, useEffect } from 'react';
-import { Send } from 'lucide-react';
+import { Send, Square, Mic, Loader2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -39,6 +39,7 @@ interface Props {
   setSelectedChat: Dispatch<SetStateAction<string | null>>;
   setChatKeys: Dispatch<SetStateAction<ChatKey[]>>;
   models?: { id: string; name: string }[];
+  onTranscribe: (audioBlob: Blob) => Promise<string>;
 }
 
 export function ChatWindow({
@@ -55,10 +56,15 @@ export function ChatWindow({
   setSelectedChat,
   setChatKeys,
   models = modelsOptions,
+  onTranscribe,
 }: Props) {
   const { toast } = useToast();
 
   const [input, setInput] = useState('');
+  const [isRecording, setIsRecording] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const chunksRef = useRef<Blob[]>([]);
   const [selectedModel, setSelectedModel] = useState<string>(defaultModel);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -72,7 +78,7 @@ export function ChatWindow({
   }, [messages]);
 
   const handleSendMessage = async (content: string) => {
-    if (!content.trim()) return;
+    if (!content.trim() || isLoading) return;
 
     setInput('');
     const newUserMessage: ChatMessage = {
@@ -91,6 +97,7 @@ export function ChatWindow({
     setMessages((prev) => [...prev, tempMessage]);
 
     setIsLoading(true);
+
     try {
       const chatId = selectedChat || (await onNewChat(content));
       if (!selectedChat) {
@@ -114,6 +121,7 @@ export function ChatWindow({
       });
       setMessages((prev) => prev.filter((msg) => msg.id !== tempMessage.id));
     }
+
     setIsLoading(false);
   };
 
@@ -144,6 +152,59 @@ export function ChatWindow({
         description: 'There was an error recording your reaction.',
         variant: 'destructive',
       });
+    }
+  };
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorderRef.current = new MediaRecorder(stream);
+      chunksRef.current = [];
+
+      mediaRecorderRef.current.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          chunksRef.current.push(e.data);
+        }
+      };
+
+      mediaRecorderRef.current.onstop = async () => {
+        setIsTranscribing(true);
+        try {
+          const audioBlob = new Blob(chunksRef.current, { type: 'audio/webm' });
+
+          const transcription = await onTranscribe(audioBlob);
+
+          setInput(transcription);
+        } catch (error) {
+          toast({
+            title: 'Error',
+            description: 'Failed to transcribe audio. Please try again.',
+            variant: 'destructive',
+          });
+        } finally {
+          setIsTranscribing(false);
+        }
+      };
+
+      mediaRecorderRef.current.start();
+      setIsRecording(true);
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description:
+          'Failed to access microphone. Please check your permissions.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      mediaRecorderRef.current.stream
+        .getTracks()
+        .forEach((track) => track.stop());
+      setIsRecording(false);
     }
   };
 
@@ -238,6 +299,12 @@ export function ChatWindow({
               ))}
             </SelectContent>
           </Select>
+          {isTranscribing && (
+            <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span>Transcribing audio...</span>
+            </div>
+          )}
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -250,7 +317,24 @@ export function ChatWindow({
               onChange={(e) => setInput(e.target.value)}
               placeholder="Write a message..."
               className="flex-1"
+              disabled={isRecording || isTranscribing || isLoading}
             />
+            <Button
+              type="button"
+              size="icon"
+              variant="outline"
+              onClick={isRecording ? stopRecording : startRecording}
+              className={isRecording ? 'bg-red-500 hover:bg-red-600' : ''}
+            >
+              {isRecording ? (
+                <Square className="h-4 w-4" />
+              ) : (
+                <Mic className="h-4 w-4" />
+              )}
+              <span className="sr-only">
+                {isRecording ? 'Stop recording' : 'Start recording'}
+              </span>
+            </Button>
             <Button
               type="submit"
               size="icon"

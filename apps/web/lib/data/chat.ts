@@ -136,6 +136,48 @@ export async function createChat({
   return data;
 }
 
+export async function sendTranscription({
+  token,
+  audio,
+}: {
+  token: string;
+  audio: Blob;
+}): Promise<string> {
+  if (!token || !audio) {
+    throw new Error('No token provided');
+  }
+
+  const baseUrl =
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:8787'
+      : 'https://assistant.nicholasgriffin.workers.dev';
+
+  const formData = new FormData();
+  formData.append('audio', audio);
+
+  const res = await fetch(`${baseUrl}/chat/transcribe`, {
+    method: 'POST',
+    headers: {
+      'User-Agent': 'NGWeb',
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    console.error('Error fetching data from AI', res.statusText);
+    throw new Error('Error fetching data from AI');
+  }
+
+  const data: {
+    response: {
+      content: string;
+    };
+  } = await res.json();
+
+  return data.response.content;
+}
+
 export async function sendFeedback({
   token,
   logId,

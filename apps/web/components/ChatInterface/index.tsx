@@ -22,6 +22,7 @@ interface Props {
   onNewChat?: (content: string) => Promise<string>;
   suggestions?: string[];
   hasErrored?: boolean;
+  onTranscribe: (audioBlob: Blob) => Promise<string>;
 }
 
 export function ChatInterface({
@@ -32,6 +33,7 @@ export function ChatInterface({
   onNewChat = async () => 'new-chat-id',
   suggestions = ['What do you do?', 'Tell me a joke'],
   hasErrored = false,
+  onTranscribe = async () => '',
 }: Props) {
   const [chatKeys, setChatKeys] = useState<ChatKey[]>(initialChatKeys);
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
@@ -88,6 +90,7 @@ export function ChatInterface({
         onSendMessage={onSendMessage}
         setSelectedChat={setSelectedChat}
         setChatKeys={setChatKeys}
+        onTranscribe={onTranscribe}
       />
     </div>
   );

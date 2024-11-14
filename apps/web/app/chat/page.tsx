@@ -13,6 +13,7 @@ import {
   getChat,
   createChat,
   sendFeedback,
+  sendTranscription,
 } from '@/lib/data/chat';
 
 export const dynamic = 'force-dynamic';
@@ -141,6 +142,26 @@ export default async function Chat() {
     }
   }
 
+  async function onTranscribe(audio: Blob) {
+    'use server';
+
+    const token = await validateToken();
+    if (!token) {
+      throw new Error('No token found');
+    }
+
+    const response = await sendTranscription({
+      token,
+      audio,
+    });
+
+    if (!response) {
+      throw new Error('No response from the model');
+    }
+
+    return response;
+  }
+
   return (
     <PageLayout>
       <InnerPage isFullPage>
@@ -151,6 +172,7 @@ export default async function Chat() {
             onChatSelect={onChatSelect}
             onNewChat={handleNewChat}
             onReaction={handleReaction}
+            onTranscribe={onTranscribe}
           />
         </div>
       </InnerPage>
