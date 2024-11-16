@@ -98,7 +98,8 @@ export function SidebarPodcastApp() {
     while (true) {
       const data = await onGetChat(chatId);
       const message = data.find((m) => m.timestamp === timestamp);
-      if (message && message.status === 'succeeded') {
+      console.log('Message:', message);
+      if (message && message.data.status === 'succeeded') {
         const uniqueSpeakers = [
           ...new Set(message.data.output.segments.map((s) => s.speaker)),
         ];
