@@ -1,3 +1,7 @@
+import { AudioCard } from './AudioCard';
+import { VideoCard } from './VideoCard';
+import { ImageCard } from './ImageCard';
+
 interface ReplicateCardProps {
   name: string;
   data: any;
@@ -18,14 +22,12 @@ const ImageOutput = ({ output, data }: { output: any[]; data: any }) => (
     <div className="mt-2">
       {output.length &&
         output.map((image, index) => (
-          <img
-            className="h-auto max-w-full rounded-md"
+          <ImageCard
             key={index}
-            src={image}
-            alt={`Generated image for prompt ${data.input.prompt}`}
+            url={image}
             width={data.input.width}
             height={data.input.height}
-            loading="lazy"
+            prompt={data.input.prompt}
           />
         ))}
     </div>
@@ -43,16 +45,12 @@ const VideoOutput = ({ output, data }: { output: any[]; data: any }) => (
     <div className="mt-2">
       {output.length &&
         output.map((video, index) => (
-          <video
+          <VideoCard
             key={index}
-            controls
-            className="w-full aspect-video rounded-md"
+            url={video}
             width={data.input.width}
             height={data.input.height}
-          >
-            <source src={video} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          />
         ))}
     </div>
   </>
@@ -68,12 +66,7 @@ const AudioOutput = ({ output, data }: { output: any[]; data: any }) => (
     </span>
     <div className="mt-2">
       {output.length &&
-        output.map((audio, index) => (
-          <audio key={index} controls className="rounded-md">
-            <source src={audio} type="audio/mpeg" />
-            Your browser does not support the audio tag.
-          </audio>
-        ))}
+        output.map((audio, index) => <AudioCard key={index} url={audio} />)}
     </div>
   </>
 );

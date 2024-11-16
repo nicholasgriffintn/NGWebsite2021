@@ -9,6 +9,9 @@ import {
 } from '@/components/ui/popover';
 import { WeatherCard } from '@/components/ChatInterface/Cards/WeatherCard';
 import { ReplicateCard } from '@/components/ChatInterface/Cards/ReplicateCard';
+import { TranscriptionCard } from '@/components/ChatInterface/Cards/TranscriptionCard';
+import { AudioCard } from '@/components/ChatInterface/Cards/AudioCard';
+import { ImageCard } from '@/components/ChatInterface/Cards/ImageCard';
 import type { ChatMessage } from '@/types/chat';
 import { parseMarkdown } from '@/lib/markdown';
 
@@ -142,6 +145,34 @@ const MessageContent = ({
             )}
             {message.name === 'create_music' && (
               <ReplicateCard name="create_music" data={message.data} />
+            )}
+            {message.name === 'podcast_upload' && (
+              <div className="mt-2">
+                <AudioCard url={message.data.url} />
+              </div>
+            )}
+            {message.name === 'podcast_transcribe' && (
+              <TranscriptionCard data={message.data.output} />
+            )}
+            {message.name === 'podcast_summarise' && (
+              <div className="mt-2">
+                {message.data.speakers && (
+                  <div>
+                    <p className="text-sm font-semibold mb-2">Speakers</p>
+                    <ul>
+                      {Object.entries(
+                        message.data.speakers as {
+                          [key: string]: string;
+                        }
+                      ).map(([key, value]) => (
+                        <li key={key}>
+                          <span>{key}</span>: <span>{value}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         )}
