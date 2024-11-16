@@ -220,9 +220,10 @@ export function SidebarPodcastApp() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Transcribe Content</DialogTitle>
+          <DialogTitle>Generate a Podcast Record</DialogTitle>
           <DialogDescription>
-            {step === 1 && 'Upload a clip to transcribe the content.'}
+            {step === 1 &&
+              'Upload a clip to start with the transcription of the content.'}
             {step === 2 && 'Enter prompt and number of speakers.'}
             {step === 3 && 'Identify speakers.'}
             {step === 4 && 'Generate image for the podcast.'}
