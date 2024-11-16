@@ -12,6 +12,13 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import {
+  onUploadPodcast,
+  onTranscribePodcast,
+  onGetChat,
+  onSummarisePodcast,
+  onGeneratePodcastImage,
+} from '@/components/ChatInterface/actions';
 
 export function SidebarPodcastApp() {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,18 +45,11 @@ export function SidebarPodcastApp() {
     const formData = new FormData();
     formData.append('audio', audioFile);
 
+    // TODO: Actually uploading over an API call with server actions might not be great (Vercel pricing) also don't think Workers likes big files
+    // TODO: Probably worth looking at a better way to handle this, but will have to do something with pre signed maybe
+
     try {
-      // TODO: Upload file to server
-      /*
-        const response = await fetch('/apps/podcasts/upload', {
-          method: 'POST',
-          body: formData,
-        })
-        const data = await response.json()
-      */
-      const data = {
-        chatId: Math.random().toString(36).substring(7),
-      };
+      const data = await onUploadPodcast(audioFile);
       setChatId(data.chatId);
       setStep(2);
       setStatus('');
@@ -68,24 +68,7 @@ export function SidebarPodcastApp() {
     setStatus('Transcribing podcast...');
     try {
       // TODO: Upload file to server
-      /*
-        const response = await fetch('/apps/podcasts/transcribe', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            podcastId: chatId,
-            prompt,
-            numberOfSpeakers,
-          }),
-        })
-        const data = await response.json()
-      */
-      const data = {
-        chatId,
-        response: {
-          timestamp: 1731711090275,
-        },
-      };
+      const data = await onTranscribePodcast(chatId, prompt, numberOfSpeakers);
       await waitForTranscription(data.chatId, data.response.timestamp);
     } catch (error) {
       console.error('Error transcribing:', error);
@@ -101,33 +84,11 @@ export function SidebarPodcastApp() {
     }
 
     while (true) {
-      // TODO: Get from server
-      /*
-      const response = await fetch(`/chat/${chatId}`);
-      const data = await response.json();
-      */
-      const data = {
-        messages: [
-          {
-            timestamp: 1731711090275,
-            status: 'succeeded',
-          },
-        ],
-        output: {
-          segments: [
-            {
-              speaker: 'speaker1',
-            },
-            {
-              speaker: 'speaker2',
-            },
-          ],
-        },
-      };
-      const message = data.messages.find((m) => m.timestamp === timestamp);
+      const data = await onGetChat(chatId);
+      const message = data.find((m) => m.timestamp === timestamp);
       if (message && message.status === 'succeeded') {
         const uniqueSpeakers = [
-          ...new Set(data.output.segments.map((s) => s.speaker)),
+          ...new Set(message.data.output.segments.map((s) => s.speaker)),
         ];
         setSpeakers(Object.fromEntries(uniqueSpeakers.map((s) => [s, ''])));
         setStep(3);
@@ -146,18 +107,7 @@ export function SidebarPodcastApp() {
     setIsLoading(true);
     setStatus('Summarising content...');
     try {
-      // TODO: POST to server
-      /*
-      const response = await fetch('/apps/podcasts/summarise', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          podcastId: chatId,
-          speakers,
-        }),
-      })
-      await response.json()
-      */
+      await onSummarisePodcast(chatId, speakers);
       setStep(4);
       setStatus('');
     } catch (error) {
@@ -176,16 +126,7 @@ export function SidebarPodcastApp() {
     setIsLoading(true);
     setStatus('Generating image...');
     try {
-      // TODO: POST to server
-      /*
-      await fetch('/apps/podcasts/generate-image', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          podcastId: chatId,
-        }),
-      })
-      */
+      await onGeneratePodcastImage(chatId);
       setStatus('Process completed successfully!');
       setTimeout(() => {
         setIsOpen(false);
