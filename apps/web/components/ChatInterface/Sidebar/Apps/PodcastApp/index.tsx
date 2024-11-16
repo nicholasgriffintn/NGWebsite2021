@@ -20,6 +20,14 @@ import {
   onSummarisePodcast,
   onGeneratePodcastImage,
 } from '@/components/ChatInterface/actions';
+import { SpeakerSamples } from './SpeakerSamples';
+
+interface Segment {
+  end: number;
+  speaker: string;
+  text: string;
+  start: number;
+}
 
 export function SidebarPodcastApp() {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,6 +39,7 @@ export function SidebarPodcastApp() {
   const [prompt, setPrompt] = useState('');
   const [numberOfSpeakers, setNumberOfSpeakers] = useState(2);
   const [speakers, setSpeakers] = useState<Record<string, string>>({});
+  const [segments, setSegments] = useState<Segment[]>([]);
   const [status, setStatus] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -118,6 +127,7 @@ export function SidebarPodcastApp() {
           ...new Set(message.data.output.segments.map((s) => s.speaker)),
         ];
         setSpeakers(Object.fromEntries(uniqueSpeakers.map((s) => [s, ''])));
+        setSegments(message.data.output.segments);
         setStep(3);
         setStatus('');
         break;
@@ -297,37 +307,40 @@ export function SidebarPodcastApp() {
           </div>
         )}
         {step === 3 && (
-          <div className="space-y-4">
-            {Object.entries(speakers).map(([speaker, name]) => (
-              <div key={speaker}>
-                <Label htmlFor={speaker}>{speaker}</Label>
-                <Input
-                  id={speaker}
-                  value={name}
-                  onChange={(e) =>
-                    setSpeakers({ ...speakers, [speaker]: e.target.value })
-                  }
-                  placeholder="Enter speaker name"
-                  disabled={isLoading}
-                />
-              </div>
-            ))}
-            <Button
-              onClick={handleSpeakerIdentification}
-              disabled={
-                Object.values(speakers).some((name) => !name) || isLoading
-              }
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Identifying Speakers
-                </>
-              ) : (
-                'Identify Speakers'
-              )}
-            </Button>
-          </div>
+          <>
+            {segments.length > 0 && <SpeakerSamples segments={segments} />}
+            <div className="space-y-4">
+              {Object.entries(speakers).map(([speaker, name]) => (
+                <div key={speaker}>
+                  <Label htmlFor={speaker}>{speaker}</Label>
+                  <Input
+                    id={speaker}
+                    value={name}
+                    onChange={(e) =>
+                      setSpeakers({ ...speakers, [speaker]: e.target.value })
+                    }
+                    placeholder="Enter speaker name"
+                    disabled={isLoading}
+                  />
+                </div>
+              ))}
+              <Button
+                onClick={handleSpeakerIdentification}
+                disabled={
+                  Object.values(speakers).some((name) => !name) || isLoading
+                }
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Identifying Speakers
+                  </>
+                ) : (
+                  'Identify Speakers'
+                )}
+              </Button>
+            </div>
+          </>
         )}
         {step === 4 && (
           <Button onClick={handleGenerateImage} disabled={isLoading}>
