@@ -2,6 +2,7 @@ import { MessageSquare } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { SidebarApps } from '@/components/ChatInterface/Sidebar/Apps';
 
 export function ChatSidebar({
   handleNewChat,
@@ -11,7 +12,7 @@ export function ChatSidebar({
 }) {
   return (
     <div className="w-64 border-r bg-muted/20 flex flex-col h-full">
-      <div className="p-4 space-y-2 h-full">
+      <div className="py-4 space-y-2 h-full">
         <div className="p-0">
           <Button
             variant="ghost"
@@ -45,6 +46,7 @@ export function ChatSidebar({
             ))}
           </div>
         </ScrollArea>
+        <SidebarApps />
       </div>
     </div>
   );
