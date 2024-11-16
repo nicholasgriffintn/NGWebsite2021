@@ -27,7 +27,7 @@ export function SidebarPodcastApp() {
   const [chatId, setChatId] = useState('');
   const [prompt, setPrompt] = useState('');
   const [numberOfSpeakers, setNumberOfSpeakers] = useState(2);
-  const [speakers, setSpeakers] = useState({});
+  const [speakers, setSpeakers] = useState<Record<string, string>>({});
   const [status, setStatus] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,15 +42,28 @@ export function SidebarPodcastApp() {
 
     setIsLoading(true);
     setStatus('Uploading audio...');
-    const formData = new FormData();
-    formData.append('audio', audioFile);
-
-    // TODO: Actually uploading over an API call with server actions might not be great (Vercel pricing) also don't think Workers likes big files
-    // TODO: Probably worth looking at a better way to handle this, but will have to do something with pre signed maybe
 
     try {
-      const data = await onUploadPodcast(audioFile);
-      setChatId(data.chatId);
+      const data = await onUploadPodcast();
+      if (!data.response.data.signedUrl) {
+        console.error('Error uploading, no signed URL');
+        setStatus('Error uploading');
+      }
+      const formData = new FormData();
+      formData.append('file', audioFile);
+      const upload = await fetch(data.response.data.signedUrl, {
+        method: 'PUT',
+        body: formData,
+      });
+      if (!upload.ok) {
+        console.error('Error uploading file:', upload);
+        setStatus('Error uploading file');
+      }
+      if (!data.response.chatId) {
+        console.error('Error uploading, no chat ID');
+        setStatus('Error uploading');
+      }
+      setChatId(data.response.chatId);
       setStep(2);
       setStatus('');
     } catch (error) {
@@ -67,9 +80,8 @@ export function SidebarPodcastApp() {
     setIsLoading(true);
     setStatus('Transcribing podcast...');
     try {
-      // TODO: Upload file to server
       const data = await onTranscribePodcast(chatId, prompt, numberOfSpeakers);
-      await waitForTranscription(data.chatId, data.response.timestamp);
+      await waitForTranscription(chatId, data.response.timestamp);
     } catch (error) {
       console.error('Error transcribing:', error);
       setStatus('Error transcribing');
@@ -95,7 +107,7 @@ export function SidebarPodcastApp() {
         setStatus('');
         break;
       }
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 5000));
     }
   };
 

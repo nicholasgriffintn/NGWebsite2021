@@ -1,12 +1,10 @@
 export async function uploadPodcast({
   token,
-  audio,
 }: {
   token: string;
-  audio: Blob;
 }): Promise<any> {
   try {
-    if (!token || !audio) {
+    if (!token) {
       throw new Error('No token provided');
     }
 
@@ -15,16 +13,13 @@ export async function uploadPodcast({
         ? 'http://localhost:8787'
         : 'https://assistant.nicholasgriffin.workers.dev';
 
-    const formData = new FormData();
-    formData.append('audio', audio);
-
-    const res = await fetch(`${baseUrl}/apps/podcast/upload`, {
+    const res = await fetch(`${baseUrl}/apps/podcasts/upload`, {
       method: 'POST',
       headers: {
         'User-Agent': 'NGWeb',
         Authorization: `Bearer ${token}`,
       },
-      body: formData,
+      body: JSON.stringify({}),
     });
 
     if (!res.ok) {
@@ -62,7 +57,7 @@ export async function transcribePodcast({
       process.env.NODE_ENV === 'development'
         ? 'http://localhost:8787'
         : 'https://assistant.nicholasgriffin.workers.dev';
-    const res = await fetch(`${baseUrl}/apps/podcast/transcribe`, {
+    const res = await fetch(`${baseUrl}/apps/podcasts/transcribe`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -82,6 +77,7 @@ export async function transcribePodcast({
     }
 
     const data = await res.json();
+    return data;
   } catch (error) {
     console.error('Error sending feedback', error);
   }
@@ -106,7 +102,7 @@ export async function summarisePodcast({
       process.env.NODE_ENV === 'development'
         ? 'http://localhost:8787'
         : 'https://assistant.nicholasgriffin.workers.dev';
-    const res = await fetch(`${baseUrl}/apps/podcast/summarise`, {
+    const res = await fetch(`${baseUrl}/apps/podcasts/summarise`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -147,7 +143,7 @@ export async function generatePodcastImage({
       process.env.NODE_ENV === 'development'
         ? 'http://localhost:8787'
         : 'https://assistant.nicholasgriffin.workers.dev';
-    const res = await fetch(`${baseUrl}/apps/podcast/generate-image`, {
+    const res = await fetch(`${baseUrl}/apps/podcasts/generate-image`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

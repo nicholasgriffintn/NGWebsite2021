@@ -9,7 +9,7 @@ import {
 } from '@/lib/data/chat/apps/podcast';
 import { getChat } from '@/lib/data/chat';
 
-export async function onUploadPodcast(audio: Blob) {
+export async function onUploadPodcast() {
   const token = await validateToken();
   if (!token) {
     throw new Error('No token found');
@@ -17,7 +17,6 @@ export async function onUploadPodcast(audio: Blob) {
 
   const response = await uploadPodcast({
     token,
-    audio,
   });
 
   if (!response) {
