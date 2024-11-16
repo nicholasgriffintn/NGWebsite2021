@@ -81,7 +81,6 @@ export function SidebarPodcastApp() {
     setStatus('Transcribing podcast...');
     try {
       const data = await onTranscribePodcast(chatId, prompt, numberOfSpeakers);
-      console.log('Transcription data:', data);
       if (!data.response.timestamp) {
         console.error('Error transcribing, no timestamp');
         setStatus('Error transcribing');
@@ -102,9 +101,7 @@ export function SidebarPodcastApp() {
 
     while (true) {
       const data = await onGetChat(chatId);
-      console.log('Chat data:', data);
       const message = data.find((m) => m.timestamp === timestamp);
-      console.log('Message:', message);
       if (message && message.data.status === 'succeeded') {
         const uniqueSpeakers = [
           ...new Set(message.data.output.segments.map((s) => s.speaker)),

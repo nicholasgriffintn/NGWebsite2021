@@ -121,6 +121,8 @@ export async function summarisePodcast({
     }
 
     const data = await res.json();
+
+    return data;
   } catch (error) {
     console.error('Error sending feedback', error);
   }
@@ -161,6 +163,8 @@ export async function generatePodcastImage({
     }
 
     const data = await res.json();
+
+    return data;
   } catch (error) {
     console.error('Error sending feedback', error);
   }
