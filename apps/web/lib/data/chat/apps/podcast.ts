@@ -1,7 +1,9 @@
 export async function uploadPodcast({
   token,
+  audioUrl,
 }: {
   token: string;
+  audioUrl?: string;
 }): Promise<any> {
   try {
     if (!token) {
@@ -19,7 +21,9 @@ export async function uploadPodcast({
         'User-Agent': 'NGWeb',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({}),
+      body: JSON.stringify({
+        audioUrl,
+      }),
     });
 
     if (!res.ok) {

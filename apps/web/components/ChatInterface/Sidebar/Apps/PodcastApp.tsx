@@ -12,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
   onUploadPodcast,
   onTranscribePodcast,
@@ -23,7 +24,9 @@ import {
 export function SidebarPodcastApp() {
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState(1);
-  const [audioFile, setAudioFile] = useState(null);
+  const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [audioUrl, setAudioUrl] = useState('');
+  const [uploadType, setUploadType] = useState('file');
   const [chatId, setChatId] = useState('');
   const [prompt, setPrompt] = useState('');
   const [numberOfSpeakers, setNumberOfSpeakers] = useState(2);
@@ -31,12 +34,18 @@ export function SidebarPodcastApp() {
   const [status, setStatus] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleFileChange = (e) => {
-    setAudioFile(e.target.files[0]);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setAudioFile(e.target.files[0]);
+    }
   };
 
   const handleUpload = async () => {
-    if (!audioFile || isLoading) {
+    if (
+      (uploadType === 'file' && !audioFile) ||
+      (uploadType === 'url' && !audioUrl) ||
+      isLoading
+    ) {
       return;
     }
 
@@ -44,20 +53,22 @@ export function SidebarPodcastApp() {
     setStatus('Uploading audio...');
 
     try {
-      const data = await onUploadPodcast();
-      if (!data.response.data.signedUrl) {
-        console.error('Error uploading, no signed URL');
-        setStatus('Error uploading');
-      }
-      const formData = new FormData();
-      formData.append('file', audioFile);
-      const upload = await fetch(data.response.data.signedUrl, {
-        method: 'PUT',
-        body: formData,
-      });
-      if (!upload.ok) {
-        console.error('Error uploading file:', upload);
-        setStatus('Error uploading file');
+      const data = await onUploadPodcast(audioUrl);
+      if (uploadType === 'file' && audioFile) {
+        if (!data.response.data.signedUrl) {
+          console.error('Error uploading, no signed URL');
+          setStatus('Error uploading');
+        }
+        const formData = new FormData();
+        formData.append('file', audioFile);
+        const upload = await fetch(data.response.data.signedUrl, {
+          method: 'PUT',
+          body: formData,
+        });
+        if (!upload.ok) {
+          console.error('Error uploading file:', upload);
+          setStatus('Error uploading file');
+        }
       }
       if (!data.response.chatId) {
         console.error('Error uploading, no chat ID');
@@ -190,20 +201,54 @@ export function SidebarPodcastApp() {
           </DialogDescription>
         </DialogHeader>
         {step === 1 && (
-          <div className="flex items-end space-x-2">
-            <Label className="flex-1">
-              <div className="pb-2">Upload Clip</div>
-              <Input
-                type="file"
-                accept="audio/*"
-                onChange={handleFileChange}
-                disabled={isLoading}
-              />
-            </Label>
+          <div className="space-y-4">
+            <RadioGroup
+              defaultValue="file"
+              onValueChange={(value) => setUploadType(value)}
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="file" id="file" />
+                <Label htmlFor="file">Upload File</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="url" id="url" />
+                <Label htmlFor="url">Provide URL</Label>
+              </div>
+            </RadioGroup>
+            {uploadType === 'file' ? (
+              <div className="flex items-end space-x-2">
+                <Label className="flex-1">
+                  <div className="pb-2">Upload Clip</div>
+                  <Input
+                    type="file"
+                    accept="audio/*"
+                    onChange={handleFileChange}
+                    disabled={isLoading}
+                  />
+                </Label>
+              </div>
+            ) : (
+              <div className="flex items-end space-x-2">
+                <Label className="flex-1">
+                  <div className="pb-2">Audio URL</div>
+                  <Input
+                    type="url"
+                    value={audioUrl || ''}
+                    onChange={(e) => setAudioUrl(e.target.value)}
+                    placeholder="https://example.com/audio.mp3"
+                    disabled={isLoading}
+                  />
+                </Label>
+              </div>
+            )}
             <Button
               variant="default"
               onClick={handleUpload}
-              disabled={!audioFile || isLoading}
+              disabled={
+                (uploadType === 'file' && !audioFile) ||
+                (uploadType === 'url' && !audioUrl) ||
+                isLoading
+              }
             >
               {isLoading ? (
                 <>
