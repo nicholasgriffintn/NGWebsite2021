@@ -107,6 +107,9 @@ export function SidebarPodcastApp() {
         setStep(3);
         setStatus('');
         break;
+      } else if (message && message.data.status === 'failed') {
+        setStatus('Transcription failed');
+        break;
       }
       await new Promise((resolve) => setTimeout(resolve, 5000));
     }
