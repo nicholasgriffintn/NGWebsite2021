@@ -6,6 +6,7 @@ import { formatDate, getBlogPosts } from '@/lib/blog';
 import { CustomMDX } from '@/components/MDX';
 import { parseMarkdown } from '@/lib/markdown';
 import { Image } from '@/components/Image';
+import { AlertMessage } from '@/components/Alert';
 
 export const dynamicParams = false;
 
@@ -119,18 +120,19 @@ export default async function Home({ params }) {
             </div>
           )}
         </div>
+        {post.metadata.draft && (
+          <AlertMessage
+            variant="warning"
+            title="This post is a draft!"
+            description="This post is a draft and may not be finished."
+          />
+        )}
         {post.metadata.archived && (
-          <div
-            className="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4"
-            role="alert"
-          >
-            <p className="font-bold">This post has been archived!</p>
-            <p>
-              This post has been archived due to it being from a previous
-              version of my site, or a bit too old. Some things might be broken
-              and it may not be up to date.
-            </p>
-          </div>
+          <AlertMessage
+            variant="warning"
+            title="This post has been archived!"
+            description="This post has been archived due to it being from a previous version of my site, or a bit too old. Some things might be broken and it may not be up to date."
+          />
         )}
         <article className="prose dark:prose-invert pt-2 w-full min-w-full lg:min-w-[75%]">
           <CustomMDX source={post.content} />

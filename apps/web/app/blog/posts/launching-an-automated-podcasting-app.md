@@ -1,7 +1,8 @@
 ---
 title: Launching an Automated Podcasting App
 description: Recently I created a new podcasting app that is able to automatically generate a podcast listing from an audio upload, including generating a transcript, speaker identification, and more.
-date: 
+date: 2024-11-16
+draft: true
 ---
 
 Previously, I started work on building an AI based assistant [that you can read about here](/blog/posts/building-my-own-ai-assistant), as time goes on, I plan to expand this with mini applications that the user can open from the assistant and use to complete certain tasks.

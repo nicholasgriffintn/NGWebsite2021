@@ -25,6 +25,7 @@ export function BlogCard({ post }) {
         <CardTitle>
           {post.metadata.title}
           {post.metadata.archived && <Badge>Archived</Badge>}
+          {post.metadata.draft && <Badge>Draft</Badge>}
         </CardTitle>
       </CardHeader>
       <CardContent>

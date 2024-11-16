@@ -7,4 +7,5 @@ export type Metadata = {
   imageAlt?: string;
   hideFeaturedImage?: boolean;
   archived?: boolean;
+  draft?: boolean;
 };
