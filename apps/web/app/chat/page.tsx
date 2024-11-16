@@ -85,7 +85,7 @@ export default async function Chat() {
     return Array.isArray(chatMessages) ? chatMessages : [];
   }
 
-  async function handleNewChat(content: string) {
+  async function onNewChat(content: string) {
     'use server';
 
     if (!content) {
@@ -99,11 +99,7 @@ export default async function Chat() {
     return contentTitle;
   }
 
-  async function handleReaction(
-    chatId: string,
-    logId: string,
-    reaction: string
-  ) {
+  async function onReaction(chatId: string, logId: string, reaction: string) {
     'use server';
 
     const token = await validateToken();
@@ -148,8 +144,8 @@ export default async function Chat() {
             initialChatKeys={data.chatHistory}
             onSendMessage={onCreateChat}
             onChatSelect={onChatSelect}
-            onNewChat={handleNewChat}
-            onReaction={handleReaction}
+            onNewChat={onNewChat}
+            onReaction={onReaction}
             onTranscribe={onTranscribe}
           />
         </div>
