@@ -70,7 +70,7 @@ export async function getChat({
       process.env.NODE_ENV === 'development'
         ? 'http://localhost:8787'
         : 'https://assistant.nicholasgriffin.workers.dev';
-    const url = `${baseUrl}/chat/${id}`;
+    const url = `${baseUrl}/chat/${encodeURIComponent(id)}`;
 
     const res = await fetch(url, {
       headers: {
