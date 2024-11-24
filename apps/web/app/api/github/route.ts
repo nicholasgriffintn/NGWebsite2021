@@ -7,13 +7,11 @@ export async function GET(req: Request) {
   const limit = searchParams.get('limit')
     ? Number(searchParams.get('limit'))
     : 8;
-  const offset = searchParams.get('offset')
-    ? Number(searchParams.get('offset'))
-    : 1;
+  const cursor = searchParams.get('cursor') || undefined;
 
   const data = await getGitHubRepos({
     limit,
-    offset,
+    cursor,
   });
 
   return Response.json(data, {
