@@ -23,7 +23,7 @@ export const metadata = {
 async function getData() {
   const spotify = await getRecentlyPlayed();
   const projects = await getProjects();
-  const featuredRepos = await getGitHubRepos({ limit: 8, offset: 1 });
+  const featuredRepos = await getGitHubRepos({ limit: 8 });
   const blogPosts = await getBlogPosts();
   const firstSixPosts = blogPosts.slice(0, 6);
 
@@ -126,7 +126,7 @@ export default async function Home() {
             </div>
             <ProjectsList
               firstFeaturedProjects={firstFeaturedProjects}
-              featuredRepos={data?.featuredRepos}
+              featuredRepos={data?.featuredRepos?.nodes}
               lastFeaturedProjects={lastFeaturedProjects}
             />
           </div>

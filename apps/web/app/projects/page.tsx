@@ -16,8 +16,13 @@ export const metadata = {
 async function getData() {
   const spotify = await getRecentlyPlayed();
   const projects = await getProjects();
-  const featuredRepos = await getGitHubRepos({ limit: 8, offset: 1 });
-  const repos = await getGitHubRepos({ limit: 8, offset: 2 });
+  const featuredRepos = await getGitHubRepos({ limit: 8 });
+  const repos = featuredRepos?.pageInfo?.hasNextPage
+    ? await getGitHubRepos({
+        limit: 8,
+        cursor: featuredRepos?.pageInfo?.endCursor,
+      })
+    : undefined;
 
   return {
     spotify,
@@ -83,10 +88,10 @@ export default async function Home() {
         <div className="pt-5 md:pt-20">
           <ProjectsList
             firstFeaturedProjects={firstFeaturedProjects}
-            featuredRepos={data?.featuredRepos}
+            featuredRepos={data?.featuredRepos?.nodes}
             lastFeaturedProjects={lastFeaturedProjects}
             showAll={true}
-            repos={data?.repos}
+            repos={data?.repos?.nodes}
           />
         </div>
       </InnerPage>

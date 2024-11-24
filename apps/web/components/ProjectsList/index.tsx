@@ -32,7 +32,7 @@ export function ProjectsList({
               project={{
                 name: repo.name,
                 description: repo.description,
-                url: repo.html_url,
+                url: repo.url,
               }}
             />
           ))}
@@ -62,7 +62,7 @@ export function ProjectsList({
               project={{
                 name: repo.name,
                 description: repo.description,
-                url: repo.html_url,
+                url: repo.url,
               }}
             />
           ))}
