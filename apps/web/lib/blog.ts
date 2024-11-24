@@ -47,14 +47,14 @@ function getMDXData(dir: string) {
 }
 
 export function getBlogPosts() {
-  const posts = getMDXData(
-    path.join(process.cwd(), 'app', 'blog', 'posts')
-  ).filter((post) => {
-    if (process.env.NEXT_PUBLIC_ENVIROMENT !== 'development') {
-      return !post.metadata.draft;
+  const posts = getMDXData(path.join(process.cwd(), 'content', 'posts')).filter(
+    (post) => {
+      if (process.env.NEXT_PUBLIC_ENVIROMENT !== 'development') {
+        return !post.metadata.draft;
+      }
+      return true;
     }
-    return true;
-  });
+  );
   return posts.sort(
     (a, b) =>
       new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime()
