@@ -20,16 +20,24 @@ export function Footer() {
           <span> | </span>
         </div>
         <div>
-          <nav className="flex items-left space-x-4">
-            <Link href="https://undefined.computer">Undefined</Link>
-            <span> | </span>
-            <Link
-              href="https://github.com/nicholasgriffintn/NGWebsite2021"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Source Code
-            </Link>
+          <nav>
+            <ul className="flex items-left space-x-4">
+              <li>
+                <Link href="https://undefined.computer">Undefined</Link>
+              </li>
+              <li>
+                <Link
+                  href="https://github.com/nicholasgriffintn/NGWebsite2021"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Source Code
+                </Link>
+              </li>
+              <li>
+                <Link href="/rss">RSS</Link>
+              </li>
+            </ul>
           </nav>
         </div>
       </div>

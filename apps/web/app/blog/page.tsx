@@ -2,6 +2,7 @@ import { PageLayout } from '@/components/PageLayout';
 import { InnerPage } from '@/components/InnerPage';
 import { getBlogPosts } from '@/lib/blog';
 import { BlogCard } from '@/components/BlogCard';
+import { Link } from '@/components/Link';
 
 export const metadata = {
   title: 'Blog',
@@ -34,7 +35,10 @@ export default async function Home() {
                 short of 7 years, during which time I also ran this personal
                 site and have been updating it since.
               </p>
-              <p>Check out my latest posts below.</p>
+              <p>
+                Check out my latest posts below, if you prefer RSS, you can find
+                a <Link href="/rss">feed for that here</Link>.
+              </p>
             </div>
           </div>
         </div>
