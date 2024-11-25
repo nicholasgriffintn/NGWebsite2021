@@ -3,6 +3,7 @@ title: "Amazon S3 Express One Zone now supports the ability to append data to an
 date: "2024-11-25T02:51"
 tags: [aws, s3]
 link: "https://docs.aws.amazon.com/AmazonS3/latest/userguide/directory-buckets-objects-append.html"
+isBookmark: true
 ---
 
 Over the last week I saw a few people talking and a new addition to Amazon S3 that sounds super cool, the ability to append data to an existing object in a bucket. Where previously, you would have to replace the object with an updated version completely, you can now just append that data to an existing object. This brings new use cases to S3 such as adding new logs, storing video segments as they are processed and I'm sure many more.
