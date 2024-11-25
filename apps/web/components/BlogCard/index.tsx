@@ -29,7 +29,7 @@ export function BlogCard({ post }) {
       <CardHeader>
         <CardTitle className="space-x-2">
           <Link
-            className="text-2xl font-semibold leading-none tracking-tight space-x-2"
+            className="text-2xl font-semibold leading-none tracking-tight space-x-2 leading-7"
             href={postLink}
             target={post.metadata.link ? '_blank' : undefined}
             underline={false}

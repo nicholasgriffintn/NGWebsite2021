@@ -21,7 +21,7 @@ export function ProjectCard({ project }: { project: Project }) {
         </div>
       )}
       <CardHeader>
-        <CardTitle>{project.name}</CardTitle>
+        <CardTitle className="leading-7">{project.name}</CardTitle>
       </CardHeader>
       <CardContent>
         {project.description && (
