@@ -10,16 +10,17 @@ export const metadata = {
     'A collection of blog posts that I have written alongside some general thoughts and links.',
 };
 
-async function getData() {
-  const posts = await getBlogPosts();
+async function getData(showArchived = false) {
+  const posts = await getBlogPosts(showArchived);
 
   return {
     posts,
   };
 }
 
-export default async function Home() {
-  const data = await getData();
+export default async function Home({ searchParams }) {
+  const { showArchived } = await searchParams;
+  const data = await getData(showArchived);
 
   return (
     <PageLayout>
@@ -49,6 +50,17 @@ export default async function Home() {
               <BlogCard key={post.slug} post={post} />
             ))}
           </div>
+        )}
+        {!showArchived && (
+          <p className="text-muted-foreground pt-5">
+            By default, archived posts are not shown. If you would like to see
+            them, you can do so by appending <code>?showArchived=true</code> to
+            the URL, or by clicking{' '}
+            <Link href="/blog?showArchived=true" muted>
+              here
+            </Link>
+            .
+          </p>
         )}
       </InnerPage>
     </PageLayout>

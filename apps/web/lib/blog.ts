@@ -53,11 +53,14 @@ function getMDXData(dir: string) {
   });
 }
 
-export function getBlogPosts() {
+export function getBlogPosts(showArchived = false) {
   const posts = getMDXData(path.join(process.cwd(), 'content', 'posts')).filter(
     (post) => {
       if (process.env.NEXT_PUBLIC_ENVIROMENT !== 'development') {
         return !post.metadata.draft;
+      }
+      if (!showArchived && post.metadata.archived) {
+        return false;
       }
       return true;
     }
