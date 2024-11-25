@@ -94,6 +94,11 @@ export function getBlogPostsByTag(tag: string) {
   return posts.filter((post) => post.metadata.tags?.includes(tag));
 }
 
+export function getBlogPostBySlug(slug: string) {
+  const posts = getBlogPosts(true);
+  return posts.find((post) => post.slug === slug);
+}
+
 export function formatDate(date: string, includeRelative = false) {
   const currentDate = new Date();
   const targetDate = new Date(date.includes('T') ? date : `${date}T00:00:00`);

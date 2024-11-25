@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 
 import { PageLayout } from '@/components/PageLayout';
 import { InnerPage } from '@/components/InnerPage';
-import { formatDate, getBlogPosts } from '@/lib/blog';
+import { formatDate, getBlogPosts, getBlogPostBySlug } from '@/lib/blog';
 import { CustomMDX } from '@/components/MDX';
 import { parseMarkdown } from '@/lib/markdown';
 import { Image } from '@/components/Image';
@@ -14,7 +14,7 @@ export const dynamicParams = false;
 // TODO: The article isn't full width, also the archived message doesn't look great and images aren't full width
 
 export async function generateStaticParams() {
-  const posts = getBlogPosts();
+  const posts = getBlogPosts(true);
 
   return posts.map((post) => ({
     slug: post.slug,
@@ -23,7 +23,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const post = getBlogPosts().find((post) => post.slug === slug);
+  const post = getBlogPostBySlug(slug);
 
   if (!post) {
     return;
@@ -60,7 +60,7 @@ export async function generateMetadata({ params }) {
 
 export default async function Home({ params }) {
   const { slug } = await params;
-  const post = getBlogPosts().find((post) => post.slug === slug);
+  const post = getBlogPostBySlug(slug);
 
   if (!post) {
     notFound();
