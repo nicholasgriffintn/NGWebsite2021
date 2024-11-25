@@ -9,4 +9,5 @@ export type Metadata = {
   archived?: boolean;
   draft?: boolean;
   tags: string[];
+  link?: string;
 };

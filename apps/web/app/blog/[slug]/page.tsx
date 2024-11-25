@@ -150,6 +150,11 @@ export default async function Home({ params }) {
         )}
         <article className="prose dark:prose-invert pt-2 w-full min-w-full lg:min-w-[75%]">
           <CustomMDX source={post.content} />
+          {post.metadata.link && (
+            <Link href={post.metadata.link} className="text-primary-foreground">
+              You can find the original post here.
+            </Link>
+          )}
         </article>
       </InnerPage>
     </PageLayout>
