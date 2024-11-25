@@ -6,7 +6,8 @@ import { Link } from '@/components/Link';
 
 export const metadata = {
   title: 'Blog',
-  description: 'A collection of blog posts that I have written.',
+  description:
+    'A collection of blog posts that I have written alongside some general thoughts and links.',
 };
 
 async function getData() {

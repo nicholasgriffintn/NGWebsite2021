@@ -90,11 +90,11 @@ export default async function Home() {
                 What's going on?
               </h2>
               <p>
-                Below you will find some of the blog posts that I have wrote (if
-                that is still working), I used to write a lot and I'm looking to
-                write blog posts more about the projects that I am working on.
-                There might not be a lot here but I hope that it will at least
-                be interesting, at least to me.
+                Below you will find some of the blog posts that I have wrote
+                (and just a few thoughts and links), I used to write a lot and
+                I'm looking to write blog posts more about the projects that I
+                am working on. There might not be a lot here but I hope that it
+                will at least be interesting, at least to me.
               </p>
             </div>
             <section>

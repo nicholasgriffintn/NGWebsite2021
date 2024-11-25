@@ -14,7 +14,7 @@ export function parseMarkdown(
     muted ? 'muted' : 'primary'
   }-foreground inline font-bold p-0 transition-colors hover:underline hover:outline-none decoration-1 decoration-skip-ink-none underline-offset-[0.25em] hover:decoration-2`;
 
-  const paragraphs = input.split('\\n').map((paragraph) => {
+  const paragraphs = input.split('\n').map((paragraph) => {
     const html = paragraph
       .replace(/^(?:\s[^\n])+##### ([^\n]+)\n/gm, '<h5>$1</h5>')
       .replace(/^(?:\s[^\n])+#### ([^\n]+)\n/gm, '<h4>$1</h4>')
@@ -26,15 +26,15 @@ export function parseMarkdown(
       )
       .replace(
         /\[(.*?)\]\((.*?)\)/g,
-        `<a href="$2" target="_blank" rel="noopener noreferer" class="${linkClassName}">$1</a>`
+        `<a href="$2" target="_blank" rel="noopener noreferrer" class="${linkClassName}">$1</a>`
       )
       .replace(
         URL_REGEX,
-        `<a href="$2" target="_blank" rel="noopener noreferer" class="${linkClassName}">$1</a>`
+        `<a href="$2" target="_blank" rel="noopener noreferrer" class="${linkClassName}">$1</a>`
       )
       .replace(/(\*\*|__)(?=\S)(.+?[*_]*)(?=\S)\1/gm, '<strong>$2</strong>');
 
-    return `<p class=${classNames.p}>${html}</p>`;
+    return `<p class="${classNames.p}">${html}</p>`;
   });
 
   // Join the paragraphs back together

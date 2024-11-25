@@ -11,6 +11,7 @@ export function Footer() {
               href="https://creativecommons.org/licenses/by-sa/4.0/"
               target="_blank"
               rel="noopener noreferrer"
+              showExternalIcon={false}
             >
               CC BY-SA 4.0
             </Link>
@@ -23,13 +24,21 @@ export function Footer() {
           <nav>
             <ul className="flex items-left space-x-4">
               <li>
-                <Link href="https://undefined.computer">Undefined</Link>
+                <Link
+                  href="https://undefined.computer"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  showExternalIcon={false}
+                >
+                  Undefined
+                </Link>
               </li>
               <li>
                 <Link
                   href="https://github.com/nicholasgriffintn/NGWebsite2021"
                   target="_blank"
                   rel="noopener noreferrer"
+                  showExternalIcon={false}
                 >
                   Source Code
                 </Link>

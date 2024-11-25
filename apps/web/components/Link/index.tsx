@@ -1,5 +1,6 @@
 import NextLink from "next/link";
 import { clsx } from 'clsx';
+import { ExternalLink } from 'lucide-react';
 
 export function Link({
   href,
@@ -7,6 +8,8 @@ export function Link({
   underline = true,
   className,
   muted = false,
+  target,
+  showExternalIcon = true,
   ...props
 }: {
   href: string;
@@ -14,6 +17,8 @@ export function Link({
   underline?: boolean;
   className?: string;
   muted?: boolean;
+  target?: string;
+  showExternalIcon?: boolean;
   [key: string]: unknown;
 }) {
   return (
@@ -31,6 +36,9 @@ export function Link({
       prefetch={false}
     >
       {children}
+      {showExternalIcon && target === '_blank' && (
+        <ExternalLink className="inline ml-1" size={12} />
+      )}
     </NextLink>
   );
 }

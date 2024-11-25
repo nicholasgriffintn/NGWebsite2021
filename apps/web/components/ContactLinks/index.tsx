@@ -8,6 +8,7 @@ export function ContactLinks() {
         href="https://github.com/nicholasgriffintn"
         rel="noopener noreferrer"
         title="Github"
+        showExternalIcon={false}
       >
         <svg
           className="w-[24px] h-[24px] fill-white"
@@ -23,6 +24,7 @@ export function ContactLinks() {
         href="https://twitter.com/ngriffin_uk"
         rel="noopener noreferrer"
         title="Twitter"
+        showExternalIcon={false}
       >
         <svg
           className="w-[24px] h-[24px] fill-white"
@@ -41,6 +43,7 @@ export function ContactLinks() {
         target="_blank"
         title="Mastodon"
         href="https://bsky.app/profile/nicholasgriffin.dev"
+        showExternalIcon={false}
       >
         <svg
           className="w-[24px] h-[24px] fill-[#1185fe]"
@@ -58,6 +61,7 @@ export function ContactLinks() {
         target="_blank"
         title="Mastodon"
         href="https://mastodon.online/@ngriffin"
+        showExternalIcon={false}
       >
         <svg
           className="w-[24px] h-[24px] fill-white"
@@ -79,6 +83,7 @@ export function ContactLinks() {
         href="https://www.linkedin.com/in/nicholasgriffin-gb/"
         rel="noopener noreferrer"
         title="LinkedIn"
+        showExternalIcon={false}
       >
         <svg
           className="w-[24px] h-[24px] fill-white"

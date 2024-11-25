@@ -1,5 +1,4 @@
 import { formatDate } from '@/lib/blog';
-import { buttonVariants } from '@/components/ui/button';
 import { Link } from '@/components/Link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -7,6 +6,12 @@ import { parseMarkdown } from '@/lib/markdown';
 import { Image } from '@/components/Image';
 
 export function BlogCard({ post }) {
+  const postLink = post.metadata.link || `/blog/${post.slug}`;
+  const postContent = parseMarkdown(
+    post.metadata.description || post.content,
+    false
+  );
+
   return (
     <Card className="overflow-hidden">
       {post.metadata.image && (
@@ -25,7 +30,8 @@ export function BlogCard({ post }) {
         <CardTitle className="space-x-2">
           <Link
             className="text-2xl font-semibold leading-none tracking-tight space-x-2"
-            href={`/blog/${post.slug}`}
+            href={postLink}
+            target={post.metadata.link ? '_blank' : undefined}
             underline={false}
           >
             {post.metadata.title}
@@ -35,40 +41,31 @@ export function BlogCard({ post }) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-sm text-muted-foreground mb-4">
-          {parseMarkdown(post.metadata.description, true)}
+        <div className="text-sm text-primary-foreground mb-4">
+          {postContent}
+          {!post.metadata.link && (
+            <span>
+              <Link href={postLink}>Read more</Link>
+            </span>
+          )}
         </div>
         <div className="text-sm text-muted-foreground mb-4">
           {post.metadata.date && (
-            <span className="text-sm text-primary-foreground">
+            <span>
               Published: {formatDate(post.metadata.date)}
               {post.metadata.updated && ' (Updated)'}
             </span>
           )}
           {post.metadata.tags && (
-            <div className="text-sm text-muted-foreground flex flex-wrap items-center space-x-2">
+            <div className="flex flex-wrap items-center space-x-2">
               {post.metadata.tags.map((tag) => (
-                <Link
-                  key={tag}
-                  href={`/tags/${tag}`}
-                  className="text-sm text-primary-foreground"
-                >
+                <Link key={tag} href={`/tags/${tag}`} muted>
                   {tag}
                 </Link>
               ))}
             </div>
           )}
         </div>
-        <Link
-          href={`/blog/${post.slug}`}
-          className={buttonVariants({
-            variant: 'outline',
-            size: 'sm',
-          })}
-          underline={false}
-        >
-          Read More
-        </Link>
       </CardContent>
     </Card>
   );
