@@ -10,7 +10,7 @@ import { InnerPage } from '@/components/InnerPage';
 import { ProjectsList } from '@/components/ProjectsList';
 import { buttonVariants } from '@/components/ui/button';
 import { Link } from '@/components/Link';
-import { getBlogPosts } from '@/lib/blog';
+import { getPaginatedBlogPosts } from '@/lib/blog';
 import { BlogCard } from '@/components/BlogCard';
 
 export const revalidate = 60;
@@ -24,14 +24,15 @@ async function getData() {
   const spotify = await getRecentlyPlayed();
   const projects = await getProjects();
   const featuredRepos = await getGitHubRepos({ limit: 8 });
-  const blogPosts = await getBlogPosts();
-  const firstSixPosts = blogPosts.slice(0, 6);
+  const blogPosts = await getPaginatedBlogPosts({
+    limit: 6,
+  });
 
   return {
     spotify,
     projects,
     featuredRepos,
-    blogPosts: firstSixPosts,
+    blogPosts,
   };
 }
 

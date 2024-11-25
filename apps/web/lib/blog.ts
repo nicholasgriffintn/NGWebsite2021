@@ -71,6 +71,19 @@ export function getBlogPosts(showArchived = false) {
   );
 }
 
+export function getPaginatedBlogPosts({
+  showArchived = false,
+  page = 1,
+  limit = 10,
+}) {
+  const posts = getBlogPosts(showArchived);
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + limit;
+  const paginatedPosts = posts.slice(startIndex, endIndex);
+
+  return paginatedPosts;
+}
+
 export function getAllTags() {
   const posts = getBlogPosts();
   const tagCounts = posts.reduce((acc, post) => {
