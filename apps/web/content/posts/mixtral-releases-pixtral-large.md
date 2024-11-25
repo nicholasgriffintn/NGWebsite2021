@@ -28,6 +28,7 @@ Of course, after all that, I had to give it a go.
 Let's start with a chart, I thought I'd try a relatively complex one, this is showing the constituency winners from the 2024 General Election in the UK, what makes it complex is that it isn't identifying the boundaries.
 
 ![The results of the General Election 2024, showing the distribution of constituency winners across the United Kingdom. The image is divided into two maps: a hex map and a geographical map.](https://assistant-assets.nickgriffin.uk/uploads/82a2eee9-001b-4e70-9bfa-7c5179b4c03b.png)
+([Image source](https://commonslibrary.parliament.uk/research-briefings/cbp-10009/))
 
 I sent this over with a simple Curl command:
 
@@ -113,6 +114,7 @@ Pretty decent I think, it seems to have done a decent job of understanding the c
 Mistral also say that's it's pretty good at documents so I thought I'd give it this quite intrecate page from a BBC whitepaper on "Using Behavioural Data to Assess the Environmental Impact of Electricity Consumption of Alternate Television Service Distribution Platforms" (you can [find the full paper here](https://downloads.bbc.co.uk/rd/pubs/whp/whp-pdf-files/WHP372.pdf)).
 
 ![A detailed description of the processes involved in television distribution and viewing, divided into three main stages: preparation, distribution, and consumption.](https://assistant-assets.nickgriffin.uk/uploads/WHP372.png)
+([Image source](https://downloads.bbc.co.uk/rd/pubs/whp/whp-pdf-files/WHP372.pdf))
 
 This time, I used this prompt:
 
@@ -187,6 +189,7 @@ Last up is an image, this is the general use case, which I expect it to be prett
 This time I'm using the following image:
 
 ![A serene landscape during what appears to be late afternoon or early evening, with the sun low in the sky.](https://assistant-assets.nickgriffin.uk/uploads/54164645203_554bc9c357_c.jpg)
+([Image source](https://www.flickr.com/photos/82887550@N00/54164645203/))
 
 The prompt:
 
