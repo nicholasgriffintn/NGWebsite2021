@@ -3,6 +3,7 @@ title: "Deploying a NextJS static site to S3"
 description: "After using NextJS for a static site and deploying it to S3 I noticed a few issues, this post talks about my experience with that."
 date: "2020-08-16T15:48"
 archived: true
+tags: [nextjs, s3, static-site]
 ---
 
 So quite some time now, I've been figuring out which is better, Gatsby JS or NextJS.

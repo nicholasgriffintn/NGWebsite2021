@@ -8,4 +8,5 @@ export type Metadata = {
   hideFeaturedImage?: boolean;
   archived?: boolean;
   draft?: boolean;
+  tags: string[];
 };

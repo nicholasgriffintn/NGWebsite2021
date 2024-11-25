@@ -3,6 +3,7 @@ title: 'Adding a dashboard to my site'
 description: "It's time to expand Project NG 2020 with a new dashboard for publishing and editing content"
 date: '2020-05-09T15:34'
 archived: true
+tags: [nextjs, express, postgres, aws-cognito]
 ---
 
 So far in Project NG 2020, I have published a number of posts about the launch of my new website for 2020, which is a NextJS website and blog that's backed by Express and Postgres.

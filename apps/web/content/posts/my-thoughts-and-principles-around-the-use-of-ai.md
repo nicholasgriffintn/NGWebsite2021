@@ -2,6 +2,7 @@
 title: 'My thoughts and principles around the use of AI'
 description: "I came across a new page from [Daniel Roe](https://roe.dev/ai) where he sets out his guidelines for his use of AI, I thought I'd do the same. \n AI is a big topic in the industry lately, so much so that we end up talking about it in every other meeting, from the latest advancements to the ethical implications, there's a lot to consider. Recently, I've been thinking about my own thoughts and principles around the use of AI, and I thought I'd share them with you."
 date: "2024-10-27T12:12"
+tags: [ai, principles, meta]
 ---
 
 ## Personal principles

@@ -3,6 +3,7 @@ title: "Adding authentication to our Express blog with Passport.js"
 description: "Time to make things secure"
 date: "2019-04-19T15:48"
 archived: true
+tags: [node, express, mongo, passport]
 ---
 
 In the last blog post we talked about [adding a blog to our personal site via Node, Express and Mongo](/blog/node-express-mongo-blog). In this blog post, we will be expanding upon that by adding authentication to our new Express APIs via something called Passport.js.

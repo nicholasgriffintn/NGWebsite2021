@@ -6,6 +6,7 @@ updated: "2024-11-11"
 image: "/uploads/building-my-own-ai-assistant/featured.png"
 imageAlt: "A screenshot of the chat interface that I built for my AI assistant"
 hideFeaturedImage: true
+tags: [cloudflare, ai, node, typescript, hono]
 ---
 
 > If you'd like to skip straight to the code, you can find it [here](https://github.com/nicholasgriffintn/assistant).

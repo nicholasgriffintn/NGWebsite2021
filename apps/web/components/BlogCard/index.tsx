@@ -22,21 +22,43 @@ export function BlogCard({ post }) {
         </div>
       )}
       <CardHeader>
-        <CardTitle>
-          {post.metadata.title}
+        <CardTitle className="space-x-2">
+          <Link
+            className="text-2xl font-semibold leading-none tracking-tight space-x-2"
+            href={`/blog/${post.slug}`}
+            underline={false}
+          >
+            {post.metadata.title}
+          </Link>
           {post.metadata.archived && <Badge>Archived</Badge>}
           {post.metadata.draft && <Badge>Draft</Badge>}
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-sm text-muted-foreground">
+        <div className="text-sm text-muted-foreground mb-4">
           {parseMarkdown(post.metadata.description, true)}
         </div>
-        {post.metadata.date && (
-          <p className="text-sm text-muted-foreground">
-            Published on {formatDate(post.metadata.date)}
-          </p>
-        )}
+        <div className="text-sm text-muted-foreground mb-4">
+          {post.metadata.date && (
+            <span className="text-sm text-primary-foreground">
+              Published: {formatDate(post.metadata.date)}
+              {post.metadata.updated && ' (Updated)'}
+            </span>
+          )}
+          {post.metadata.tags && (
+            <div className="text-sm text-muted-foreground flex flex-wrap items-center space-x-2">
+              {post.metadata.tags.map((tag) => (
+                <Link
+                  key={tag}
+                  href={`/tags/${tag}`}
+                  className="text-sm text-primary-foreground"
+                >
+                  {tag}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
         <Link
           href={`/blog/${post.slug}`}
           className={buttonVariants({

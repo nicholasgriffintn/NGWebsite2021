@@ -4,6 +4,7 @@ description: "It's that time again!"
 date: "2021-08-21T21:33"
 updated: "2021-08-21T21:56"
 archived: true
+tags: [nextjs, aws, amplify, dynamodb, lambda, appsync]
 ---
 
 If you have followed my site for some time then you would know that I've been creating a new version of my site pretty much every year, we've gone all the way from a simple WordPress server up to what I have live today, a NextJS server with all of the modern tools and services linked.

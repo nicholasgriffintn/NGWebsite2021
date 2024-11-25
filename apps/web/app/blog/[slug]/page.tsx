@@ -7,6 +7,7 @@ import { CustomMDX } from '@/components/MDX';
 import { parseMarkdown } from '@/lib/markdown';
 import { Image } from '@/components/Image';
 import { AlertMessage } from '@/components/Alert';
+import { Link } from '@/components/Link';
 
 export const dynamicParams = false;
 
@@ -98,15 +99,28 @@ export default async function Home({ params }) {
           <div className="col-span-5 md:col-span-3 lg:col-span-4 pt-5">
             <div className="text-primary-foreground lg:max-w-[75%]">
               <div>{parseMarkdown(post.metadata.description || '')}</div>
+              {post.metadata.tags && (
+                <div className="text-sm text-muted-foreground flex flex-wrap items-center space-x-2 mb-2">
+                  <span className="text-sm text-muted-foreground">Tags:</span>
+                  {post.metadata.tags.map((tag) => (
+                    <Link key={tag} href={`/tags/${tag}`} muted>
+                      {tag}
+                    </Link>
+                  ))}
+                </div>
+              )}
               {post.metadata.date && (
-                <p className="text-sm text-muted-foreground">
+                <span className="text-sm text-muted-foreground">
                   Published on {formatDate(post.metadata.date)}
-                </p>
+                </span>
               )}
               {post.metadata.updated && (
-                <p className="text-sm text-muted-foreground">
-                  Updated on {formatDate(post.metadata.updated)}
-                </p>
+                <>
+                  <span className="text-sm text-muted-foreground"> • </span>
+                  <span className="text-sm text-muted-foreground">
+                    Updated on {formatDate(post.metadata.updated)}
+                  </span>
+                </>
               )}
             </div>
           </div>

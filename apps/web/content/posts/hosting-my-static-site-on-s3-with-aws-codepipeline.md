@@ -3,6 +3,7 @@ title: "Hosting my static site on S3 with AWS CodePipeline"
 description: "How I'm using AWS CodePipeline to automatically build and push my site to AWS' S3"
 date: "2019-05-31T15:48"
 archived: true
+tags: [aws, s3, codepipeline, static-site]
 ---
 
 So alongside my adventures with Nuxt and static sites yesterday, I thought it would be a good time to start using CI/CD for my personal website with the help of AWS CodePipeline. I have been using this a lot at work for a few projects and I have to say, it is a fantastic tool for quickly and automatically building and deploying a website to a range of Amazon's services, including ECS, EC2, S3 and many more.

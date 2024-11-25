@@ -3,6 +3,7 @@ title: "Adding two-factor authentication to a NodeJS application"
 description: "Increase the security of your service in less than an hour"
 date: "2020-05-08T15:48"
 archived: true
+tags: [node, express, sequelize, react, nextjs, two-factor]
 ---
 
 **Two-factor authentication is actually really simple.**

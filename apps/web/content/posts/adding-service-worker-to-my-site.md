@@ -3,6 +3,7 @@ title: "Adding Service Worker to my site"
 description: "Whoops! I forgot to add Service Worker to my site. Probably about time to do that..."
 date: "2019-05-19T15:48"
 archived: true
+tags: [javascript, serviceworker, pwa]
 ---
 
 Service Workers have been around for quite a  while now and are awesome little JavaScript that can change the value that your site provides from behind something tethered to a mobile connection to a fully fledged progressive web app, ready for consumption on the mobile web, wherever your users are.

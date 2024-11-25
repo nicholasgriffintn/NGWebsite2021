@@ -3,6 +3,7 @@ title: "Project NG 2020: Building an Express Image Resizing API"
 description: "Optimizing my site with automatic image resizing"
 date: "2020-06-18T15:48"
 archived: true
+tags: [node, express, sharp, aws, s3]
 ---
 
 **Update: I have changed this slightly, it's similar code but now it's a serverless Lambda service! Check out the source code here: [https://github.com/nicholasgriffintn/images.nicholasgriffin.dev](https://github.com/nicholasgriffintn/images.nicholasgriffin.dev)**

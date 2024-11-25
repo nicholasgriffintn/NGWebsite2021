@@ -4,6 +4,7 @@ description: "I'm creating an AWS Lambda service that will receive and process e
 date: "2021-08-29T20:03"
 update: "2021-08-29T20:04"
 archived: true
+tags: [serverless, aws, lambda, ses, s3]
 ---
 
 This week during the long weekend, I figured that I’d start a new project for a new service that I thought I’d build, a new Lambda that will receive emails from AWS SES and then store a bookmark link from that email in a DynamoDB table, from which I should be able to create a new API and page that will list anything I find interesting on my site.

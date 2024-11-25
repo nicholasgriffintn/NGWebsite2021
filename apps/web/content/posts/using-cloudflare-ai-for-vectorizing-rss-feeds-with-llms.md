@@ -5,6 +5,7 @@ date: "2024-10-25T15:36"
 image: "/uploads/using-cloudflare-ai-for-vectorizing-rss-feeds-with-llms/website.png"
 imageAlt: "A screenshot of the website I built for the project, showing the RSS feed content and search functionality."
 hideFeaturedImage: true
+tags: [cloudflare, ai, rss, vectorize, llm]
 ---
 
 Back in September 2023, [Cloudflare](https://www.cloudflare.com/en-gb/press-releases/2023/cloudflare-launches-workers-ai-deploy-ai-inference/) launched their new Workers AI platform.

@@ -15,8 +15,15 @@ function parseFrontmatter(fileContent: string) {
   const metadata = frontMatterBlock?.split('\n').reduce((acc, line) => {
     const [key, ...valueArr] = line.split(': ');
     if (key) {
-      let value = valueArr.join(': ').trim();
+      let value: string[] | string = valueArr.join(': ').trim();
       value = value.replace(/^['"](.*)['"]$/, '$1'); // Remove quotes
+      if (value.startsWith('[') && value.endsWith(']')) {
+        // Parse array values
+        value = value
+          .slice(1, -1)
+          .split(',')
+          .map((tag) => tag.trim());
+      }
       acc[key.trim()] = value;
     }
     return acc;
@@ -59,6 +66,29 @@ export function getBlogPosts() {
     (a, b) =>
       new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime()
   );
+}
+
+export function getAllTags() {
+  const posts = getBlogPosts();
+  const tagCounts = posts.reduce((acc, post) => {
+    if (Array.isArray(post.metadata.tags)) {
+      post.metadata.tags.forEach((tag) => {
+        if (acc[tag]) {
+          acc[tag]++;
+        } else {
+          acc[tag] = 1;
+        }
+      });
+    }
+    return acc;
+  }, {} as Record<string, number>);
+
+  return tagCounts;
+}
+
+export function getBlogPostsByTag(tag: string) {
+  const posts = getBlogPosts();
+  return posts.filter((post) => post.metadata.tags?.includes(tag));
 }
 
 export function formatDate(date: string, includeRelative = false) {

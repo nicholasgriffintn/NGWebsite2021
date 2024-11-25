@@ -3,6 +3,7 @@ title: "Let's begin again..."
 description: "Nicholas Griffin V.Something"
 date: "2019-04-01T15:48"
 archived: true
+tags: [meta]
 ---
 
 **So it has been some time since I last posted any content on the web...**

@@ -4,6 +4,7 @@ description: "A new Serverless Lambda that will parse bookmarks data into Dynamo
 date: "2021-08-30T12:53"
 updated: "2021-08-30T14:04"
 archived: true
+tags: [serverless, aws, lambda, dynamodb]
 ---
 
 Earlier this week I created my own personal email service as the initial step towards building my own bookmarks service for my personal site.

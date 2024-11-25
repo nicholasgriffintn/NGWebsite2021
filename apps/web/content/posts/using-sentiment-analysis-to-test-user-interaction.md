@@ -3,6 +3,7 @@ title: "Using Sentiment Analysis to test user interaction"
 description: "Using AWS Comprehend to perform Sentiment Analysis on comments."
 date: "2019-05-20T15:31"
 archived: true
+tags: [aws, comprehend, serverless, lambda, api-gateway]
 ---
 
 So recently I attended the AWS Summit in London. There was a ton of new stuff to see at the show but alongside the DeepRacer demos, there was a clear focus on machine learning. Amazon has a ton of new machine learning tech to play with and I obviously want to take them up on that.

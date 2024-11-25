@@ -5,6 +5,7 @@ date: 2024-11-24
 image: /uploads/launching-an-automated-podcast-app/identify_speakers.png
 imageAlt: A screenshot of a part of th frontend for the AI podcasting app, showing the stage where the user is displayed a sample of the transcription and asked to identify the speakers.
 hideFeaturedImage: true
+tags: [ai, podcasting, cloudflare, r2, replicate, whisper, bart, stable-diffusion-xl-lightning]
 ---
 
 Previously, I started work on building an AI based assistant [that you can read about here](/blog/posts/building-my-own-ai-assistant), as time goes on, I plan to expand this with mini applications that the user can open from the assistant and use to complete certain tasks.

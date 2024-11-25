@@ -5,6 +5,7 @@ date: "2024-10-24T13:12"
 image: "/uploads/building-my-own-ab-testing-platform/main.png"
 imageAlt: "A screenshot showing the initial interface on the left and a view of the app running on the right."
 hideFeaturedImage: true
+tags: [python, ab-testing, bayesian, frequentist, statistics, fastapi, cli]
 ---
 
 Over the course of my career, I've worked across a number of projects that use external providers for A/B testing.

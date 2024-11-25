@@ -3,6 +3,7 @@ title: "Project NG 2020: Re-launching my personal website"
 description: "Bringing it back to a server"
 date: "2020-04-16T15:48"
 archived: true
+tags: [node, express, nextjs, postgres, nginx]
 ---
 
 If you've seen what I've done with my website over the last through years then you'll know that I've been through quite a few versions.

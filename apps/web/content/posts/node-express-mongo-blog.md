@@ -3,6 +3,7 @@ title: "How I built a blog with Node, Express and Mongo"
 description: "Let's get blogging!"
 date: "2019-02-04T15:48"
 archived: true
+tags: [node, express, mongo]
 ---
 
 So with the move to my new server, I had to create something that would allow me to create a set blog post like the one you are reading now. One of my aims for 2019 and onwards is to do more development and projects that don't really have any aim, simply to learn new stuff.

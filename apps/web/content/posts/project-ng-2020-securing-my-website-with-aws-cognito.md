@@ -3,6 +3,7 @@ title: "Project NG 2020: Securing my website with AWS Cognito"
 description: "Easy website authentication ready for the future"
 date: "2020-04-19T15:48"
 archived: true
+tags: [node, express, aws, cognito]
 ---
 
 Alongside the [launch of my new website](/blog/project-ng-2020-re-launching-my-personal-website.md) with Next JS, Nginx, Postgres, and Express, I want to expand my site with more things.

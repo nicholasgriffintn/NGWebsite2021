@@ -3,6 +3,7 @@ title: 'My weekend with AWS DeepRacer'
 description: 'Here are the results of my weekend playing around with AWS DeepRacer'
 date: "2019-05-19T15:32"
 archived: true
+tags: [aws, deepracer, reinforcement-learning]
 ---
 
 Last weekend marked the beginning of Amazon's new virtual DeepRacer league, which is basically a race that is conducted within Amazon's platform by a bunch of simulated versions of the DeepRacer vehicle.
