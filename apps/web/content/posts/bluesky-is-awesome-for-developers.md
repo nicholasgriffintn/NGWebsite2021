@@ -19,7 +19,7 @@ Simon Willison [wrote a post](https://simonwillison.net/2024/Nov/20/bluesky-webs
 
 That's super cool but I wondered how far you could could and wanted to have a play myself so I got v0 to build a quick tool that's basically the same thing but with some graphs, a message feed and a few other nice bits like a delay and the ability to scroll the feed and queue further messages.
 
-You can check it out here: https://bluesky-live.vercel.app/, also, here's a GIF of it in action:
+You can [check it out here](https://bluesky-live.vercel.app/), also, here's a GIF of it in action:
 
 ![Bluesky Live](/uploads/bluesky-is-awesome-for-developers/bluesky-live.gif).
 
