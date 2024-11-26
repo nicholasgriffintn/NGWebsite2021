@@ -14,7 +14,9 @@ export function parseMarkdown(
     muted ? 'muted' : 'primary'
   }-foreground inline font-bold p-0 transition-colors hover:underline hover:outline-none decoration-1 decoration-skip-ink-none underline-offset-[0.25em] hover:decoration-2`;
 
-  const paragraphs = input.split('\n').map((paragraph) => {
+  const normalizedInput = input.replace(/\\n/g, '\n');
+
+  const paragraphs = normalizedInput.split('\n').map((paragraph, index) => {
     const html = paragraph
       .replace(/^(?:\s[^\n])+##### ([^\n]+)\n/gm, '<h5>$1</h5>')
       .replace(/^(?:\s[^\n])+#### ([^\n]+)\n/gm, '<h4>$1</h4>')
@@ -38,7 +40,7 @@ export function parseMarkdown(
   });
 
   // Join the paragraphs back together
-  const html = paragraphs.join('');
+  const result = paragraphs.join('');
 
-  return parse(html);
+  return parse(result);
 }

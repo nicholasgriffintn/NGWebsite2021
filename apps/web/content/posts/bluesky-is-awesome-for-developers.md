@@ -3,6 +3,9 @@ title: "Bluesky is awesome for developers, you should check it out"
 date: "2024-11-26T22:16"
 tags: [bluesky, social-media]
 description: When Twitter first launched it really was a place for great conversation amongst a number of communities, including developers who built many tools with their API. Once Elon took over and added restrictions and outrageous pricing for the API, it became something that you can no longer hack around with. Recently, like many others, I've been looking at some of the things that you can do with Bluesky and I have to say, this is the platform for developers.
+image: "/uploads/bluesky-is-awesome-for-developers/featured.png"
+imageAlt: "A screenshot showing the Bluesky timeline"
+hideFeaturedImage: true
 ---
 
 In case you don't already know, Bluesky is a new open-source microblogging platform that has been built using the AT Protocol, an open and decentralised network for social applications.

@@ -2,12 +2,10 @@
 title: "Mistral has released their new multimodal model, Pixtral Large"
 date: "2024-11-25T21:51"
 tags: [mistral, pixtral, multimodal, ai]
-description: Something pretty cool happened last week, Mistral released their new multimodal model, Pixtral Large. Built on top of Mistral Large 2, it is a new, 124B open-weights model that is capable of understanding documents, charts and natural images according to Mistral. Not only that, but it also supports the functionality of the Mistral Large 2 model.
+description: Something pretty cool happened last week, Mistral released their new multimodal model, Pixtral Large. Built on top of Mistral Large 2, it is a new, 124B open-weights model that is capable of understanding documents, charts and natural images according to Mistral. Not only that, but it also supports the functionality of the Mistral Large 2 model.\nWhat's particularly interesting about this and other models from Mistral is that the weights are [available to download right from Huggingface](https://huggingface.co/mistralai/Pixtral-Large-Instruct-2411), available under the Mistral Research License which is free for research and educational use, as well as the Mistral Commercial License for commercial use.
 ---
 
-What's particularly interesting about this and other models from Mistral is that the weights are [available to download right from Huggingface](https://huggingface.co/mistralai/Pixtral-Large-Instruct-2411), available under the Mistral Research License which is free for research and educational use, as well as the Mistral Commercial License for commercial use.
-
-According to Mistral, it's also super capable. Through their MathVista testing harness, they found that the new model achieved 69.4%, which they say is much higher that other, similar models.
+According to Mistral, Pixtral Large also super capable. Through their MathVista testing harness, they found that the new model achieved 69.4%, which they say is much higher that other, similar models.
 
 They also tested it on MM-MT-Bench, they claim it even outperformed Claude-3.5 Sonnet from these results.
 
