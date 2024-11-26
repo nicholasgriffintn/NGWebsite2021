@@ -12,4 +12,4 @@ As an effort to provide a standardised interface for LLMs to interact with other
 
 MCP aims to solve this with new two-way connections between data sources and AI tools, which developers will create through "MCP servers" ([a few examples available here](https://github.com/modelcontextprotocol/servers/tree/main/src)), these are then set up via the Claude Desktop app currently, but the aim is to expand this.
 
-The [specification](https://spec.modelcontextprotocol.io/specification/) goes into much more detail, you should deffo check it out.
+The [specification](https://spec.modelcontextprotocol.io/specification/) goes into much more detail, you should deffo take a look.
