@@ -58,7 +58,7 @@ curl --request POST \
 
 Pixtral responded with this:
 
-```markdown
+```
 This image presents the results of the UK General Election 2024, showing the winning parties in each constituency after all 650 seats have been declared. The results are displayed in two different formats: a hex map (equal area) and a geographical map.
 
 ### Key Points:
@@ -139,7 +139,7 @@ This time, I used this prompt:
 
 Here was the output:
 
-```markdown
+```
 The page you provided is from a BBC whitepaper titled \"Using Behavioural Data to Assess the Environmental Impact of Electricity Consumption of Alternate Television Service Distribution Platforms.\" This specific section, labeled \"2.2 Process Description,\" outlines the process model for television content distribution and consumption, breaking it down into three main stages: preparation, distribution, and consumption.
 
 ### Key Points:

@@ -52,10 +52,42 @@ function RoundedImage(props) {
   return <Image alt={props.alt} className="rounded-lg" {...props} />;
 }
 
-function Code({ children, ...props }) {
+function Code({ children, className, ...props }) {
+  // Check if this is a code block (has language) or inline code
+  const isCodeBlock = /language-(\w+)/.exec(className || '');
+
+  if (!isCodeBlock) {
+    // Inline code styling
+    return (
+      <code
+        className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm"
+        {...props}
+      >
+        {children}
+      </code>
+    );
+  }
+
+  // Code block styling
+  const language = isCodeBlock[1];
   const codeHTML = highlight(children);
-  // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-  return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
+
+  return (
+    <div className="relative">
+      {language && (
+        <div className="absolute right-2 top-2 z-10 rounded-md bg-muted px-2 py-1 text-xs text-muted-foreground">
+          {language}
+        </div>
+      )}
+      <pre className="overflow-x-auto rounded-lg border bg-muted my-2">
+        <code
+          className={className}
+          dangerouslySetInnerHTML={{ __html: codeHTML }}
+          {...props}
+        />
+      </pre>
+    </div>
+  );
 }
 
 function slugify(str) {

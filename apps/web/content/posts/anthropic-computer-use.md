@@ -70,7 +70,7 @@ Your browser does not support the video tag.
 
 And here's the output:
 
-```markdown
+```
 Now that I have access to Hacker News, let me analyze the top stories and create a summary report for you.
 
 Hacker News Top Stories Report - November 29, 2024
