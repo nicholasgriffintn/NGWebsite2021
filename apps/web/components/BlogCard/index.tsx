@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { parseMarkdown } from '@/lib/markdown';
 import { Image } from '@/components/Image';
+import { Bookmark } from 'lucide-react';
 
 export function BlogCard({ post }) {
   const postLink = post.metadata.link || `/blog/${post.slug}`;
@@ -13,7 +14,7 @@ export function BlogCard({ post }) {
   );
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden relative">
       {post.metadata.image && (
         <div className="max-h-[190px] min-h-[190px] overflow-hidden h-full">
           <Image
@@ -27,7 +28,12 @@ export function BlogCard({ post }) {
         </div>
       )}
       <CardHeader>
-        <CardTitle className="space-x-2">
+        <CardTitle>
+          {post.metadata.isBookmark && (
+            <div className="mb-2">
+              <Bookmark className="h-5 w-5 text-white fill-white" />
+            </div>
+          )}
           <Link
             className="text-2xl font-semibold leading-none tracking-tight space-x-2 leading-7"
             href={postLink}
