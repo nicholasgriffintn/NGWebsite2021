@@ -169,6 +169,13 @@ export const modelsOptions: ChatModel[] = [
     capabilities: ['text-generation'],
   },
   {
+    id: 'gemini-experimental',
+    name: 'Gemini Experimental (OpenRouter)',
+    description:
+      'An experimental release (November 21st, 2024) of Google Gemini.',
+    capabilities: ['text-generation'],
+  },
+  {
     id: 'Llama-3.2-1B-Instruct-q4f32_1-MLC',
     name: 'Llama 3.2 1B Instruct (Q4F32)',
     description: 'Quantized Llama 3.2 1B model optimized for web browsers',
