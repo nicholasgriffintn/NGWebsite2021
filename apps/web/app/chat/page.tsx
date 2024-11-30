@@ -59,7 +59,13 @@ export default async function Chat() {
 
   const data = await getData(token || '');
 
-  async function onCreateChat(chatId: string, message: string, model: string) {
+  async function onCreateChat(
+    chatId: string,
+    message: string,
+    model: string,
+    mode: 'remote' | 'local' = 'remote',
+    role: 'user' | 'assistant' = 'user'
+  ) {
     'use server';
 
     const token = await validateToken();
@@ -68,7 +74,14 @@ export default async function Chat() {
       return [];
     }
 
-    const response = await createChat({ token, chatId, message, model });
+    const response = await createChat({
+      token,
+      chatId,
+      message,
+      model,
+      mode,
+      role,
+    });
     return Array.isArray(response) ? response : [response];
   }
 

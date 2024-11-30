@@ -1,4 +1,5 @@
 import * as webllm from '@mlc-ai/web-llm';
+import { ChatMessage } from '../../types/chat';
 
 export class WebLLMService {
   private static instance: WebLLMService;
@@ -37,12 +38,28 @@ export class WebLLMService {
   }
 
   async generate(
+    selectedChat: string,
     prompt: string,
+    onSendMessage: (
+      chatId: string,
+      message: string,
+      model: string,
+      mode: 'remote' | 'local',
+      role: 'user' | 'assistant'
+    ) => Promise<ChatMessage[]>,
     onProgress?: (text: string) => void
   ): Promise<string> {
-    if (!this.engine) {
-      throw new Error('Engine not initialized');
+    if (!this.engine || !this.currentModel) {
+      throw new Error('Engine or model not initialized');
     }
+
+    await onSendMessage(
+      selectedChat,
+      prompt,
+      this.currentModel,
+      'local',
+      'user'
+    );
 
     this.chatHistory.push({ role: 'user', content: prompt });
 
@@ -56,18 +73,32 @@ export class WebLLMService {
       request
     );
 
+    let hasCompleted = false;
     for await (const chunk of asyncChunkGenerator) {
       const delta = chunk.choices[0]?.delta?.content || '';
       if (onProgress && delta) {
         onProgress(delta);
       }
       generatedContent += delta;
+      if (chunk.choices[0]?.finish_reason === 'stop') {
+        hasCompleted = true;
+      }
     }
 
     this.chatHistory.push({
       role: 'assistant',
       content: generatedContent,
     });
+
+    if (hasCompleted) {
+      await onSendMessage(
+        selectedChat,
+        generatedContent,
+        this.currentModel,
+        'local',
+        'assistant'
+      );
+    }
 
     return generatedContent;
   }

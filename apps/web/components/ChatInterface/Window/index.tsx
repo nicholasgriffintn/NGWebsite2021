@@ -28,7 +28,8 @@ interface Props {
   onSendMessage: (
     chatId: string,
     message: string,
-    model: string
+    model: string,
+    mode?: 'remote' | 'local'
   ) => Promise<ChatMessage[]>;
   onReaction: (
     messageId: string,
@@ -116,17 +117,25 @@ export function ChatWindow({
           });
         }
 
-        await webLLM.generate(content, (delta) => {
+        const chatId = selectedChat || (await onNewChat(content));
+        if (!selectedChat) {
+          setSelectedChat(chatId);
+          setChatKeys((prev) => [...prev, { id: chatId, title: content }]);
+        }
+
+        await webLLM.generate(chatId, content, onSendMessage, (delta) => {
           setMessages((prev) => {
             const lastMessage = prev[prev.length - 1];
+            const newContent =
+              lastMessage?.content === '...'
+                ? delta
+                : lastMessage?.content + delta;
+
             return [
               ...prev.slice(0, -1),
               {
                 ...lastMessage,
-                content:
-                  lastMessage?.content === '...'
-                    ? delta
-                    : lastMessage?.content + delta,
+                content: newContent,
               } as ChatMessage,
             ];
           });

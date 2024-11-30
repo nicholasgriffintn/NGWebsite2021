@@ -99,11 +99,15 @@ export async function createChat({
   chatId,
   message,
   model,
+  mode = 'remote',
+  role = 'user',
 }: {
   token: string;
   chatId: string;
   message: string;
   model?: string;
+  mode: 'remote' | 'local';
+  role: 'user' | 'assistant';
 }): Promise<ChatMessage[]> {
   try {
     if (!token || !chatId || !message) {
@@ -133,6 +137,8 @@ export async function createChat({
             : message,
         date: new Date().toISOString(),
         model: model || 'hermes-2-pro-mistral-7b',
+        mode,
+        role,
       }),
     });
 
