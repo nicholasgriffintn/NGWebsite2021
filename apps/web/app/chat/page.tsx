@@ -12,6 +12,7 @@ import {
 } from '@/lib/data/chat';
 import { validateToken, logIn } from '@/lib/auth';
 import { LoginForm } from '@/components/ChatInterface/LoginForm';
+import { ChatMode, ChatRole } from '../../types/chat';
 
 export const dynamic = 'force-dynamic';
 
@@ -63,8 +64,8 @@ export default async function Chat() {
     chatId: string,
     message: string,
     model: string,
-    mode: 'remote' | 'local' = 'remote',
-    role: 'user' | 'assistant' = 'user'
+    mode: ChatMode = 'remote',
+    role: ChatRole = 'user'
   ) {
     'use server';
 

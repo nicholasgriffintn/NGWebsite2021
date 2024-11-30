@@ -1,4 +1,4 @@
-import type { ChatList, ChatMessage } from '@/types/chat';
+import type { ChatList, ChatMessage, ChatMode, ChatRole } from '@/types/chat';
 
 export async function getChatKeys({
   token,
@@ -106,8 +106,8 @@ export async function createChat({
   chatId: string;
   message: string;
   model?: string;
-  mode: 'remote' | 'local';
-  role: 'user' | 'assistant';
+  mode: ChatMode;
+  role: ChatRole;
 }): Promise<ChatMessage[]> {
   try {
     if (!token || !chatId || !message) {

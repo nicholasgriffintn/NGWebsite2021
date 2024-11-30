@@ -3,7 +3,7 @@ import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
-import { ChatKey, ChatMessage } from '@/types/chat';
+import { ChatKey, ChatMessage, ChatMode } from '@/types/chat';
 import { MessageList } from './MessageList';
 import { ChatInput } from './ChatInput';
 import { ModelSelector } from './ModelSelector';
@@ -29,7 +29,7 @@ interface Props {
     chatId: string,
     message: string,
     model: string,
-    mode?: 'remote' | 'local'
+    mode?: ChatMode
   ) => Promise<ChatMessage[]>;
   onReaction: (
     messageId: string,
@@ -43,8 +43,8 @@ interface Props {
   isDesktop: boolean;
   isSidebarOpen: boolean;
   setIsSidebarOpen: Dispatch<SetStateAction<boolean>>;
-  mode?: 'remote' | 'local';
-  setMode: (mode: 'remote' | 'local') => void;
+  mode?: ChatMode;
+  setMode: (mode: ChatMode) => void;
 }
 
 export function ChatWindow({
@@ -146,7 +146,12 @@ export function ChatWindow({
           setSelectedChat(chatId);
           setChatKeys((prev) => [...prev, { id: chatId, title: content }]);
         }
-        const response = await onSendMessage(chatId, content, selectedModel);
+        const response = await onSendMessage(
+          chatId,
+          content,
+          selectedModel,
+          mode
+        );
 
         setMessages((prev) => {
           const withoutPlaceholder = prev.slice(0, -1);

@@ -1,5 +1,7 @@
 export type ChatRole = 'user' | 'assistant';
 
+export type ChatMode = 'remote' | 'local' | 'prompt_coach';
+
 export interface WeatherData {
   name: string;
   main: {
@@ -51,7 +53,3 @@ export interface ChatModel {
   capabilities?: string[];
 }
 
-export interface ChatMode {
-  type: 'remote' | 'local';
-  model?: string;
-}

@@ -5,10 +5,10 @@ import {
   SelectItem,
   SelectTrigger,
 } from '@/components/ui/select';
-
+import { ChatMode } from '@/types/chat';
 interface ModeSelectorProps {
-  mode: 'remote' | 'local';
-  onChange: (mode: 'remote' | 'local') => void;
+  mode: ChatMode;
+  onChange: (mode: ChatMode) => void;
   isDisabled: boolean;
 }
 
@@ -20,7 +20,7 @@ export function ModeSelector({
   return (
     <Select
       value={mode}
-      onValueChange={(value: 'remote' | 'local') => onChange(value)}
+      onValueChange={(value: ChatMode) => onChange(value)}
       disabled={isDisabled}
     >
       <SelectTrigger className="w-[180px]">
@@ -29,6 +29,7 @@ export function ModeSelector({
       <SelectContent>
         <SelectItem value="remote">Remote (Cloud)</SelectItem>
         <SelectItem value="local">Local (WebLLM)</SelectItem>
+        <SelectItem value="prompt_coach">Prompt Coach</SelectItem>
       </SelectContent>
     </Select>
   );

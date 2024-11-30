@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-import { ChatMessage, ChatKey } from '@/types/chat';
+import { ChatMessage, ChatKey, ChatMode } from '@/types/chat';
 import { ChatSidebar } from '@/components/ChatInterface/Sidebar';
 import { ChatWindow } from '@/components/ChatInterface/Window';
 
@@ -12,7 +12,8 @@ interface Props {
   onSendMessage?: (
     chatId: string,
     message: string,
-    model: string
+    model: string,
+    mode?: ChatMode
   ) => Promise<ChatMessage[]>;
   onReaction?: (
     messageId: string,
@@ -41,7 +42,7 @@ export function ChatInterface({
   const [isLoading, setIsLoading] = useState(false);
   const [isDesktop, setIsDesktop] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [mode, setMode] = useState<'remote' | 'local'>('remote');
+  const [mode, setMode] = useState<ChatMode>('remote');
 
   const handleNewChat = async () => {
     setSelectedChat(null);

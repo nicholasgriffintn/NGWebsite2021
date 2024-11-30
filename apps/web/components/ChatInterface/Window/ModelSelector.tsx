@@ -13,7 +13,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-
+import { ChatMode } from '@/types/chat';
 interface Model {
   id: string;
   name: string;
@@ -26,7 +26,7 @@ interface ModelSelectorProps {
   onModelSelect: (modelId: string) => Promise<void>;
   models: Model[];
   isDisabled: boolean;
-  mode: 'remote' | 'local';
+  mode: ChatMode;
   isInitializing?: boolean;
   initProgress?: string;
 }
