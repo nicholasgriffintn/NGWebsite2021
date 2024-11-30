@@ -258,7 +258,7 @@ export function ChatWindow({
           <Suggestions
             suggestions={suggestions}
             onSelect={handleSendMessage}
-            isDisabled={isLoading || isMobileSidebarOpen}
+            isDisabled={isLoading || isInitializing || isMobileSidebarOpen}
           />
         )}
 

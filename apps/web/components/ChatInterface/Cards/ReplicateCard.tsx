@@ -11,77 +11,45 @@ const normalizeOutput = (output: any) => {
   return Array.isArray(output) ? output : [output];
 };
 
-const ImageOutput = ({ output, data }: { output: any[]; data: any }) => (
-  <>
-    <span className="prose dark:prose-invert text-xs">
-      Note: If the image doesn't immediately display, please reselect the chat
-      in a couple seconds, we don't auto refresh these just yet. Also, these are
-      currently deleted after an hour, we'll look at saving them in our own
-      storage as this solution expands.
-    </span>
-    <div className="mt-2">
-      {output.length &&
-        output.map((image, index) => (
-          <ImageCard
-            key={index}
-            url={image}
-            width={data.input.width}
-            height={data.input.height}
-            prompt={data.input.prompt}
-          />
-        ))}
-    </div>
-  </>
-);
-
-const VideoOutput = ({ output, data }: { output: any[]; data: any }) => (
-  <>
-    <span className="prose dark:prose-invert text-xs">
-      Note: If the video player doesn't immediately display, please reselect the
-      chat in a couple seconds, we don't auto refresh these just yet. Also,
-      these are currently deleted after an hour, we'll look at saving them in
-      our own storage as this solution expands.
-    </span>
-    <div className="mt-2">
-      {output.length &&
-        output.map((video, index) => (
-          <VideoCard
-            key={index}
-            url={video}
-            width={data.input.width}
-            height={data.input.height}
-          />
-        ))}
-    </div>
-  </>
-);
-
-const AudioOutput = ({ output, data }: { output: any[]; data: any }) => (
-  <>
-    <span className="prose dark:prose-invert text-xs">
-      Note: If the audio player doesn't immediately display, please reselect the
-      chat in a couple seconds, we don't auto refresh these just yet. Also,
-      these are currently deleted after an hour, we'll look at saving them in
-      our own storage as this solution expands.
-    </span>
-    <div className="mt-2">
-      {output.length &&
-        output.map((audio, index) => <AudioCard key={index} url={audio} />)}
-    </div>
-  </>
-);
-
 export function ReplicateCard({ name, data }: ReplicateCardProps) {
   const output = normalizeOutput(data.output);
 
-  switch (name) {
-    case 'create_image':
-      return <ImageOutput output={output} data={data} />;
-    case 'create_video':
-      return <VideoOutput output={output} data={data} />;
-    case 'create_music':
-      return <AudioOutput output={output} data={data} />;
-    default:
-      return null;
-  }
+  return (
+    <div className="space-y-4">
+      <span className="prose dark:prose-invert text-xs">
+        Note: If the content doesn't immediately display, please reselect the
+        chat in a couple seconds. We don't auto-refresh these yet. Also, these
+        are currently deleted after an hour; we'll look at saving them in our
+        own storage as this solution expands.
+      </span>
+      <div className="mt-2">
+        {!output.length && (
+          <div className="flex items-center justify-center h-32 bg-muted rounded-lg">
+            <span className="text-muted-foreground">Processing...</span>
+          </div>
+        )}
+        {output.length > 0 &&
+          output.map((item, index) => (
+            <div key={index} className="mt-4">
+              {name === 'create_image' && (
+                <ImageCard
+                  url={item}
+                  width={data.input.width}
+                  height={data.input.height}
+                  prompt={data.input.prompt}
+                />
+              )}
+              {name === 'create_video' && (
+                <VideoCard
+                  url={item}
+                  width={data.input.width}
+                  height={data.input.height}
+                />
+              )}
+              {name === 'create_music' && <AudioCard url={item} />}
+            </div>
+          ))}
+      </div>
+    </div>
+  );
 }
