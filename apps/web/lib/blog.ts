@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import type { Metadata } from '@/types/blog';
 
-function parseFrontmatter(fileContent: string) {
+export function parseFrontmatter(fileContent: string) {
   const frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
   const match = frontmatterRegex.exec(fileContent);
   if (!match) {
@@ -33,9 +33,25 @@ function parseFrontmatter(fileContent: string) {
 }
 
 function getFilesByExtension(dir: string, extensions: string[]) {
-  return fs
-    .readdirSync(dir)
-    .filter((file) => extensions.includes(path.extname(file)));
+  const results: string[] = [];
+
+  function traverse(currentDir: string) {
+    const files = fs.readdirSync(currentDir);
+
+    for (const file of files) {
+      const fullPath = path.join(currentDir, file);
+      const stat = fs.statSync(fullPath);
+
+      if (stat.isDirectory()) {
+        traverse(fullPath);
+      } else if (extensions.includes(path.extname(file))) {
+        results.push(path.relative(dir, fullPath));
+      }
+    }
+  }
+
+  traverse(dir);
+  return results;
 }
 
 function readFileContent(filePath: string) {
@@ -49,7 +65,18 @@ function getMDXData(dir: string) {
       readFileContent(path.join(dir, file))
     );
     const slug = path.basename(file, path.extname(file));
-    return { metadata, slug, content };
+
+    const [year, month] = file.split(path.sep);
+
+    return {
+      metadata,
+      slug,
+      content,
+      path: {
+        year,
+        month,
+      },
+    };
   });
 }
 
