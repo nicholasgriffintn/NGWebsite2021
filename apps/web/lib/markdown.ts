@@ -14,7 +14,39 @@ export function parseMarkdown(
     muted ? 'muted' : 'primary'
   }-foreground inline font-bold p-0 transition-colors hover:underline hover:outline-none decoration-1 decoration-skip-ink-none underline-offset-[0.25em] hover:decoration-2`;
 
-  const normalizedInput = input.replace(/\\n/g, '\n');
+  const normalizedInput = input
+    .replace(/\\n/g, '\n')
+    .replace(/<summary>/g, '<strong>Summary:</strong> ')
+    .replace(/<\/summary>/g, '')
+    .replace(/<questions>/g, '<strong>Questions:</strong> ')
+    .replace(/<\/questions>/g, '')
+    .replace(/<question>/g, '')
+    .replace(/<\/question>/g, '')
+    .replace(/<answer>/g, '<strong>A:</strong> ')
+    .replace(/<\/answer>/g, '')
+    .replace(/<prompt_analysis>/g, '<strong>Analysis:</strong> ')
+    .replace(/<\/prompt_analysis>/g, '')
+    .replace(/<analysis>/g, '<strong>Analysis:</strong> ')
+    .replace(/<\/analysis>/g, '')
+    .replace(/<thought>/g, '<strong>Thought:</strong> ')
+    .replace(/<\/thought>/g, '')
+    .replace(/<action>/g, '<strong>Action:</strong> ')
+    .replace(/<\/action>/g, '')
+    .replace(/<unclear_parts>/g, '<strong>Unsure about:</strong> ')
+    .replace(/<\/unclear_parts>/g, '')
+    .replace(/<key_elements>/g, '<strong>Key Elements:</strong> ')
+    .replace(/<\/key_elements>/g, '')
+    .replace(
+      /<key_elements_missing>/g,
+      '<strong>Key Elements Missing:</strong> '
+    )
+    .replace(/<\/key_elements_missing>/g, '')
+    .replace(/<suggestions>/g, '<strong>Suggestions:</strong> ')
+    .replace(/<\/suggestions>/g, '')
+    .replace(/<suggestion>/g, '')
+    .replace(/<\/suggestion>/g, '')
+    .replace(/<revised_prompt>/g, '<strong>Revised Prompt:</strong> ')
+    .replace(/<\/revised_prompt>/g, '');
 
   const paragraphs = normalizedInput.split('\n').map((paragraph, index) => {
     const html = paragraph
