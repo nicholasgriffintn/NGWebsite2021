@@ -22,7 +22,7 @@ export function parseMarkdown(
     .replace(/<\/questions>/g, '')
     .replace(/<question>/g, '')
     .replace(/<\/question>/g, '')
-    .replace(/<answer>/g, '<strong>A:</strong> ')
+    .replace(/<answer>/g, '')
     .replace(/<\/answer>/g, '')
     .replace(/<prompt_analysis>/g, '<strong>Analysis:</strong> ')
     .replace(/<\/prompt_analysis>/g, '')
@@ -46,7 +46,9 @@ export function parseMarkdown(
     .replace(/<suggestion>/g, '')
     .replace(/<\/suggestion>/g, '')
     .replace(/<revised_prompt>/g, '<strong>Revised Prompt:</strong> ')
-    .replace(/<\/revised_prompt>/g, '');
+    .replace(/<\/revised_prompt>/g, '')
+    .replace(/<problem_breakdown>/g, '<strong>Problem Breakdown:</strong> ')
+    .replace(/<\/problem_breakdown>/g, '');
 
   const paragraphs = normalizedInput.split('\n').map((paragraph, index) => {
     const html = paragraph
