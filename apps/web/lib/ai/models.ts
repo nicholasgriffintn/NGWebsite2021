@@ -1,6 +1,9 @@
+import { ChatModel } from '@/types/chat';
+
 export const defaultModel = 'hermes-2-pro-mistral-7b';
 
-export const modelsOptions = [
+// NOTE: Compatible Web LLM models can be found here: https://github.com/mlc-ai/web-llm/blob/main/src/config.ts#L311
+export const modelsOptions: ChatModel[] = [
   {
     id: 'hermes-2-pro-mistral-7b',
     name: 'Hermes 2 Pro - Mistral 7B',
@@ -164,5 +167,61 @@ export const modelsOptions = [
     description:
       'SmolLM2 1.7B has various enhancements in instruction following, knowledge, reasoning, and mathematics. It was trained on 11 trillion tokens using a diverse dataset combination: FineWeb-Edu, DCLM.',
     capabilities: ['text-generation'],
+  },
+  {
+    id: 'Llama-3.2-1B-Instruct-q4f32_1-MLC',
+    name: 'Llama 3.2 1B Instruct (Q4F32)',
+    description: 'Quantized Llama 3.2 1B model optimized for web browsers',
+    capabilities: ['text-generation'],
+    isLocal: true,
+  },
+  {
+    id: 'Llama-3.2-3B-Instruct-q4f32_1-MLC',
+    name: 'Llama 3.2 3B Instruct (Q4F32)',
+    description: 'Quantized Llama 3.2 3B model optimized for web browsers',
+    capabilities: ['text-generation'],
+    isLocal: true,
+  },
+  {
+    id: 'Llama-3.1-8B-Instruct-q4f32_1-MLC',
+    name: 'Llama 3.1 8B Instruct (Q4F32)',
+    description: 'Quantized Llama 3.1 8B model optimized for web browsers',
+    capabilities: ['text-generation'],
+    isLocal: true,
+  },
+  {
+    id: 'Mistral-7B-Instruct-v0.3-q4f16_1-MLC',
+    name: 'Mistral 7B Instruct v0.3 (Q4F16)',
+    description: 'Latest Mistral 7B v0.3 model optimized for web browsers',
+    capabilities: ['text-generation'],
+    isLocal: true,
+  },
+  {
+    id: 'gemma-2-2b-it-q4f32_1-MLC',
+    name: 'Gemma 2 2B IT (Q4F32)',
+    description: "Google's Gemma 2B instruction-tuned model",
+    capabilities: ['text-generation'],
+    isLocal: true,
+  },
+  {
+    id: 'gemma-2-9b-it-q4f32_1-MLC',
+    name: 'Gemma 2 9B IT (Q4F32)',
+    description: "Google's Gemma 9B instruction-tuned model",
+    capabilities: ['text-generation'],
+    isLocal: true,
+  },
+  {
+    id: 'SmolLM2-1.7B-Instruct-q4f16_1-MLC',
+    name: 'SmolLM2 1.7B Instruct (Q4F16)',
+    description: 'Efficient small language model optimized for web browsers',
+    capabilities: ['text-generation'],
+    isLocal: true,
+  },
+  {
+    id: 'TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC',
+    name: 'TinyLlama 1.1B Chat v1.0 (Q4F16)',
+    description: 'Efficient tiny language model optimized for web browsers',
+    capabilities: ['text-generation'],
+    isLocal: true,
   },
 ];

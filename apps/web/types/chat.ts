@@ -46,4 +46,12 @@ export type ChatList = ChatKey[];
 export interface ChatModel {
   id: string;
   name: string;
+  isLocal?: boolean;
+  description?: string;
+  capabilities?: string[];
+}
+
+export interface ChatMode {
+  type: 'remote' | 'local';
+  model?: string;
 }

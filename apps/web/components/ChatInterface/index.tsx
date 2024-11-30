@@ -41,6 +41,7 @@ export function ChatInterface({
   const [isLoading, setIsLoading] = useState(false);
   const [isDesktop, setIsDesktop] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [mode, setMode] = useState<'remote' | 'local'>('remote');
 
   const handleNewChat = async () => {
     setSelectedChat(null);
@@ -100,6 +101,8 @@ export function ChatInterface({
         isDesktop={isDesktop}
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
+        mode={mode}
+        setMode={setMode}
       />
     </div>
   );
