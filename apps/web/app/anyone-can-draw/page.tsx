@@ -2,9 +2,9 @@ import { PageLayout } from '@/components/PageLayout';
 import { InnerPage } from '@/components/InnerPage';
 import { AnyoneCanDraw } from '@/components/AnyoneCanDraw';
 import { validateToken } from '@/lib/auth';
-import { revalidatePath } from 'next/cache';
-import { logIn } from '@/lib/auth';
-import { LoginForm } from '@/components/ChatInterface/LoginForm';
+import { handleLogin } from '@/lib/auth';
+import { LoginForm } from '@/components/LoginForm';
+import { redirect } from 'next/navigation';
 
 export const metadata = {
   title: 'Anyone Can Draw',
@@ -12,17 +12,15 @@ export const metadata = {
     'A drawing app that uses AI to generate paintings from your drawings.',
 };
 
-export default async function AnyoneCanDrawHome() {
-  const token = await validateToken();
+export default async function AnyoneCanDrawHome({ searchParams }) {
+  const searchParamValues = await searchParams;
+  const urlToken = searchParamValues.token as string | undefined;
 
-  async function handleLogIn(formData: FormData) {
-    'use server';
-    const token = formData.get('token') as string;
-    if (token) {
-      await logIn(token);
-      revalidatePath('/anyone-can-draw');
-    }
+  if (urlToken) {
+    redirect(`/api/auth?token=${urlToken}&redirect=/anyone-can-draw`);
   }
+
+  const token = await validateToken();
 
   if (!token) {
     return (
@@ -36,7 +34,7 @@ export default async function AnyoneCanDrawHome() {
               <p className="text-red-600">
                 Access denied. Please enter a valid token.
               </p>
-              <LoginForm onSubmit={handleLogIn} />
+              <LoginForm onSubmit={handleLogin} />
             </div>
           </div>
         </InnerPage>

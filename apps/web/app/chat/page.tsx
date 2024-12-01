@@ -1,5 +1,3 @@
-import { revalidatePath } from 'next/cache';
-
 import { PageLayout } from '@/components/PageLayout';
 import { ChatInterface } from '@/components/ChatInterface';
 import { InnerPage } from '@/components/InnerPage';
@@ -10,9 +8,10 @@ import {
   sendFeedback,
   sendTranscription,
 } from '@/lib/data/chat';
-import { validateToken, logIn } from '@/lib/auth';
-import { LoginForm } from '@/components/ChatInterface/LoginForm';
+import { validateToken, handleLogin } from '@/lib/auth';
+import { LoginForm } from '@/components/LoginForm';
 import { ChatMode, ChatRole } from '../../types/chat';
+import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,17 +25,15 @@ async function getData(token: string) {
   return { chatHistory };
 }
 
-export default async function Chat() {
-  const token = await validateToken();
+export default async function Chat({ searchParams }) {
+  const searchParamValues = await searchParams;
+  const urlToken = searchParamValues.token as string | undefined;
 
-  async function handleLogIn(formData: FormData) {
-    'use server';
-    const token = formData.get('token') as string;
-    if (token) {
-      await logIn(token);
-      revalidatePath('/chat');
-    }
+  if (urlToken) {
+    redirect(`/api/auth?token=${urlToken}&redirect=/chat`);
   }
+
+  const token = await validateToken();
 
   if (!token) {
     return (
@@ -50,7 +47,7 @@ export default async function Chat() {
               <p className="text-red-600">
                 Access denied. Please enter a valid token.
               </p>
-              <LoginForm onSubmit={handleLogIn} />
+              <LoginForm onSubmit={handleLogin} />
             </div>
           </div>
         </InnerPage>
