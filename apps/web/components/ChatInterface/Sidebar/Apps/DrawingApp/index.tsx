@@ -27,19 +27,24 @@ export function SidebarDrawingApp() {
     }
   };
 
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open);
+    setResult(null);
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button
           variant="outline"
           className="w-full justify-center"
-          onClick={() => setIsOpen(true)}
+          onClick={() => handleOpenChange(true)}
         >
           <PencilIcon className="h-4 w-4" />
           <span className="sr-only">Drawing</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md max-w-[600px]">
+      <DialogContent className="sm:max-w-[90vw] sm:max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Generate a Drawing</DialogTitle>
         </DialogHeader>
