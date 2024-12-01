@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { useRef, useState, useEffect } from 'react';
+import { Loader2, Undo2, Redo2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
@@ -62,6 +62,8 @@ export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
   const [currentColor, setCurrentColor] = useState('#030712');
   const [lineWidth, setLineWidth] = useState(3);
   const [isFillMode, setIsFillMode] = useState(false);
+  const [history, setHistory] = useState<ImageData[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
 
   const startDrawing = (e: React.MouseEvent) => {
     const canvas = canvasRef.current;
@@ -118,6 +120,9 @@ export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
   };
 
   const stopDrawing = () => {
+    if (isDrawing) {
+      saveToHistory();
+    }
     setIsDrawing(false);
   };
 
@@ -146,6 +151,7 @@ export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
     const ctx = canvas?.getContext('2d');
     if (!ctx || !canvas) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    saveToHistory();
   };
 
   const floodFill = (
@@ -205,6 +211,58 @@ export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
       : null;
   };
 
+  const saveToHistory = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+    if (!ctx || !canvas) return;
+
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const newHistory = history.slice(0, historyIndex + 1);
+    newHistory.push(imageData);
+
+    setHistory(newHistory);
+    setHistoryIndex(newHistory.length - 1);
+  };
+
+  const undo = () => {
+    if (historyIndex <= 0) return;
+
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+    if (!ctx || !canvas) return;
+
+    const newIndex = historyIndex - 1;
+    ctx.putImageData(history[newIndex], 0, 0);
+    setHistoryIndex(newIndex);
+  };
+
+  const redo = () => {
+    if (historyIndex >= history.length - 1) return;
+
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+    if (!ctx || !canvas) return;
+
+    const newIndex = historyIndex + 1;
+    ctx.putImageData(history[newIndex], 0, 0);
+    setHistoryIndex(newIndex);
+  };
+
+  const initCanvas = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+    if (!ctx || !canvas) return;
+
+    // Save initial blank state
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    setHistory([imageData]);
+    setHistoryIndex(0);
+  };
+
+  useEffect(() => {
+    initCanvas();
+  }, []);
+
   return (
     <div className="flex flex-col gap-6 w-full max-w-6xl mx-auto p-4">
       {apiResult?.response?.content && (
@@ -218,7 +276,31 @@ export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
             {/* Tools Panel - Now on the left */}
             <div className="lg:w-64 flex flex-col gap-4">
               <div className="flex flex-col gap-4 p-4 bg-card rounded-lg border shadow-sm">
-                <h3 className="text-lg font-medium">Drawing Tools</h3>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-medium">Drawing Tools</h3>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={undo}
+                      disabled={historyIndex <= 0}
+                      className="h-8 w-8"
+                      title="Undo"
+                    >
+                      <Undo2 className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={redo}
+                      disabled={historyIndex >= history.length - 1}
+                      className="h-8 w-8"
+                      title="Redo"
+                    >
+                      <Redo2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
 
                 {/* Tool Selection */}
                 <div className="flex gap-2">
