@@ -23,6 +23,35 @@ interface DrawingCanvasProps {
   result: string | null;
 }
 
+const COLORS = [
+  // Grayscale
+  '#030712', // Black
+  '#4b5563', // Gray
+  '#f9fafb', // White
+  // Primary colors
+  '#ef4444', // Red
+  '#f59e0b', // Orange
+  '#fbbf24', // Yellow
+  '#22c55e', // Green
+  '#3b82f6', // Blue
+  '#6366f1', // Indigo
+  '#a855f7', // Purple
+  // Pastel colors
+  '#fecaca', // Light Red
+  '#fed7aa', // Light Orange
+  '#fef08a', // Light Yellow
+  '#bbf7d0', // Light Green
+  '#bfdbfe', // Light Blue
+  '#c7d2fe', // Light Indigo
+  '#e9d5ff', // Light Purple
+  // Additional colors
+  '#ec4899', // Pink
+  '#14b8a6', // Teal
+  '#8b5cf6', // Violet
+];
+
+const LINE_WIDTHS = [2, 4, 6, 8, 12, 16];
+
 export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -30,6 +59,9 @@ export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
   const [lastY, setLastY] = useState(0);
   const [loading, setLoading] = useState(false);
   const [apiResult, setApiResult] = useState<DrawingResponse | null>(null);
+  const [currentColor, setCurrentColor] = useState('#030712');
+  const [lineWidth, setLineWidth] = useState(3);
+  const [isFillMode, setIsFillMode] = useState(false);
 
   const startDrawing = (e: React.MouseEvent) => {
     const canvas = canvasRef.current;
@@ -39,19 +71,26 @@ export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
     const rect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
-
     const x = (e.clientX - rect.left) * scaleX;
     const y = (e.clientY - rect.top) * scaleY;
+
+    if (isFillMode) {
+      // Fill the canvas with selected color
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      floodFill(imageData, Math.round(x), Math.round(y), currentColor);
+      ctx.putImageData(imageData, 0, 0);
+      return;
+    }
 
     setIsDrawing(true);
     setLastX(x);
     setLastY(y);
 
     ctx.beginPath();
-    ctx.lineWidth = 3;
+    ctx.lineWidth = lineWidth;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    ctx.strokeStyle = '#030712';
+    ctx.strokeStyle = currentColor;
     ctx.moveTo(x, y);
   };
 
@@ -109,40 +148,197 @@ export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   };
 
+  const floodFill = (
+    imageData: ImageData,
+    startX: number,
+    startY: number,
+    fillColor: string
+  ) => {
+    const pixels = imageData.data;
+    const width = imageData.width;
+    const height = imageData.height;
+
+    // Convert hex to RGB
+    const fillRGB = hexToRgb(fillColor);
+    if (!fillRGB) return;
+
+    const startPos = (startY * width + startX) * 4;
+    const startR = pixels[startPos];
+    const startG = pixels[startPos + 1];
+    const startB = pixels[startPos + 2];
+
+    if (startR === fillRGB.r && startG === fillRGB.g && startB === fillRGB.b) {
+      return;
+    }
+
+    const stack = [[startX, startY]];
+
+    while (stack.length) {
+      const [x, y] = stack.pop()!;
+      const pos = (y * width + x) * 4;
+
+      if (x < 0 || x >= width || y < 0 || y >= height) continue;
+      if (
+        pixels[pos] !== startR ||
+        pixels[pos + 1] !== startG ||
+        pixels[pos + 2] !== startB
+      )
+        continue;
+
+      pixels[pos] = fillRGB.r;
+      pixels[pos + 1] = fillRGB.g;
+      pixels[pos + 2] = fillRGB.b;
+      pixels[pos + 3] = 255;
+
+      stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+    }
+  };
+
+  const hexToRgb = (hex: string) => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+      ? {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16),
+        }
+      : null;
+  };
+
   return (
-    <div className="flex flex-col gap-6 w-full max-w-6xl mx-auto">
+    <div className="flex flex-col gap-6 w-full max-w-6xl mx-auto p-4">
       {apiResult?.response?.content && (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground bg-muted p-4 rounded-lg">
           {apiResult.response.content}
         </p>
       )}
       <div className="flex flex-col lg:flex-row gap-6">
         {!result && (
-          <div className="flex-1 space-y-4">
-            <div className="relative w-full aspect-square max-w-2xl mx-auto">
-              <canvas
-                ref={canvasRef}
-                width={800}
-                height={800}
-                className="absolute top-0 left-0 w-full h-full border border-gray-200 rounded-lg cursor-crosshair bg-[#f9fafb]"
-                onMouseDown={startDrawing}
-                onMouseMove={draw}
-                onMouseUp={stopDrawing}
-                onMouseLeave={stopDrawing}
-              />
-            </div>
-            <div className="flex gap-4 max-w-2xl mx-auto">
-              <Button
-                onClick={clearCanvas}
-                variant="outline"
-                className="flex-1"
-              >
-                Clear
-              </Button>
+          <div className="flex flex-col lg:flex-row gap-6 w-full">
+            {/* Tools Panel - Now on the left */}
+            <div className="lg:w-64 flex flex-col gap-4">
+              <div className="flex flex-col gap-4 p-4 bg-card rounded-lg border shadow-sm">
+                <h3 className="text-lg font-medium">Drawing Tools</h3>
+
+                {/* Tool Selection */}
+                <div className="flex gap-2">
+                  <Button
+                    variant={!isFillMode ? 'secondary' : 'outline'}
+                    size="sm"
+                    onClick={() => setIsFillMode(false)}
+                    className="flex-1"
+                  >
+                    Brush
+                  </Button>
+                  <Button
+                    variant={isFillMode ? 'secondary' : 'outline'}
+                    size="sm"
+                    onClick={() => setIsFillMode(true)}
+                    className="flex-1"
+                  >
+                    Fill
+                  </Button>
+                </div>
+
+                {/* Improved Line Width Selector */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-medium">Line Width</label>
+                    <span className="text-sm text-muted-foreground">
+                      {lineWidth}px
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    {LINE_WIDTHS.map((width) => (
+                      <button
+                        key={width}
+                        onClick={() => setLineWidth(width)}
+                        className={`
+                          p-2 h-12 rounded-md flex items-center justify-center
+                          transition-all duration-200
+                          ${
+                            lineWidth === width
+                              ? 'bg-primary/10 border-2 border-primary shadow-sm scale-105'
+                              : 'border border-muted hover:border-primary/50 hover:bg-muted'
+                          }
+                        `}
+                        title={`${width}px`}
+                      >
+                        <div className="w-full flex items-center justify-center">
+                          <div
+                            className="rounded-full bg-foreground"
+                            style={{
+                              width: `${width}px`,
+                              height: `${width}px`,
+                            }}
+                          />
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Current Line Preview */}
+                <div className="p-3 border rounded-md bg-background">
+                  <div className="w-full h-[2px] bg-muted" />
+                  <div
+                    className="w-full rounded-full bg-foreground transition-all duration-200"
+                    style={{
+                      height: `${lineWidth}px`,
+                      marginTop: '8px',
+                    }}
+                  />
+                </div>
+
+                {/* Existing Color Picker */}
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={currentColor}
+                    onChange={(e) => setCurrentColor(e.target.value)}
+                    className="w-10 h-10 rounded-md cursor-pointer border-0"
+                    title="Custom Color"
+                  />
+                  <span className="text-sm text-muted-foreground">
+                    Custom Color
+                  </span>
+                </div>
+
+                {/* Existing Color Grid */}
+                <div className="grid grid-cols-5 gap-2">
+                  {COLORS.map((color) => (
+                    <button
+                      key={color}
+                      onClick={() => setCurrentColor(color)}
+                      className="aspect-square rounded-md transition-all hover:scale-110 hover:shadow-lg"
+                      style={{
+                        backgroundColor: color,
+                        outline:
+                          color === currentColor ? '2px solid #3b82f6' : 'none',
+                        outlineOffset: '2px',
+                        transform:
+                          color === currentColor ? 'scale(1.1)' : 'scale(1)',
+                      }}
+                      aria-label={`Select ${color} color`}
+                    />
+                  ))}
+                </div>
+
+                <Button
+                  onClick={clearCanvas}
+                  variant="outline"
+                  size="sm"
+                  className="w-full text-muted-foreground"
+                >
+                  Clear Canvas
+                </Button>
+              </div>
+
               <Button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="flex-1"
+                className="w-full"
+                size="lg"
               >
                 {loading ? (
                   <>
@@ -154,29 +350,50 @@ export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
                 )}
               </Button>
             </div>
+
+            {/* Main Drawing Area */}
+            <div className="flex-1 flex flex-col gap-6">
+              <div className="relative w-full aspect-square">
+                <canvas
+                  ref={canvasRef}
+                  width={800}
+                  height={800}
+                  className="absolute top-0 left-0 w-full h-full border border-gray-200 rounded-lg cursor-crosshair bg-[#f9fafb] shadow-sm"
+                  onMouseDown={startDrawing}
+                  onMouseMove={draw}
+                  onMouseUp={stopDrawing}
+                  onMouseLeave={stopDrawing}
+                />
+              </div>
+            </div>
           </div>
         )}
 
+        {/* Results Section */}
         {result && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
             {apiResult?.response?.data?.drawingUrl?.key && (
               <div className="space-y-3 w-full">
                 <h3 className="text-lg font-medium">Your Drawing</h3>
-                <img
-                  src={getImageUrl(apiResult.response.data.drawingUrl.key)}
-                  alt="Your drawing"
-                  className="w-full aspect-square object-cover rounded-lg border border-gray-200 bg-[#f9fafb]"
-                />
+                <div className="relative aspect-square rounded-lg overflow-hidden shadow-md">
+                  <img
+                    src={getImageUrl(apiResult.response.data.drawingUrl.key)}
+                    alt="Your drawing"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
             )}
             {apiResult?.response?.data?.paintingUrl?.key && (
               <div className="space-y-3 w-full">
                 <h3 className="text-lg font-medium">AI Generated Painting</h3>
-                <img
-                  src={getImageUrl(apiResult.response.data.paintingUrl.key)}
-                  alt="AI generated painting"
-                  className="w-full aspect-square object-cover rounded-lg border border-gray-200 bg-[#f9fafb]"
-                />
+                <div className="relative aspect-square rounded-lg overflow-hidden shadow-md">
+                  <img
+                    src={getImageUrl(apiResult.response.data.paintingUrl.key)}
+                    alt="AI generated painting"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
             )}
           </div>
