@@ -3,54 +3,9 @@ import { Loader2, Undo2, Redo2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
-interface DrawingResponse {
-  response: {
-    status: string;
-    content: string;
-    data: {
-      drawingUrl: {
-        key: string;
-      };
-      paintingUrl: {
-        key: string;
-      };
-    };
-  };
-}
-
-interface DrawingCanvasProps {
-  onSubmit: (drawingData: string) => Promise<any>;
-  result: string | null;
-}
-
-const COLORS = [
-  // Grayscale
-  '#030712', // Black
-  '#4b5563', // Gray
-  '#f9fafb', // White
-  // Primary colors
-  '#ef4444', // Red
-  '#f59e0b', // Orange
-  '#fbbf24', // Yellow
-  '#22c55e', // Green
-  '#3b82f6', // Blue
-  '#6366f1', // Indigo
-  '#a855f7', // Purple
-  // Pastel colors
-  '#fecaca', // Light Red
-  '#fed7aa', // Light Orange
-  '#fef08a', // Light Yellow
-  '#bbf7d0', // Light Green
-  '#bfdbfe', // Light Blue
-  '#c7d2fe', // Light Indigo
-  '#e9d5ff', // Light Purple
-  // Additional colors
-  '#ec4899', // Pink
-  '#14b8a6', // Teal
-  '#8b5cf6', // Violet
-];
-
-const LINE_WIDTHS = [2, 4, 6, 8, 12, 16];
+import { DrawingResponse, DrawingCanvasProps } from './types';
+import { COLORS, LINE_WIDTHS } from './constants';
+import { hexToRgb, getImageUrl } from './utils';
 
 export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -64,152 +19,6 @@ export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
   const [isFillMode, setIsFillMode] = useState(false);
   const [history, setHistory] = useState<ImageData[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
-
-  const startDrawing = (e: React.MouseEvent) => {
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext('2d');
-    if (!ctx || !canvas) return;
-
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    const x = (e.clientX - rect.left) * scaleX;
-    const y = (e.clientY - rect.top) * scaleY;
-
-    if (isFillMode) {
-      // Fill the canvas with selected color
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      floodFill(imageData, Math.round(x), Math.round(y), currentColor);
-      ctx.putImageData(imageData, 0, 0);
-      return;
-    }
-
-    setIsDrawing(true);
-    setLastX(x);
-    setLastY(y);
-
-    ctx.beginPath();
-    ctx.lineWidth = lineWidth;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.strokeStyle = currentColor;
-    ctx.moveTo(x, y);
-  };
-
-  const draw = (e: React.MouseEvent) => {
-    if (!isDrawing) return;
-
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext('2d');
-    if (!ctx || !canvas) return;
-
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-
-    const x = (e.clientX - rect.left) * scaleX;
-    const y = (e.clientY - rect.top) * scaleY;
-
-    ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
-    ctx.quadraticCurveTo(lastX, lastY, x, y);
-    ctx.stroke();
-
-    setLastX(x);
-    setLastY(y);
-  };
-
-  const stopDrawing = () => {
-    if (isDrawing) {
-      saveToHistory();
-    }
-    setIsDrawing(false);
-  };
-
-  const handleSubmit = async () => {
-    setLoading(true);
-    try {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-
-      const drawingData = canvas.toDataURL('image/png');
-      const response = await onSubmit(drawingData);
-      setApiResult(response);
-    } catch (error) {
-      console.error('Error submitting drawing:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getImageUrl = (key: string) => {
-    return `https://assistant-assets.nickgriffin.uk/${key}`;
-  };
-
-  const clearCanvas = () => {
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext('2d');
-    if (!ctx || !canvas) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    saveToHistory();
-  };
-
-  const floodFill = (
-    imageData: ImageData,
-    startX: number,
-    startY: number,
-    fillColor: string
-  ) => {
-    const pixels = imageData.data;
-    const width = imageData.width;
-    const height = imageData.height;
-
-    // Convert hex to RGB
-    const fillRGB = hexToRgb(fillColor);
-    if (!fillRGB) return;
-
-    const startPos = (startY * width + startX) * 4;
-    const startR = pixels[startPos];
-    const startG = pixels[startPos + 1];
-    const startB = pixels[startPos + 2];
-
-    if (startR === fillRGB.r && startG === fillRGB.g && startB === fillRGB.b) {
-      return;
-    }
-
-    const stack = [[startX, startY]];
-
-    while (stack.length) {
-      const [x, y] = stack.pop()!;
-      const pos = (y * width + x) * 4;
-
-      if (x < 0 || x >= width || y < 0 || y >= height) continue;
-      if (
-        pixels[pos] !== startR ||
-        pixels[pos + 1] !== startG ||
-        pixels[pos + 2] !== startB
-      )
-        continue;
-
-      pixels[pos] = fillRGB.r;
-      pixels[pos + 1] = fillRGB.g;
-      pixels[pos + 2] = fillRGB.b;
-      pixels[pos + 3] = 255;
-
-      stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
-    }
-  };
-
-  const hexToRgb = (hex: string) => {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result
-      ? {
-          r: parseInt(result[1], 16),
-          g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16),
-        }
-      : null;
-  };
 
   const saveToHistory = () => {
     const canvas = canvasRef.current;
@@ -232,7 +41,10 @@ export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
     if (!ctx || !canvas) return;
 
     const newIndex = historyIndex - 1;
-    ctx.putImageData(history[newIndex], 0, 0);
+    const imageData = history[newIndex];
+    if (!imageData) return;
+
+    ctx.putImageData(imageData, 0, 0);
     setHistoryIndex(newIndex);
   };
 
@@ -244,8 +56,125 @@ export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
     if (!ctx || !canvas) return;
 
     const newIndex = historyIndex + 1;
-    ctx.putImageData(history[newIndex], 0, 0);
+    const imageData = history[newIndex];
+    if (!imageData) return;
+
+    ctx.putImageData(imageData, 0, 0);
     setHistoryIndex(newIndex);
+  };
+
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+    if (!ctx || !canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
+
+    if (isFillMode) {
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      floodFill(imageData, Math.round(x), Math.round(y), currentColor);
+      ctx.putImageData(imageData, 0, 0);
+      saveToHistory();
+      return;
+    }
+
+    setIsDrawing(true);
+    setLastX(x);
+    setLastY(y);
+
+    ctx.beginPath();
+    ctx.lineWidth = lineWidth;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = currentColor;
+    ctx.moveTo(x, y);
+  };
+
+  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDrawing) return;
+
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+    if (!ctx || !canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
+
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+
+    setLastX(x);
+    setLastY(y);
+  };
+
+  const stopDrawing = () => {
+    if (isDrawing) {
+      saveToHistory();
+    }
+    setIsDrawing(false);
+  };
+
+  const clearCanvas = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+    if (!ctx || !canvas) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    saveToHistory();
+  };
+
+  const floodFill = (
+    imageData: ImageData,
+    startX: number,
+    startY: number,
+    fillColor: string
+  ) => {
+    const pixels = imageData.data;
+    const width = imageData.width;
+    const height = imageData.height;
+
+    const fillRGB = hexToRgb(fillColor);
+    if (!fillRGB) return;
+
+    const startPos = (startY * width + startX) * 4;
+    const startR = pixels[startPos];
+    const startG = pixels[startPos + 1];
+    const startB = pixels[startPos + 2];
+
+    if (startR === fillRGB.r && startG === fillRGB.g && startB === fillRGB.b) {
+      return;
+    }
+
+    const stack: [number, number][] = [[startX, startY]];
+
+    while (stack.length) {
+      const [x, y] = stack.pop()!;
+      const pos = (y * width + x) * 4;
+
+      if (x < 0 || x >= width || y < 0 || y >= height) continue;
+      if (
+        pixels[pos] !== startR ||
+        pixels[pos + 1] !== startG ||
+        pixels[pos + 2] !== startB
+      )
+        continue;
+
+      pixels[pos] = fillRGB.r;
+      pixels[pos + 1] = fillRGB.g;
+      pixels[pos + 2] = fillRGB.b;
+      pixels[pos + 3] = 255;
+
+      stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+    }
   };
 
   const initCanvas = () => {
@@ -253,7 +182,6 @@ export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
     const ctx = canvas?.getContext('2d');
     if (!ctx || !canvas) return;
 
-    // Save initial blank state
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     setHistory([imageData]);
     setHistoryIndex(0);
@@ -262,6 +190,37 @@ export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
   useEffect(() => {
     initCanvas();
   }, []);
+
+  useEffect(() => {
+    const handleKeyboard = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'z') {
+        if (e.shiftKey) {
+          redo();
+        } else {
+          undo();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyboard);
+    return () => window.removeEventListener('keydown', handleKeyboard);
+  }, [historyIndex, history]);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      const drawingData = canvas.toDataURL('image/png');
+      const response = await onSubmit(drawingData);
+      setApiResult(response);
+    } catch (error) {
+      console.error('Error submitting drawing:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-6 w-full max-w-6xl mx-auto p-4">

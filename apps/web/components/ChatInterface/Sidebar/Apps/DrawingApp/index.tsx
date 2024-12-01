@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { onGenerateDrawing } from '@/components/ChatInterface/actions';
-import { DrawingCanvas } from './DrawingCanvas';
+import { DrawingCanvas } from '@/components/DrawingCanvas';
 
 export function SidebarDrawingApp() {
   const [isOpen, setIsOpen] = useState(false);
