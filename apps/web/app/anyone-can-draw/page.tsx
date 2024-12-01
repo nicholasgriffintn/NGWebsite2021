@@ -36,7 +36,10 @@ export default async function AnyoneCanDrawHome({ searchParams }) {
               <p className="text-red-600">
                 Access denied. Please enter a valid token.
               </p>
-              <LoginForm onSubmit={handleLogin} />
+              <LoginForm
+                onSubmit={handleLogin}
+                redirectUrl="/anyone-can-draw"
+              />
             </div>
           </div>
         </InnerPage>

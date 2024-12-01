@@ -47,7 +47,7 @@ export default async function Chat({ searchParams }) {
               <p className="text-red-600">
                 Access denied. Please enter a valid token.
               </p>
-              <LoginForm onSubmit={handleLogin} />
+              <LoginForm onSubmit={handleLogin} redirectUrl="/chat" />
             </div>
           </div>
         </InnerPage>

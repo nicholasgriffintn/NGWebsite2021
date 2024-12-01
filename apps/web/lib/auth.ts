@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 
 export async function validateToken() {
   const systemAuthToken = process.env.AUTH_TOKEN || '';
@@ -13,9 +13,15 @@ export async function validateToken() {
 export async function handleLogin(formData: FormData) {
   'use server';
 
+  console.log('formData', formData);
+
   const token = formData.get('token') as string;
   if (!token) {
     return { error: 'Token is required' };
+  }
+  const redirectUrl = formData.get('redirectUrl') as string | '/';
+  if (!redirectUrl) {
+    return { error: 'Redirect URL is required' };
   }
 
   const systemAuthToken = process.env.AUTH_TOKEN || '';
@@ -32,5 +38,5 @@ export async function handleLogin(formData: FormData) {
     path: '/',
   });
 
-  redirect('/chat');
+  revalidatePath(redirectUrl);
 }
