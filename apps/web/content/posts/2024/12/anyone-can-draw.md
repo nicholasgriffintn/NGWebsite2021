@@ -2,7 +2,7 @@
 title: "Anyone Can Draw"
 date: "2024-12-01T21:51"
 tags: [ai, cloudflare, cloudflare-ai]
-description: "Anyone can draw" is quite an old statement, some people agree with it and some don't, that got me thinking, wouldn't it be cool if there was an app where you could draw something and then AI would guess what you drew and even generate a picture at the end that will truly make it so that anyone can draw. And that's what this blog post is about.
+description: "Anyone can draw" is quite an old statement, some people agree with it and some don't, but it got me thinking, wouldn't it be cool if there was an app where you could draw something and then AI would guess what you drew and even generate a picture at the end? That would truly make it so that anyone can draw. And that's what this blog post is about.
 image: /uploads/anyone-can-draw/guesses.png
 imageAlt: A screenshot of the app displaying the user's drawing alongside the guesses that the AI has made.
 hideFeaturedImage: true
