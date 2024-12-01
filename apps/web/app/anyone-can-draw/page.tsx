@@ -1,10 +1,12 @@
+import { redirect } from 'next/navigation';
+
 import { PageLayout } from '@/components/PageLayout';
 import { InnerPage } from '@/components/InnerPage';
 import { AnyoneCanDraw } from '@/components/AnyoneCanDraw';
 import { validateToken } from '@/lib/auth';
 import { handleLogin } from '@/lib/auth';
 import { LoginForm } from '@/components/LoginForm';
-import { redirect } from 'next/navigation';
+import { Link } from '@/components/Link';
 
 export const dynamic = 'force-dynamic';
 
@@ -59,7 +61,9 @@ export default async function AnyoneCanDrawHome({ searchParams }) {
               <p>
                 This is a drawing app that uses AI to generate paintings from
                 your drawings. I also guessing game where AI will attempt to
-                figure out what your drawing is, because that was fun.
+                figure out what your drawing is, because that was fun. You can
+                find out more about this app in{' '}
+                <Link href="/blog/anyone-can-draw">this post</Link>.
               </p>
             </div>
           </div>
