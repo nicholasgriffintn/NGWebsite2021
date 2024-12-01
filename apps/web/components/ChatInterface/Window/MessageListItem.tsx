@@ -16,7 +16,6 @@ export function MessageListItem({
   messageDate,
   onReaction,
 }: MessageListItemProps) {
-  console.log({ message });
   return (
     <Fragment key={message.id}>
       {showDate && <DateSeparator date={messageDate} />}
