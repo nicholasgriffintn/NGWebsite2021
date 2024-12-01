@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { ChatMessage } from '@/types/chat';
-import { MessageComponent } from '../MessageComponent';
+import { MessageComponent } from './MessageComponent';
 import { DateSeparator } from '@/components/DateSeparator';
 
 interface MessageListItemProps {
@@ -16,6 +16,7 @@ export function MessageListItem({
   messageDate,
   onReaction,
 }: MessageListItemProps) {
+  console.log({ message });
   return (
     <Fragment key={message.id}>
       {showDate && <DateSeparator date={messageDate} />}

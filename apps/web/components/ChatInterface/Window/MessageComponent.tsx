@@ -11,7 +11,7 @@ import { WeatherCard } from '@/components/ChatInterface/Cards/WeatherCard';
 import { ReplicateCard } from '@/components/ChatInterface/Cards/ReplicateCard';
 import { TranscriptionCard } from '@/components/ChatInterface/Cards/TranscriptionCard';
 import { AudioCard } from '@/components/ChatInterface/Cards/AudioCard';
-import { ImageCard } from '@/components/ChatInterface/Cards/ImageCard';
+import { DrawingCard } from '@/components/ChatInterface/Cards/DrawingCard';
 import type { ChatMessage } from '@/types/chat';
 import { parseMarkdown } from '@/lib/markdown';
 
@@ -153,6 +153,9 @@ const MessageContent = ({
             )}
             {message.name === 'podcast_transcribe' && (
               <TranscriptionCard data={message.data.output} />
+            )}
+            {message.name === 'drawing_generate' && (
+              <DrawingCard data={message.data} />
             )}
             {message.name === 'podcast_summarise' && (
               <div className="mt-2">
