@@ -6,6 +6,8 @@ import { handleLogin } from '@/lib/auth';
 import { LoginForm } from '@/components/LoginForm';
 import { redirect } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Anyone Can Draw',
   description:
