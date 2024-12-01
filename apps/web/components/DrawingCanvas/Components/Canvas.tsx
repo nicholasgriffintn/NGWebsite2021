@@ -8,6 +8,7 @@ interface CanvasProps {
   currentColor: string;
   lineWidth: number;
   saveToHistory: () => void;
+  onDrawingComplete?: () => void;
 }
 
 export function Canvas({
@@ -16,6 +17,7 @@ export function Canvas({
   currentColor,
   lineWidth,
   saveToHistory,
+  onDrawingComplete,
 }: CanvasProps) {
   const [isDrawing, setIsDrawing] = useState(false);
   const [lastX, setLastX] = useState(0);
@@ -75,11 +77,10 @@ export function Canvas({
     setLastY(y);
   };
 
-  const stopDrawing = () => {
-    if (isDrawing) {
-      saveToHistory();
-    }
+  const handleMouseUp = () => {
     setIsDrawing(false);
+    saveToHistory();
+    onDrawingComplete?.();
   };
 
   return (
@@ -91,8 +92,8 @@ export function Canvas({
         className="absolute top-0 left-0 w-full h-full border border-gray-200 rounded-lg cursor-crosshair bg-[#f9fafb] shadow-sm"
         onMouseDown={startDrawing}
         onMouseMove={draw}
-        onMouseUp={stopDrawing}
-        onMouseLeave={stopDrawing}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
       />
     </div>
   );

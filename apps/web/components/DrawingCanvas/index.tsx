@@ -12,8 +12,15 @@ import { ToolPicker } from './Components/ToolPicker';
 import { Header } from './Components/Header';
 import { Result } from './Components/Result';
 import { Canvas } from './Components/Canvas';
+import { useGameState } from './hooks/useGameState';
+import { GameStatus } from './Components/GameStatus';
 
-export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
+export function DrawingCanvas({
+  onSubmit,
+  onGuess,
+  result,
+  gameMode,
+}: DrawingCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [loading, setLoading] = useState(false);
   const [apiResult, setApiResult] = useState<DrawingResponse | null>(null);
@@ -119,13 +126,20 @@ export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
     }
   };
 
+  const { gameState, startGame, endGame, handleGuess } = useGameState(
+    onGuess,
+    clearCanvas
+  );
+
+  const handleDrawingComplete = async () => {
+    if (gameState.isActive && canvasRef.current) {
+      const drawingData = canvasRef.current.toDataURL('image/png');
+      await handleGuess(drawingData);
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-6 w-full max-w-6xl mx-auto p-4">
-      {apiResult?.response?.content && (
-        <p className="text-sm text-muted-foreground bg-muted p-4 rounded-lg">
-          {apiResult.response.content}
-        </p>
-      )}
+    <div className="flex flex-col gap-6 w-full mx-auto">
       <div className="flex flex-col lg:flex-row gap-6">
         {!result && (
           <div className="flex flex-col lg:flex-row gap-6 w-full">
@@ -162,22 +176,6 @@ export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
                   Clear Canvas
                 </Button>
               </div>
-
-              <Button
-                onClick={handleSubmit}
-                disabled={loading}
-                className="w-full"
-                size="lg"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Generating...
-                  </>
-                ) : (
-                  'Submit Drawing'
-                )}
-              </Button>
             </div>
 
             <div className="flex-1 flex flex-col gap-6">
@@ -187,12 +185,78 @@ export function DrawingCanvas({ onSubmit, result }: DrawingCanvasProps) {
                 currentColor={currentColor}
                 lineWidth={lineWidth}
                 saveToHistory={saveToHistory}
+                onDrawingComplete={handleDrawingComplete}
               />
+            </div>
+
+            <div className="lg:w-80 flex flex-col gap-4">
+              {!gameState.isActive && (
+                <div className="bg-card p-4 rounded-lg border shadow-sm">
+                  <div className="prose dark:prose-invert mb-4">
+                    <h3 className="text-lg font-medium">Generate AI Art</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Draw anything you like and get an AI-generated painting
+                      based on your drawing.
+                    </p>
+                  </div>
+                  <Button
+                    onClick={handleSubmit}
+                    disabled={loading || gameState.isActive}
+                    className="w-full"
+                    size="lg"
+                    variant="default"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Generating...
+                      </>
+                    ) : (
+                      'Submit Drawing'
+                    )}
+                  </Button>
+                </div>
+              )}
+
+              {gameMode && (
+                <>
+                  <div className="bg-card rounded-lg border shadow-sm">
+                    <GameStatus
+                      gameState={gameState}
+                      onStartGame={startGame}
+                      onEndGame={endGame}
+                    />
+                  </div>
+
+                  {gameState.isActive && (
+                    <div className="bg-muted p-4 rounded-lg flex-1">
+                      <h3 className="font-medium mb-2">AI Guesses:</h3>
+                      <div className="space-y-2 max-h-[400px] overflow-y-auto">
+                        {gameState.guesses.map((guess, index) => (
+                          <div
+                            key={index}
+                            className={`text-sm p-2 rounded ${
+                              guess.guess.includes(
+                                gameState.targetWord.toLowerCase()
+                              )
+                                ? 'bg-green-100 dark:bg-green-900'
+                                : 'bg-background'
+                            }`}
+                          >
+                            {new Date(guess.timestamp).toLocaleTimeString()}:{' '}
+                            {guess.guess}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           </div>
         )}
 
-        {result && <Result apiResult={result as unknown as DrawingResponse} />}
+        {result && <Result apiResult={apiResult} />}
       </div>
     </div>
   );

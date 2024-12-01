@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Anyone Can Draw',
   description:
-    'A drawing app that uses AI to generate paintings from your drawings.',
+    'A drawing app that uses AI to generate paintings from your drawings or just play the guessing game.',
 };
 
 export default async function AnyoneCanDrawHome({ searchParams }) {
@@ -58,7 +58,8 @@ export default async function AnyoneCanDrawHome({ searchParams }) {
             <div className="text-primary-foreground lg:max-w-[75%]">
               <p>
                 This is a drawing app that uses AI to generate paintings from
-                your drawings.
+                your drawings. I also guessing game where AI will attempt to
+                figure out what your drawing is, because that was fun.
               </p>
             </div>
           </div>

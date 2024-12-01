@@ -9,6 +9,42 @@ import {
 } from '@/lib/data/chat/apps/podcast';
 import { getChat } from '@/lib/data/chat';
 
+export async function onGuessDrawing(drawingData: string) {
+  const token = await validateToken();
+  if (!token) {
+    throw new Error('No token found');
+  }
+
+  const baseUrl =
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:8787'
+      : 'https://assistant.nicholasgriffin.workers.dev';
+
+  const base64Data = drawingData.replace(/^data:image\/\w+;base64,/, '');
+  const binaryData = Buffer.from(base64Data, 'base64');
+  const blob = new Blob([binaryData], { type: 'image/png' });
+
+  const formData = new FormData();
+  formData.append('drawing', blob, 'drawing.png');
+
+  const res = await fetch(`${baseUrl}/apps/guess-drawing`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'User-Agent': 'NGWeb',
+    },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    console.error('Failed to submit for guess drawing', res);
+    throw new Error('Failed to submit for guess drawing');
+  }
+
+  const data = await res.json();
+  return data;
+}
+
 export async function onGenerateDrawing(drawingData: string) {
   const token = await validateToken();
   if (!token) {
