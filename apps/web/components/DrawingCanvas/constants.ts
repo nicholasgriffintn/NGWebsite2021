@@ -22,7 +22,7 @@ export const COLORS = [
   // Additional colors
   '#ec4899', // Pink
   '#14b8a6', // Teal
-  '#8b5cf6', // Violet
+  '#964B00', // Brown
 ];
 
 export const LINE_WIDTHS = [2, 4, 6, 8, 12, 16];
