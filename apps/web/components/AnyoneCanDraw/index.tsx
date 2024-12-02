@@ -14,6 +14,7 @@ export function AnyoneCanDraw() {
   const gameId = 'everyone';
   // TODO: make this dynamic
   const playerId = 'anonymous';
+  const playerName = 'Anonymous';
 
   const handleSubmit = async (drawingData: string): Promise<any> => {
     try {
@@ -44,6 +45,7 @@ export function AnyoneCanDraw() {
       gameMode={true}
       gameId={gameId}
       playerId={playerId}
+      playerName={playerName}
     />
   );
 }

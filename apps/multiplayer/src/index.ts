@@ -75,6 +75,9 @@ app.get('/anyone-can-draw/users', durableObjectMiddleware, async (c) => {
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        action: 'getUsers',
+      }),
     })
   );
   const data = (await response.json()) as ApiResponse;
@@ -91,7 +94,9 @@ app.get('/anyone-can-draw/users', durableObjectMiddleware, async (c) => {
  * @route POST /anyone-can-draw/users
  */
 app.post('/anyone-can-draw/users', durableObjectMiddleware, async (c) => {
-  const body = await c.req.json();
+  const clonedRequest = c.req.raw.clone();
+  const body = await clonedRequest.json();
+
   const response = await c.var.stub.fetch(
     new Request(c.req.url, {
       method: 'POST',
@@ -100,7 +105,7 @@ app.post('/anyone-can-draw/users', durableObjectMiddleware, async (c) => {
       },
       body: JSON.stringify({
         action: 'join',
-        ...body,
+        data: body,
       }),
     })
   );
@@ -115,7 +120,56 @@ app.post('/anyone-can-draw/users', durableObjectMiddleware, async (c) => {
 });
 
 /**
- * Game actions
+ * Leave a game
+ * @route DELETE /anyone-can-draw/users
+ */
+app.delete('/anyone-can-draw/users', durableObjectMiddleware, async (c) => {
+  const response = await c.var.stub.fetch(
+    new Request(c.req.url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        action: 'leave',
+      }),
+    })
+  );
+  const data = (await response.json()) as ApiResponse;
+
+  if (!data.ok) {
+    throw new AppError(data.message || 'Unknown error', data.statusCode || 500);
+  }
+
+  return c.json(data);
+});
+
+/**
+ * Get game state
+ * @route GET /anyone-can-draw/game
+ */
+app.get('/anyone-can-draw/game', durableObjectMiddleware, async (c) => {
+  const response = await c.var.stub.fetch(
+    new Request(c.req.url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        action: 'getState',
+      }),
+    })
+  );
+  const data = (await response.json()) as ApiResponse;
+
+  if (!data.ok) {
+    throw new AppError(data.message || 'Unknown error', data.statusCode || 500);
+  }
+
+  return c.json(data);
+});
+
+/**
  * @route POST /anyone-can-draw/game
  */
 app.post('/anyone-can-draw/game', durableObjectMiddleware, async (c) => {

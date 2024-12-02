@@ -22,6 +22,7 @@ export function DrawingCanvas({
   gameMode,
   gameId,
   playerId,
+  playerName,
 }: DrawingCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [loading, setLoading] = useState(false);
@@ -131,6 +132,7 @@ export function DrawingCanvas({
   const { gameState, startGame, endGame, handleGuess } = useGameState(
     gameId,
     playerId,
+    playerName,
     onGuess,
     clearCanvas
   );

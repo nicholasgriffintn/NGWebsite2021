@@ -43,24 +43,24 @@ export class Multiplayer implements DurableObject {
   }
 
   async fetch(request: Request) {
-    const body = (await request.json()) as { action: string };
+    const body = (await request.json()) as { action: string; data: any };
     const action = body.action;
 
     switch (action) {
       case 'getUsers':
         return await this.handleGetUsers(request);
       case 'join':
-        return await this.handleJoin(request);
+        return await this.handleJoin(body.data);
       case 'leave':
-        return await this.handleLeave(request);
+        return await this.handleLeave(body.data);
       case 'startGame':
-        return await this.handleStartGame(request);
+        return await this.handleStartGame(body);
       case 'endGame':
         return await this.handleEndGame();
       case 'submitGuess':
-        return await this.handleGuess(request);
+        return await this.handleGuess(body);
       case 'updateDrawing':
-        return await this.handleDrawingUpdate(request);
+        return await this.handleDrawingUpdate(body);
       case 'getState':
         return await this.handleGetState();
       default:
@@ -84,81 +84,75 @@ export class Multiplayer implements DurableObject {
     return new Response(JSON.stringify(this.users));
   }
 
-  private async handleJoin(request: Request): Promise<Response> {
+  private async handleJoin(body: any): Promise<Response> {
     try {
-      const { playerId, playerName } = (await request.json()) as JoinRequest;
+      const { playerId, playerName } = body as JoinRequest;
 
       if (!playerId || !playerName) {
-        const response: BaseResponse = {
-          ok: false,
-          success: false,
-          message: 'Missing playerId or playerName',
-          statusCode: 400,
-        };
-
-        return new Response(JSON.stringify(response), {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        });
+        return new Response(
+          JSON.stringify({
+            ok: false,
+            success: false,
+            message: 'Missing playerId or playerName',
+            statusCode: 400,
+          }),
+          {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
       }
 
       if (this.users.has(playerId)) {
-        const response: BaseResponse = {
-          ok: false,
-          success: false,
-          message: 'Player already joined',
-          statusCode: 400,
-        };
-
-        return new Response(JSON.stringify(response), {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        });
+        return new Response(JSON.stringify({ ok: true, success: true }));
       }
 
       this.users.set(playerId, { name: playerName, score: 0 });
       await this.state.storage.put('users', this.users);
 
-      const response: BaseResponse = {
-        ok: true,
-        success: true,
-      };
-
-      return new Response(JSON.stringify(response), {
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          success: true,
+        }),
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     } catch (error) {
       console.error(error);
-      const response: BaseResponse = {
-        ok: false,
-        success: false,
-        message: 'Failed to join game',
-        statusCode: 400,
-      };
-
-      return new Response(JSON.stringify(response), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          success: false,
+          message: 'Failed to join game',
+          statusCode: 400,
+        }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     }
   }
 
-  private async handleLeave(request: Request): Promise<Response> {
+  private async handleLeave(body: any): Promise<Response> {
     try {
-      const { playerId } = (await request.json()) as LeaveRequest;
+      const { playerId } = body as LeaveRequest;
 
       if (!playerId) {
-        const response: BaseResponse = {
-          ok: false,
-          success: false,
-          message: 'Missing playerId',
-          statusCode: 400,
-        };
-
-        return new Response(JSON.stringify(response), {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        });
+        return new Response(
+          JSON.stringify({
+            ok: false,
+            success: false,
+            message: 'Missing playerId',
+            statusCode: 400,
+          }),
+          {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
       }
 
       this.users.delete(playerId);
@@ -176,51 +170,54 @@ export class Multiplayer implements DurableObject {
         await this.state.storage.put('gameState', this.gameState);
       }
 
-      const response: GameStateResponse = {
-        ok: true,
-        success: true,
-        gameState: this.gameState,
-        users: Array.from(this.users.entries()).map(([id, data]) => ({
-          id,
-          ...data,
-        })),
-      };
-
-      return new Response(JSON.stringify(response), {
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          success: true,
+          gameState: this.gameState,
+          users: Array.from(this.users.entries()).map(([id, data]) => ({
+            id,
+            ...data,
+          })),
+        }),
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     } catch (error) {
       console.error(error);
-      const response: BaseResponse = {
-        ok: false,
-        success: false,
-        message: 'Failed to leave game',
-        statusCode: 400,
-      };
-
-      return new Response(JSON.stringify(response), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          success: false,
+          message: 'Failed to leave game',
+          statusCode: 400,
+        }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     }
   }
 
-  private async handleStartGame(request: Request) {
+  private async handleStartGame(body: any) {
     try {
-      const { playerId } = (await request.json()) as StartGameRequest;
+      const { playerId } = body as StartGameRequest;
 
       if (!playerId) {
-        const response: BaseResponse = {
-          ok: false,
-          success: false,
-          message: 'Missing playerId',
-          statusCode: 400,
-        };
-
-        return new Response(JSON.stringify(response), {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        });
+        return new Response(
+          JSON.stringify({
+            ok: false,
+            success: false,
+            message: 'Missing playerId',
+            statusCode: 400,
+          }),
+          {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
       }
 
       if (this.gameState.isActive) {
@@ -257,36 +254,38 @@ export class Multiplayer implements DurableObject {
     }
   }
 
-  private async handleGuess(request: Request): Promise<Response> {
+  private async handleGuess(body: any): Promise<Response> {
     try {
-      const { playerId, guess } = (await request.json()) as GuessRequest;
+      const { playerId, guess } = body as GuessRequest;
 
       if (!playerId || !guess) {
-        const response: BaseResponse = {
-          ok: false,
-          success: false,
-          message: 'Missing playerId or guess',
-          statusCode: 400,
-        };
-
-        return new Response(JSON.stringify(response), {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        });
+        return new Response(
+          JSON.stringify({
+            ok: false,
+            success: false,
+            message: 'Missing playerId or guess',
+            statusCode: 400,
+          }),
+          {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
       }
 
       if (!this.gameState.isActive) {
-        const response: BaseResponse = {
-          ok: false,
-          success: false,
-          message: 'No active game',
-          statusCode: 400,
-        };
-
-        return new Response(JSON.stringify(response), {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        });
+        return new Response(
+          JSON.stringify({
+            ok: false,
+            success: false,
+            message: 'No active game',
+            statusCode: 400,
+          }),
+          {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
       }
 
       const newGuess = {
@@ -317,91 +316,97 @@ export class Multiplayer implements DurableObject {
 
       await this.state.storage.put('gameState', this.gameState);
 
-      const response: GameStateResponse = {
-        ok: true,
-        success: true,
-        gameState: this.gameState,
-        users: Array.from(this.users.entries()).map(([id, data]) => ({
-          id,
-          ...data,
-        })),
-      };
-
-      return new Response(JSON.stringify(response), {
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          success: true,
+          gameState: this.gameState,
+          users: Array.from(this.users.entries()).map(([id, data]) => ({
+            id,
+            ...data,
+          })),
+        }),
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     } catch (error) {
       console.error(error);
-      const response: BaseResponse = {
-        ok: false,
-        success: false,
-        message: 'Failed to process guess',
-        statusCode: 400,
-      };
-
-      return new Response(JSON.stringify(response), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          success: false,
+          message: 'Failed to process guess',
+          statusCode: 400,
+        }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     }
   }
 
-  private async handleDrawingUpdate(request: Request): Promise<Response> {
+  private async handleDrawingUpdate(body: any): Promise<Response> {
     try {
-      const { drawingData } = (await request.json()) as DrawingUpdateRequest;
+      const { drawingData } = body as DrawingUpdateRequest;
 
       if (!drawingData) {
-        const response: BaseResponse = {
-          ok: false,
-          success: false,
-          message: 'Missing drawingData',
-          statusCode: 400,
-        };
-
-        return new Response(JSON.stringify(response), {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        });
+        return new Response(
+          JSON.stringify({
+            ok: false,
+            success: false,
+            message: 'Missing drawingData',
+            statusCode: 400,
+          }),
+          {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
       }
 
       if (!this.gameState.isActive) {
-        const response: BaseResponse = {
-          ok: false,
-          success: false,
-          message: 'No active game',
-          statusCode: 400,
-        };
-
-        return new Response(JSON.stringify(response), {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        });
+        return new Response(
+          JSON.stringify({
+            ok: false,
+            success: false,
+            message: 'No active game',
+            statusCode: 400,
+          }),
+          {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
       }
 
       this.gameState.drawingData = drawingData;
       await this.state.storage.put('gameState', this.gameState);
 
-      const response: BaseResponse = {
-        ok: true,
-        success: true,
-      };
-
-      return new Response(JSON.stringify(response), {
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          success: true,
+        }),
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     } catch (error) {
       console.error(error);
-      const response: BaseResponse = {
-        ok: false,
-        success: false,
-        message: 'Failed to update drawing',
-        statusCode: 400,
-      };
-
-      return new Response(JSON.stringify(response), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          success: false,
+          message: 'Failed to update drawing',
+          statusCode: 400,
+        }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     }
   }
 

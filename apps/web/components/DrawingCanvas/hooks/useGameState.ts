@@ -10,6 +10,7 @@ const BASE_URL =
 export function useGameState(
   gameId: string,
   playerId: string,
+  playerName: string,
   onGuess?: (drawingData: string) => Promise<any>,
   clearCanvas?: () => void
 ) {
@@ -27,7 +28,7 @@ export function useGameState(
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ playerId }),
+      body: JSON.stringify({ playerId, playerName }),
     });
 
     const pollInterval = setInterval(async () => {
