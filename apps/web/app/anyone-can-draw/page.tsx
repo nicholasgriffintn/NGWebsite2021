@@ -60,9 +60,9 @@ export default async function AnyoneCanDrawHome({ searchParams }) {
             <div className="text-primary-foreground lg:max-w-[75%]">
               <p>
                 This is a drawing app that uses AI to generate paintings from
-                your drawings. I also adding guessing game where AI will attempt
-                to figure out what your drawing is, because that was fun. You
-                can find out more about this app in{' '}
+                your drawings. I also added a guessing game where AI will
+                attempt to figure out what your drawing is, because that was
+                fun. You can find out more about this app in{' '}
                 <Link href="/blog/anyone-can-draw">this post</Link>.
               </p>
             </div>
