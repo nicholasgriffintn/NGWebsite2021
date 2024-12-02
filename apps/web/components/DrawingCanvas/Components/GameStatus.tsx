@@ -6,12 +6,14 @@ interface GameStatusProps {
   gameState: GameState;
   onStartGame: () => void;
   onEndGame: () => void;
+  isConnected: boolean;
 }
 
 export function GameStatus({
   gameState,
   onStartGame,
   onEndGame,
+  isConnected,
 }: GameStatusProps) {
   const getStatusBackground = (timeRemaining: number, hasWon: boolean) => {
     if (hasWon) return 'bg-green-100 dark:bg-green-900';
@@ -46,9 +48,15 @@ export function GameStatus({
             <li>Game ends when AI guesses correctly or time runs out</li>
           </ul>
         </div>
-        <Button onClick={onStartGame} className="w-full">
-          Start Game
-        </Button>
+        {!isConnected ? (
+          <p className="text-sm text-muted-foreground">
+            Connecting to game server...
+          </p>
+        ) : (
+          <Button onClick={onStartGame} className="w-full">
+            Start Game
+          </Button>
+        )}
       </div>
     );
   }
