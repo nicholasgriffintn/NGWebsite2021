@@ -13,12 +13,11 @@ export class Multiplayer implements DurableObject {
   private users: Map<string, { name: string; score: number }>;
   private gameState: GameState;
   private GAME_DURATION = 120;
-  private webSockets: Set<WebSocket>;
+  private timerInterval: number | null = null;
 
   constructor(state: DurableObjectState) {
     this.state = state;
     this.users = new Map();
-    this.webSockets = new Set();
     this.gameState = {
       isActive: false,
       targetWord: '',
@@ -41,11 +40,6 @@ export class Multiplayer implements DurableObject {
   }
 
   async fetch(request: Request) {
-    const upgradeHeader = request.headers.get('Upgrade');
-    if (!upgradeHeader || upgradeHeader !== 'websocket') {
-      return new Response('Expected Upgrade: websocket', { status: 426 });
-    }
-
     const webSocketPair = new WebSocketPair();
     const [client, server] = Object.values(webSocketPair);
 
@@ -60,14 +54,13 @@ export class Multiplayer implements DurableObject {
   async webSocketMessage(ws: WebSocket, message: string) {
     try {
       const data = JSON.parse(message);
-      console.log('Received message:', data);
 
       switch (data.action) {
         case 'join':
-          await this.handleJoin(data.data);
+          await this.handleJoin(data);
           break;
         case 'leave':
-          await this.handleLeave(data.data);
+          await this.handleLeave(data);
           break;
         case 'startGame':
           await this.handleStartGame(data);
@@ -111,6 +104,7 @@ export class Multiplayer implements DurableObject {
       if (!this.users.has(playerId)) {
         this.users.set(playerId, { name: playerName, score: 0 });
         await this.state.storage.put('users', this.users);
+        console.log('Player joined:', playerName);
       }
     } catch (error) {
       console.error('Error joining game:', error);
@@ -122,6 +116,7 @@ export class Multiplayer implements DurableObject {
     try {
       this.users.delete(playerId);
       await this.state.storage.put('users', this.users);
+      console.log('Player left:', playerId);
 
       if (
         this.gameState.isActive &&
@@ -157,6 +152,9 @@ export class Multiplayer implements DurableObject {
       };
 
       await this.state.storage.put('gameState', this.gameState);
+
+      this.startGameTimer();
+
       if (this.gameState.endTime) {
         await this.state.storage.setAlarm(this.gameState.endTime);
       }
@@ -164,6 +162,41 @@ export class Multiplayer implements DurableObject {
       console.error('Error starting game:', error);
       throw error;
     }
+  }
+
+  private startGameTimer() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+
+    this.timerInterval = setInterval(() => {
+      if (!this.gameState.isActive) {
+        if (this.timerInterval !== null) {
+          clearInterval(this.timerInterval);
+        }
+        return;
+      }
+
+      const now = Date.now();
+      if (this.gameState.endTime) {
+        this.gameState.timeRemaining = Math.max(
+          0,
+          Math.ceil((this.gameState.endTime - now) / 1000)
+        );
+
+        this.broadcast({
+          gameState: this.gameState,
+          users: Array.from(this.users.entries()).map(([id, data]) => ({
+            id,
+            ...data,
+          })),
+        });
+
+        if (this.gameState.timeRemaining <= 0) {
+          clearInterval(this.timerInterval);
+        }
+      }
+    }, 1000) as unknown as number;
   }
 
   private async handleGuess({ playerId, guess }: GuessRequest) {
@@ -196,6 +229,10 @@ export class Multiplayer implements DurableObject {
             this.gameState.targetWord
           }"!`,
         };
+
+        if (this.timerInterval) {
+          clearInterval(this.timerInterval);
+        }
       }
 
       await this.state.storage.put('gameState', this.gameState);

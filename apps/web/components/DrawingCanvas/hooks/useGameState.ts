@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { GameState, GameStateResponse } from '../types';
+import { GameState } from '../types';
 import { GAME_DURATION } from '../constants';
 
 const BASE_URL =
@@ -20,6 +20,10 @@ export function useGameState(
     timeRemaining: GAME_DURATION,
     guesses: [],
     hasWon: false,
+    currentDrawer: undefined,
+    endTime: undefined,
+    statusMessage: undefined,
+    drawingData: undefined,
   });
   const [isConnected, setIsConnected] = useState(false);
   const wsRef = useRef<WebSocket | null>(null);
@@ -45,6 +49,11 @@ export function useGameState(
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
+
+        if (data.gameState) {
+          setGameState(data.gameState);
+          return;
+        }
 
         switch (data.type) {
           case 'gameState':
@@ -116,7 +125,7 @@ export function useGameState(
 
     wsRef.current.send(
       JSON.stringify({
-        action: 'endGame',
+        action: 'leave',
         playerId,
       })
     );
