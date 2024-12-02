@@ -21,6 +21,39 @@ export function useGameState(
     hasWon: false,
   });
 
+  useEffect(() => {
+    fetch(`${BASE_URL}/users?gameId=${gameId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ playerId }),
+    });
+
+    const pollInterval = setInterval(async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/game?gameId=${gameId}`);
+        const data = (await response.json()) as GameStateResponse;
+        if (data.success) {
+          setGameState(data.gameState);
+        }
+      } catch (error) {
+        console.error('Error polling game state:', error);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(pollInterval);
+      fetch(`${BASE_URL}/users?gameId=${gameId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ playerId }),
+      });
+    };
+  }, [gameId, playerId]);
+
   const startGame = async () => {
     try {
       if (!gameId) return;
@@ -99,39 +132,6 @@ export function useGameState(
       console.error('Error handling guess:', error);
     }
   };
-
-  useEffect(() => {
-    fetch(`${BASE_URL}/users?gameId=${gameId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ playerId }),
-    });
-
-    const pollInterval = setInterval(async () => {
-      try {
-        const response = await fetch(`${BASE_URL}/game?gameId=${gameId}`);
-        const data = (await response.json()) as GameStateResponse;
-        if (data.success) {
-          setGameState(data.gameState);
-        }
-      } catch (error) {
-        console.error('Error polling game state:', error);
-      }
-    }, 1000);
-
-    return () => {
-      clearInterval(pollInterval);
-      fetch(`${BASE_URL}/users?gameId=${gameId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ playerId }),
-      });
-    };
-  }, [gameId]);
 
   return {
     gameState,

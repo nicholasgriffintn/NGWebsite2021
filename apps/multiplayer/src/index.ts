@@ -69,7 +69,14 @@ const durableObjectMiddleware = createMiddleware<Env>(async (c, next) => {
  * @route GET /anyone-can-draw/users
  */
 app.get('/anyone-can-draw/users', durableObjectMiddleware, async (c) => {
-  const response = await c.var.stub.fetch(new Request(c.req.url + '/users'));
+  const response = await c.var.stub.fetch(
+    new Request(c.req.url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  );
   const data = (await response.json()) as ApiResponse;
 
   if (!data.ok) {
@@ -86,48 +93,18 @@ app.get('/anyone-can-draw/users', durableObjectMiddleware, async (c) => {
 app.post('/anyone-can-draw/users', durableObjectMiddleware, async (c) => {
   const body = await c.req.json();
   const response = await c.var.stub.fetch(
-    new Request(c.req.url + '/users', {
+    new Request(c.req.url, {
       method: 'POST',
-      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        action: 'join',
+        ...body,
+      }),
     })
   );
 
-  const data = (await response.json()) as ApiResponse;
-
-  if (!data.ok) {
-    throw new AppError(data.message || 'Unknown error', data.statusCode || 500);
-  }
-
-  return c.json(data);
-});
-
-/**
- * Get messages
- * @route GET /anyone-can-draw/messages
- */
-app.get('/anyone-can-draw/messages', durableObjectMiddleware, async (c) => {
-  const response = await c.var.stub.fetch(new Request(c.req.url + '/messages'));
-  const data = (await response.json()) as ApiResponse;
-
-  if (!data.ok) {
-    throw new AppError(data.message || 'Unknown error', data.statusCode || 500);
-  }
-
-  return c.json(data);
-});
-
-/**
- * Send a message
- * @route POST /anyone-can-draw/messages
- */
-app.post('/anyone-can-draw/messages', durableObjectMiddleware, async (c) => {
-  const body = await c.req.json();
-  const response = await c.var.stub.fetch(
-    new Request(c.req.url + '/messages', {
-      method: 'POST',
-      body: JSON.stringify(body),
-    })
-  );
   const data = (await response.json()) as ApiResponse;
 
   if (!data.ok) {
@@ -143,8 +120,15 @@ app.post('/anyone-can-draw/messages', durableObjectMiddleware, async (c) => {
  */
 app.post('/anyone-can-draw/game', durableObjectMiddleware, async (c) => {
   const body = await c.req.json();
+
+  const action = body.action;
+
+  if (!action) {
+    throw new AppError('Action is required', 400);
+  }
+
   const response = await c.var.stub.fetch(
-    new Request(c.req.url + '/game', {
+    new Request(c.req.url, {
       method: 'POST',
       body: JSON.stringify(body),
     })

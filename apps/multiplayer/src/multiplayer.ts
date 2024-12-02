@@ -43,10 +43,12 @@ export class Multiplayer implements DurableObject {
   }
 
   async fetch(request: Request) {
-    const url = new URL(request.url);
-    const path = url.pathname.split('/')[1];
+    const body = (await request.json()) as { action: string };
+    const action = body.action;
 
-    switch (path) {
+    switch (action) {
+      case 'getUsers':
+        return await this.handleGetUsers(request);
       case 'join':
         return await this.handleJoin(request);
       case 'leave':
@@ -76,6 +78,10 @@ export class Multiplayer implements DurableObject {
           }
         );
     }
+  }
+
+  private async handleGetUsers(request: Request): Promise<Response> {
+    return new Response(JSON.stringify(this.users));
   }
 
   private async handleJoin(request: Request): Promise<Response> {
@@ -122,6 +128,7 @@ export class Multiplayer implements DurableObject {
         headers: { 'Content-Type': 'application/json' },
       });
     } catch (error) {
+      console.error(error);
       const response: BaseResponse = {
         ok: false,
         success: false,
@@ -183,6 +190,7 @@ export class Multiplayer implements DurableObject {
         headers: { 'Content-Type': 'application/json' },
       });
     } catch (error) {
+      console.error(error);
       const response: BaseResponse = {
         ok: false,
         success: false,
@@ -198,50 +206,55 @@ export class Multiplayer implements DurableObject {
   }
 
   private async handleStartGame(request: Request) {
-    const { playerId } = (await request.json()) as StartGameRequest;
+    try {
+      const { playerId } = (await request.json()) as StartGameRequest;
 
-    if (!playerId) {
-      const response: BaseResponse = {
-        ok: false,
-        success: false,
-        message: 'Missing playerId',
-        statusCode: 400,
-      };
-
-      return new Response(JSON.stringify(response), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-
-    if (this.gameState.isActive) {
-      return new Response(
-        JSON.stringify({
+      if (!playerId) {
+        const response: BaseResponse = {
           ok: false,
           success: false,
-          error: 'Game already in progress',
-        })
+          message: 'Missing playerId',
+          statusCode: 400,
+        };
+
+        return new Response(JSON.stringify(response), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
+      if (this.gameState.isActive) {
+        return new Response(
+          JSON.stringify({
+            ok: false,
+            success: false,
+            error: 'Game already in progress',
+          })
+        );
+      }
+
+      const randomWord =
+        GAME_WORDS[Math.floor(Math.random() * GAME_WORDS.length)];
+
+      this.gameState = {
+        isActive: true,
+        targetWord: randomWord,
+        timeRemaining: this.GAME_DURATION,
+        guesses: [],
+        hasWon: false,
+        currentDrawer: playerId,
+      };
+
+      this.startTimer();
+
+      await this.state.storage.put('gameState', this.gameState);
+      return new Response(
+        JSON.stringify({ ok: true, success: true, gameState: this.gameState })
       );
+    } catch (error) {
+      console.error(error);
+      return new Response(JSON.stringify({ ok: false, success: false }));
     }
-
-    const randomWord =
-      GAME_WORDS[Math.floor(Math.random() * GAME_WORDS.length)];
-
-    this.gameState = {
-      isActive: true,
-      targetWord: randomWord,
-      timeRemaining: this.GAME_DURATION,
-      guesses: [],
-      hasWon: false,
-      currentDrawer: playerId,
-    };
-
-    this.startTimer();
-
-    await this.state.storage.put('gameState', this.gameState);
-    return new Response(
-      JSON.stringify({ ok: true, success: true, gameState: this.gameState })
-    );
   }
 
   private async handleGuess(request: Request): Promise<Response> {
@@ -318,6 +331,7 @@ export class Multiplayer implements DurableObject {
         headers: { 'Content-Type': 'application/json' },
       });
     } catch (error) {
+      console.error(error);
       const response: BaseResponse = {
         ok: false,
         success: false,
@@ -376,6 +390,7 @@ export class Multiplayer implements DurableObject {
         headers: { 'Content-Type': 'application/json' },
       });
     } catch (error) {
+      console.error(error);
       const response: BaseResponse = {
         ok: false,
         success: false,
