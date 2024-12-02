@@ -224,7 +224,9 @@ export class Multiplayer implements DurableObject {
 
       this.gameState.guesses.push(newGuess);
 
-      if (guess.toLowerCase() === this.gameState.targetWord.toLowerCase()) {
+      if (
+        guess.toLowerCase().trim() === this.gameState.targetWord.toLowerCase()
+      ) {
         const player = this.users.get(playerId);
         if (player) {
           player.score += Math.ceil(this.gameState.timeRemaining / 2);
@@ -246,7 +248,7 @@ export class Multiplayer implements DurableObject {
         if (this.timerInterval) {
           clearInterval(this.timerInterval);
         }
-        
+
         await this.state.storage.deleteAlarm();
       }
 
