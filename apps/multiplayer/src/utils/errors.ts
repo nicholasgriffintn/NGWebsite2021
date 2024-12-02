@@ -8,13 +8,9 @@ export class AppError extends Error {
   }
 }
 
-export function handleApiError(error: unknown) {
-  console.error(error);
-  if (error instanceof AppError) {
-    return Response.json(
-      { error: error.message, code: error.code },
-      { status: error.statusCode }
-    );
-  }
-  return Response.json({ error: 'Internal Server Error' }, { status: 500 });
+export function handleApiError(err: Error) {
+  console.error('Unhandled error');
+  console.error(err);
+  const status = err instanceof AppError ? err.statusCode : 500;
+  return new Response(err.message, { status });
 }

@@ -1,7 +1,6 @@
 import {
   GameState,
   JoinRequest,
-  LeaveRequest,
   StartGameRequest,
   GuessRequest,
   DrawingUpdateRequest,
@@ -14,11 +13,12 @@ export class Multiplayer implements DurableObject {
   private users: Map<string, { name: string; score: number }>;
   private gameState: GameState;
   private GAME_DURATION = 120;
-  private timerInterval: number | null = null;
+  private webSockets: Set<WebSocket>;
 
   constructor(state: DurableObjectState) {
     this.state = state;
     this.users = new Map();
+    this.webSockets = new Set();
     this.gameState = {
       isActive: false,
       targetWord: '',
@@ -41,118 +41,85 @@ export class Multiplayer implements DurableObject {
   }
 
   async fetch(request: Request) {
-    const body = (await request.json()) as { action: string; data: any };
-    const action = body.action;
+    const webSocketPair = new WebSocketPair();
+    const [client, server] = Object.values(webSocketPair);
 
-    switch (action) {
-      case 'getUsers':
-        return await this.handleGetUsers(request);
-      case 'join':
-        return await this.handleJoin(body.data);
-      case 'leave':
-        return await this.handleLeave(body.data);
-      case 'startGame':
-        return await this.handleStartGame(body);
-      case 'endGame':
-        return await this.handleEndGame();
-      case 'submitGuess':
-        return await this.handleGuess(body);
-      case 'updateDrawing':
-        return await this.handleDrawingUpdate(body);
-      case 'getState':
-        return await this.handleGetState();
-      default:
-        return new Response(
-          JSON.stringify({
-            ok: false,
-            message: 'Not found',
-            statusCode: 404,
-          }),
-          {
-            status: 404,
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-    }
+    this.state.acceptWebSocket(server);
+
+    return new Response(null, {
+      status: 101,
+      webSocket: client,
+    });
   }
 
-  private async handleGetUsers(request: Request): Promise<Response> {
-    return new Response(JSON.stringify(this.users));
-  }
-
-  private async handleJoin(body: any): Promise<Response> {
+  async webSocketMessage(ws: WebSocket, message: string) {
     try {
-      const { playerId, playerName } = body as JoinRequest;
+      const data = JSON.parse(message);
+      console.log('Received message:', data);
 
-      if (!playerId || !playerName) {
-        return new Response(
-          JSON.stringify({
-            ok: false,
-            success: false,
-            message: 'Missing playerId or playerName',
-            statusCode: 400,
-          }),
-          {
-            status: 400,
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
+      switch (data.action) {
+        case 'join':
+          await this.handleJoin(data.data);
+          break;
+        case 'leave':
+          await this.handleLeave(data.data);
+          break;
+        case 'startGame':
+          await this.handleStartGame(data);
+          break;
+        case 'submitGuess':
+          await this.handleGuess(data);
+          break;
+        case 'updateDrawing':
+          await this.handleDrawingUpdate(data);
+          break;
       }
 
-      if (this.users.has(playerId)) {
-        return new Response(JSON.stringify({ ok: true, success: true }));
-      }
-
-      this.users.set(playerId, { name: playerName, score: 0 });
-      await this.state.storage.put('users', this.users);
-
-      return new Response(
-        JSON.stringify({
-          ok: true,
-          success: true,
-        }),
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      this.broadcast({
+        gameState: this.gameState,
+        users: Array.from(this.users.entries()).map(([id, data]) => ({
+          id,
+          ...data,
+        })),
+      });
     } catch (error) {
-      console.error(error);
-      return new Response(
+      console.error('Error handling message:', error);
+      ws.send(
         JSON.stringify({
-          ok: false,
-          success: false,
-          message: 'Failed to join game',
-          statusCode: 400,
-        }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
+          type: 'error',
+          error: 'Invalid message format',
+        })
       );
     }
   }
 
-  private async handleLeave(body: any): Promise<Response> {
+  async webSocketClose(
+    ws: WebSocket,
+    code: number,
+    reason: string,
+    wasClean: boolean
+  ) {
     try {
-      const { playerId } = body as LeaveRequest;
+      ws.close(code, 'Durable Object is closing WebSocket');
+    } catch (error) {
+      console.error('Error closing WebSocket:', error);
+    }
+  }
 
-      if (!playerId) {
-        return new Response(
-          JSON.stringify({
-            ok: false,
-            success: false,
-            message: 'Missing playerId',
-            statusCode: 400,
-          }),
-          {
-            status: 400,
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
+  private async handleJoin({ playerId, playerName }: JoinRequest) {
+    try {
+      if (!this.users.has(playerId)) {
+        this.users.set(playerId, { name: playerName, score: 0 });
+        await this.state.storage.put('users', this.users);
       }
+    } catch (error) {
+      console.error('Error joining game:', error);
+      throw error;
+    }
+  }
 
+  private async handleLeave({ playerId }: { playerId: string }) {
+    try {
       this.users.delete(playerId);
       await this.state.storage.put('users', this.users);
 
@@ -167,70 +134,18 @@ export class Multiplayer implements DurableObject {
         };
         await this.state.storage.put('gameState', this.gameState);
       }
-
-      return new Response(
-        JSON.stringify({
-          ok: true,
-          success: true,
-          gameState: this.gameState,
-          users: Array.from(this.users.entries()).map(([id, data]) => ({
-            id,
-            ...data,
-          })),
-        }),
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
     } catch (error) {
-      console.error(error);
-      return new Response(
-        JSON.stringify({
-          ok: false,
-          success: false,
-          message: 'Failed to leave game',
-          statusCode: 400,
-        }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      console.error('Error leaving game:', error);
+      throw error;
     }
   }
 
-  private async handleStartGame(body: any) {
+  private async handleStartGame({ playerId }: StartGameRequest) {
     try {
-      const { playerId } = body as StartGameRequest;
-
-      if (!playerId) {
-        return new Response(
-          JSON.stringify({
-            ok: false,
-            success: false,
-            message: 'Missing playerId',
-            statusCode: 400,
-          }),
-          {
-            status: 400,
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
-      }
-
-      if (this.gameState.isActive) {
-        return new Response(
-          JSON.stringify({
-            ok: false,
-            success: false,
-            message: 'Game already in progress',
-          })
-        );
-      }
+      if (this.gameState.isActive) return;
 
       const randomWord =
         GAME_WORDS[Math.floor(Math.random() * GAME_WORDS.length)];
-
       this.gameState = {
         isActive: true,
         targetWord: randomWord,
@@ -238,53 +153,22 @@ export class Multiplayer implements DurableObject {
         guesses: [],
         hasWon: false,
         currentDrawer: playerId,
+        endTime: Date.now() + this.GAME_DURATION * 1000,
       };
 
-      await this.startTimer();
-
       await this.state.storage.put('gameState', this.gameState);
-      return new Response(
-        JSON.stringify({ ok: true, success: true, gameState: this.gameState })
-      );
+      if (this.gameState.endTime) {
+        await this.state.storage.setAlarm(this.gameState.endTime);
+      }
     } catch (error) {
-      console.error(error);
-      return new Response(JSON.stringify({ ok: false, success: false }));
+      console.error('Error starting game:', error);
+      throw error;
     }
   }
 
-  private async handleGuess(body: any): Promise<Response> {
+  private async handleGuess({ playerId, guess }: GuessRequest) {
     try {
-      const { playerId, guess } = body as GuessRequest;
-
-      if (!playerId || !guess) {
-        return new Response(
-          JSON.stringify({
-            ok: false,
-            success: false,
-            message: 'Missing playerId or guess',
-            statusCode: 400,
-          }),
-          {
-            status: 400,
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
-      }
-
-      if (!this.gameState.isActive) {
-        return new Response(
-          JSON.stringify({
-            ok: false,
-            success: false,
-            message: 'No active game',
-            statusCode: 400,
-          }),
-          {
-            status: 400,
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
-      }
+      if (!this.gameState.isActive) return;
 
       const newGuess = {
         guess: guess.toLowerCase(),
@@ -302,11 +186,6 @@ export class Multiplayer implements DurableObject {
           await this.state.storage.put('users', this.users);
         }
 
-        if (this.timerInterval) {
-          clearInterval(this.timerInterval);
-          this.timerInterval = null;
-        }
-
         this.gameState.hasWon = true;
         this.gameState.isActive = false;
         this.gameState.timeRemaining = 0;
@@ -320,159 +199,64 @@ export class Multiplayer implements DurableObject {
       }
 
       await this.state.storage.put('gameState', this.gameState);
+    } catch (error) {
+      console.error('Error handling guess:', error);
+      throw error;
+    }
+  }
 
-      return new Response(
-        JSON.stringify({
-          ok: true,
-          success: true,
+  private async handleDrawingUpdate({ drawingData }: DrawingUpdateRequest) {
+    try {
+      if (!this.gameState.isActive) return;
+
+      this.gameState.drawingData = drawingData;
+      await this.state.storage.put('gameState', this.gameState);
+    } catch (error) {
+      console.error('Error handling drawing update:', error);
+      throw error;
+    }
+  }
+
+  private broadcast(message: any) {
+    try {
+      const messageStr = JSON.stringify(message);
+      for (const ws of this.state.getWebSockets()) {
+        try {
+          ws.send(messageStr);
+        } catch (error) {
+          console.error('Error sending message to WebSocket:', error);
+        }
+      }
+    } catch (error) {
+      console.error('Error broadcasting message:', error);
+      throw error;
+    }
+  }
+
+  async alarm() {
+    try {
+      if (this.gameState.isActive) {
+        this.gameState.isActive = false;
+        this.gameState.statusMessage = {
+          type: 'failure',
+          message: `Time's up! The word was "${this.gameState.targetWord}"`,
+        };
+        await this.state.storage.put('gameState', this.gameState);
+        this.broadcast({
           gameState: this.gameState,
           users: Array.from(this.users.entries()).map(([id, data]) => ({
             id,
             ...data,
           })),
-        }),
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
-    } catch (error) {
-      console.error(error);
-      return new Response(
-        JSON.stringify({
-          ok: false,
-          success: false,
-          message: 'Failed to process guess',
-          statusCode: 400,
-        }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
-    }
-  }
-
-  private async handleDrawingUpdate(body: any): Promise<Response> {
-    try {
-      const { drawingData } = body as DrawingUpdateRequest;
-
-      if (!drawingData) {
-        return new Response(
-          JSON.stringify({
-            ok: false,
-            success: false,
-            message: 'Missing drawingData',
-            statusCode: 400,
-          }),
-          {
-            status: 400,
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
+        });
       }
 
-      if (!this.gameState.isActive) {
-        return new Response(
-          JSON.stringify({
-            ok: false,
-            success: false,
-            message: 'No active game',
-            statusCode: 400,
-          }),
-          {
-            status: 400,
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
+      if (this.users.size === 0) {
+        await this.state.storage.deleteAll();
       }
-
-      this.gameState.drawingData = drawingData;
-      await this.state.storage.put('gameState', this.gameState);
-
-      return new Response(
-        JSON.stringify({
-          ok: true,
-          success: true,
-        }),
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
     } catch (error) {
-      console.error(error);
-      return new Response(
-        JSON.stringify({
-          ok: false,
-          success: false,
-          message: 'Failed to update drawing',
-          statusCode: 400,
-        }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
-    }
-  }
-
-  private async handleEndGame() {
-    this.gameState.isActive = false;
-    if (!this.gameState.hasWon) {
-      this.gameState.statusMessage = {
-        type: 'failure',
-        message: `Time's up! The word was "${this.gameState.targetWord}"`,
-      };
-    }
-
-    await this.state.storage.put('gameState', this.gameState);
-    return new Response(
-      JSON.stringify({ ok: true, success: true, gameState: this.gameState })
-    );
-  }
-
-  private async handleGetState() {
-    if (this.gameState.isActive && this.gameState.endTime) {
-      const now = Date.now();
-      this.gameState.timeRemaining = Math.max(0, Math.ceil((this.gameState.endTime - now) / 1000));
-    }
-
-    return new Response(
-      JSON.stringify({
-        ok: true,
-        gameState: this.gameState,
-        users: Array.from(this.users.entries()).map(([id, data]) => ({
-          id,
-          ...data,
-        })),
-      })
-    );
-  }
-
-  private async startTimer() {
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval);
-      this.timerInterval = null;
-    }
-
-    const gameEndTime = Date.now() + this.gameState.timeRemaining * 1000;
-    await this.state.storage.setAlarm(gameEndTime);
-
-    this.gameState.endTime = gameEndTime;
-    await this.state.storage.put('gameState', this.gameState);
-  }
-
-  async alarm() {
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval);
-      this.timerInterval = null;
-    }
-
-    if (this.gameState.isActive) {
-      await this.handleEndGame();
-    }
-
-    if (this.users.size === 0) {
-      await this.state.storage.deleteAll();
+      console.error('Error handling alarm:', error);
+      throw error;
     }
   }
 }

@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { GameState, GameStateResponse } from '../types';
 import { GAME_DURATION } from '../constants';
 
 const BASE_URL =
   process.env.NODE_ENV === 'development'
-    ? 'http://localhost:8786'
-    : 'https://website-multiplayer.nickgriffin.uk';
+    ? 'ws://localhost:8786'
+    : 'wss://website-multiplayer.nickgriffin.uk';
 
 export function useGameState(
   gameId: string,
@@ -21,151 +21,145 @@ export function useGameState(
     guesses: [],
     hasWon: false,
   });
-  const [isApiReady, setIsApiReady] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+  const wsRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    const checkApiStatus = async () => {
+    const ws = new WebSocket(`${BASE_URL}/anyone-can-draw?gameId=${gameId}`);
+    wsRef.current = ws;
+
+    console.log(ws);
+
+    ws.onopen = () => {
+      setIsConnected(true);
+      console.log('Joining game');
+      ws.send(
+        JSON.stringify({
+          action: 'join',
+          playerId,
+          playerName,
+        })
+      );
+    };
+
+    ws.onmessage = (event) => {
       try {
-        const response = await fetch(`${BASE_URL}/status`);
-        const data = (await response.json()) as { status: string };
-        if (data.status === 'ok') {
-          setIsApiReady(true);
-        } else {
-          setTimeout(checkApiStatus, 5000);
+        const data = JSON.parse(event.data);
+
+        switch (data.type) {
+          case 'gameState':
+            setGameState(data.gameState);
+            break;
+          case 'gameStarted':
+            clearCanvas?.();
+            setGameState(data.gameState);
+            break;
+          case 'gameEnded':
+            setGameState(data.gameState);
+            break;
+          case 'error':
+            console.error('Game error:', data.message);
+            break;
         }
       } catch (error) {
-        console.error('Error checking API status:', error);
-        setTimeout(checkApiStatus, 5000);
+        console.error('Error parsing WebSocket message:', error);
       }
     };
 
-    checkApiStatus();
-  }, []);
-
-  useEffect(() => {
-    if (!isApiReady) return;
-
-    fetch(`${BASE_URL}/anyone-can-draw/users?gameId=${gameId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ playerId, playerName }),
-    });
-
-    const pollInterval = setInterval(async () => {
-      try {
-        const response = await fetch(
-          `${BASE_URL}/anyone-can-draw/game?gameId=${gameId}`
-        );
-        const data = (await response.json()) as GameStateResponse;
-        if (data.ok) {
-          setGameState(data.gameState);
+    ws.onclose = () => {
+      setIsConnected(false);
+      console.log('WebSocket closed');
+      setTimeout(() => {
+        if (wsRef.current?.readyState === WebSocket.CLOSED) {
+          wsRef.current = null;
         }
-      } catch (error) {
-        console.error('Error polling game state:', error);
-      }
-    }, 1000);
+      }, 5000);
+    };
+
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+      setIsConnected(false);
+    };
 
     return () => {
-      clearInterval(pollInterval);
-      fetch(`${BASE_URL}/anyone-can-draw/users?gameId=${gameId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ playerId }),
-      });
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(
+          JSON.stringify({
+            action: 'leave',
+            playerId,
+          })
+        );
+        ws.close();
+      }
     };
-  }, [gameId, playerId, isApiReady]);
+  }, [gameId, playerId, playerName]);
 
-  const startGame = async () => {
-    try {
-      if (!gameId) return;
-      const response = await fetch(
-        `${BASE_URL}/anyone-can-draw/game?gameId=${gameId}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            action: 'startGame',
-            playerId,
-          }),
-        }
-      );
-      const data = (await response.json()) as GameStateResponse;
-      if (data.ok) {
-        clearCanvas?.();
-        setGameState(data.gameState);
+  const startGame = useCallback(async () => {
+    if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
+      console.error('WebSocket not connected');
+      return;
+    }
+
+    wsRef.current.send(
+      JSON.stringify({
+        action: 'startGame',
+        playerId,
+      })
+    );
+  }, [playerId]);
+
+  const endGame = useCallback(async () => {
+    if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
+      console.error('WebSocket not connected');
+      return;
+    }
+
+    wsRef.current.send(
+      JSON.stringify({
+        action: 'endGame',
+        playerId,
+      })
+    );
+  }, [playerId]);
+
+  const handleGuess = useCallback(
+    async (drawingData: string) => {
+      if (
+        !gameState.isActive ||
+        !onGuess ||
+        !wsRef.current ||
+        wsRef.current.readyState !== WebSocket.OPEN
+      ) {
+        return;
       }
-    } catch (error) {
-      console.error('Error starting game:', error);
-    }
-  };
 
-  const endGame = async () => {
-    try {
-      if (!gameId) return;
-      const response = await fetch(
-        `${BASE_URL}/anyone-can-draw/game?gameId=${gameId}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            action: 'endGame',
+      try {
+        wsRef.current.send(
+          JSON.stringify({
+            action: 'updateDrawing',
+            drawingData,
+          })
+        );
+
+        const response = await onGuess(drawingData);
+        const guess = response?.response?.content?.toLowerCase() || '';
+
+        wsRef.current.send(
+          JSON.stringify({
+            action: 'submitGuess',
             playerId,
-          }),
-        }
-      );
-      const data = (await response.json()) as GameStateResponse;
-      if (data.ok) {
-        setGameState(data.gameState);
+            guess,
+          })
+        );
+      } catch (error) {
+        console.error('Error handling guess:', error);
       }
-    } catch (error) {
-      console.error('Error ending game:', error);
-    }
-  };
-
-  const handleGuess = async (drawingData: string) => {
-    if (!gameState.isActive || !onGuess) return;
-
-    try {
-      await fetch(`${BASE_URL}/anyone-can-draw/game?gameId=${gameId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          action: 'updateDrawing',
-          drawingData,
-        }),
-      });
-
-      const response = await onGuess(drawingData);
-      const guess = response?.response?.content?.toLowerCase() || '';
-
-      await fetch(`${BASE_URL}/anyone-can-draw/game?gameId=${gameId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          action: 'submitGuess',
-          playerId,
-          guess,
-        }),
-      });
-    } catch (error) {
-      console.error('Error handling guess:', error);
-    }
-  };
+    },
+    [gameState.isActive, onGuess, playerId]
+  );
 
   return {
-    isApiReady,
+    isConnected,
     gameState,
     startGame,
     endGame,
