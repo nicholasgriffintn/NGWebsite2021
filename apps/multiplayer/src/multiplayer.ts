@@ -41,10 +41,33 @@ export class Multiplayer implements DurableObject {
   }
 
   async fetch(request: Request) {
+    const upgradeHeader = request.headers.get('Upgrade');
+    if (!upgradeHeader || upgradeHeader !== 'websocket') {
+      return new Response('Expected Upgrade: websocket', { status: 426 });
+    }
+
     const webSocketPair = new WebSocketPair();
     const [client, server] = Object.values(webSocketPair);
 
     this.state.acceptWebSocket(server);
+
+    server.addEventListener('message', async (event) => {
+      const data =
+        typeof event.data === 'string'
+          ? event.data
+          : new TextDecoder().decode(event.data);
+      console.log('Received message:', data);
+      await this.webSocketMessage(server, data);
+    });
+
+    server.addEventListener('close', () => {
+      this.webSocketClose(
+        server,
+        1000,
+        'Durable Object is closing WebSocket',
+        true
+      );
+    });
 
     return new Response(null, {
       status: 101,
@@ -100,7 +123,7 @@ export class Multiplayer implements DurableObject {
     wasClean: boolean
   ) {
     try {
-      ws.close(code, 'Durable Object is closing WebSocket');
+      ws.close(1000, 'Durable Object is closing WebSocket');
     } catch (error) {
       console.error('Error closing WebSocket:', error);
     }

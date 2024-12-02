@@ -129,7 +129,7 @@ export function DrawingCanvas({
     }
   };
 
-  const { isApiReady, gameState, startGame, endGame, handleGuess } =
+  const { isConnected, gameState, startGame, endGame, handleGuess } =
     useGameState(gameId, playerId, playerName, onGuess, clearCanvas);
 
   const handleDrawingComplete = async () => {
@@ -226,7 +226,7 @@ export function DrawingCanvas({
                       gameState={gameState}
                       onStartGame={startGame}
                       onEndGame={endGame}
-                      isApiReady={isApiReady}
+                      isConnected={isConnected}
                     />
                   </div>
 

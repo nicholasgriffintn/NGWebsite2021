@@ -6,14 +6,14 @@ interface GameStatusProps {
   gameState: GameState;
   onStartGame: () => void;
   onEndGame: () => void;
-  isApiReady: boolean;
+  isConnected: boolean;
 }
 
 export function GameStatus({
   gameState,
   onStartGame,
   onEndGame,
-  isApiReady,
+  isConnected,
 }: GameStatusProps) {
   const getStatusBackground = (timeRemaining: number, hasWon: boolean) => {
     if (hasWon) return 'bg-green-100 dark:bg-green-900';
@@ -38,7 +38,7 @@ export function GameStatus({
         )}
         <div className="prose dark:prose-invert mb-4">
           <h3 className="text-lg font-medium mb-2">Drawing Game</h3>
-          {!isApiReady ? (
+          {!isConnected ? (
             <p className="text-sm text-muted-foreground">
               Connecting to game server...
             </p>
@@ -56,7 +56,7 @@ export function GameStatus({
             </>
           )}
         </div>
-        {isApiReady && (
+        {isConnected && (
           <Button onClick={onStartGame} className="w-full">
             Start Game
           </Button>

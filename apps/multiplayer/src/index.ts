@@ -2,6 +2,7 @@ import { Context, Hono } from 'hono';
 import { DurableObjectNamespace } from '@cloudflare/workers-types';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
+import { upgradeWebSocket } from 'hono/cloudflare-workers';
 
 import { Multiplayer } from './multiplayer';
 import { handleApiError } from './utils/errors';
@@ -22,26 +23,21 @@ app.use('*', logger());
  * WebSocket handler for game connections
  * @route GET /anyone-can-draw
  */
-app.get('/anyone-can-draw', async (c: Context) => {
-  const gameId = c.req.query('gameId');
+app.get(
+  '/anyone-can-draw',
+  upgradeWebSocket((c: Context) => {
+    const gameId = c.req.query('gameId');
 
-  if (!gameId) {
-    return new Response('Game ID is required', { status: 400 });
-  }
+    if (!gameId) {
+      throw new Error('Game ID is required');
+    }
 
-  const upgrade = c.req.header('Upgrade');
-  if (!upgrade || upgrade.toLowerCase() !== 'websocket') {
-    return new Response('Expected WebSocket connection', { status: 426 });
-  }
+    const id = c.env.MULTIPLAYER.idFromName(gameId);
+    const stub = c.env.MULTIPLAYER.get(id);
 
-  const id = c.env.MULTIPLAYER.idFromName(gameId);
-  const stub = c.env.MULTIPLAYER.get(id);
-
-  console.log('Fetching game', gameId);
-  console.log(c.req.raw);
-
-  return stub.fetch(c.req.raw);
-});
+    return stub.fetch(c.req.raw);
+  })
+);
 
 /**
  * Health check endpoint
