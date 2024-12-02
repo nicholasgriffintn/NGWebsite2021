@@ -51,24 +51,6 @@ export class Multiplayer implements DurableObject {
 
     this.state.acceptWebSocket(server);
 
-    server.addEventListener('message', async (event) => {
-      const data =
-        typeof event.data === 'string'
-          ? event.data
-          : new TextDecoder().decode(event.data);
-      console.log('Received message:', data);
-      await this.webSocketMessage(server, data);
-    });
-
-    server.addEventListener('close', () => {
-      this.webSocketClose(
-        server,
-        1000,
-        'Durable Object is closing WebSocket',
-        true
-      );
-    });
-
     return new Response(null, {
       status: 101,
       webSocket: client,
@@ -116,14 +98,9 @@ export class Multiplayer implements DurableObject {
     }
   }
 
-  async webSocketClose(
-    ws: WebSocket,
-    code: number,
-    reason: string,
-    wasClean: boolean
-  ) {
+  async webSocketClose(ws: WebSocket, code: number, reason: string) {
     try {
-      ws.close(1000, 'Durable Object is closing WebSocket');
+      ws.close(code, reason || 'Durable Object is closing WebSocket');
     } catch (error) {
       console.error('Error closing WebSocket:', error);
     }

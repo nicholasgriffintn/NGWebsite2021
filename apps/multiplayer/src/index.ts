@@ -28,14 +28,17 @@ app.get(
   upgradeWebSocket((c: Context) => {
     const gameId = c.req.query('gameId');
 
-    if (!gameId) {
-      throw new Error('Game ID is required');
+    const upgradeHeader = c.req.raw.headers.get('Upgrade');
+    if (!upgradeHeader || upgradeHeader !== 'websocket') {
+      return new Response('Durable Object expected Upgrade: websocket', {
+        status: 426,
+      });
     }
 
     const id = c.env.MULTIPLAYER.idFromName(gameId);
     const stub = c.env.MULTIPLAYER.get(id);
 
-    return stub.fetch(c.req.raw);
+		return stub.fetch(c.req.raw);
   })
 );
 
