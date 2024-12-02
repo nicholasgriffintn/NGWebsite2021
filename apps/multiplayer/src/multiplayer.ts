@@ -1,7 +1,5 @@
 import {
-  BaseResponse,
   GameState,
-  GameStateResponse,
   JoinRequest,
   LeaveRequest,
   StartGameRequest,
@@ -225,7 +223,7 @@ export class Multiplayer implements DurableObject {
           JSON.stringify({
             ok: false,
             success: false,
-            error: 'Game already in progress',
+            message: 'Game already in progress',
           })
         );
       }
@@ -457,6 +455,10 @@ export class Multiplayer implements DurableObject {
   async alarm() {
     if (this.timerInterval) {
       clearInterval(this.timerInterval);
+    }
+
+    if (this.gameState.isActive) {
+      await this.handleEndGame();
     }
 
     if (this.users.size === 0) {
