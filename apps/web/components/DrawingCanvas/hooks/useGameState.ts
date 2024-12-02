@@ -35,7 +35,7 @@ export function useGameState(
       try {
         const response = await fetch(`${BASE_URL}/game?gameId=${gameId}`);
         const data = (await response.json()) as GameStateResponse;
-        if (data.success) {
+        if (data.ok) {
           setGameState(data.gameState);
         }
       } catch (error) {
@@ -69,7 +69,7 @@ export function useGameState(
         }),
       });
       const data = (await response.json()) as GameStateResponse;
-      if (data.success) {
+      if (data.ok) {
         clearCanvas?.();
         setGameState(data.gameState);
       }
@@ -92,7 +92,7 @@ export function useGameState(
         }),
       });
       const data = (await response.json()) as GameStateResponse;
-      if (data.success) {
+      if (data.ok) {
         setGameState(data.gameState);
       }
     } catch (error) {
