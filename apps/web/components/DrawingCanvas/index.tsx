@@ -129,13 +129,8 @@ export function DrawingCanvas({
     }
   };
 
-  const { gameState, startGame, endGame, handleGuess } = useGameState(
-    gameId,
-    playerId,
-    playerName,
-    onGuess,
-    clearCanvas
-  );
+  const { isApiReady, gameState, startGame, endGame, handleGuess } =
+    useGameState(gameId, playerId, playerName, onGuess, clearCanvas);
 
   const handleDrawingComplete = async () => {
     if (gameState.isActive && canvasRef.current) {
@@ -231,6 +226,7 @@ export function DrawingCanvas({
                       gameState={gameState}
                       onStartGame={startGame}
                       onEndGame={endGame}
+                      isApiReady={isApiReady}
                     />
                   </div>
 

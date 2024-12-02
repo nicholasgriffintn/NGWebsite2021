@@ -21,8 +21,30 @@ export function useGameState(
     guesses: [],
     hasWon: false,
   });
+  const [isApiReady, setIsApiReady] = useState(false);
 
   useEffect(() => {
+    const checkApiStatus = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/status`);
+        const data = (await response.json()) as { ok: boolean };
+        if (data.ok) {
+          setIsApiReady(true);
+        } else {
+          setTimeout(checkApiStatus, 5000);
+        }
+      } catch (error) {
+        console.error('Error checking API status:', error);
+        setTimeout(checkApiStatus, 5000);
+      }
+    };
+
+    checkApiStatus();
+  }, []);
+
+  useEffect(() => {
+    if (!isApiReady) return;
+
     fetch(`${BASE_URL}/users?gameId=${gameId}`, {
       method: 'POST',
       headers: {
@@ -53,7 +75,7 @@ export function useGameState(
         body: JSON.stringify({ playerId }),
       });
     };
-  }, [gameId, playerId]);
+  }, [gameId, playerId, isApiReady]);
 
   const startGame = async () => {
     try {
@@ -135,6 +157,7 @@ export function useGameState(
   };
 
   return {
+    isApiReady,
     gameState,
     startGame,
     endGame,

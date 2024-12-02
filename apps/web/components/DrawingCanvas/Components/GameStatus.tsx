@@ -6,12 +6,14 @@ interface GameStatusProps {
   gameState: GameState;
   onStartGame: () => void;
   onEndGame: () => void;
+  isApiReady: boolean;
 }
 
 export function GameStatus({
   gameState,
   onStartGame,
   onEndGame,
+  isApiReady,
 }: GameStatusProps) {
   const getStatusBackground = (timeRemaining: number, hasWon: boolean) => {
     if (hasWon) return 'bg-green-100 dark:bg-green-900';
@@ -36,19 +38,29 @@ export function GameStatus({
         )}
         <div className="prose dark:prose-invert mb-4">
           <h3 className="text-lg font-medium mb-2">Drawing Game</h3>
-          <p className="text-sm text-muted-foreground">
-            Test your drawing skills! You'll be given a word to draw and have 2
-            minutes to get the AI to guess it correctly.
-          </p>
-          <ul className="text-sm text-muted-foreground list-disc pl-4 space-y-1">
-            <li>You'll get a random word to draw</li>
-            <li>AI will try to guess every few seconds</li>
-            <li>Game ends when AI guesses correctly or time runs out</li>
-          </ul>
+          {!isApiReady ? (
+            <p className="text-sm text-muted-foreground">
+              Connecting to game server...
+            </p>
+          ) : (
+            <>
+              <p className="text-sm text-muted-foreground">
+                Test your drawing skills! You'll be given a word to draw and
+                have 2 minutes to get the AI to guess it correctly.
+              </p>
+              <ul className="text-sm text-muted-foreground list-disc pl-4 space-y-1">
+                <li>You'll get a random word to draw</li>
+                <li>AI will try to guess every few seconds</li>
+                <li>Game ends when AI guesses correctly or time runs out</li>
+              </ul>
+            </>
+          )}
         </div>
-        <Button onClick={onStartGame} className="w-full">
-          Start Game
-        </Button>
+        {isApiReady && (
+          <Button onClick={onStartGame} className="w-full">
+            Start Game
+          </Button>
+        )}
       </div>
     );
   }
