@@ -130,7 +130,13 @@ export function DrawingCanvas({
   };
 
   const { isConnected, gameState, startGame, endGame, handleGuess } =
-    useGameState(gameId, playerId, playerName, onGuess, clearCanvas);
+    useGameState(
+      gameId || 'everyone',
+      playerId || 'anonymous',
+      playerName || 'Anonymous',
+      onGuess,
+      clearCanvas
+    );
 
   const handleDrawingComplete = async () => {
     if (gameState.isActive && canvasRef.current) {
