@@ -16,6 +16,7 @@ export interface GameState {
   isActive: boolean;
   targetWord: string;
   timeRemaining: number;
+  endTime?: number;
   guesses: Array<{
     guess: string;
     timestamp: number;

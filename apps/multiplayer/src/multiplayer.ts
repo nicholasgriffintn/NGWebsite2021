@@ -240,7 +240,7 @@ export class Multiplayer implements DurableObject {
         currentDrawer: playerId,
       };
 
-      this.startTimer();
+      await this.startTimer();
 
       await this.state.storage.put('gameState', this.gameState);
       return new Response(
@@ -424,6 +424,11 @@ export class Multiplayer implements DurableObject {
   }
 
   private async handleGetState() {
+    if (this.gameState.isActive && this.gameState.endTime) {
+      const now = Date.now();
+      this.gameState.timeRemaining = Math.max(0, Math.ceil((this.gameState.endTime - now) / 1000));
+    }
+
     return new Response(
       JSON.stringify({
         ok: true,
@@ -436,25 +441,23 @@ export class Multiplayer implements DurableObject {
     );
   }
 
-  private startTimer() {
+  private async startTimer() {
     if (this.timerInterval) {
       clearInterval(this.timerInterval);
+      this.timerInterval = null;
     }
 
-    this.timerInterval = setInterval(async () => {
-      if (this.gameState.timeRemaining <= 1) {
-        clearInterval(this.timerInterval);
-        await this.handleEndGame();
-      } else {
-        this.gameState.timeRemaining--;
-        await this.state.storage.put('gameState', this.gameState);
-      }
-    }, 1000) as unknown as number;
+    const gameEndTime = Date.now() + this.gameState.timeRemaining * 1000;
+    await this.state.storage.setAlarm(gameEndTime);
+
+    this.gameState.endTime = gameEndTime;
+    await this.state.storage.put('gameState', this.gameState);
   }
 
   async alarm() {
     if (this.timerInterval) {
       clearInterval(this.timerInterval);
+      this.timerInterval = null;
     }
 
     if (this.gameState.isActive) {
