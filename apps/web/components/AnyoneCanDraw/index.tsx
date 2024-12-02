@@ -10,6 +10,10 @@ import {
 
 export function AnyoneCanDraw() {
   const [result, setResult] = useState<string | null>(null);
+  // TODO: make this dynamic
+  const gameId = 'everyone';
+  // TODO: make this dynamic
+  const playerId = 'anonymous';
 
   const handleSubmit = async (drawingData: string): Promise<any> => {
     try {
@@ -38,6 +42,8 @@ export function AnyoneCanDraw() {
       onGuess={handleGuess}
       result={result}
       gameMode={true}
+      gameId={gameId}
+      playerId={playerId}
     />
   );
 }

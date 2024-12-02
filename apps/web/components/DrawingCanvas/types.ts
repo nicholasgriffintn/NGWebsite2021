@@ -17,6 +17,8 @@ interface DrawingCanvasProps {
   onSubmit: (drawingData: string) => Promise<any>;
   result: string | null;
   gameMode?: boolean;
+  gameId: string;
+  playerId: string;
   onGuess?: (drawingData: string) => Promise<any>;
 }
 
@@ -35,6 +37,22 @@ export interface GameState {
     type: 'success' | 'failure';
     message: string;
   };
+}
+
+export interface BaseResponse {
+  ok: boolean;
+  success: boolean;
+  message?: string;
+  statusCode?: number;
+}
+
+export interface GameStateResponse extends BaseResponse {
+  gameState: GameState;
+  users: Array<{
+    id: string;
+    name: string;
+    score: number;
+  }>;
 }
 
 export type GameActions = {

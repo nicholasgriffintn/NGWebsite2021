@@ -1,8 +1,15 @@
-import { useState, useRef, useEffect } from 'react';
-import { GameState } from '../types';
-import { GAME_WORDS, GAME_DURATION } from '../constants';
+import { useState, useEffect } from 'react';
+import { GameState, GameStateResponse } from '../types';
+import { GAME_DURATION } from '../constants';
+
+const BASE_URL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8786/anyone-can-draw'
+    : 'https://website-multiplayer.nickgriffin.uk/anyone-can-draw';
 
 export function useGameState(
+  gameId: string,
+  playerId: string,
   onGuess?: (drawingData: string) => Promise<any>,
   clearCanvas?: () => void
 ) {
@@ -14,87 +21,117 @@ export function useGameState(
     hasWon: false,
   });
 
-  const timerRef = useRef<NodeJS.Timeout>();
-  const guessTimeoutRef = useRef<NodeJS.Timeout>();
-
-  const startGame = () => {
-    const randomWord =
-      GAME_WORDS[Math.floor(Math.random() * GAME_WORDS.length)];
-    if (!randomWord) return;
-
-    clearCanvas?.();
-
-    setGameState({
-      isActive: true,
-      targetWord: randomWord,
-      timeRemaining: GAME_DURATION,
-      guesses: [],
-      hasWon: false,
-      statusMessage: undefined,
-    });
+  const startGame = async () => {
+    try {
+      if (!gameId) return;
+      const response = await fetch(`${BASE_URL}/game?gameId=${gameId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'startGame',
+          playerId,
+        }),
+      });
+      const data = (await response.json()) as GameStateResponse;
+      if (data.success) {
+        clearCanvas?.();
+        setGameState(data.gameState);
+      }
+    } catch (error) {
+      console.error('Error starting game:', error);
+    }
   };
 
-  const endGame = () => {
-    setGameState((prev) => ({ ...prev, isActive: false }));
-    if (timerRef.current) clearInterval(timerRef.current);
-    if (guessTimeoutRef.current) clearTimeout(guessTimeoutRef.current);
+  const endGame = async () => {
+    try {
+      if (!gameId) return;
+      const response = await fetch(`${BASE_URL}/game?gameId=${gameId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'endGame',
+          playerId,
+        }),
+      });
+      const data = (await response.json()) as GameStateResponse;
+      if (data.success) {
+        setGameState(data.gameState);
+      }
+    } catch (error) {
+      console.error('Error ending game:', error);
+    }
   };
 
   const handleGuess = async (drawingData: string) => {
     if (!gameState.isActive || !onGuess) return;
 
     try {
+      await fetch(`${BASE_URL}/game?gameId=${gameId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'updateDrawing',
+          drawingData,
+        }),
+      });
+
       const response = await onGuess(drawingData);
       const guess = response?.response?.content?.toLowerCase() || '';
 
-      setGameState((prev) => {
-        const newGuesses = [...prev.guesses, { guess, timestamp: Date.now() }];
-
-        const hasWon = guess.includes(prev.targetWord.toLowerCase());
-        if (hasWon) {
-          const timeSpent = GAME_DURATION - prev.timeRemaining;
-          endGame();
-          return {
-            ...prev,
-            guesses: newGuesses,
-            hasWon,
-            statusMessage: {
-              type: 'success',
-              message: `Congratulations! The AI guessed "${prev.targetWord}" in ${timeSpent} seconds!`,
-            },
-          };
-        }
-
-        return { ...prev, guesses: newGuesses, hasWon };
+      await fetch(`${BASE_URL}/game?gameId=${gameId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'submitGuess',
+          playerId,
+          guess,
+        }),
       });
     } catch (error) {
-      console.error('Error getting AI guess:', error);
+      console.error('Error handling guess:', error);
     }
   };
 
   useEffect(() => {
-    if (gameState.isActive && gameState.timeRemaining > 0) {
-      timerRef.current = setInterval(() => {
-        setGameState((prev) => {
-          if (prev.timeRemaining <= 1) {
-            endGame();
-            return {
-              ...prev,
-              timeRemaining: 0,
-              statusMessage: {
-                type: 'failure',
-                message: `Time's up! The word was "${prev.targetWord}". Better luck next time!`,
-              },
-            };
-          }
-          return { ...prev, timeRemaining: prev.timeRemaining - 1 };
-        });
-      }, 1000);
-    }
+    fetch(`${BASE_URL}/users?gameId=${gameId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ playerId }),
+    });
+
+    const pollInterval = setInterval(async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/game?gameId=${gameId}`);
+        const data = (await response.json()) as GameStateResponse;
+        if (data.success) {
+          setGameState(data.gameState);
+        }
+      } catch (error) {
+        console.error('Error polling game state:', error);
+      }
+    }, 1000);
+
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+      clearInterval(pollInterval);
+      fetch(`${BASE_URL}/users?gameId=${gameId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ playerId }),
+      });
     };
-  }, [gameState.isActive]);
+  }, [gameId]);
 
   return {
     gameState,
