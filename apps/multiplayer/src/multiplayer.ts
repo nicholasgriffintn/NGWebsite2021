@@ -302,8 +302,15 @@ export class Multiplayer implements DurableObject {
           await this.state.storage.put('users', this.users);
         }
 
+        if (this.timerInterval) {
+          clearInterval(this.timerInterval);
+          this.timerInterval = null;
+        }
+
         this.gameState.hasWon = true;
         this.gameState.isActive = false;
+        this.gameState.timeRemaining = 0;
+        this.gameState.endTime = undefined;
         this.gameState.statusMessage = {
           type: 'success',
           message: `${player?.name || 'Player'} guessed correctly: "${
