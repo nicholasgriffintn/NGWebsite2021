@@ -74,6 +74,7 @@ export class Multiplayer implements DurableObject {
       }
 
       this.broadcast({
+        type: 'gameState',
         gameState: this.gameState,
         users: Array.from(this.users.entries()).map(([id, data]) => ({
           id,
@@ -104,7 +105,12 @@ export class Multiplayer implements DurableObject {
       if (!this.users.has(playerId)) {
         this.users.set(playerId, { name: playerName, score: 0 });
         await this.state.storage.put('users', this.users);
-        console.log('Player joined:', playerName);
+
+        this.broadcast({
+          type: 'playerJoined',
+          playerId,
+          playerName,
+        });
       }
     } catch (error) {
       console.error('Error joining game:', error);
@@ -116,7 +122,10 @@ export class Multiplayer implements DurableObject {
     try {
       this.users.delete(playerId);
       await this.state.storage.put('users', this.users);
-      console.log('Player left:', playerId);
+      this.broadcast({
+        type: 'playerLeft',
+        playerId,
+      });
 
       if (
         this.gameState.isActive &&
@@ -154,6 +163,9 @@ export class Multiplayer implements DurableObject {
       await this.state.storage.put('gameState', this.gameState);
 
       this.startGameTimer();
+      this.broadcast({
+        type: 'gameStarted',
+      });
 
       if (this.gameState.endTime) {
         await this.state.storage.setAlarm(this.gameState.endTime);
@@ -185,6 +197,7 @@ export class Multiplayer implements DurableObject {
         );
 
         this.broadcast({
+          type: 'gameState',
           gameState: this.gameState,
           users: Array.from(this.users.entries()).map(([id, data]) => ({
             id,
@@ -233,6 +246,8 @@ export class Multiplayer implements DurableObject {
         if (this.timerInterval) {
           clearInterval(this.timerInterval);
         }
+        
+        await this.state.storage.deleteAlarm();
       }
 
       await this.state.storage.put('gameState', this.gameState);
@@ -280,6 +295,7 @@ export class Multiplayer implements DurableObject {
         };
         await this.state.storage.put('gameState', this.gameState);
         this.broadcast({
+          type: 'gameEnded',
           gameState: this.gameState,
           users: Array.from(this.users.entries()).map(([id, data]) => ({
             id,

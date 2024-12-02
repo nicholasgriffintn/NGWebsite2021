@@ -50,18 +50,12 @@ export function useGameState(
       try {
         const data = JSON.parse(event.data);
 
-        if (data.gameState) {
-          setGameState(data.gameState);
-          return;
-        }
-
         switch (data.type) {
           case 'gameState':
             setGameState(data.gameState);
             break;
           case 'gameStarted':
             clearCanvas?.();
-            setGameState(data.gameState);
             break;
           case 'gameEnded':
             setGameState(data.gameState);
