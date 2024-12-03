@@ -26,6 +26,12 @@ interface DrawingCanvasProps {
 
 export type { DrawingResponse, DrawingCanvasProps };
 
+export interface User {
+  id: string;
+  name: string;
+  score: number;
+}
+
 export interface GameState {
   isActive: boolean;
   targetWord: string;
@@ -53,11 +59,7 @@ export interface BaseResponse {
 
 export interface GameStateResponse extends BaseResponse {
   gameState: GameState;
-  users: Array<{
-    id: string;
-    name: string;
-    score: number;
-  }>;
+  users: Array<User>;
 }
 
 export type GameActions = {

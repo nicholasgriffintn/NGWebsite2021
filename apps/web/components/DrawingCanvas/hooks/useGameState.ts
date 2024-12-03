@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { GameState } from '../types';
+import { GameState, User } from '../types';
 import { GAME_DURATION } from '../constants';
 
 const BASE_URL =
@@ -11,7 +11,6 @@ export function useGameState(
   gameId: string,
   playerId: string,
   playerName: string,
-  onGuess?: (drawingData: string) => Promise<any>,
   clearCanvas?: () => void
 ) {
   const [gameState, setGameState] = useState<GameState>({
@@ -25,6 +24,7 @@ export function useGameState(
     statusMessage: undefined,
     drawingData: undefined,
   });
+  const [users, setUsers] = useState<Array<User>>([]);
   const [isConnected, setIsConnected] = useState(false);
   const wsRef = useRef<WebSocket | null>(null);
 
@@ -53,12 +53,14 @@ export function useGameState(
         switch (data.type) {
           case 'gameState':
             setGameState(data.gameState);
+            setUsers(data.users);
             break;
           case 'gameStarted':
             clearCanvas?.();
             break;
           case 'gameEnded':
             setGameState(data.gameState);
+            setUsers(data.users);
             break;
           case 'error':
             console.error('Game error:', data.message);
@@ -125,47 +127,28 @@ export function useGameState(
     );
   }, [playerId]);
 
-  const handleGuess = useCallback(
+  const updateDrawing = useCallback(
     async (drawingData: string) => {
-      if (
-        !gameState.isActive ||
-        !onGuess ||
-        !wsRef.current ||
-        wsRef.current.readyState !== WebSocket.OPEN
-      ) {
+      if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
         return;
       }
 
-      try {
-        wsRef.current.send(
-          JSON.stringify({
-            action: 'updateDrawing',
-            drawingData,
-          })
-        );
-
-        const response = await onGuess(drawingData);
-        const guess = response?.response?.content?.toLowerCase() || '';
-
-        wsRef.current.send(
-          JSON.stringify({
-            action: 'submitGuess',
-            playerId,
-            guess,
-          })
-        );
-      } catch (error) {
-        console.error('Error handling guess:', error);
-      }
+      wsRef.current.send(
+        JSON.stringify({
+          action: 'updateDrawing',
+          drawingData,
+        })
+      );
     },
-    [gameState.isActive, onGuess, playerId]
+    [gameState.isActive, playerId]
   );
 
   return {
     isConnected,
     gameState,
+    users,
     startGame,
     endGame,
-    handleGuess,
+    updateDrawing,
   };
 }

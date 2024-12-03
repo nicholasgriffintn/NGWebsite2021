@@ -15,3 +15,6 @@ port = 8786
 routes = [
   { pattern = "website-multiplayer.nickgriffin.uk", custom_domain = true }
 ]
+
+[ai]
+binding = "AI"

@@ -1,8 +1,9 @@
-import { GameState } from '../types';
+import { GameState, User } from '../types';
 import { Timer } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface GameStatusProps {
+  users: Array<User>;
   gameState: GameState;
   onStartGame: () => void;
   onEndGame: () => void;
@@ -10,6 +11,7 @@ interface GameStatusProps {
 }
 
 export function GameStatus({
+  users,
   gameState,
   onStartGame,
   onEndGame,
@@ -56,6 +58,30 @@ export function GameStatus({
           <Button onClick={onStartGame} className="w-full">
             Start Game
           </Button>
+        )}
+
+        {users.length > 0 && (
+          <div className="space-y-2">
+            <h3 className="font-medium">Players:</h3>
+            <div className="space-y-1">
+              {users?.map((user) => (
+                <div
+                  key={user.id}
+                  className={`text-sm p-2 rounded-md bg-muted flex justify-between items-center
+                  ${
+                    user.id === gameState.currentDrawer
+                      ? 'border-2 border-primary'
+                      : ''
+                  }`}
+                >
+                  <span>{user.name}</span>
+                  <span className="text-muted-foreground">
+                    Score: {user.score}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
     );

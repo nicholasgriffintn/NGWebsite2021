@@ -129,19 +129,18 @@ export function DrawingCanvas({
     }
   };
 
-  const { isConnected, gameState, startGame, endGame, handleGuess } =
+  const { isConnected, gameState, users, startGame, endGame, updateDrawing } =
     useGameState(
       gameId || 'everyone',
       playerId || 'anonymous',
       playerName || 'Anonymous',
-      onGuess,
       clearCanvas
     );
 
   const handleDrawingComplete = async () => {
     if (gameState.isActive && canvasRef.current) {
       const drawingData = canvasRef.current.toDataURL('image/png');
-      await handleGuess(drawingData);
+      await updateDrawing(drawingData);
     }
   };
 
@@ -229,6 +228,7 @@ export function DrawingCanvas({
                 <>
                   <div className="bg-card rounded-lg border shadow-sm">
                     <GameStatus
+                      users={users}
                       gameState={gameState}
                       onStartGame={startGame}
                       onEndGame={endGame}

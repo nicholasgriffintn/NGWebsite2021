@@ -4,19 +4,26 @@ import {
   StartGameRequest,
   GuessRequest,
   DrawingUpdateRequest,
+  Env,
 } from './types';
 import { GAME_WORDS } from './constants';
 import { DurableObject, DurableObjectState } from '@cloudflare/workers-types';
+import { onAIGuessDrawing } from './utils/ai-utils';
 
 export class Multiplayer implements DurableObject {
   private state: DurableObjectState;
+  private env: Env;
   private users: Map<string, { name: string; score: number }>;
   private gameState: GameState;
   private GAME_DURATION = 120;
   private timerInterval: number | null = null;
+  private AI_PLAYER_ID = 'ai-player';
+  private lastAIGuessTime: number = 0;
+  private AI_GUESS_COOLDOWN = 10000; // 10 seconds between guesses
 
-  constructor(state: DurableObjectState) {
+  constructor(state: DurableObjectState, env: Env) {
     this.state = state;
+    this.env = env;
     this.users = new Map();
     this.gameState = {
       isActive: false,
@@ -32,8 +39,11 @@ export class Multiplayer implements DurableObject {
         this.state.storage.get('gameState'),
       ]);
 
-      // @ts-ignore
-      if (storedUsers) this.users = storedUsers;
+      if (storedUsers) {
+        // @ts-ignore
+        this.users = storedUsers;
+        this.users.set(this.AI_PLAYER_ID, { name: 'AI Assistant', score: 0 });
+      }
       // @ts-ignore
       if (storedGame) this.gameState = storedGame;
     });
@@ -181,7 +191,7 @@ export class Multiplayer implements DurableObject {
       clearInterval(this.timerInterval);
     }
 
-    this.timerInterval = setInterval(() => {
+    this.timerInterval = setInterval(async () => {
       if (!this.gameState.isActive) {
         if (this.timerInterval !== null) {
           clearInterval(this.timerInterval);
@@ -207,6 +217,27 @@ export class Multiplayer implements DurableObject {
 
         if (this.gameState.timeRemaining <= 0) {
           clearInterval(this.timerInterval);
+        }
+
+        if (this.gameState.drawingData) {
+          if (now - this.lastAIGuessTime >= this.AI_GUESS_COOLDOWN) {
+            try {
+              const aiGuess = await onAIGuessDrawing(
+                this.gameState.drawingData,
+                this.env
+              );
+
+              if (aiGuess.guess) {
+                this.lastAIGuessTime = now;
+                await this.handleGuess({
+                  playerId: this.AI_PLAYER_ID,
+                  guess: aiGuess.guess,
+                });
+              }
+            } catch (error) {
+              console.error('Error getting AI guess:', error);
+            }
+          }
         }
       }
     }, 1000) as unknown as number;
@@ -264,7 +295,18 @@ export class Multiplayer implements DurableObject {
       if (!this.gameState.isActive) return;
 
       this.gameState.drawingData = drawingData;
-      await this.state.storage.put('gameState', this.gameState);
+
+      // Save game state without the drawing data
+      await this.state.storage.put('gameState', {
+        ...this.gameState,
+        drawingData: undefined,
+      });
+
+      // Broadcast the update to all clients
+      this.broadcast({
+        type: 'drawingUpdate',
+        drawingData: this.gameState.drawingData,
+      });
     } catch (error) {
       console.error('Error handling drawing update:', error);
       throw error;
@@ -273,6 +315,13 @@ export class Multiplayer implements DurableObject {
 
   private broadcast(message: any) {
     try {
+      if (message.gameState) {
+        message.gameState = {
+          ...message.gameState,
+          drawingData: undefined,
+        };
+      }
+
       const messageStr = JSON.stringify(message);
       for (const ws of this.state.getWebSockets()) {
         try {
@@ -295,10 +344,16 @@ export class Multiplayer implements DurableObject {
           type: 'failure',
           message: `Time's up! The word was "${this.gameState.targetWord}"`,
         };
-        await this.state.storage.put('gameState', this.gameState);
+
+        const gameStateForStorage = {
+          ...this.gameState,
+          drawingData: undefined,
+        };
+        await this.state.storage.put('gameState', gameStateForStorage);
+
         this.broadcast({
           type: 'gameEnded',
-          gameState: this.gameState,
+          gameState: gameStateForStorage,
           users: Array.from(this.users.entries()).map(([id, data]) => ({
             id,
             ...data,

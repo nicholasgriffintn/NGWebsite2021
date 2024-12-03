@@ -1,3 +1,9 @@
+import type { Ai } from '@cloudflare/workers-types';
+
+export type Env = {
+  AI: Ai;
+};
+
 export interface Player {
   id: string;
   name: string;
