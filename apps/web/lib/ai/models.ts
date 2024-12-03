@@ -156,10 +156,31 @@ export const modelsOptions: ChatModel[] = [
   },
   {
     id: 'mistral-nemo',
-    name: 'Mistral Nemo (Hugging Face)',
+    name: 'Mistral Nemo (Mistral)',
     description:
       'The Mistral-Nemo-Instruct-2407 Large Language Model (LLM) is an instruct fine-tuned version of the Mistral-Nemo-Base-2407. Trained jointly by Mistral AI and NVIDIA, it significantly outperforms existing models smaller or similar in size.',
     capabilities: ['text-generation'],
+  },
+  {
+    id: 'mistral-small',
+    name: 'Mistral Small (Mistral)',
+    description:
+      'Mistral Small is a lightweight model designed for cost-effective use in tasks like translation and summarization.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'mistral-large',
+    name: 'Mistral Large (Mistral)',
+    description:
+      'Mistral Large is significantly more capable in code generation, mathematics, and reasoning with 128k context window and support for dozens of languages.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'codestral',
+    name: 'Codestral (Mistral)',
+    description:
+      'Codestral is Mistral AI’s first-ever code model designed for code generation tasks.',
+    capabilities: ['coding'],
   },
   {
     id: 'smollm2-1.7b-instruct',
@@ -173,6 +194,117 @@ export const modelsOptions: ChatModel[] = [
     name: 'Gemini Experimental (OpenRouter)',
     description:
       'An experimental release (November 21st, 2024) of Google Gemini.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'qwq',
+    name: 'QWQ (OpenRouter)',
+    description:
+      'QwQ is an experimental research model focused on advancing AI reasoning capabilities.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'command',
+    name: 'Cohere Command (Bedrock)',
+    description:
+      'An instruction-following conversational model that performs language tasks with high quality, more reliably and with a longer context than our base generative models.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'command-light',
+    name: 'Cohere Command Light (Bedrock)',
+    description:
+      'A smaller, faster version of command. Almost as capable, but a lot faster.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'command-r',
+    name: 'Cohere Command R (Bedrock)',
+    description:
+      'command-r-03-2024	Command R is an instruction-following conversational model that performs language tasks at a higher quality, more reliably, and with a longer context than previous models. It can be used for complex workflows like code generation, retrieval augmented generation (RAG), tool use, and agents.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'command-r-plus',
+    name: 'Cohere Command R Plus (Bedrock)',
+    description:
+      'Command R+ is an instruction-following conversational model that performs language tasks at a higher quality, more reliably, and with a longer context than previous models. It is best suited for complex RAG workflows and multi-step tool use.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'titan-text-express',
+    name: 'Titan Text Express (Bedrock)',
+    description: 'LLM offering a balance of price and performance.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'titan-text-lite',
+    name: 'Titan Text Lite (Bedrock)',
+    description:
+      'Cost-effective and highly customizable LLM. Right-sized for specific use cases, ideal for text generation tasks and fine-tuning.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'titan-text-premier',
+    name: 'Titan Text Premier (Bedrock)',
+    description:
+      'Amazon Titan Text Premier is a powerful and advanced large language model (LLM) within the Amazon Titan Text family, designed to deliver superior performance across a wide range of enterprise applications. ',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'nova-micro',
+    name: 'Nova Micro (Bedrock)',
+    description:
+      'Amazon Nova Micro is a text only model that delivers the lowest latency responses at very low cost. It is highly performant at language understanding, translation, reasoning, code completion, brainstorming, and mathematical problem-solving. With its generation speed of over 200 tokens per second, Amazon Nova Micro is ideal for applications that require fast responses.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'nova-lite',
+    name: 'Nova Lite (Bedrock)',
+    description:
+      'Amazon Nova Lite is a very low-cost multimodal model that is lightning fast for processing image, video, and text inputs. Amazon Nova Lite’s accuracy across a breadth of tasks, coupled with its lightning-fast speed, makes it suitable for a wide range of interactive and high-volume applications where cost is a key consideration.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'nova-pro',
+    name: 'Nova Pro (Bedrock)',
+    description:
+      'Amazon Nova Pro is a highly capable multimodal model with the best combination of accuracy, speed, and cost for a wide range of tasks.  Amazon Nova Pro’s capabilities, coupled with its industry-leading speed and cost efficiency, makes it a compelling model for almost any task, including video summarization, Q&A, mathematical reasoning, software development, and AI agents that can execute multi-step workflows.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'nova-reel',
+    name: 'Nova Reel (Bedrock)',
+    description:
+      'Amazon Nova Reel is a state-of-the-art video generation model that allows customers to easily create high quality video from text and images. Amazon Nova Reel supports use of natural language prompts to control visual style and pacing, including camera motion control, and built-in controls to support safe and responsible use of AI.',
+    capabilities: ['text-to-video'],
+  },
+  {
+    id: 'nova-canvas',
+    name: 'Nova Canvas (Bedrock)',
+    description:
+      'Amazon Nova Canvas is a state-of-the-art image generation model that creates professional grade images from text or images provided in prompts. Amazon Nova Canvas also provides features that make it easy to edit images using text inputs, controls for adjusting color scheme and layout, and built-in controls to support safe and responsible use of AI.',
+    capabilities: ['text-to-image'],
+  },
+  {
+    id: 'jamba-mini',
+    name: 'ai21labs Jamba Mini (Bedrock)',
+    description:
+      'Jamba 1.5 Mini (12B active/52B total) is built for superior long context handling, speed, and quality. They mark the first time a non-Transformer model has been successfully scaled to the quality and strength of the market’s leading models.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'jamba-large',
+    name: 'ai21labs Jamba Large (Bedrock)',
+    description:
+      'Jamba 1.5 Large (94B active/398B total) is built for superior long context handling, speed, and quality. They mark the first time a non-Transformer model has been successfully scaled to the quality and strength of the market’s leading models.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'jambda-instruct',
+    name: 'ai21labs Jambda Instruct (Bedrock)',
+    description:
+      'Jambda Instruct is an aligned version of Jamba with additional training, chat capabilities, and safety guardrails to make it suitable for immediate and secure enterprise use.',
     capabilities: ['text-generation'],
   },
   {
