@@ -8,6 +8,7 @@ import { Bookmark } from 'lucide-react';
 
 export function BlogCard({ post }) {
   const postLink = post.metadata.link || `/blog/${post.slug}`;
+  const isBookmark = post.metadata.isBookmark;
   const postContent = parseMarkdown(
     post.metadata.description || post.content,
     false
@@ -29,19 +30,25 @@ export function BlogCard({ post }) {
       )}
       <CardHeader>
         <CardTitle>
-          {post.metadata.isBookmark && (
+          {isBookmark && (
             <div className="mb-2">
               <Bookmark className="h-5 w-5 text-white fill-white" />
             </div>
           )}
-          <Link
-            className="text-2xl font-semibold leading-none tracking-tight space-x-2 leading-7"
-            href={postLink}
-            target={post.metadata.link ? '_blank' : undefined}
-            underline={false}
-          >
-            {post.metadata.title}
-          </Link>
+          {isBookmark && !post.metadata.link ? (
+            <div className="text-2xl font-semibold leading-none tracking-tight space-x-2 leading-7">
+              {post.metadata.title}
+            </div>
+          ) : (
+            <Link
+              className="text-2xl font-semibold leading-none tracking-tight space-x-2 leading-7"
+              href={postLink}
+              target={post.metadata.link ? '_blank' : undefined}
+              underline={false}
+            >
+              {post.metadata.title}
+            </Link>
+          )}
           {post.metadata.archived && <Badge>Archived</Badge>}
           {post.metadata.draft && <Badge>Draft</Badge>}
         </CardTitle>
@@ -49,7 +56,7 @@ export function BlogCard({ post }) {
       <CardContent>
         <div className="text-sm text-primary-foreground mb-4">
           {postContent}
-          {!post.metadata.link && (
+          {!isBookmark && !post.metadata.link && (
             <span>
               <Link href={postLink}>Read more</Link>
             </span>
