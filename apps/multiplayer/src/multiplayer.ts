@@ -296,13 +296,11 @@ export class Multiplayer implements DurableObject {
 
       this.gameState.drawingData = drawingData;
 
-      // Save game state without the drawing data
       await this.state.storage.put('gameState', {
         ...this.gameState,
         drawingData: undefined,
       });
 
-      // Broadcast the update to all clients
       this.broadcast({
         type: 'drawingUpdate',
         drawingData: this.gameState.drawingData,
