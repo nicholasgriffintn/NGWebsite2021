@@ -1,7 +1,7 @@
 ---
 title: "Protecting Content with AWS Bedrock Guardrails"
 date: "2024-12-04T18:36"
-tags: [ai, aws, aws-bedrock, guardrails]
+tags: [ai, aws, bedrock, guardrails]
 description: Back in July of this year, AWS made its guardrails feature from Bedrock available as a standalone API. With this and the recent announcements of new functionality, I thought it might be a great time for me to take a look at the functionality to see how it works and how I could use it in my own projects, starting with my personal assistant.
 image: /uploads/protecting-content-with-aws-bedrock/bedrock_configuration_filters.png
 imageAlt: A screenshot from the AWS console, showing the configuration filters for a guardrail.
