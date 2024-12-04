@@ -16,8 +16,8 @@ import { BlogCard } from '@/components/BlogCard';
 export const revalidate = 60;
 
 export const metadata = {
-  title: 'Home',
-  description: 'THe personal website of Nicholas Griffin',
+  title: 'Nicholas Griffin',
+  description: 'The personal website of Nicholas Griffin',
 };
 
 async function getData() {
