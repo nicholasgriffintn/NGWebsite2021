@@ -5,7 +5,7 @@ import {
   SelectItem,
   SelectTrigger,
 } from '@/components/ui/select';
-import { ChatMode } from '@/types/chat';
+import type { ChatMode } from '@/types/chat';
 interface ModeSelectorProps {
   mode: ChatMode;
   onChange: (mode: ChatMode) => void;

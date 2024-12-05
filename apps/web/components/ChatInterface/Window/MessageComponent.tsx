@@ -40,7 +40,7 @@ const ToolCallMessage = ({ message }: { message: ChatMessage }) => (
 
 const replaceCitations = (text: string, citations: string[]) => {
   return text.replace(/\[(\d+)\]/g, (match, number) => {
-    const index = parseInt(number, 10) - 1;
+    const index = Number.parseInt(number, 10) - 1;
     if (citations[index]) {
       return ` [[#${number}](${citations[index]})] `;
     }

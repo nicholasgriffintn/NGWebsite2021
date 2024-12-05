@@ -1,4 +1,4 @@
-import { ChatModel } from '@/types/chat';
+import type { ChatModel } from '@/types/chat';
 
 export const defaultModel = 'hermes-2-pro-mistral-7b';
 

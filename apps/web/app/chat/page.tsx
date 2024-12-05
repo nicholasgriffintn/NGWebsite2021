@@ -10,7 +10,7 @@ import {
 } from '@/lib/data/chat';
 import { validateToken, handleLogin } from '@/lib/auth';
 import { LoginForm } from '@/components/LoginForm';
-import { ChatMode, ChatRole } from '../../types/chat';
+import type { ChatMode, ChatRole } from '../../types/chat';
 import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';

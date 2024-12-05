@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import { ChatMessage } from '@/types/chat';
+import type { ChatMessage } from '@/types/chat';
 import { MessageComponent } from './MessageComponent';
 import { DateSeparator } from '@/components/DateSeparator';
 

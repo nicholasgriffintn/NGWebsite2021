@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-import { ChatMessage, ChatKey, ChatMode } from '@/types/chat';
+import type { ChatMessage, ChatKey, ChatMode } from '@/types/chat';
 import { ChatSidebar } from '@/components/ChatInterface/Sidebar';
 import { ChatWindow } from '@/components/ChatInterface/Window';
 

@@ -1,4 +1,4 @@
-import { ChatMessage } from '@/types/chat';
+import type { ChatMessage } from '@/types/chat';
 import { formatDate } from '@/lib/dates';
 import { LoadingState } from './states/LoadingState';
 import { ErrorState } from './states/ErrorState';

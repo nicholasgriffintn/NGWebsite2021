@@ -1,4 +1,4 @@
-import { GameState, User } from '../types';
+import type { GameState, User } from '../types';
 import { Timer } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 

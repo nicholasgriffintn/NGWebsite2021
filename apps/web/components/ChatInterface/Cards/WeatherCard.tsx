@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Cloud, Droplets, Thermometer, Wind } from 'lucide-react';
-import { WeatherData } from '@/types/chat';
+import type { WeatherData } from '@/types/chat';
 
 interface WeatherCardProps {
   data: WeatherData;
