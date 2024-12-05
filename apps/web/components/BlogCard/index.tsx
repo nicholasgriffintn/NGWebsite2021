@@ -73,7 +73,7 @@ export function BlogCard({ post }) {
             <div className="flex flex-wrap items-center space-x-2">
               {post.metadata.tags.map((tag) => (
                 <Link key={tag} href={`/tags/${tag}`} muted>
-                  {tag}
+                  #{tag}
                 </Link>
               ))}
             </div>

@@ -102,7 +102,7 @@ export default async function Home({ params }) {
                     <span className="text-sm text-muted-foreground">Tags:</span>
                     {post.metadata.tags.map((tag) => (
                       <Link key={tag} href={`/tags/${tag}`} muted>
-                        {tag}
+                        #{tag}
                       </Link>
                     ))}
                   </div>
