@@ -5,7 +5,7 @@ import { Loader2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
-import { DrawingResponse, DrawingCanvasProps } from './types';
+import type { DrawingResponse, DrawingCanvasProps } from './types';
 import { ColorPicker } from './Components/ColorPicker';
 import { LineWidthPicker } from './Components/LineWidthPicker';
 import { ToolPicker } from './Components/ToolPicker';

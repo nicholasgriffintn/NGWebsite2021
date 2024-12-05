@@ -13,7 +13,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { ChatMode } from '@/types/chat';
+import type { ChatMode } from '@/types/chat';
 interface Model {
   id: string;
   name: string;

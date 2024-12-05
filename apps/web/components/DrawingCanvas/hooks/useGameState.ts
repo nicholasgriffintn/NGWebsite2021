@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { GameState, User } from '../types';
+import type { GameState, User } from '../types';
 import { GAME_DURATION } from '../constants';
 
 const BASE_URL =

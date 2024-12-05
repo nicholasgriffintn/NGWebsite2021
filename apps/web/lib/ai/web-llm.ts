@@ -1,10 +1,10 @@
 import * as webllm from '@mlc-ai/web-llm';
-import { ChatMessage, ChatMode, ChatRole } from '../../types/chat';
+import type { ChatMessage, ChatMode, ChatRole } from '../../types/chat';
 
 export class WebLLMService {
   private static instance: WebLLMService;
   private engine: webllm.MLCEngineInterface | null = null;
-  private isInitialized: boolean = false;
+  private isInitialized = false;
   private chatHistory: webllm.ChatCompletionMessageParam[] = [];
   private currentModel: string | null = null;
 

@@ -1,6 +1,6 @@
 import { getImageUrl } from '../utils';
 
-import { DrawingResponse } from '../types';
+import type { DrawingResponse } from '../types';
 
 export function Result({ apiResult }: { apiResult: DrawingResponse | null }) {
   if (!apiResult) {

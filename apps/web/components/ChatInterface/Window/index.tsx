@@ -1,9 +1,9 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from 'react';
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
-import { ChatKey, ChatMessage, ChatMode } from '@/types/chat';
+import type { ChatKey, ChatMessage, ChatMode } from '@/types/chat';
 import { MessageList } from './MessageList';
 import { ChatInput } from './ChatInput';
 import { ModelSelector } from './ModelSelector';
