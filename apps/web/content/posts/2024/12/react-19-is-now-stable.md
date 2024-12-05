@@ -16,7 +16,7 @@ This brings a number of advantages such as better SEO, better performance and th
 
 Next is currently the largest framework to implement these, [they have some documentation here](https://nextjs.org/docs/app/building-your-application/rendering/server-components).
 
-Kent C Dodds has also published a great tutorial here: https://react-server-components.epicweb.dev/, and you can find out more in the [React Server Components docs](https://react.dev/reference/rsc/server-components).
+Kent C Dodds has also [published a great tutorial here](https://react-server-components.epicweb.dev/), and you can find out more in the [React Server Components docs](https://react.dev/reference/rsc/server-components).
 
 ### Server Actions
 
