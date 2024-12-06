@@ -113,7 +113,9 @@ export class Multiplayer implements DurableObject {
 
   async webSocketClose(ws: WebSocket, code: number, reason: string) {
     try {
-      ws.close(code, reason || 'Durable Object is closing WebSocket');
+      if (code !== 1006 && code >= 1000 && code < 5000) {
+        ws.close(code, reason || 'Durable Object is closing WebSocket');
+      }
     } catch (error) {
       console.error('Error closing WebSocket:', error);
     }

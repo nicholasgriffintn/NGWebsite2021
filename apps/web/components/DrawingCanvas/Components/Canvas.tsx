@@ -50,10 +50,21 @@ export function Canvas({
     const scaleY = canvasRef.current.height / rect.height;
 
     const x =
-      (('touches' in e ? e.touches[0].clientX : e.clientX) - rect.left) *
+      (('touches' in e && e.touches[0]
+        ? e.touches[0].clientX
+        : 'clientX' in e
+        ? e.clientX
+        : 0) -
+        rect.left) *
       scaleX;
     const y =
-      (('touches' in e ? e.touches[0].clientY : e.clientY) - rect.top) * scaleY;
+      (('touches' in e && e.touches[0]
+        ? e.touches[0].clientY
+        : 'clientY' in e
+        ? e.clientY
+        : 0) -
+        rect.top) *
+      scaleY;
 
     ctx.beginPath();
     ctx.moveTo(lastX.current, lastY.current);
@@ -89,10 +100,10 @@ export function Canvas({
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
 
-    if ('touches' in e) {
+    if ('touches' in e && e.touches[0]) {
       lastX.current = (e.touches[0].clientX - rect.left) * scaleX;
       lastY.current = (e.touches[0].clientY - rect.top) * scaleY;
-    } else {
+    } else if ('clientX' in e && 'clientY' in e) {
       lastX.current = (e.clientX - rect.left) * scaleX;
       lastY.current = (e.clientY - rect.top) * scaleY;
     }
