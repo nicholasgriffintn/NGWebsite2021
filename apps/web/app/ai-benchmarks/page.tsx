@@ -72,6 +72,14 @@ export default async function Home() {
                             )}
                           </ScrollArea>
                           <div className="md:w-1/2 md:ml-2">
+                            {modelData.status === 'failed' && (
+                              <div className="">
+                                <h4 className="text-sm font-semibold mb-2 text-red-500">
+                                  Failed to generate SVG from prompts (
+                                  {modelData.error}).
+                                </h4>
+                              </div>
+                            )}
                             {modelData.conversation.some((message) =>
                               message.content.includes('<svg')
                             ) && (
