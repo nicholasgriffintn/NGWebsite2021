@@ -594,6 +594,8 @@
         ]
       },
       "llama-3.2-1b-instruct": {
+        "status": "failed",
+        "error": "SVG did not display a hamster running on a wheel",
         "conversation": [
           {
             "role": "user",
