@@ -1,7 +1,6 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import { Loader2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
@@ -14,15 +13,14 @@ import { Result } from './Components/Result';
 import { Canvas } from './Components/Canvas';
 import { useGameState } from './hooks/useGameState';
 import { GameStatus } from './Components/GameStatus';
+import Chat from './Components/Chat';
+import { GenerateDrawing } from './Components/GenerateDrawing';
 
 export function DrawingCanvas({
   onSubmit,
-  onGuess,
   result,
   gameMode,
   gameId,
-  playerId,
-  playerName,
 }: DrawingCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [loading, setLoading] = useState(false);
@@ -129,6 +127,10 @@ export function DrawingCanvas({
     }
   };
 
+  // TODO: make this dynamic (user should enter them)
+  const playerId = 'anonymous';
+  const playerName = 'Anonymous';
+
   const {
     isConnected,
     gameState,
@@ -140,12 +142,8 @@ export function DrawingCanvas({
     endGame,
     leaveGame,
     updateDrawing,
-  } = useGameState(
-    gameId,
-    playerId || 'anonymous',
-    playerName || 'Anonymous',
-    clearCanvas
-  );
+    submitGuess,
+  } = useGameState(gameId, playerId, playerName, clearCanvas);
 
   const handleDrawingComplete = async () => {
     if (
@@ -220,31 +218,11 @@ export function DrawingCanvas({
 
             <div className="lg:w-80 flex flex-col gap-4">
               {!gameState.isActive && (
-                <div className="bg-card p-4 rounded-lg border shadow-sm">
-                  <div className="prose dark:prose-invert mb-4">
-                    <h3 className="text-lg font-medium">Generate AI Art</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Draw anything you like and get an AI-generated painting
-                      based on your drawing.
-                    </p>
-                  </div>
-                  <Button
-                    onClick={handleSubmit}
-                    disabled={loading || gameState.isActive}
-                    className="w-full"
-                    size="lg"
-                    variant="default"
-                  >
-                    {loading ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Generating...
-                      </>
-                    ) : (
-                      'Submit Drawing'
-                    )}
-                  </Button>
-                </div>
+                <GenerateDrawing
+                  handleSubmit={handleSubmit}
+                  loading={loading}
+                  gameState={gameState}
+                />
               )}
 
               {gameMode && (
@@ -265,26 +243,11 @@ export function DrawingCanvas({
                   </div>
 
                   {gameState.isActive && (
-                    <div className="bg-muted p-4 rounded-lg flex-1">
-                      <h3 className="font-medium mb-2">Game Guesses:</h3>
-                      <div className="space-y-2 max-h-[400px] overflow-y-auto">
-                        {gameState.guesses.map((guess, index) => (
-                          <div
-                            key={index}
-                            className={`text-sm p-2 rounded ${
-                              guess.correct
-                                ? 'bg-green-100 dark:bg-green-900'
-                                : 'bg-background'
-                            }`}
-                          >
-                            <span className="font-medium">
-                              {guess.playerName}:
-                            </span>{' '}
-                            {guess.guess}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                    <Chat
+                      gameState={gameState}
+                      onGuess={submitGuess}
+                      isDrawer={isDrawer}
+                    />
                   )}
                 </>
               )}

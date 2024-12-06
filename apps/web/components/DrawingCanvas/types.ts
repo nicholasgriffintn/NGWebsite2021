@@ -18,9 +18,6 @@ interface DrawingCanvasProps {
   result: string | null;
   gameMode?: boolean;
   gameId?: string;
-  playerId?: string;
-  playerName?: string;
-  onGuess?: (drawingData: string) => Promise<any>;
   clearCanvas?: () => void;
 }
 

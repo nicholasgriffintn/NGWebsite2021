@@ -7,9 +7,6 @@ import { onGenerateDrawing } from '@/components/ChatInterface/actions';
 
 export function AnyoneCanDraw() {
   const [result, setResult] = useState<string | null>(null);
-  // TODO: make this dynamic
-  const playerId = 'anonymous';
-  const playerName = 'Anonymous';
 
   const handleSubmit = async (drawingData: string): Promise<any> => {
     try {
@@ -23,12 +20,6 @@ export function AnyoneCanDraw() {
   };
 
   return (
-    <DrawingCanvas
-      onSubmit={handleSubmit}
-      result={result}
-      gameMode={true}
-      playerId={playerId}
-      playerName={playerName}
-    />
+    <DrawingCanvas onSubmit={handleSubmit} result={result} gameMode={true} />
   );
 }

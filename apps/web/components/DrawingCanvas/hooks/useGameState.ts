@@ -253,6 +253,25 @@ export function useGameState(
     [gameState.gameId, playerId]
   );
 
+  const submitGuess = useCallback(
+    async (guess: string) => {
+      if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
+        console.error('WebSocket not connected');
+        return;
+      }
+
+      wsRef.current.send(
+        JSON.stringify({
+          action: 'guess',
+          gameId: gameState.gameId,
+          playerId,
+          guess,
+        })
+      );
+    },
+    [gameState.gameId, playerId]
+  );
+
   return {
     isConnected,
     gameState,
@@ -264,5 +283,6 @@ export function useGameState(
     endGame,
     leaveGame,
     updateDrawing,
+    submitGuess,
   };
 }
