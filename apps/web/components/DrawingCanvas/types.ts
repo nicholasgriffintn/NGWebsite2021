@@ -34,15 +34,21 @@ export interface User {
 
 export interface GameState {
   isActive: boolean;
+  isLobby: boolean;
+  gameId?: string | null;
+  gameName?: string;
   targetWord: string;
   timeRemaining: number;
   guesses: Array<{
+    playerId: string;
+    playerName: string;
     guess: string;
     timestamp: number;
+    correct: boolean;
   }>;
   hasWon: boolean;
-  currentDrawer: string | undefined;
-  endTime: number | undefined;
+  currentDrawer?: string;
+  endTime?: number;
   statusMessage?: {
     type: 'success' | 'failure';
     message: string;
@@ -67,3 +73,11 @@ export type GameActions = {
   endGame: () => void;
   handleGuess: (drawingData: string) => Promise<void>;
 };
+
+export interface GameListItem {
+  id: string;
+  name: string;
+  playerCount: number;
+  isLobby: boolean;
+  isActive: boolean;
+}

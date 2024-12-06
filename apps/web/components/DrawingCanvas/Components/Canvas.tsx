@@ -1,16 +1,14 @@
-import { useState, useRef, useEffect } from 'react';
-
-import { floodFill } from '../utils';
+import { useEffect, useRef, RefObject } from 'react';
 
 interface CanvasProps {
-  canvasRef: React.RefObject<HTMLCanvasElement>;
+  canvasRef: RefObject<HTMLCanvasElement>;
   isFillMode: boolean;
   currentColor: string;
   lineWidth: number;
   saveToHistory: () => void;
-  onDrawingComplete?: () => void;
-  onDrawingUpdate?: () => void;
-  updateInterval?: number;
+  onDrawingComplete: () => void;
+  isReadOnly?: boolean;
+  drawingData?: string;
 }
 
 export function Canvas({
@@ -20,118 +18,138 @@ export function Canvas({
   lineWidth,
   saveToHistory,
   onDrawingComplete,
-  onDrawingUpdate,
-  updateInterval = 2000,
+  isReadOnly = false,
+  drawingData,
 }: CanvasProps) {
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [lastX, setLastX] = useState(0);
-  const [lastY, setLastY] = useState(0);
-  const lastUpdateRef = useRef<number>(0);
-  const updateIntervalRef = useRef<NodeJS.Timeout>();
+  const isDrawing = useRef(false);
+  const lastX = useRef(0);
+  const lastY = useRef(0);
 
-  const startUpdateInterval = () => {
-    if (onDrawingUpdate) {
-      updateIntervalRef.current = setInterval(() => {
-        onDrawingUpdate();
-      }, updateInterval);
-    }
-  };
+  useEffect(() => {
+    if (!drawingData || !canvasRef.current) return;
 
-  const clearUpdateInterval = () => {
-    if (updateIntervalRef.current) {
-      clearInterval(updateIntervalRef.current);
-      updateIntervalRef.current = undefined;
-    }
-  };
+    const image = new Image();
+    image.onload = () => {
+      const ctx = canvasRef.current?.getContext('2d');
+      if (!ctx) return;
 
-  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isDrawing) return;
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.drawImage(image, 0, 0);
+    };
+    image.src = drawingData;
+  }, [drawingData]);
 
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext('2d');
-    if (!ctx || !canvas) return;
+  const draw = (e: MouseEvent | TouchEvent) => {
+    if (!isDrawing.current || !canvasRef.current) return;
 
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
+    const ctx = canvasRef.current.getContext('2d');
+    if (!ctx) return;
 
-    const x = (e.clientX - rect.left) * scaleX;
-    const y = (e.clientY - rect.top) * scaleY;
+    const rect = canvasRef.current.getBoundingClientRect();
+    const scaleX = canvasRef.current.width / rect.width;
+    const scaleY = canvasRef.current.height / rect.height;
+
+    const x =
+      (('touches' in e ? e.touches[0].clientX : e.clientX) - rect.left) *
+      scaleX;
+    const y =
+      (('touches' in e ? e.touches[0].clientY : e.clientY) - rect.top) * scaleY;
 
     ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
+    ctx.moveTo(lastX.current, lastY.current);
     ctx.lineTo(x, y);
-    ctx.stroke();
-
-    setLastX(x);
-    setLastY(y);
-
-    const now = Date.now();
-    if (now - lastUpdateRef.current >= updateInterval) {
-      onDrawingUpdate?.();
-      lastUpdateRef.current = now;
-    }
-  };
-
-  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext('2d');
-    if (!ctx || !canvas) return;
-
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    const x = (e.clientX - rect.left) * scaleX;
-    const y = (e.clientY - rect.top) * scaleY;
-
-    if (isFillMode) {
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      floodFill(imageData, Math.round(x), Math.round(y), currentColor);
-      ctx.putImageData(imageData, 0, 0);
-      saveToHistory();
-      onDrawingUpdate?.();
-      return;
-    }
-
-    setIsDrawing(true);
-    setLastX(x);
-    setLastY(y);
-    lastUpdateRef.current = Date.now();
-    startUpdateInterval();
-
-    ctx.beginPath();
+    ctx.strokeStyle = currentColor;
     ctx.lineWidth = lineWidth;
     ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.strokeStyle = currentColor;
-    ctx.moveTo(x, y);
+    ctx.stroke();
+
+    lastX.current = x;
+    lastY.current = y;
   };
 
-  const handleMouseUp = () => {
-    setIsDrawing(false);
-    clearUpdateInterval();
+  const fill = () => {
+    if (!canvasRef.current) return;
+    const ctx = canvasRef.current.getContext('2d');
+    if (!ctx) return;
+
+    ctx.fillStyle = currentColor;
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     saveToHistory();
-    onDrawingComplete?.();
+    onDrawingComplete();
+  };
+
+  const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
+    if (isReadOnly) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    isDrawing.current = true;
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+
+    if ('touches' in e) {
+      lastX.current = (e.touches[0].clientX - rect.left) * scaleX;
+      lastY.current = (e.touches[0].clientY - rect.top) * scaleY;
+    } else {
+      lastX.current = (e.clientX - rect.left) * scaleX;
+      lastY.current = (e.clientY - rect.top) * scaleY;
+    }
+
+    if (isFillMode) {
+      fill();
+      isDrawing.current = false;
+    }
+  };
+
+  const stopDrawing = () => {
+    if (isDrawing.current) {
+      isDrawing.current = false;
+      saveToHistory();
+      onDrawingComplete();
+    }
   };
 
   useEffect(() => {
-    return () => {
-      clearUpdateInterval();
-    };
-  }, []);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    if (!isReadOnly) {
+      const handleMouseMove = (e: MouseEvent) => draw(e);
+      const handleTouchMove = (e: TouchEvent) => {
+        e.preventDefault();
+        draw(e);
+      };
+
+      canvas.addEventListener('mousemove', handleMouseMove);
+      canvas.addEventListener('touchmove', handleTouchMove);
+
+      return () => {
+        canvas.removeEventListener('mousemove', handleMouseMove);
+        canvas.removeEventListener('touchmove', handleTouchMove);
+      };
+    }
+  }, [isReadOnly, currentColor, lineWidth, isFillMode]);
 
   return (
-    <div className="relative w-full aspect-square">
+    <>
+      <span className="sr-only">
+        Drawing Canvas {isReadOnly ? 'ReadOnly' : 'Editable'}
+      </span>
       <canvas
         ref={canvasRef}
         width={800}
-        height={800}
-        className="absolute top-0 left-0 w-full h-full border border-gray-200 rounded-lg cursor-crosshair bg-[#f9fafb] shadow-sm"
+        height={650}
+        className={`bg-[#f9fafb] top-0 left-0 w-full h-full max-h-[650px] border border-gray-200 rounded-lg touch-none ${
+          isReadOnly ? 'cursor-default' : 'cursor-crosshair'
+        }`}
         onMouseDown={startDrawing}
-        onMouseMove={draw}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
+        onMouseUp={stopDrawing}
+        onMouseOut={stopDrawing}
+        onTouchStart={startDrawing}
+        onTouchEnd={stopDrawing}
       />
-    </div>
+    </>
   );
 }

@@ -8,8 +8,6 @@ import { onGenerateDrawing } from '@/components/ChatInterface/actions';
 export function AnyoneCanDraw() {
   const [result, setResult] = useState<string | null>(null);
   // TODO: make this dynamic
-  const gameId = 'everyone';
-  // TODO: make this dynamic
   const playerId = 'anonymous';
   const playerName = 'Anonymous';
 
@@ -29,7 +27,6 @@ export function AnyoneCanDraw() {
       onSubmit={handleSubmit}
       result={result}
       gameMode={true}
-      gameId={gameId}
       playerId={playerId}
       playerName={playerName}
     />

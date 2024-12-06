@@ -129,60 +129,81 @@ export function DrawingCanvas({
     }
   };
 
-  const { isConnected, gameState, users, startGame, endGame, updateDrawing } =
-    useGameState(
-      gameId || 'everyone',
-      playerId || 'anonymous',
-      playerName || 'Anonymous',
-      clearCanvas
-    );
+  const {
+    isConnected,
+    gameState,
+    users,
+    availableGames,
+    createGame,
+    joinGame,
+    startGame,
+    endGame,
+    leaveGame,
+    updateDrawing,
+  } = useGameState(
+    gameId,
+    playerId || 'anonymous',
+    playerName || 'Anonymous',
+    clearCanvas
+  );
 
   const handleDrawingComplete = async () => {
-    if (gameState.isActive && canvasRef.current) {
+    if (
+      gameState.isActive &&
+      canvasRef.current &&
+      gameState.currentDrawer === playerId
+    ) {
       const drawingData = canvasRef.current.toDataURL('image/png');
       await updateDrawing(drawingData);
     }
   };
+
+  const isDrawer = gameState.currentDrawer === playerId;
+
+  const displaySidebar =
+    !gameState.isActive || (gameState.isActive && isDrawer);
 
   return (
     <div className="flex flex-col gap-6 w-full mx-auto">
       <div className="flex flex-col lg:flex-row gap-6">
         {!result && (
           <div className="flex flex-col lg:flex-row gap-6 w-full">
-            <div className="lg:w-64 flex flex-col gap-4">
-              <div className="flex flex-col gap-4 p-4 bg-card rounded-lg border shadow-sm">
-                <Header
-                  undo={undo}
-                  redo={redo}
-                  history={history}
-                  historyIndex={historyIndex}
-                />
+            {displaySidebar && (
+              <div className="lg:w-64 flex flex-col gap-4">
+                <div className="flex flex-col gap-4 p-4 bg-card rounded-lg border shadow-sm">
+                  <Header
+                    undo={undo}
+                    redo={redo}
+                    history={history}
+                    historyIndex={historyIndex}
+                  />
 
-                <ToolPicker
-                  isFillMode={isFillMode}
-                  setIsFillMode={setIsFillMode}
-                />
+                  <ToolPicker
+                    isFillMode={isFillMode}
+                    setIsFillMode={setIsFillMode}
+                  />
 
-                <LineWidthPicker
-                  lineWidth={lineWidth}
-                  setLineWidth={setLineWidth}
-                />
+                  <LineWidthPicker
+                    lineWidth={lineWidth}
+                    setLineWidth={setLineWidth}
+                  />
 
-                <ColorPicker
-                  currentColor={currentColor}
-                  setCurrentColor={setCurrentColor}
-                />
+                  <ColorPicker
+                    currentColor={currentColor}
+                    setCurrentColor={setCurrentColor}
+                  />
 
-                <Button
-                  onClick={clearCanvas}
-                  variant="outline"
-                  size="sm"
-                  className="w-full text-muted-foreground"
-                >
-                  Clear Canvas
-                </Button>
+                  <Button
+                    onClick={clearCanvas}
+                    variant="outline"
+                    size="sm"
+                    className="w-full text-muted-foreground"
+                  >
+                    Clear Canvas
+                  </Button>
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="flex-1 flex flex-col gap-6">
               <Canvas
@@ -192,6 +213,8 @@ export function DrawingCanvas({
                 lineWidth={lineWidth}
                 saveToHistory={saveToHistory}
                 onDrawingComplete={handleDrawingComplete}
+                isReadOnly={gameState.isActive && !isDrawer}
+                drawingData={gameState.drawingData}
               />
             </div>
 
@@ -230,28 +253,33 @@ export function DrawingCanvas({
                     <GameStatus
                       users={users}
                       gameState={gameState}
+                      availableGames={availableGames}
+                      onCreateGame={createGame}
+                      onJoinGame={joinGame}
                       onStartGame={startGame}
                       onEndGame={endGame}
+                      onLeaveGame={leaveGame}
                       isConnected={isConnected}
+                      isDrawer={isDrawer}
                     />
                   </div>
 
                   {gameState.isActive && (
                     <div className="bg-muted p-4 rounded-lg flex-1">
-                      <h3 className="font-medium mb-2">AI Guesses:</h3>
+                      <h3 className="font-medium mb-2">Game Guesses:</h3>
                       <div className="space-y-2 max-h-[400px] overflow-y-auto">
                         {gameState.guesses.map((guess, index) => (
                           <div
                             key={index}
                             className={`text-sm p-2 rounded ${
-                              guess.guess.includes(
-                                gameState.targetWord.toLowerCase()
-                              )
+                              guess.correct
                                 ? 'bg-green-100 dark:bg-green-900'
                                 : 'bg-background'
                             }`}
                           >
-                            {new Date(guess.timestamp).toLocaleTimeString()}:{' '}
+                            <span className="font-medium">
+                              {guess.playerName}:
+                            </span>{' '}
                             {guess.guess}
                           </div>
                         ))}

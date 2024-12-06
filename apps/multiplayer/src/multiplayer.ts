@@ -13,39 +13,36 @@ import { onAIGuessDrawing } from './utils/ai-utils';
 export class Multiplayer implements DurableObject {
   private state: DurableObjectState;
   private env: Env;
-  private users: Map<string, { name: string; score: number }>;
-  private gameState: GameState;
-  private GAME_DURATION = 120;
-  private timerInterval: number | null = null;
-  private AI_PLAYER_ID = 'ai-player';
-  private lastAIGuessTime: number = 0;
-  private AI_GUESS_COOLDOWN = 10000; // 10 seconds between guesses
+  private games: Map<
+    string,
+    {
+      name: string;
+      users: Map<string, { name: string; score: number }>;
+      gameState: GameState;
+      timerInterval: number | null;
+      lastAIGuessTime: number;
+    }
+  >;
+  private readonly GAME_DURATION = 120;
+  private readonly AI_PLAYER_ID = 'ai-player';
+  private readonly AI_GUESS_COOLDOWN = 10000;
+  private readonly BASE_CORRECT_GUESSER_SCORE = 5;
+  private readonly BASE_CORRECT_DRAWER_SCORE = 2;
 
   constructor(state: DurableObjectState, env: Env) {
     this.state = state;
     this.env = env;
-    this.users = new Map();
-    this.gameState = {
-      isActive: false,
-      targetWord: '',
-      timeRemaining: this.GAME_DURATION,
-      guesses: [],
-      hasWon: false,
-    };
+    this.games = new Map();
 
     this.state.blockConcurrencyWhile(async () => {
-      const [storedUsers, storedGame] = await Promise.all([
-        this.state.storage.get('users'),
-        this.state.storage.get('gameState'),
-      ]);
-
-      if (storedUsers) {
-        // @ts-ignore
-        this.users = storedUsers;
-        this.users.set(this.AI_PLAYER_ID, { name: 'AI Assistant', score: 0 });
+      const storedGames = await this.state.storage.get('games');
+      if (storedGames) {
+        this.games = new Map(storedGames as [string, any][]);
+        for (const [gameId, game] of this.games) {
+          game.users = new Map(Array.from(game.users) as [string, any][]);
+          game.timerInterval = null;
+        }
       }
-      // @ts-ignore
-      if (storedGame) this.gameState = storedGame;
     });
   }
 
@@ -66,6 +63,17 @@ export class Multiplayer implements DurableObject {
       const data = JSON.parse(message);
 
       switch (data.action) {
+        case 'createGame':
+          await this.handleCreateGame(data);
+          break;
+        case 'getGames':
+          ws.send(
+            JSON.stringify({
+              type: 'gamesList',
+              games: this.getGamesList(),
+            })
+          );
+          break;
         case 'join':
           await this.handleJoin(data);
           break;
@@ -83,14 +91,15 @@ export class Multiplayer implements DurableObject {
           break;
       }
 
-      this.broadcast({
-        type: 'gameState',
-        gameState: this.gameState,
-        users: Array.from(this.users.entries()).map(([id, data]) => ({
-          id,
-          ...data,
-        })),
-      });
+      if (data.gameId) {
+        const game = this.games.get(data.gameId);
+        if (game) {
+          this.broadcast(data.gameId, {
+            type: 'gameState',
+            gameState: game.gameState,
+          });
+        }
+      }
     } catch (error) {
       console.error('Error handling message:', error);
       ws.send(
@@ -110,126 +119,178 @@ export class Multiplayer implements DurableObject {
     }
   }
 
-  private async handleJoin({ playerId, playerName }: JoinRequest) {
+  private async handleCreateGame({
+    gameName,
+    playerId,
+    playerName,
+  }: {
+    gameName: string;
+    playerId: string;
+    playerName: string;
+  }) {
     try {
-      if (!this.users.has(playerId)) {
-        this.users.set(playerId, { name: playerName, score: 0 });
-        await this.state.storage.put('users', this.users);
-
-        this.broadcast({
-          type: 'playerJoined',
-          playerId,
-          playerName,
-        });
-      }
-    } catch (error) {
-      console.error('Error joining game:', error);
-      throw error;
-    }
-  }
-
-  private async handleLeave({ playerId }: { playerId: string }) {
-    try {
-      this.users.delete(playerId);
-      await this.state.storage.put('users', this.users);
-      this.broadcast({
-        type: 'playerLeft',
-        playerId,
-      });
-
-      if (
-        this.gameState.isActive &&
-        this.gameState.currentDrawer === playerId
-      ) {
-        this.gameState.isActive = false;
-        this.gameState.statusMessage = {
-          type: 'failure',
-          message: 'Game ended - drawer left the game',
-        };
-        await this.state.storage.put('gameState', this.gameState);
-      }
-    } catch (error) {
-      console.error('Error leaving game:', error);
-      throw error;
-    }
-  }
-
-  private async handleStartGame({ playerId }: StartGameRequest) {
-    try {
-      if (this.gameState.isActive) return;
-
-      const randomWord =
-        GAME_WORDS[Math.floor(Math.random() * GAME_WORDS.length)];
-      this.gameState = {
-        isActive: true,
-        targetWord: randomWord,
-        timeRemaining: this.GAME_DURATION,
-        guesses: [],
-        hasWon: false,
-        currentDrawer: playerId,
-        endTime: Date.now() + this.GAME_DURATION * 1000,
+      const gameId = crypto.randomUUID();
+      const newGame = {
+        name: gameName,
+        users: new Map([
+          [this.AI_PLAYER_ID, { name: 'AI Assistant', score: 0 }],
+        ]),
+        gameState: {
+          isActive: false,
+          targetWord: '',
+          timeRemaining: this.GAME_DURATION,
+          guesses: [],
+          hasWon: false,
+          isLobby: true,
+        },
+        timerInterval: null,
+        lastAIGuessTime: 0,
       };
 
-      await this.state.storage.put('gameState', this.gameState);
+      this.games.set(gameId, newGame);
+      await this.handleJoin({ gameId, playerId, playerName });
+      await this.state.storage.put('games', Array.from(this.games.entries()));
 
-      this.startGameTimer();
-      this.broadcast({
-        type: 'gameStarted',
+      this.broadcast(gameId, {
+        type: 'gameCreated',
+        gameId,
+        gameName,
+        gameState: newGame.gameState,
       });
 
-      if (this.gameState.endTime) {
-        await this.state.storage.setAlarm(this.gameState.endTime);
-      }
+      return gameId;
     } catch (error) {
-      console.error('Error starting game:', error);
+      console.error('Error creating game:', error);
       throw error;
     }
   }
 
-  private startGameTimer() {
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval);
+  private async handleJoin({ gameId, playerId, playerName }: JoinRequest) {
+    const game = this.games.get(gameId);
+    if (!game) throw new Error('Game not found');
+
+    if (!game.users.has(playerId)) {
+      game.users.set(playerId, { name: playerName, score: 0 });
+      await this.state.storage.put('games', Array.from(this.games.entries()));
+
+      this.broadcast(gameId, {
+        type: 'playerJoined',
+        playerId,
+        playerName,
+      });
+    }
+  }
+
+  private async handleLeave({
+    gameId,
+    playerId,
+  }: {
+    gameId: string;
+    playerId: string;
+  }) {
+    const game = this.games.get(gameId);
+    if (!game) return;
+
+    game.users.delete(playerId);
+    await this.state.storage.put('games', Array.from(this.games.entries()));
+
+    this.broadcast(gameId, {
+      type: 'playerLeft',
+      playerId,
+    });
+
+    if (game.gameState.isActive && game.gameState.currentDrawer === playerId) {
+      game.gameState.isActive = false;
+      game.gameState.statusMessage = {
+        type: 'failure',
+        message: 'Game ended - drawer left the game',
+      };
+      await this.state.storage.put('games', Array.from(this.games.entries()));
+    }
+  }
+
+  private async handleStartGame({
+    gameId,
+    playerId,
+  }: { gameId: string } & StartGameRequest) {
+    const game = this.games.get(gameId);
+    if (!game) throw new Error('Game not found');
+    if (game.gameState.isActive) return;
+    if (!game.gameState.isLobby || game.users.size < 2) return;
+
+    const randomWord =
+      GAME_WORDS[Math.floor(Math.random() * GAME_WORDS.length)];
+    game.gameState = {
+      isActive: true,
+      isLobby: false,
+      targetWord: randomWord,
+      timeRemaining: this.GAME_DURATION,
+      guesses: [],
+      hasWon: false,
+      currentDrawer: playerId,
+      endTime: Date.now() + this.GAME_DURATION * 1000,
+    };
+
+    await this.state.storage.put('games', Array.from(this.games.entries()));
+    this.startGameTimer(gameId);
+
+    this.broadcast(gameId, {
+      type: 'gameStarted',
+    });
+
+    if (game.gameState.endTime) {
+      await this.state.storage.setAlarm(game.gameState.endTime);
+    }
+  }
+
+  private startGameTimer(gameId: string) {
+    const game = this.games.get(gameId);
+    if (!game) return;
+
+    if (game.timerInterval) {
+      clearInterval(game.timerInterval);
     }
 
-    this.timerInterval = setInterval(async () => {
-      if (!this.gameState.isActive) {
-        if (this.timerInterval !== null) {
-          clearInterval(this.timerInterval);
+    game.timerInterval = setInterval(async () => {
+      if (!game.gameState.isActive) {
+        if (game.timerInterval !== null) {
+          clearInterval(game.timerInterval);
         }
         return;
       }
 
       const now = Date.now();
-      if (this.gameState.endTime) {
-        this.gameState.timeRemaining = Math.max(
+      if (game.gameState.endTime) {
+        game.gameState.timeRemaining = Math.max(
           0,
-          Math.ceil((this.gameState.endTime - now) / 1000)
+          Math.ceil((game.gameState.endTime - now) / 1000)
         );
 
-        this.broadcast({
+        this.broadcast(gameId, {
           type: 'gameState',
-          gameState: this.gameState,
-          users: Array.from(this.users.entries()).map(([id, data]) => ({
+          gameState: game.gameState,
+          users: Array.from(game.users.entries()).map(([id, data]) => ({
             id,
             ...data,
           })),
         });
 
-        if (this.gameState.timeRemaining <= 0) {
-          clearInterval(this.timerInterval);
+        if (game.gameState.timeRemaining <= 0) {
+          clearInterval(game.timerInterval);
         }
 
-        if (this.gameState.drawingData) {
-          if (now - this.lastAIGuessTime >= this.AI_GUESS_COOLDOWN) {
+        if (game.gameState.drawingData) {
+          if (now - game.lastAIGuessTime >= this.AI_GUESS_COOLDOWN) {
             try {
               const aiGuess = await onAIGuessDrawing(
-                this.gameState.drawingData,
+                game.gameState.drawingData,
                 this.env
               );
 
               if (aiGuess.guess) {
-                this.lastAIGuessTime = now;
+                game.lastAIGuessTime = now;
                 await this.handleGuess({
+                  gameId,
                   playerId: this.AI_PLAYER_ID,
                   guess: aiGuess.guess,
                 });
@@ -243,67 +304,135 @@ export class Multiplayer implements DurableObject {
     }, 1000) as unknown as number;
   }
 
-  private async handleGuess({ playerId, guess }: GuessRequest) {
+  private async handleGuess({ gameId, playerId, guess }: GuessRequest) {
     try {
-      if (!this.gameState.isActive) return;
+      const game = this.games.get(gameId);
+      if (!game) throw new Error('Game not found');
+      if (!game.gameState.isActive) return;
 
-      const newGuess = {
-        guess: guess.toLowerCase(),
-        timestamp: Date.now(),
+      const isCurrentDrawer = playerId === game.gameState.currentDrawer;
+      if (isCurrentDrawer) return;
+
+      const normalizedGuess = guess.trim().toLowerCase();
+      const normalizedTarget = game.gameState.targetWord.toLowerCase();
+
+      game.gameState.guesses.push({
         playerId,
-      };
+        playerName: game.users.get(playerId)?.name || 'Unknown Player',
+        guess,
+        timestamp: Date.now(),
+        correct: normalizedGuess === normalizedTarget,
+      });
 
-      this.gameState.guesses.push(newGuess);
+      if (normalizedGuess === normalizedTarget) {
+        const timeBasedScoreMultiplier =
+          game.gameState.timeRemaining / this.GAME_DURATION;
 
-      if (
-        guess.toLowerCase().trim() === this.gameState.targetWord.toLowerCase()
-      ) {
-        const player = this.users.get(playerId);
-        if (player) {
-          player.score += Math.ceil(this.gameState.timeRemaining / 2);
-          this.users.set(playerId, player);
-          await this.state.storage.put('users', this.users);
+        const guesser = game.users.get(playerId);
+        if (guesser) {
+          guesser.score +=
+            this.BASE_CORRECT_GUESSER_SCORE * timeBasedScoreMultiplier;
         }
 
-        this.gameState.hasWon = true;
-        this.gameState.isActive = false;
-        this.gameState.timeRemaining = 0;
-        this.gameState.endTime = undefined;
-        this.gameState.statusMessage = {
-          type: 'success',
-          message: `${player?.name || 'Player'} guessed correctly: "${
-            this.gameState.targetWord
-          }"!`,
-        };
-
-        if (this.timerInterval) {
-          clearInterval(this.timerInterval);
+        const nonDrawerPlayers = Array.from(game.users.entries()).filter(
+          ([id]) =>
+            id !== game.gameState.currentDrawer && id !== this.AI_PLAYER_ID
+        );
+        const drawer = game.gameState.currentDrawer
+          ? game.users.get(game.gameState.currentDrawer)
+          : undefined;
+        if (drawer) {
+          drawer.score +=
+            this.BASE_CORRECT_DRAWER_SCORE *
+            (timeBasedScoreMultiplier / nonDrawerPlayers.length);
         }
 
-        await this.state.storage.deleteAlarm();
+        const correctGuesses = new Set(
+          game.gameState.guesses.filter((g) => g.correct).map((g) => g.playerId)
+        );
+
+        const allPlayersGuessedCorrectly = nonDrawerPlayers.every(
+          ([playerId]) => correctGuesses.has(playerId)
+        );
+
+        if (allPlayersGuessedCorrectly) {
+          game.gameState.hasWon = true;
+          game.gameState.isActive = false;
+          game.gameState.statusMessage = {
+            type: 'success',
+            message: `Everyone guessed correctly! The word was "${game.gameState.targetWord}"`,
+          };
+
+          if (game.timerInterval) {
+            clearInterval(game.timerInterval);
+            game.timerInterval = null;
+          }
+        } else {
+          game.gameState.statusMessage = {
+            type: 'success',
+            message: `${
+              game.users.get(playerId)?.name || 'Unknown Player'
+            } guessed correctly!`,
+          };
+        }
       }
 
-      await this.state.storage.put('gameState', this.gameState);
+      await this.state.storage.put(
+        'games',
+        Array.from(this.games.entries()).map(([id, gameData]) => [
+          id,
+          {
+            ...gameData,
+            gameState: {
+              ...gameData.gameState,
+              drawingData: undefined,
+            },
+          },
+        ])
+      );
+
+      this.broadcast(gameId, {
+        type: 'guessSubmitted',
+        gameState: game.gameState,
+        users: Array.from(game.users.entries()).map(([id, data]) => ({
+          id,
+          ...data,
+        })),
+      });
     } catch (error) {
       console.error('Error handling guess:', error);
       throw error;
     }
   }
 
-  private async handleDrawingUpdate({ drawingData }: DrawingUpdateRequest) {
+  private async handleDrawingUpdate({
+    gameId,
+    drawingData,
+  }: DrawingUpdateRequest) {
     try {
-      if (!this.gameState.isActive) return;
+      const game = this.games.get(gameId);
+      if (!game) throw new Error('Game not found');
+      if (!game.gameState.isActive) return;
 
-      this.gameState.drawingData = drawingData;
+      game.gameState.drawingData = drawingData;
 
-      await this.state.storage.put('gameState', {
-        ...this.gameState,
-        drawingData: undefined,
-      });
+      await this.state.storage.put(
+        'games',
+        Array.from(this.games.entries()).map(([id, gameData]) => [
+          id,
+          {
+            ...gameData,
+            gameState: {
+              ...gameData.gameState,
+              drawingData: undefined,
+            },
+          },
+        ])
+      );
 
-      this.broadcast({
+      this.broadcast(gameId, {
         type: 'drawingUpdate',
-        drawingData: this.gameState.drawingData,
+        drawingData: game.gameState.drawingData,
       });
     } catch (error) {
       console.error('Error handling drawing update:', error);
@@ -311,60 +440,91 @@ export class Multiplayer implements DurableObject {
     }
   }
 
-  private broadcast(message: any) {
-    try {
-      if (message.gameState) {
-        message.gameState = {
-          ...message.gameState,
-          drawingData: undefined,
-        };
-      }
+  private broadcast(gameId: string, message: any) {
+    const game = this.games.get(gameId);
+    if (!game) return;
 
-      const messageStr = JSON.stringify(message);
-      for (const ws of this.state.getWebSockets()) {
-        try {
-          ws.send(messageStr);
-        } catch (error) {
-          console.error('Error sending message to WebSocket:', error);
-        }
+    if (message.gameState) {
+      message.gameState = {
+        ...message.gameState,
+        drawingData: undefined,
+      };
+    }
+
+    const messageStr = JSON.stringify({
+      ...message,
+      gameId,
+      gameName: game.name,
+      users: Array.from(game.users.entries()).map(([id, data]) => ({
+        id,
+        ...data,
+      })),
+    });
+
+    for (const ws of this.state.getWebSockets()) {
+      try {
+        ws.send(messageStr);
+      } catch (error) {
+        console.error('Error sending message to WebSocket:', error);
       }
-    } catch (error) {
-      console.error('Error broadcasting message:', error);
-      throw error;
     }
   }
 
   async alarm() {
     try {
-      if (this.gameState.isActive) {
-        this.gameState.isActive = false;
-        this.gameState.statusMessage = {
-          type: 'failure',
-          message: `Time's up! The word was "${this.gameState.targetWord}"`,
-        };
+      for (const [gameId, game] of this.games) {
+        if (
+          game.gameState.isActive &&
+          game.gameState.endTime &&
+          Date.now() >= game.gameState.endTime
+        ) {
+          game.gameState.isActive = false;
+          game.gameState.statusMessage = {
+            type: 'failure',
+            message: `Time's up! The word was "${game.gameState.targetWord}"`,
+          };
 
-        const gameStateForStorage = {
-          ...this.gameState,
-          drawingData: undefined,
-        };
-        await this.state.storage.put('gameState', gameStateForStorage);
+          if (game.timerInterval) {
+            clearInterval(game.timerInterval);
+            game.timerInterval = null;
+          }
 
-        this.broadcast({
-          type: 'gameEnded',
-          gameState: gameStateForStorage,
-          users: Array.from(this.users.entries()).map(([id, data]) => ({
-            id,
-            ...data,
-          })),
-        });
+          this.broadcast(gameId, {
+            type: 'gameEnded',
+            gameState: {
+              ...game.gameState,
+              drawingData: undefined,
+            },
+            users: Array.from(game.users.entries()).map(([id, data]) => ({
+              id,
+              ...data,
+            })),
+          });
+
+          if (game.users.size === 0) {
+            this.games.delete(gameId);
+          }
+        }
       }
 
-      if (this.users.size === 0) {
+      if (this.games.size > 0) {
+        await this.state.storage.put('games', Array.from(this.games.entries()));
+      } else {
         await this.state.storage.deleteAll();
       }
     } catch (error) {
       console.error('Error handling alarm:', error);
       throw error;
     }
+  }
+
+  private getGamesList() {
+    return Array.from(this.games.entries()).map(([gameId, game]) => ({
+      id: gameId,
+      name: game.name,
+      playerCount: game.users.size,
+      isLobby: game.gameState.isLobby,
+      isActive: game.gameState.isActive,
+    }));
   }
 }

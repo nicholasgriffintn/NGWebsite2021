@@ -27,6 +27,8 @@ export interface GameState {
     guess: string;
     timestamp: number;
     playerId: string;
+    playerName: string;
+    correct: boolean;
   }>;
   hasWon: boolean;
   currentDrawer?: string;
@@ -35,10 +37,11 @@ export interface GameState {
     type: 'success' | 'failure';
     message: string;
   };
+  isLobby: boolean;
 }
 
-// Request types
 export interface JoinRequest {
+  gameId: string;
   playerId: string;
   playerName: string;
 }
@@ -48,19 +51,21 @@ export interface LeaveRequest {
 }
 
 export interface StartGameRequest {
+  gameId: string;
   playerId: string;
 }
 
 export interface GuessRequest {
+  gameId: string;
   playerId: string;
   guess: string;
 }
 
 export interface DrawingUpdateRequest {
-  drawingData: string;
+  gameId: string;
+  drawingData: any;
 }
 
-// Response types
 export interface BaseResponse {
   ok: boolean;
   success: boolean;
@@ -75,4 +80,20 @@ export interface GameStateResponse extends BaseResponse {
     name: string;
     score: number;
   }>;
+}
+
+export interface Game {
+  name: string;
+  users: Map<string, { name: string; score: number }>;
+  gameState: GameState;
+  timerInterval: number | null;
+  lastAIGuessTime: number;
+}
+
+export interface GameListItem {
+  id: string;
+  name: string;
+  playerCount: number;
+  isLobby: boolean;
+  isActive: boolean;
 }
