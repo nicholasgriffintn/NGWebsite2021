@@ -56,7 +56,7 @@ export function GameStatus({
 
           {isConnected ? (
             <>
-              <div className="flex gap-2 my-4">
+              <div className="flex flex-col sm:flex-row gap-2 my-4">
                 <Input
                   value={newGameName}
                   onChange={(e) => setNewGameName(e.target.value)}
@@ -94,6 +94,7 @@ export function GameStatus({
                       <Button
                         onClick={() => onJoinGame(game.id)}
                         disabled={!game.isLobby}
+                        className="w-full sm:w-auto mt-2 sm:mt-0"
                       >
                         {game.isLobby ? 'Join' : 'In Progress'}
                       </Button>
@@ -159,7 +160,7 @@ export function GameStatus({
           </div>
         )}
 
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <Button
             onClick={onStartGame}
             disabled={users.length < 2}

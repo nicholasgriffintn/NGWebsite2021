@@ -152,9 +152,10 @@ export function Canvas({
         ref={canvasRef}
         width={800}
         height={650}
-        className={`bg-[#f9fafb] top-0 left-0 w-full h-full max-h-[650px] border border-gray-200 rounded-lg touch-none ${
+        className={`bg-[#f9fafb] w-full h-auto max-h-[80vh] border border-gray-200 rounded-lg touch-none ${
           isReadOnly ? 'cursor-default' : 'cursor-crosshair'
         }`}
+        style={{ aspectRatio: '800 / 650' }}
         onMouseDown={startDrawing}
         onMouseUp={stopDrawing}
         onMouseOut={stopDrawing}

@@ -1,8 +1,15 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-
 import { Button } from '@/components/ui/button';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import { Menu } from 'lucide-react';
 
 import type { DrawingResponse, DrawingCanvasProps } from './types';
 import { ColorPicker } from './Components/ColorPicker';
@@ -30,6 +37,7 @@ export function DrawingCanvas({
   const [isFillMode, setIsFillMode] = useState(false);
   const [history, setHistory] = useState<ImageData[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
+  const [isToolsOpen, setIsToolsOpen] = useState(false);
 
   const saveToHistory = () => {
     const canvas = canvasRef.current;
@@ -161,49 +169,65 @@ export function DrawingCanvas({
   const displaySidebar =
     !gameState.isActive || (gameState.isActive && isDrawer);
 
+  const DrawingTools = () => (
+    <div className="flex flex-col gap-4 p-4 bg-card rounded-lg border shadow-sm">
+      <Header
+        undo={undo}
+        redo={redo}
+        history={history}
+        historyIndex={historyIndex}
+      />
+
+      <ToolPicker isFillMode={isFillMode} setIsFillMode={setIsFillMode} />
+
+      <LineWidthPicker lineWidth={lineWidth} setLineWidth={setLineWidth} />
+
+      <ColorPicker
+        currentColor={currentColor}
+        setCurrentColor={setCurrentColor}
+      />
+
+      <Button
+        onClick={clearCanvas}
+        variant="outline"
+        size="sm"
+        className="w-full text-muted-foreground"
+      >
+        Clear Canvas
+      </Button>
+    </div>
+  );
+
   return (
-    <div className="flex flex-col gap-6 w-full mx-auto">
-      <div className="flex flex-col lg:flex-row gap-6">
+    <div className="flex flex-col gap-4 w-full mx-auto">
+      <div className="flex flex-col lg:flex-row gap-4">
         {!result && (
-          <div className="flex flex-col lg:flex-row gap-6 w-full">
+          <div className="flex flex-col lg:flex-row gap-4 w-full">
             {displaySidebar && (
-              <div className="lg:w-64 flex flex-col gap-4">
-                <div className="flex flex-col gap-4 p-4 bg-card rounded-lg border shadow-sm">
-                  <Header
-                    undo={undo}
-                    redo={redo}
-                    history={history}
-                    historyIndex={historyIndex}
-                  />
-
-                  <ToolPicker
-                    isFillMode={isFillMode}
-                    setIsFillMode={setIsFillMode}
-                  />
-
-                  <LineWidthPicker
-                    lineWidth={lineWidth}
-                    setLineWidth={setLineWidth}
-                  />
-
-                  <ColorPicker
-                    currentColor={currentColor}
-                    setCurrentColor={setCurrentColor}
-                  />
-
-                  <Button
-                    onClick={clearCanvas}
-                    variant="outline"
-                    size="sm"
-                    className="w-full text-muted-foreground"
-                  >
-                    Clear Canvas
-                  </Button>
-                </div>
+              <div className="w-full lg:w-64 hidden lg:flex flex-col gap-4">
+                <DrawingTools />
               </div>
             )}
 
-            <div className="flex-1 flex flex-col gap-6">
+            <div className="flex-1 flex flex-col gap-4">
+              {displaySidebar && (
+                <div className="lg:hidden">
+                  <Sheet open={isToolsOpen} onOpenChange={setIsToolsOpen}>
+                    <SheetTrigger asChild>
+                      <Button variant="outline" className="w-full">
+                        <Menu className="mr-2 h-4 w-4" /> Drawing Tools
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="bottom" className="h-[80vh]">
+                      <SheetHeader>
+                        <SheetTitle>Drawing Tools</SheetTitle>
+                      </SheetHeader>
+                      <DrawingTools />
+                    </SheetContent>
+                  </Sheet>
+                </div>
+              )}
+
               <Canvas
                 canvasRef={canvasRef}
                 isFillMode={isFillMode}
@@ -216,7 +240,7 @@ export function DrawingCanvas({
               />
             </div>
 
-            <div className="lg:w-80 flex flex-col gap-4">
+            <div className="w-full lg:w-80 flex flex-col gap-4">
               {!gameState.isActive && (
                 <GenerateDrawing
                   handleSubmit={handleSubmit}

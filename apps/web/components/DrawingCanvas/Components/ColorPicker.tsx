@@ -21,7 +21,7 @@ export function ColorPicker({
         />
         <span className="text-sm text-muted-foreground">Custom Color</span>
       </div>
-      <div className="grid grid-cols-5 gap-2">
+      <div className="grid grid-cols-5 sm:grid-cols-10 gap-2">
         {COLORS.map((color) => (
           <button
             key={color}

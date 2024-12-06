@@ -358,11 +358,19 @@ export class Multiplayer implements DurableObject {
         );
 
         if (allPlayersGuessedCorrectly) {
-          game.gameState.hasWon = true;
-          game.gameState.isActive = false;
-          game.gameState.statusMessage = {
-            type: 'success',
-            message: `Everyone guessed correctly! The word was "${game.gameState.targetWord}"`,
+          game.gameState = {
+            ...game.gameState,
+            hasWon: true,
+            isActive: false,
+            isLobby: true,
+            targetWord: '',
+            timeRemaining: this.GAME_DURATION,
+            currentDrawer: undefined,
+            endTime: undefined,
+            statusMessage: {
+              type: 'success',
+              message: `Everyone guessed correctly! The word was "${game.gameState.targetWord}"`,
+            },
           };
 
           if (game.timerInterval) {
@@ -480,10 +488,19 @@ export class Multiplayer implements DurableObject {
           game.gameState.endTime &&
           Date.now() >= game.gameState.endTime
         ) {
-          game.gameState.isActive = false;
-          game.gameState.statusMessage = {
-            type: 'failure',
-            message: `Time's up! The word was "${game.gameState.targetWord}"`,
+          const oldWord = game.gameState.targetWord;
+          game.gameState = {
+            ...game.gameState,
+            isActive: false,
+            isLobby: true,
+            targetWord: '',
+            timeRemaining: this.GAME_DURATION,
+            currentDrawer: undefined,
+            endTime: undefined,
+            statusMessage: {
+              type: 'failure',
+              message: `Time's up! The word was "${oldWord}"`,
+            },
           };
 
           if (game.timerInterval) {
@@ -493,19 +510,12 @@ export class Multiplayer implements DurableObject {
 
           this.broadcast(gameId, {
             type: 'gameEnded',
-            gameState: {
-              ...game.gameState,
-              drawingData: undefined,
-            },
+            gameState: game.gameState,
             users: Array.from(game.users.entries()).map(([id, data]) => ({
               id,
               ...data,
             })),
           });
-
-          if (game.users.size === 0) {
-            this.games.delete(gameId);
-          }
         }
       }
 
