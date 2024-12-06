@@ -15,13 +15,12 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import benchmarkData from './benchmarks.json';
 
 import { PageLayout } from '@/components/PageLayout';
-import { Link } from '@/components/Link';
 import { InnerPage } from '@/components/InnerPage';
 
 export const metadata = {
-  title: 'TechNutty',
+  title: 'AI Benchmarks',
   description:
-    'TechNutty was a technology news site that was run by Nicholas Griffin.',
+    'Compare responses from different AI models from my personal testing.',
 };
 
 export default async function Home() {
