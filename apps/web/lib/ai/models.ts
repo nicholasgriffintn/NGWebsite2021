@@ -308,6 +308,13 @@ export const modelsOptions: ChatModel[] = [
     capabilities: ['text-generation'],
   },
   {
+    id: 'llama-3.3-70b-instruct',
+    name: 'Llama 3.3 - 70B Instruct',
+    description:
+      "Meta's new 70B model that claims to have the same performance as the 450B model but more cost effective.",
+    capabilities: ['text-generation'],
+  },
+  {
     id: 'Llama-3.2-1B-Instruct-q4f32_1-MLC',
     name: 'Llama 3.2 1B Instruct (Q4F32)',
     description: 'Quantized Llama 3.2 1B model optimized for web browsers',
