@@ -3,6 +3,116 @@
     "benchmark": "Generate an SVG of a hamster running on a wheel",
     "description": "A standardised test to see how well LLMs can generate SVGs. Note: For all of these, I keep the conversation going until the model provides a useable SVG, even if that SVG is blank.",
     "models": {
+      "gemini-experimental-1121": {
+        "conversation": [
+          {
+            "role": "user",
+            "content": "Generate an SVG of a hamster running on a wheel",
+            "id": "av9eum",
+            "timestamp": 1733525110282,
+            "model": "gemini-exp-1121",
+            "platform": "api"
+          },
+          {
+            "role": "assistant",
+            "content": "Okay, here's the SVG code for a hamster running on a wheel:\n\n```xml\n<svg width=\"200\" height=\"200\" viewBox=\"0 0 200 200\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n  <g id=\"hamster_wheel\">\n    <circle id=\"wheel\" cx=\"100\" cy=\"100\" r=\"60\" stroke=\"#999\" stroke-width=\"8\"/>\n    <circle id=\"wheel_center\" cx=\"100\" cy=\"100\" r=\"10\" fill=\"#333\"/>\n    <g id=\"hamster\">\n      <ellipse id=\"body\" cx=\"100\" cy=\"65\" rx=\"20\" ry=\"12\" fill=\"#E0A860\"/>\n      <circle id=\"head\" cx=\"80\" cy=\"60\" r=\"8\" fill=\"#D1884F\"/>\n      <circle id=\"eye\" cx=\"76\" cy=\"58\" r=\"1.5\" fill=\"black\"/>\n      <circle id=\"ear\" cx=\"70\" cy=\"50\" r=\"3\" fill=\"#E0A860\" transform=\"rotate(-30 70 50)\"/>\n      <ellipse id=\"leg1\" cx=\"112\" cy=\"75\" rx=\"3\" ry=\"6\" fill=\"#E0A860\" transform=\"rotate(30 112 75)\"/>\n      <ellipse id=\"leg2\" cx=\"88\" cy=\"75\" rx=\"3\" ry=\"6\" fill=\"#E0A860\" transform=\"rotate(-30 88 75)\"/>\n\n      <!-- Animation -->\n      <animateTransform\n        attributeName=\"transform\"\n        attributeType=\"XML\"\n        type=\"rotate\"\n        from=\"0 100 100\"\n        to=\"360 100 100\"\n        dur=\"2s\"\n        repeatCount=\"indefinite\"\n      />\n      <animateTransform\n        xlink:href=\"#hamster\"\n        attributeName=\"transform\"\n        type=\"rotate\"\n        from=\"0 100 65\"\n        to=\"-360 100 65\"\n        dur=\"2s\"\n        repeatCount=\"indefinite\"\n      />\n    </g>\n  </g>\n</svg>\n```\n\n**Explanation:**\n\n*   **`<svg>`:** Defines the SVG canvas with width, height, and viewBox.\n*   **`hamster_wheel` group:**\n    *   **`wheel`:** A circle representing the outer part of the wheel.\n    *   **`wheel_center`:** A smaller circle for the wheel's center.\n*   **`hamster` group:**\n    *   **`body`:** An ellipse for the hamster's body.\n    *   **`head`:** A circle for the head.\n    *   **`eye`:** A small circle for the eye.\n    *   **`ear`:** A smaller tilted circle for the ear.\n    *   **`leg1`, `leg2`:** Ellipses for the legs, slightly rotated.\n*   **`animateTransform`:**\n    *   This element is used to create the animation.\n    *   The first `animateTransform` rotates the entire `hamster_wheel` group (making the wheel spin).\n    *   The second `animateTransform` rotates the `hamster` group in the opposite direction to make it look like the hamster is running inside.\n    *   `attributeName=\"transform\"`: Specifies the attribute to be animated.\n    *   `attributeType=\"XML\"`: Indicates that we are animating an XML attribute.\n    *   `type=\"rotate\"`: Sets the type of animation to rotation.\n    *   `from` and `to`: Define the start and end angles of rotation, as well as the rotation center point.\n    *   `dur`: Sets the duration of one animation cycle (2 seconds).\n    *   `repeatCount=\"indefinite\"`: Makes the animation loop endlessly.\n\n**How to use:**\n\n1. Save this code as an `.svg` file (e.g., `hamster_wheel.svg`).\n2. Open the file in a web browser or any SVG viewer to see the animated hamster running on the wheel.\n\nFeel free to adjust the colors, sizes, and animation speed to your preferences by modifying the values in the SVG code.\n",
+            "citations": [],
+            "logId": null,
+            "id": "598qws",
+            "timestamp": 1733525143348,
+            "model": "gemini-exp-1121",
+            "platform": "api"
+          }
+        ]
+      },
+      "gemini-experimental-1206": {
+        "conversation": [
+          {
+            "role": "user",
+            "content": "Generate an SVG of a hamster running on a wheel",
+            "id": "jkc6ux",
+            "timestamp": 1733525152524,
+            "model": "gemini-exp-1206",
+            "platform": "api"
+          },
+          {
+            "role": "assistant",
+            "content": "```xml\n<svg width=\"200\" height=\"150\" viewBox=\"0 0 200 150\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <radialGradient id=\"wheelGradient\" cx=\"50%\" cy=\"50%\" r=\"50%\" fx=\"50%\" fy=\"50%\">\n      <stop offset=\"0%\" stop-color=\"#ddd\" />\n      <stop offset=\"100%\" stop-color=\"#bbb\" />\n    </radialGradient>\n  </defs>\n\n  <!-- Hamster Wheel -->\n  <circle cx=\"100\" cy=\"75\" r=\"60\" fill=\"url(#wheelGradient)\" stroke=\"#999\" stroke-width=\"3\"/>\n  <line x1=\"100\" y1=\"15\" x2=\"100\" y2=\"135\" stroke=\"#999\" stroke-width=\"3\"/>\n\n  <!-- Wheel Bars (simplified) -->\n  <line x1=\"58\" y1=\"33\" x2=\"142\" y2=\"117\" stroke=\"#ccc\" stroke-width=\"2\" stroke-dasharray=\"5,5\"/>\n  <line x1=\"58\" y1=\"117\" x2=\"142\" y2=\"33\" stroke=\"#ccc\" stroke-width=\"2\" stroke-dasharray=\"5,5\"/>\n\n  <!-- Hamster Body -->\n  <ellipse cx=\"110\" cy=\"80\" rx=\"20\" ry=\"15\" fill=\"#e0b080\" stroke=\"#a07050\" stroke-width=\"1\"/>\n\n  <!-- Hamster Head -->\n  <circle cx=\"128\" cy=\"70\" r=\"10\" fill=\"#e0b080\" stroke=\"#a07050\" stroke-width=\"1\"/>\n\n  <!-- Hamster Eye -->\n  <circle cx=\"133\" cy=\"68\" r=\"2\" fill=\"black\"/>\n\n  <!-- Hamster Nose -->\n  <circle cx=\"136\" cy=\"72\" r=\"1\" fill=\"black\"/>\n\n  <!-- Hamster Feet (simplified, mid-run) -->\n  <line x1=\"115\" y1=\"90\" x2=\"110\" y2=\"95\" stroke=\"#a07050\" stroke-width=\"2\"/>\n  <line x1=\"100\" y1=\"95\" x2=\"95\" y2=\"90\" stroke=\"#a07050\" stroke-width=\"2\"/>\n\n  <!-- Hamster Tail -->\n  <line x1=\"90\" y1=\"85\" x2=\"85\" y2=\"80\" stroke=\"#a07050\" stroke-width=\"1\"/>\n\n  <!-- Wheel Stand -->\n  <rect x=\"70\" y=\"135\" width=\"60\" height=\"10\" fill=\"#654321\" stroke=\"#402010\" stroke-width=\"2\"/>\n\n  <!-- Ground -->\n  <line x1=\"0\" y1=\"145\" x2=\"200\" y2=\"145\" stroke=\"#888\" stroke-width=\"2\"/>\n</svg>\n```\n\n**Explanation:**\n\n*   **`<svg>` tag:** Defines the SVG canvas with a width and height of 200x150 pixels and sets the viewbox.\n*   **`<defs>` tag:** Contains definitions that can be reused, such as the radial gradient for the wheel.\n*   **`<radialGradient>`:** Creates a gradient for the wheel to give it a 3D look.\n*   **`<circle>`:** Used for the main wheel and the hamster's head.\n*   **`<ellipse>`:** Used for the hamster's body.\n*   **`<line>`:** Used for the wheel spokes, hamster legs, tail, stand support, and the ground.\n*   **`<rect>`:** Used for the base of the wheel stand.\n*   **`fill` attribute:** Sets the fill color of shapes.\n*   **`stroke` attribute:** Sets the color of the shape's outline.\n*   **`stroke-width` attribute:** Sets the thickness of the outline.\n*   **`stroke-dasharray`:** Creates a dashed line effect for the wheel bars.\n*   **`cx`, `cy`, `rx`, `ry`, `r`:** Attributes that define the position and dimensions of circles and ellipses.\n*   **`x1`, `y1`, `x2`, `y2`:** Attributes that define the start and end points of lines.\n\n**Key Features:**\n\n*   **Simplified Style:** The hamster and wheel are depicted in a simplified, cartoonish style.\n*   **Wheel Gradient:** The radial gradient adds depth to the wheel.\n*   **Mid-Run Pose:** The hamster's legs are positioned to suggest it is running.\n*   **Color Palette:** Earthy tones are used to create a natural and warm feel.\n\nThis SVG code provides a basic representation of a hamster on a wheel. You can customize it further by:\n\n*   Adding more details to the hamster (e.g., ears, whiskers).\n*   Improving the wheel design (e.g., adding more bars, making the bars more curved, different material appearance).\n*   Adding animation to make the hamster run and the wheel spin.\n*   Adjusting colors, sizes, and positions.\n\nThis SVG should render correctly in most modern web browsers and vector graphics editors.\n",
+            "citations": [],
+            "logId": null,
+            "id": "cim8oh",
+            "timestamp": 1733525181119,
+            "model": "gemini-exp-1206",
+            "platform": "api"
+          }
+        ]
+      },
+      "gemini-1.5-flash": {
+        "conversation": [
+          {
+            "role": "user",
+            "content": "Generate an SVG of a hamster running on a wheel",
+            "id": "z09g72",
+            "timestamp": 1733524536274,
+            "model": "gemini-1.5-flash",
+            "platform": "api"
+          },
+          {
+            "role": "assistant",
+            "content": "```xml\n<svg width=\"200\" height=\"150\" viewBox=\"0 0 200 150\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n  <!-- Wheel -->\n  <circle cx=\"100\" cy=\"75\" r=\"40\" fill=\"#a0522d\" stroke=\"black\" stroke-width=\"2\"/>\n\n  <!-- Spokes (simplified) -->\n  <line x1=\"100\" y1=\"35\" x2=\"100\" y2=\"115\" stroke=\"black\" stroke-width=\"2\"/>\n  <line x1=\"60\" y1=\"75\" x2=\"140\" y2=\"75\" stroke=\"black\" stroke-width=\"2\"/>\n\n\n  <!-- Hamster -->\n  <path d=\"M70 90 C70 80, 80 75, 90 75 C100 75, 110 80, 110 90 C110 100, 100 105, 90 105 C80 105, 70 100, 70 90 Z\" fill=\"#800000\"/>  <!-- Body -->\n  <circle cx=\"85\" cy=\"85\" r=\"5\" fill=\"white\"/>  <!-- Eye -->\n  <circle cx=\"95\" cy=\"85\" r=\"5\" fill=\"white\"/>  <!-- Eye -->\n  <ellipse cx=\"95\" cy=\"100\" rx=\"7\" ry=\"3\" fill=\"#800000\" transform=\"rotate(10,95,100)\"/> <!-- Nose -->\n\n\n</svg>\n\n```\n\nThis code creates a simple SVG of a hamster running on a wheel.  You can copy and paste this directly into an HTML file or an SVG editor to view it.  The hamster is a very simplified representation, and you could improve it significantly with more complex path shapes for a more realistic look.  Similarly, you could add more spokes to the wheel for better detail.  This example focuses on providing a basic, functional SVG.\n",
+            "citations": [],
+            "logId": null,
+            "id": "al5qag",
+            "timestamp": 1733524537178,
+            "model": "gemini-1.5-flash",
+            "platform": "api"
+          }
+        ]
+      },
+      "gemini-1.5-pro": {
+        "conversation": [
+          {
+            "role": "user",
+            "content": "Generate an SVG of a hamster running on a wheel",
+            "id": "vbqmnf",
+            "timestamp": 1733524497403,
+            "model": "gemini-1.5-pro",
+            "platform": "api"
+          },
+          {
+            "role": "assistant",
+            "content": "```xml\n<svg width=\"200\" height=\"200\" viewBox=\"0 0 200 200\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n  <circle cx=\"100\" cy=\"100\" r=\"60\" stroke=\"#A0522D\" stroke-width=\"5\"/>\n  <g transform=\"translate(100,100) rotate(45)\">\n    <circle cx=\"0\" cy=\"-45\" r=\"15\" fill=\"#DDA0DD\"/>\n    <ellipse cx=\"-5\" cy=\"-50\" rx=\"3\" ry=\"5\" fill=\"black\"/>\n    <ellipse cx=\"5\" cy=\"-50\" rx=\"3\" ry=\"5\" fill=\"black\"/>\n    <ellipse cx=\"0\" cy=\"-40\" rx=\"5\" ry=\"3\" fill=\"pink\"/>\n    <path d=\"M -10 -35 C -5 -25, 5 -25, 10 -35\" stroke=\"#DDA0DD\" stroke-width=\"3\"/>\n    <path d=\"M -10 -35 C -5 -40, 5 -40, 10 -35\" stroke=\"#DDA0DD\" stroke-width=\"3\"/>\n    <circle cx=\"-10\" cy=\"-30\" r=\"3\" fill=\"#DDA0DD\"/>\n    <circle cx=\"10\" cy=\"-30\" r=\"3\" fill=\"#DDA0DD\"/>\n  </g>\n    <g transform=\"translate(100,100)\">\n        <line x1=\"60\" y1=\"0\" x2=\"70\" y2=\"0\" stroke=\"#A0522D\" stroke-width=\"3\"/>\n        <line x1=\"0\" y1=\"60\" x2=\"0\" y2=\"70\" stroke=\"#A0522D\" stroke-width=\"3\"/>\n        <line x1=\"-60\" y1=\"0\" x2=\"-70\" y2=\"0\" stroke=\"#A0522D\" stroke-width=\"3\"/>\n        <line x1=\"0\" y1=\"-60\" x2=\"0\" y2=\"-70\" stroke=\"#A0522D\" stroke-width=\"3\"/>\n        <line x1=\"42.4\" y1=\"42.4\" x2=\"50\" y2=\"50\" stroke=\"#A0522D\" stroke-width=\"3\"/>\n        <line x1=\"-42.4\" y1=\"42.4\" x2=\"-50\" y2=\"50\" stroke=\"#A0522D\" stroke-width=\"3\"/>\n        <line x1=\"42.4\" y1=\"-42.4\" x2=\"50\" y2=\"-50\" stroke=\"#A0522D\" stroke-width=\"3\"/>\n        <line x1=\"-42.4\" y1=\"-42.4\" x2=\"-50\" y2=\"-50\" stroke=\"#A0522D\" stroke-width=\"3\"/>\n\n    </g>\n</svg>\n```\n\nThis SVG code creates a hamster running in a wheel. Here's a breakdown:\n\n* **Wheel:**  The outer circle represents the wheel, colored with a brownish tone.\n* **Hamster:** The hamster is created using a group (`<g>`) element.\n    * **Body:** A pink circle forms the main body.\n    * **Head:** A smaller, lighter purple circle is the head.\n    * **Eyes:** Two small black ellipses create the eyes.\n    * **Nose:** A pink, horizontally-oriented ellipse is the nose.\n    * **Front Legs/Paws:** Two curved paths, slightly overlapping, create the illusion of running front paws.\n    * **Back Legs/Feet:** Two small circles represent the back feet.\n* **Rotation:** The `transform=\"translate(100,100) rotate(45)\"` on the hamster group moves the hamster to the center of the wheel and rotates it 45 degrees, making it look like it's in motion.\n* **Wheel Supports:** Lines extending outwards from the wheel give the impression of supports holding the wheel in place.\n\n\nYou can adjust the `rotate` value within the `transform` attribute to change the hamster's position on the wheel.  You can also change the colors, sizes, and shapes to customize your hamster and wheel.",
+            "citations": [],
+            "logId": null,
+            "id": "2ccfz5",
+            "timestamp": 1733524519017,
+            "model": "gemini-1.5-pro",
+            "platform": "api"
+          }
+        ]
+      },
+      "gemini-1.5-flash-8b": {
+        "conversation": [
+          {
+            "role": "user",
+            "content": "Generate an SVG of a hamster running on a wheel",
+            "id": "bxszn",
+            "timestamp": 1733524468089,
+            "model": "gemini-1.5-flash-8b",
+            "platform": "api"
+          },
+          {
+            "role": "assistant",
+            "content": "```xml\n<svg width=\"100\" height=\"100\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n  <circle cx=\"50\" cy=\"50\" r=\"40\" stroke=\"#333\" stroke-width=\"2\" fill=\"white\"/>\n  <path d=\"M50 50 L50 50\" stroke=\"black\" stroke-width=\"2\" stroke-linecap=\"round\"/>\n  <path d=\"M28 48 C28 42 34 36 40 36 C47 36 53 42 53 48\" stroke=\"black\" stroke-width=\"2\" fill=\"none\"/>\n\n  <!-- Hamster -->\n  <path d=\"M40 38 Q45 33 50 38 L50 42 Q45 47 40 42 Z M40 38 L45 33 L50 38 L45 43 L40 38 Z\" fill=\"#d2691e\" />\n\n  <!-- Wheel rotation - adjust as needed -->\n  <animateTransform\n    attributeName=\"transform\"\n    type=\"rotate\"\n    from=\"0 50 50\"\n    to=\"360 50 50\"\n    dur=\"5s\"\n    repeatCount=\"indefinite\"\n    />\n\n\n\n    <circle cx=\"50\" cy=\"50\" r=\"3\" fill=\"black\"/> <!--Hamster eye-->\n</svg>\n```\n\nThis SVG:\n\n* **Creates a hamster wheel:** A circle representing the wheel.\n* **Adds a hamster:** A simple, stylized hamster shape inside the wheel.\n* **Draws the wheel path:** A path to show the rotation.\n* **Adds animation:** The `animateTransform` tag rotates the hamster and the wheel, making the hamster appear to run.  The `dur` attribute controls the speed of animation (5 seconds in this case).  `repeatCount=\"indefinite\"` makes it loop.\n\n**How to use it:**\n\n1.  Save this code as an `.svg` file (e.g., `hamster_wheel.svg`).\n2.  Open the file in a web browser or a vector graphics editor like Inkscape to view the animated hamster running.\n\n**Improvements and Customization:**\n\n* **More detailed hamster:** You could add more details to the hamster (e.g., ears, legs) using more complex path shapes.\n* **Realistic wheel:**  Add spokes or more complex lines to the wheel to make it look more realistic.\n* **Color variations:** Change the colors for the hamster and the wheel to your liking.\n* **Faster/Slower animation:** Adjust the `dur` attribute in the `animateTransform` tag.\n* **Different rotation:** Modify the `from` and `to` values if you need a different animation direction.\n* **Adding a background:** Add a `rect` element with a background color to give the animation context.\n\n\n```xml\n<svg width=\"100\" height=\"100\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<rect width=\"100\" height=\"100\" fill=\"lightgray\"/> <!-- Add background -->\n  <!-- Rest of the code remains the same -->\n</svg>\n```",
+            "citations": [],
+            "logId": null,
+            "id": "t8y6sr",
+            "timestamp": 1733524473379,
+            "model": "gemini-1.5-flash-8b",
+            "platform": "api"
+          }
+        ]
+      },
       "o1-preview": {
         "conversation": [
           {
