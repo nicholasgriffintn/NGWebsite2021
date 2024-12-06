@@ -1,0 +1,116 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import benchmarkData from './benchmarks.json';
+
+import { PageLayout } from '@/components/PageLayout';
+import { Link } from '@/components/Link';
+import { InnerPage } from '@/components/InnerPage';
+
+export const metadata = {
+  title: 'TechNutty',
+  description:
+    'TechNutty was a technology news site that was run by Nicholas Griffin.',
+};
+
+export default async function Home() {
+  return (
+    <PageLayout>
+      <InnerPage>
+        <div className="grid grid-cols-5 gap-4 h-full">
+          <div className="col-span-5 md:col-span-3 lg:col-span-4 pt-5">
+            <div className="text-primary-foreground lg:max-w-[75%]">
+              <h1 className="text-2xl md:text-4xl font-bold text-primary-foreground">
+                AI Benchmarks
+              </h1>
+              <p>
+                Compare responses from different AI models from my personal
+                testing.
+              </p>
+            </div>
+          </div>
+        </div>
+        {benchmarkData.map((benchmark, index) => (
+          <Card key={index} className="mb-6">
+            <CardHeader>
+              <CardTitle>{benchmark.benchmark}</CardTitle>
+              <CardDescription>{benchmark.description}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Accordion type="single" collapsible className="w-full">
+                {Object.entries(benchmark.models).map(
+                  ([modelName, modelData], modelIndex) => (
+                    <AccordionItem
+                      key={modelIndex}
+                      value={`item-${modelIndex}`}
+                    >
+                      <AccordionTrigger>{modelName}</AccordionTrigger>
+                      <AccordionContent>
+                        <div className="flex flex-col md:flex-row">
+                          <ScrollArea className="h-[400px] md:w-1/2 rounded-md border p-4 mr-0 md:mr-2 mb-4 md:mb-0">
+                            {modelData.conversation.map(
+                              (message, messageIndex) => (
+                                <div key={messageIndex} className="mb-4">
+                                  <div className="font-semibold">
+                                    {message.role}:
+                                  </div>
+                                  <div className="whitespace-pre-wrap">
+                                    {message.content}
+                                  </div>
+                                </div>
+                              )
+                            )}
+                          </ScrollArea>
+                          <div className="md:w-1/2 md:ml-2">
+                            {modelData.conversation.some((message) =>
+                              message.content.includes('<svg')
+                            ) && (
+                              <div className="h-[400px] rounded-md border p-4 bg-white">
+                                <h4 className="text-sm font-semibold mb-2">
+                                  Generated SVG:
+                                </h4>
+                                <div className="w-full h-[calc(100%-2rem)] flex items-center justify-center">
+                                  <div
+                                    dangerouslySetInnerHTML={{
+                                      __html:
+                                        modelData.conversation
+                                          .find((message) =>
+                                            message.content.includes('<svg')
+                                          )
+                                          ?.content.match(
+                                            /<svg[\s\S]*?<\/svg>/
+                                          )?.[0]
+                                          ?.replace(
+                                            /<svg/,
+                                            '<svg width="100%" height="100%" preserveAspectRatio="xMidYMid meet"'
+                                          ) ?? '',
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  )
+                )}
+              </Accordion>
+            </CardContent>
+          </Card>
+        ))}
+      </InnerPage>
+    </PageLayout>
+  );
+}
