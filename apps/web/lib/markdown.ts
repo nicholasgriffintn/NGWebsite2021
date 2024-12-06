@@ -52,6 +52,10 @@ export function parseMarkdown(
 
   const paragraphs = normalizedInput.split('\n').map((paragraph, index) => {
     const html = paragraph
+      .replace(
+        /!\[(.*?)\]\((.*?)\)/g,
+        '<img src="$2" alt="$1" class="max-w-full h-auto" />'
+      )
       .replace(/^(?:\s[^\n])+##### ([^\n]+)\n/gm, '<h5>$1</h5>')
       .replace(/^(?:\s[^\n])+#### ([^\n]+)\n/gm, '<h4>$1</h4>')
       .replace(/^(?:\s[^\n])+### ([^\n]+)\n/gm, '<h3>$1</h3>')
