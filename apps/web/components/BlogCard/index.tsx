@@ -58,7 +58,10 @@ export function BlogCard({ post }) {
           {postContent}
           {!isBookmark && !post.metadata.link && (
             <span>
-              <Link href={postLink}>Read more</Link>
+              <Link href={postLink}>
+                Read more
+                <span className="sr-only"> about {post.metadata.title}</span>
+              </Link>
             </span>
           )}
         </div>
@@ -70,9 +73,14 @@ export function BlogCard({ post }) {
             </span>
           )}
           {post.metadata.tags && (
-            <div className="flex flex-wrap items-center space-x-2">
+            <div className="flex flex-wrap items-center gap-2">
               {post.metadata.tags.map((tag) => (
-                <Link key={tag} href={`/tags/${tag}`} muted>
+                <Link
+                  key={tag}
+                  href={`/tags/${tag}`}
+                  muted
+                  className="p-1 hover:underline"
+                >
                   #{tag}
                 </Link>
               ))}
