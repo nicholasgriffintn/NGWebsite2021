@@ -97,7 +97,10 @@ const MessageContent = ({
   content: string;
   onReaction: (reaction: string) => void;
 }) => {
-  const isFunction = message.name;
+  const isCodeContent =
+    content.includes('import') &&
+    content.includes('export') &&
+    content.includes('function');
 
   if (!content) {
     return null;
@@ -119,9 +122,13 @@ const MessageContent = ({
       )}
     >
       <div className="overflow-x-auto">
-        {message.role === 'assistant' &&
-        content.includes('<analysis>') &&
-        content.includes('<answer>') ? (
+        {isCodeContent ? (
+          <pre className="whitespace-pre-wrap break-words bg-muted p-2 rounded-md">
+            <code>{content}</code>
+          </pre>
+        ) : message.role === 'assistant' &&
+          content.includes('<analysis>') &&
+          content.includes('<answer>') ? (
           <AnalysisContent
             content={content}
             citations={message.citations || []}
@@ -132,49 +139,43 @@ const MessageContent = ({
             citations={message.citations || []}
           />
         )}
-        {isFunction && message.data && (
-          <div className="pt-2 w-full">
-            {message.name === 'get_weather' && (
-              <WeatherCard data={message.data} />
-            )}
-            {message.name === 'create_image' && (
-              <ReplicateCard name="create_image" data={message.data} />
-            )}
-            {message.name === 'create_video' && (
-              <ReplicateCard name="create_video" data={message.data} />
-            )}
-            {message.name === 'create_music' && (
-              <ReplicateCard name="create_music" data={message.data} />
-            )}
-            {message.name === 'podcast_upload' && (
-              <div className="mt-2">
-                <AudioCard url={message.data.url} />
-              </div>
-            )}
-            {message.name === 'podcast_transcribe' && (
-              <TranscriptionCard data={message.data.output} />
-            )}
-            {message.name === 'drawing_generate' && (
-              <DrawingCard data={message.data} />
-            )}
-            {message.name === 'podcast_summarise' && (
-              <div className="mt-2">
-                {message.data.speakers && (
-                  <div>
-                    <p className="text-sm font-semibold mb-2">Speakers</p>
-                    <ul>
-                      {Object.entries(
-                        message.data.speakers as {
-                          [key: string]: string;
-                        }
-                      ).map(([key, value]) => (
-                        <li key={key}>
-                          <span>{key}</span>: <span>{value}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+        {message.name === 'get_weather' && <WeatherCard data={message.data} />}
+        {message.name === 'create_image' && (
+          <ReplicateCard name="create_image" data={message.data} />
+        )}
+        {message.name === 'create_video' && (
+          <ReplicateCard name="create_video" data={message.data} />
+        )}
+        {message.name === 'create_music' && (
+          <ReplicateCard name="create_music" data={message.data} />
+        )}
+        {message.name === 'podcast_upload' && (
+          <div className="mt-2">
+            <AudioCard url={message.data.url} />
+          </div>
+        )}
+        {message.name === 'podcast_transcribe' && (
+          <TranscriptionCard data={message.data.output} />
+        )}
+        {message.name === 'drawing_generate' && (
+          <DrawingCard data={message.data} />
+        )}
+        {message.name === 'podcast_summarise' && (
+          <div className="mt-2">
+            {message.data.speakers && (
+              <div>
+                <p className="text-sm font-semibold mb-2">Speakers</p>
+                <ul>
+                  {Object.entries(
+                    message.data.speakers as {
+                      [key: string]: string;
+                    }
+                  ).map(([key, value]) => (
+                    <li key={key}>
+                      <span>{key}</span>: <span>{value}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
           </div>
@@ -275,7 +276,12 @@ export function MessageComponent({ message, onReaction }: MessageProps) {
   }
 
   const content = Array.isArray(message.content)
-    ? message.content.join('\n')
+    ? message.content
+        .map((item) => {
+          if (typeof item === 'string') return item;
+          return item.type === 'text' ? item.text : '';
+        })
+        .join('\n')
     : typeof message.content === 'string'
     ? message.content
     : message?.content?.prompt || '';

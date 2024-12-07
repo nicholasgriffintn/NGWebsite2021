@@ -14,7 +14,10 @@ export function parseMarkdown(
     muted ? 'muted' : 'primary'
   }-foreground inline font-bold p-0 transition-colors hover:underline hover:outline-none decoration-1 decoration-skip-ink-none underline-offset-[0.25em] hover:decoration-2`;
 
-  const normalizedInput = input
+  const codeBlockRegex = /```[\s\S]*?```/g;
+  const codeBlocks: string[] = [];
+
+  const processedInput = input
     .replace(/\\n/g, '\n')
     .replace(/<summary>/g, '<strong>Summary:</strong> ')
     .replace(/<\/summary>/g, '')
@@ -50,7 +53,23 @@ export function parseMarkdown(
     .replace(/<problem_breakdown>/g, '<strong>Problem Breakdown:</strong> ')
     .replace(/<\/problem_breakdown>/g, '');
 
-  const paragraphs = normalizedInput.split('\n').map((paragraph, index) => {
+  processedInput.replace(codeBlockRegex, (match) => {
+    codeBlocks.push(match);
+    return `__CODE_BLOCK_${codeBlocks.length - 1}__`;
+  });
+
+  const paragraphs = processedInput.split('\n').map((paragraph, index) => {
+    paragraph = paragraph.replace(/__CODE_BLOCK_(\d+)__/g, (_, index) => {
+      const code = codeBlocks[parseInt(index)];
+      if (!code) {
+        return '';
+      }
+      return `<pre class="whitespace-pre-wrap break-words bg-muted p-2 rounded-md"><code>${code.replace(
+        /```/g,
+        ''
+      )}</code></pre>`;
+    });
+
     const html = paragraph
       .replace(
         /!\[(.*?)\]\((.*?)\)/g,
