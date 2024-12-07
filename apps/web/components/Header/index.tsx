@@ -1,5 +1,5 @@
 import { Link } from "@/components/Link";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Logo } from '@/components/Logo';
 
 export function Header() {
 	return (
@@ -9,13 +9,7 @@ export function Header() {
         <div className="container flex items-center justify-between">
           <div className="flex items-center space-x-4 py-2">
             <Link href="/">
-              <Avatar>
-                <AvatarImage
-                  src="/avatar.png"
-                  alt="Nicholas Griffin's initials as a logo"
-                />
-                <AvatarFallback>NG</AvatarFallback>
-              </Avatar>
+              <Logo />
               <span className="sr-only">Home</span>
             </Link>
           </div>
