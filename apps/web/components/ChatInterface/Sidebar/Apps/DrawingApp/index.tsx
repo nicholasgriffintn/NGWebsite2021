@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { onGenerateDrawing } from '@/components/ChatInterface/actions';
+import { onGenerateDrawing } from '@/actions/chat';
 import { DrawingCanvas } from '@/components/DrawingCanvas';
 
 export function SidebarDrawingApp() {

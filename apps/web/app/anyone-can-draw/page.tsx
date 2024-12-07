@@ -4,7 +4,7 @@ import { PageLayout } from '@/components/PageLayout';
 import { InnerPage } from '@/components/InnerPage';
 import { AnyoneCanDraw } from '@/components/AnyoneCanDraw';
 import { validateToken } from '@/lib/auth';
-import { handleLogin } from '@/lib/auth';
+import { handleLogin } from '@/actions/auth';
 import { LoginForm } from '@/components/LoginForm';
 import { Link } from '@/components/Link';
 

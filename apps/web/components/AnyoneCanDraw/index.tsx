@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { DrawingCanvas } from '@/components/DrawingCanvas';
-import { onGenerateDrawing } from '@/components/ChatInterface/actions';
+import { onGenerateDrawing } from '@/actions/chat';
 
 export function AnyoneCanDraw() {
   const [result, setResult] = useState<string | null>(null);

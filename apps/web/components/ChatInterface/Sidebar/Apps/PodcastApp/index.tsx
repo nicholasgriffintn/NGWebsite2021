@@ -19,7 +19,7 @@ import {
   onGetChat,
   onSummarisePodcast,
   onGeneratePodcastImage,
-} from '@/components/ChatInterface/actions';
+} from '@/actions/chat';
 import { SpeakerSamples } from './SpeakerSamples';
 
 interface Segment {

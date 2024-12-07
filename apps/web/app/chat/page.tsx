@@ -1,17 +1,19 @@
+import { redirect } from 'next/navigation';
+
 import { PageLayout } from '@/components/PageLayout';
 import { ChatInterface } from '@/components/ChatInterface';
 import { InnerPage } from '@/components/InnerPage';
-import {
-  getChatKeys,
-  getChat,
-  createChat,
-  sendFeedback,
-  sendTranscription,
-} from '@/lib/data/chat';
-import { validateToken, handleLogin } from '@/lib/auth';
+import { getChatKeys } from '@/lib/data/chat';
+import { handleLogin } from '@/actions/auth';
+import { validateToken } from '@/lib/auth';
 import { LoginForm } from '@/components/LoginForm';
-import type { ChatMode, ChatRole } from '../../types/chat';
-import { redirect } from 'next/navigation';
+import {
+  onCreateChat,
+  onChatSelect,
+  onNewChat,
+  onReaction,
+  onTranscribe,
+} from '@/actions/chat';
 
 export const dynamic = 'force-dynamic';
 
@@ -56,96 +58,6 @@ export default async function Chat({ searchParams }) {
   }
 
   const data = await getData(token || '');
-
-  async function onCreateChat(
-    chatId: string,
-    message: string,
-    model: string,
-    mode: ChatMode = 'remote',
-    role: ChatRole = 'user'
-  ) {
-    'use server';
-
-    const token = await validateToken();
-    if (!token) {
-      console.error('No token found');
-      return [];
-    }
-
-    const response = await createChat({
-      token,
-      chatId,
-      message,
-      model,
-      mode,
-      role,
-    });
-    return Array.isArray(response) ? response : [response];
-  }
-
-  async function onChatSelect(chatId: string) {
-    'use server';
-
-    const token = await validateToken();
-    if (!token) {
-      console.error('No token found');
-      return [];
-    }
-
-    const chatMessages = await getChat({ token, id: chatId });
-    return Array.isArray(chatMessages) ? chatMessages : [];
-  }
-
-  async function onNewChat(content: string) {
-    'use server';
-
-    if (!content) {
-      return `New chat (${Math.random().toString(36).substring(7)})`;
-    }
-
-    const shortContent = content.trim().substring(0, 36);
-    const contentTitle = `${shortContent}${
-      content.length > shortContent.length ? '...' : ''
-    }`;
-    return contentTitle;
-  }
-
-  async function onReaction(chatId: string, logId: string, reaction: string) {
-    'use server';
-
-    const token = await validateToken();
-    if (!token) {
-      return;
-    }
-
-    if (reaction === 'thumbsUp') {
-      return await sendFeedback({ token, logId, feedback: 'positive' });
-    }
-
-    if (reaction === 'thumbsDown') {
-      return await sendFeedback({ token, logId, feedback: 'negative' });
-    }
-  }
-
-  async function onTranscribe(audio: Blob) {
-    'use server';
-
-    const token = await validateToken();
-    if (!token) {
-      throw new Error('No token found');
-    }
-
-    const response = await sendTranscription({
-      token,
-      audio,
-    });
-
-    if (!response) {
-      throw new Error('No response from the model');
-    }
-
-    return response;
-  }
 
   return (
     <PageLayout>

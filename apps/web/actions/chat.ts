@@ -7,7 +7,13 @@ import {
   summarisePodcast,
   generatePodcastImage,
 } from '@/lib/data/chat/apps/podcast';
-import { getChat } from '@/lib/data/chat';
+import {
+  getChat,
+  createChat,
+  sendFeedback,
+  sendTranscription,
+} from '@/lib/data/chat';
+import type { ChatMode, ChatRole } from '@/types/chat';
 
 export async function onGenerateDrawing(drawingData: string) {
   const token = await validateToken();
@@ -129,6 +135,100 @@ export async function onGeneratePodcastImage(chatId: string) {
   const response = await generatePodcastImage({
     token,
     chatId,
+  });
+
+  if (!response) {
+    throw new Error('No response from the model');
+  }
+
+  return response;
+}
+
+export async function onCreateChat(
+  chatId: string,
+  message: string,
+  model: string,
+  mode: ChatMode = 'remote',
+  role: ChatRole = 'user'
+) {
+  'use server';
+
+  const token = await validateToken();
+  if (!token) {
+    console.error('No token found');
+    return [];
+  }
+
+  const response = await createChat({
+    token,
+    chatId,
+    message,
+    model,
+    mode,
+    role,
+  });
+  return Array.isArray(response) ? response : [response];
+}
+
+export async function onChatSelect(chatId: string) {
+  'use server';
+
+  const token = await validateToken();
+  if (!token) {
+    console.error('No token found');
+    return [];
+  }
+
+  const chatMessages = await getChat({ token, id: chatId });
+  return Array.isArray(chatMessages) ? chatMessages : [];
+}
+
+export async function onNewChat(content: string) {
+  'use server';
+
+  if (!content) {
+    return `New chat (${Math.random().toString(36).substring(7)})`;
+  }
+
+  const shortContent = content.trim().substring(0, 36);
+  const contentTitle = `${shortContent}${
+    content.length > shortContent.length ? '...' : ''
+  }`;
+  return contentTitle;
+}
+
+export async function onReaction(
+  chatId: string,
+  logId: string,
+  reaction: string
+) {
+  'use server';
+
+  const token = await validateToken();
+  if (!token) {
+    return;
+  }
+
+  if (reaction === 'thumbsUp') {
+    return await sendFeedback({ token, logId, feedback: 'positive' });
+  }
+
+  if (reaction === 'thumbsDown') {
+    return await sendFeedback({ token, logId, feedback: 'negative' });
+  }
+}
+
+export async function onTranscribe(audio: Blob) {
+  'use server';
+
+  const token = await validateToken();
+  if (!token) {
+    throw new Error('No token found');
+  }
+
+  const response = await sendTranscription({
+    token,
+    audio,
   });
 
   if (!response) {
