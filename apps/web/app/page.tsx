@@ -12,6 +12,7 @@ import { buttonVariants } from '@/components/ui/button';
 import { Link } from '@/components/Link';
 import { getPaginatedBlogPosts } from '@/lib/blog';
 import { BlogCard } from '@/components/BlogCard';
+import { StarsBackground } from '@/components/StarsBackground';
 
 export const revalidate = 60;
 
@@ -44,46 +45,53 @@ export default async function Home() {
 
   return (
     <PageLayout>
-      <InnerPage>
-        <div className="grid grid-cols-5 gap-4">
-          <div className="col-span-5 md:col-span-3 lg:col-span-4 pt-5">
-            <div className="text-primary-foreground lg:max-w-[75%]">
-              <h1 className="text-2xl md:text-4xl font-bold text-primary-foreground">
-                👋 Welcome to my website!
-              </h1>
-              <p>Thanks for visiting my site!</p>
-              <p>
-                I'm Nicholas Griffin, a Senior Software Engineer from the UK,
-                currently with the BBC.
-              </p>
-              <h2 className="text-1xl md:text-2xl font-bold text-primary-foreground">
-                About me
-              </h2>
-              <p>
-                I'm a Full Stack Developer, leaning a bit more towards frontend
-                work. My time outside of my main role is spent on various
-                personal projects across the web.
-              </p>
-              <p>
-                Beyond development, I enjoy reading now and then and have a
-                passion for discovering new music — mainly trying to outsmart
-                the algorithms.
-              </p>
-              <p>Feel free to explore more about me and my projects below.</p>
-              <ContactLinks />
-            </div>
-          </div>
-          <div className="col-span-5 md:col-span-2 lg:col-span-1 pt-10 lg:pt-5">
-            <div>
-              <SpotifyWidget data={data?.spotify} />
-              <div className="text-sm text-muted-foreground text-center inline-flex justify-center w-full mt-5">
-                <span>What I&apos;m listening to</span>
-                <ChevronUp />
+      <InnerPage isFullPage>
+        <div className="mx-break-out relative pt-5 md:pt-10">
+          <StarsBackground />
+          <div className="container relative pb-20">
+            <div className="grid grid-cols-5 gap-4">
+              <div className="col-span-5 md:col-span-3 lg:col-span-4 pt-5">
+                <div className="text-primary-foreground lg:max-w-[75%]">
+                  <h1 className="text-2xl md:text-4xl font-bold text-primary-foreground">
+                    👋 Welcome to my website!
+                  </h1>
+                  <p>Thanks for visiting my site!</p>
+                  <p>
+                    I'm Nicholas Griffin, a Senior Software Engineer from the
+                    UK, currently with the BBC.
+                  </p>
+                  <h2 className="text-1xl md:text-2xl font-bold text-primary-foreground">
+                    About me
+                  </h2>
+                  <p>
+                    I'm a Full Stack Developer, leaning a bit more towards
+                    frontend work. My time outside of my main role is spent on
+                    various personal projects across the web.
+                  </p>
+                  <p>
+                    Beyond development, I enjoy reading now and then and have a
+                    passion for discovering new music — mainly trying to
+                    outsmart the algorithms.
+                  </p>
+                  <p>
+                    Feel free to explore more about me and my projects below.
+                  </p>
+                  <ContactLinks />
+                </div>
+              </div>
+              <div className="col-span-5 md:col-span-2 lg:col-span-1 pt-10 lg:pt-5">
+                <div>
+                  <SpotifyWidget data={data?.spotify} />
+                  <div className="text-sm text-muted-foreground text-center inline-flex justify-center w-full mt-5">
+                    <span>What I&apos;m listening to</span>
+                    <ChevronUp />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="mx-break-out pt-5 mt-20 relative">
+        <div className="mx-break-out relative pt-5">
           <div className="bg-[#171923] w-full min-h-[240px] absolute top-0 left-0" />
           <div className="container relative">
             <div className="text-left pb-5">
