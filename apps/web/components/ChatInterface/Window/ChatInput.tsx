@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Send, Loader2, Mic, Square } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { useVoiceRecorder } from '@/hooks/useVoiceRecorder';
 
 interface ChatInputProps {
@@ -19,8 +19,21 @@ export function ChatInput({
   isDisabled,
 }: ChatInputProps) {
   const [input, setInput] = useState('');
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { isRecording, isTranscribing, startRecording, stopRecording } =
     useVoiceRecorder({ onTranscribe });
+
+  const adjustTextareaHeight = () => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = '0';
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  };
+
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [input]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,12 +45,19 @@ export function ChatInput({
 
   return (
     <form onSubmit={handleSubmit} className="flex gap-2">
-      <Input
+      <Textarea
+        ref={textareaRef}
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="Write a message..."
-        className="flex-1"
+        className="flex-1 min-h-[40px] max-h-[200px] resize-none overflow-y-auto"
         disabled={isRecording || isTranscribing || isLoading || isDisabled}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSubmit(e);
+          }
+        }}
       />
 
       {isRecording ? (
