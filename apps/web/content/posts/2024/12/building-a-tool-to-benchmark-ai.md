@@ -1,16 +1,15 @@
 ---
 title: "Building a tool to benchmark AI"
 date: "2024-12-07T12:18"
+updated: "2024-12-07T21:19"
 tags: [ai, benchmarks]
-description: Simon Willison has been running a [Pelicans on a bicycle](https://simonwillison.net/2024/Oct/25/pelicans-on-a-bicycle/) benchmark against AI for a while now, it's a pretty cool way of seeing how capable different AI models are with a quick outcome.
+description: Simon Willison has been running a [Pelicans on a bicycle](https://simonwillison.net/2024/Oct/25/pelicans-on-a-bicycle/) benchmark against AI for a while now, it's a pretty cool way of seeing how capable different AI models are with a quick outcome.\n\nI've been building my own assistant for a few weeks now but haven't ran any benchmarks against it so I thought I'd do something similar to test my own systems.
 image: /uploads/building-a-tool-to-benchmark-ai/featured.png
 imageAlt: A screenshot of the tool showing the results of a benchmark.
 hideFeaturedImage: true
 ---
 
-I've been building my own assistant for a few weeks now but haven't ran any benchmarks against it so I thought I'd do something similar to test my own systems.
-
-But instead of pelicans on a bicycle, I wanted to change it up just a little bit while allowing for other prompts in the same process.
+Instead of pelicans on a bicycle, I wanted to change it up just a little bit while allowing for other prompts in the same process.
 
 Enter my new [AI Benchmarks](/ai-benchmarks) tool.
 
