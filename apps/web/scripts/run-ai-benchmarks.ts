@@ -1,6 +1,56 @@
 // @ts-nocheck
 import fs from 'node:fs';
 
+const benchmarks = [
+  {
+    id: 'hamster-svg',
+    prompt: 'Generate an SVG of a hamster running on a wheel',
+    description:
+      'A standardised test to see how well LLMs can generate SVGs. Note: For all of these, I keep the conversation going until the model provides a useable SVG, even if that SVG is blank.',
+  },
+  {
+    id: 'system-design',
+    prompt:
+      'Create a detailed system design for a scalable web application using AWS.',
+    description:
+      'A standardised test to see how well LLMs can create detailed system designs, while also testing its knowledge.',
+  },
+];
+
+const models = [
+  'gemini-experimental-1121',
+  'gemini-experimental-1206',
+  'gemini-1.5-flash',
+  'gemini-1.5-pro',
+  'gemini-1.5-flash-8b',
+  'o1-preview',
+  'o1-mini',
+  'gpt-4o',
+  'gpt-4o-mini',
+  'gpt-4-turbo',
+  'gpt-4',
+  'gpt-3.5-turbo',
+  'mistral-large',
+  'mistral-small',
+  'nova-lite',
+  'nova-micro',
+  'nova-pro',
+  'claude-3.5-sonnet',
+  'claude-3.5-haiku',
+  'claude-3-opus',
+  'grok',
+  'llama-3.1-70b-instruct',
+  'llama-3.2-1b-instruct',
+  'llama-3.2-3b-instruct',
+  'llama-3.3-70b-instruct',
+  'mistral-nemo',
+  'llama-3.1-sonar-small-128k-online',
+  'codestral',
+  'openchat',
+  'una-cybertron-7b-v2',
+  'tinyllama',
+];
+
 const RATE_LIMIT = 50;
 const TIME_WINDOW = 5 * 60 * 1000;
 const DELAY_BETWEEN_REQUESTS = Math.ceil(TIME_WINDOW / RATE_LIMIT);
@@ -120,55 +170,6 @@ async function processBatchWithRateLimit(models: string[], benchmark: any) {
 
 async function run() {
   try {
-    const benchmarks = [
-      {
-        id: 'hamster-svg',
-        prompt: 'Generate an SVG of a hamster running on a wheel',
-        description:
-          'A standardised test to see how well LLMs can generate SVGs. Note: For all of these, I keep the conversation going until the model provides a useable SVG, even if that SVG is blank.',
-      },
-      {
-        id: 'system-design',
-        prompt:
-          'Create a detailed system design for a scalable web application using AWS.',
-        description:
-          'A standardised test to see how well LLMs can create detailed system designs, while also testing its knowledge.',
-      },
-    ];
-
-    const models = [
-      'gemini-experimental-1121',
-      'gemini-experimental-1206',
-      'gemini-1.5-flash',
-      'gemini-1.5-pro',
-      'gemini-1.5-flash-8b',
-      'o1-preview',
-      'o1-mini',
-      'gpt-4o',
-      'gpt-4o-mini',
-      'gpt-4-turbo',
-      'gpt-4',
-      'gpt-3.5-turbo',
-      'mistral-large',
-      'mistral-small',
-      'nova-lite',
-      'nova-micro',
-      'nova-pro',
-      'claude-3.5-sonnet',
-      'claude-3.5-haiku',
-      'claude-3-opus',
-      'grok',
-      'llama-3.1-70b-instruct',
-      'llama-3.2-1b-instruct',
-      'llama-3.2-3b-instruct',
-      'mistral-nemo',
-      'llama-3.1-sonar-small-128k-online',
-      'codestral',
-      'openchat',
-      'una-cybertron-7b-v2',
-      'tinyllama',
-    ];
-
     const existingBenchmarks = JSON.parse(
       fs.readFileSync('./lib/data/ai-benchmarks.json', 'utf8')
     );

@@ -12,6 +12,13 @@ export const modelsOptions: ChatModel[] = [
     capabilities: ['function-calling', 'text-generation'],
   },
   {
+    id: 'llama-3.3-70b-instruct',
+    name: 'Llama 3.3 - 70B Instruct',
+    description:
+      "Meta's new 70B model that claims to have the same performance as the 450B model but more cost effective.",
+    capabilities: ['text-generation'],
+  },
+  {
     id: 'llama-3.2-3b-instruct',
     name: 'Llama 3.2 - 3B Instruct',
     description:
@@ -305,13 +312,6 @@ export const modelsOptions: ChatModel[] = [
     name: 'ai21labs Jambda Instruct (Bedrock)',
     description:
       'Jambda Instruct is an aligned version of Jamba with additional training, chat capabilities, and safety guardrails to make it suitable for immediate and secure enterprise use.',
-    capabilities: ['text-generation'],
-  },
-  {
-    id: 'llama-3.3-70b-instruct',
-    name: 'Llama 3.3 - 70B Instruct',
-    description:
-      "Meta's new 70B model that claims to have the same performance as the 450B model but more cost effective.",
     capabilities: ['text-generation'],
   },
   {
