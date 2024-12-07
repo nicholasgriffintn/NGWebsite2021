@@ -31,7 +31,7 @@ function validateBenchmarkResponse(benchmark: any, response: any) {
 
 async function fetchModelResponse(model: string, benchmark: any) {
   const request = {
-    chatId: `benchmark-v1.1-${benchmark.id}-${model}`,
+    chatId: `benchmark-v1.2-${benchmark.id}-${model}`,
     message: benchmark.prompt,
     model,
     mode: 'no_system',
@@ -180,12 +180,12 @@ async function run() {
         );
 
         if (existingBenchmark) {
-          const successfulModelIds = existingBenchmark.models
-            .filter((m) => m.status === 'success')
-            .map((m) => m.model);
+          const successfulModels = existingBenchmark.models.filter(
+            (m) => m.status === 'success'
+          );
 
           const modelsToRun = models.filter(
-            (m) => !successfulModelIds.includes(m)
+            (m) => !successfulModels.find((sm) => sm.model === m)
           );
 
           const newModelData = await processBatchWithRateLimit(
@@ -195,7 +195,7 @@ async function run() {
 
           return {
             ...existingBenchmark,
-            models: [...existingBenchmark.models, ...newModelData],
+            models: [...successfulModels, ...newModelData],
           };
         }
 

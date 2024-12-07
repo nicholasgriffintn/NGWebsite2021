@@ -107,7 +107,7 @@ export default async function Home() {
                                 )
                               : model.response.content.includes('<svg')) && (
                               <div className="h-[400px] rounded-md border p-4 bg-white">
-                                <h4 className="text-sm font-semibold mb-2">
+                                <h4 className="text-sm font-semibold mb-2 text-black">
                                   Generated SVG:
                                 </h4>
                                 <div className="w-full h-[calc(100%-2rem)] flex items-center justify-center">
