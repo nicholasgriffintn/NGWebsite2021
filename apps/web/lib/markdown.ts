@@ -62,7 +62,7 @@ export function parseMarkdown(
       .replace(/^(?:\s[^\n])+## ([^\n]+)\n/gm, '<h2>$1</h2>')
       .replace(
         /`([^`]*)`/g,
-        '<pre><span className="sr-only" aria-hidden="true">`</span>$1<span className="sr-only" aria-hidden="true">`</span></pre>'
+        '<pre><span class="sr-only" aria-hidden="true">`</span>$1<span class="sr-only" aria-hidden="true">`</span></pre>'
       )
       .replace(
         /\[(.*?)\]\((.*?)\)/g,
