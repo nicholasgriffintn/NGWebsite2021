@@ -1,4 +1,5 @@
 import type { ChatList, ChatMessage, ChatMode, ChatRole } from '@/types/chat';
+import { defaultModel } from '@/lib/ai/models';
 
 export async function getChatKeys({
   token,
@@ -136,7 +137,7 @@ export async function createChat({
               }
             : message,
         date: new Date().toISOString(),
-        model: model || 'hermes-2-pro-mistral-7b',
+        model: model || defaultModel,
         mode,
         role,
       }),

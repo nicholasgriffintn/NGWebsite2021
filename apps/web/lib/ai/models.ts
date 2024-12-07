@@ -1,28 +1,21 @@
 import type { ChatModel } from '@/types/chat';
 
-export const defaultModel = 'hermes-2-pro-mistral-7b';
+export const defaultModel = 'mistral-large';
 
 // NOTE: Compatible Web LLM models can be found here: https://github.com/mlc-ai/web-llm/blob/main/src/config.ts#L311
 export const modelsOptions: ChatModel[] = [
   {
-    id: 'hermes-2-pro-mistral-7b',
-    name: 'Hermes 2 Pro - Mistral 7B',
+    id: 'mistral-large',
+    name: 'Mistral Large (Mistral)',
     description:
-      'Hermes 2 Pro on Mistral 7B is the new flagship 7B Hermes! Hermes 2 Pro is an upgraded, retrained version of Nous Hermes 2, consisting of an updated and cleaned version of the OpenHermes 2.5 Dataset, as well as a newly introduced Function Calling and JSON Mode dataset developed in-house.',
-    capabilities: ['function-calling', 'text-generation'],
-  },
-  {
-    id: 'llama-3.3-70b-instruct',
-    name: 'Llama 3.3 - 70B Instruct',
-    description:
-      "Meta's new 70B model that claims to have the same performance as the 450B model but more cost effective.",
+      'Mistral Large is significantly more capable in code generation, mathematics, and reasoning with 128k context window and support for dozens of languages.',
     capabilities: ['text-generation'],
   },
   {
-    id: 'llama-3.2-3b-instruct',
-    name: 'Llama 3.2 - 3B Instruct',
+    id: 'mistral-nemo',
+    name: 'Mistral Nemo (Mistral)',
     description:
-      'The Llama 3.2 instruction-tuned text only models are optimized for multilingual dialogue use cases, including agentic retrieval and summarization tasks.',
+      'The Mistral-Nemo-Instruct-2407 Large Language Model (LLM) is an instruct fine-tuned version of the Mistral-Nemo-Base-2407. Trained jointly by Mistral AI and NVIDIA, it significantly outperforms existing models smaller or similar in size.',
     capabilities: ['text-generation'],
   },
   {
@@ -45,46 +38,31 @@ export const modelsOptions: ChatModel[] = [
     capabilities: ['text-generation'],
   },
   {
-    id: 'grok',
-    name: 'Grok',
-    description:
-      'Comparable performance to Grok 2 but with improved efficiency, speed and capabilities.',
-    capabilities: ['text-generation', 'code-generation'],
+    id: 'gemini-experimental-1206',
+    name: 'Gemini Experimental (Google AI Studio)',
+    description: 'An experimental release of Google Gemini.',
+    capabilities: ['text-generation'],
   },
   {
-    id: 'sqlcoder',
-    name: 'SQLCoder',
+    id: 'codestral',
+    name: 'Codestral (Mistral)',
     description:
-      'SQLCoder is a model trained on SQL queries and their corresponding natural language descriptions. It can generate SQL queries from natural language descriptions and vice versa.',
-    capabilities: ['code-generation'],
+      'Codestral is Mistral AI’s first-ever code model designed for code generation tasks.',
+    capabilities: ['coding'],
   },
   {
-    id: 'deepseek-coder-6.7b',
-    name: 'DeepSeek Coder 6.7B',
+    id: 'hermes-2-pro-mistral-7b',
+    name: 'Hermes 2 Pro - Mistral 7B',
     description:
-      'Deepseek Coder is composed of a series of code language models, each trained from scratch on 2T tokens, with a composition of 87% code and 13% natural language in both English and Chinese.',
-    capabilities: ['code-generation'],
+      'Hermes 2 Pro on Mistral 7B is the new flagship 7B Hermes! Hermes 2 Pro is an upgraded, retrained version of Nous Hermes 2, consisting of an updated and cleaned version of the OpenHermes 2.5 Dataset, as well as a newly introduced Function Calling and JSON Mode dataset developed in-house.',
+    capabilities: ['function-calling', 'text-generation'],
   },
   {
-    id: 'stable-diffusion-xl-lightning',
-    name: 'Stable Diffusion XL Lightning',
+    id: 'llama-3.3-70b-instruct',
+    name: 'Llama 3.3 - 70B Instruct',
     description:
-      'SDXL-Lightning is a lightning-fast text-to-image generation model. It can generate high-quality 1024px images in a few steps.',
-    capabilities: ['text-to-image'],
-  },
-  {
-    id: 'flux',
-    name: 'Flux',
-    description:
-      'FLUX.1 [schnell] is a 12 billion parameter rectified flow transformer capable of generating images from text descriptions.',
-    capabilities: ['text-to-image'],
-  },
-  {
-    id: 'stable-diffusion-xl-base-1.0',
-    name: 'Stable Diffusion XL Base 1.0',
-    description:
-      'Diffusion-based text-to-image generative model by Stability AI. Generates and modify images based on text prompts.',
-    capabilities: ['text-to-image'],
+      "Meta's new 70B model that claims to have the same performance as the 450B model but more cost effective.",
+    capabilities: ['text-generation'],
   },
   {
     id: 'claude-3.5-haiku',
@@ -120,88 +98,95 @@ export const modelsOptions: ChatModel[] = [
     capabilities: ['text-generation'],
   },
   {
-    id: 'openchat',
-    name: 'OpenChat',
+    id: 'nova-micro',
+    name: 'Nova Micro (Bedrock)',
     description:
-      'OpenChat is an innovative library of open-source language models, fine-tuned with C-RLFT - a strategy inspired by offline reinforcement learning.',
+      'Amazon Nova Micro is a text only model that delivers the lowest latency responses at very low cost. It is highly performant at language understanding, translation, reasoning, code completion, brainstorming, and mathematical problem-solving. With its generation speed of over 200 tokens per second, Amazon Nova Micro is ideal for applications that require fast responses.',
     capabilities: ['text-generation'],
   },
   {
-    id: 'phi-2',
-    name: 'Phi 2',
+    id: 'nova-lite',
+    name: 'Nova Lite (Bedrock)',
     description:
-      'Phi-2 is a Transformer-based model with a next-word prediction objective, trained on 1.4T tokens from multiple passes on a mixture of Synthetic and Web datasets for NLP and coding.',
+      'Amazon Nova Lite is a very low-cost multimodal model that is lightning fast for processing image, video, and text inputs. Amazon Nova Lite’s accuracy across a breadth of tasks, coupled with its lightning-fast speed, makes it suitable for a wide range of interactive and high-volume applications where cost is a key consideration.',
     capabilities: ['text-generation'],
   },
   {
-    id: 'tinyllama',
-    name: 'TinyLlama',
+    id: 'nova-pro',
+    name: 'Nova Pro (Bedrock)',
     description:
-      'The TinyLlama project aims to pretrain a 1.1B Llama model on 3 trillion tokens. This is the chat model finetuned on top of TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T.',
+      'Amazon Nova Pro is a highly capable multimodal model with the best combination of accuracy, speed, and cost for a wide range of tasks.  Amazon Nova Pro’s capabilities, coupled with its industry-leading speed and cost efficiency, makes it a compelling model for almost any task, including video summarization, Q&A, mathematical reasoning, software development, and AI agents that can execute multi-step workflows.',
     capabilities: ['text-generation'],
   },
   {
-    id: 'una-cybertron-7b-v2',
-    name: 'Una Cybertron 7B V2',
+    id: 'nova-reel',
+    name: 'Nova Reel (Bedrock)',
     description:
-      "Cybertron 7B v2 is a 7B MistralAI based model, best on it's series. It was trained with SFT, DPO and UNA (Unified Neural Alignment) on multiple datasets.",
-    capabilities: ['text-generation'],
+      'Amazon Nova Reel is a state-of-the-art video generation model that allows customers to easily create high quality video from text and images. Amazon Nova Reel supports use of natural language prompts to control visual style and pacing, including camera motion control, and built-in controls to support safe and responsible use of AI.',
+    capabilities: ['text-to-video'],
   },
   {
-    id: 'llama-3.1-70b-instruct',
-    name: 'Llama 3.1 - 70B Instruct',
+    id: 'nova-canvas',
+    name: 'Nova Canvas (Bedrock)',
     description:
-      'The Meta Llama 3.1 collection of multilingual large language models (LLMs) is a collection of pretrained and instruction tuned generative models. The Llama 3.1 instruction tuned text only models are optimized for multilingual dialogue use cases and outperform many of the available open source and closed chat models on common industry benchmarks.',
-    capabilities: ['text-generation'],
+      'Amazon Nova Canvas is a state-of-the-art image generation model that creates professional grade images from text or images provided in prompts. Amazon Nova Canvas also provides features that make it easy to edit images using text inputs, controls for adjusting color scheme and layout, and built-in controls to support safe and responsible use of AI.',
+    capabilities: ['text-to-image'],
   },
   {
-    id: 'llama-3.2-1b-instruct',
-    name: 'Llama 3.2 - 1B Instruct',
-    description:
-      'The Llama 3.2 instruction-tuned text only models are optimized for multilingual dialogue use cases, including agentic retrieval and summarization tasks.',
+    id: 'Llama-3.2-1B-Instruct-q4f32_1-MLC',
+    name: 'Llama 3.2 1B Instruct (Q4F32)',
+    description: 'Quantized Llama 3.2 1B model optimized for web browsers',
     capabilities: ['text-generation'],
+    isLocal: true,
   },
   {
-    id: 'mistral-nemo',
-    name: 'Mistral Nemo (Mistral)',
-    description:
-      'The Mistral-Nemo-Instruct-2407 Large Language Model (LLM) is an instruct fine-tuned version of the Mistral-Nemo-Base-2407. Trained jointly by Mistral AI and NVIDIA, it significantly outperforms existing models smaller or similar in size.',
+    id: 'Llama-3.2-3B-Instruct-q4f32_1-MLC',
+    name: 'Llama 3.2 3B Instruct (Q4F32)',
+    description: 'Quantized Llama 3.2 3B model optimized for web browsers',
     capabilities: ['text-generation'],
+    isLocal: true,
   },
   {
-    id: 'mistral-small',
-    name: 'Mistral Small (Mistral)',
-    description:
-      'Mistral Small is a lightweight model designed for cost-effective use in tasks like translation and summarization.',
+    id: 'Llama-3.1-8B-Instruct-q4f32_1-MLC',
+    name: 'Llama 3.1 8B Instruct (Q4F32)',
+    description: 'Quantized Llama 3.1 8B model optimized for web browsers',
     capabilities: ['text-generation'],
+    isLocal: true,
   },
   {
-    id: 'mistral-large',
-    name: 'Mistral Large (Mistral)',
-    description:
-      'Mistral Large is significantly more capable in code generation, mathematics, and reasoning with 128k context window and support for dozens of languages.',
+    id: 'Mistral-7B-Instruct-v0.3-q4f16_1-MLC',
+    name: 'Mistral 7B Instruct v0.3 (Q4F16)',
+    description: 'Latest Mistral 7B v0.3 model optimized for web browsers',
     capabilities: ['text-generation'],
+    isLocal: true,
   },
   {
-    id: 'codestral',
-    name: 'Codestral (Mistral)',
-    description:
-      'Codestral is Mistral AI’s first-ever code model designed for code generation tasks.',
-    capabilities: ['coding'],
+    id: 'gemma-2-2b-it-q4f32_1-MLC',
+    name: 'Gemma 2 2B IT (Q4F32)',
+    description: "Google's Gemma 2B instruction-tuned model",
+    capabilities: ['text-generation'],
+    isLocal: true,
   },
   {
-    id: 'smollm2-1.7b-instruct',
-    name: 'SmolLM2 - 1.7B Instruct (Hugging Face)',
-    description:
-      'SmolLM2 1.7B has various enhancements in instruction following, knowledge, reasoning, and mathematics. It was trained on 11 trillion tokens using a diverse dataset combination: FineWeb-Edu, DCLM.',
+    id: 'gemma-2-9b-it-q4f32_1-MLC',
+    name: 'Gemma 2 9B IT (Q4F32)',
+    description: "Google's Gemma 9B instruction-tuned model",
     capabilities: ['text-generation'],
+    isLocal: true,
   },
   {
-    id: 'gemini-experimental',
-    name: 'Gemini Experimental (OpenRouter)',
-    description:
-      'An experimental release (November 21st, 2024) of Google Gemini.',
+    id: 'SmolLM2-1.7B-Instruct-q4f16_1-MLC',
+    name: 'SmolLM2 1.7B Instruct (Q4F16)',
+    description: 'Efficient small language model optimized for web browsers',
     capabilities: ['text-generation'],
+    isLocal: true,
+  },
+  {
+    id: 'TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC',
+    name: 'TinyLlama 1.1B Chat v1.0 (Q4F16)',
+    description: 'Efficient tiny language model optimized for web browsers',
+    capabilities: ['text-generation'],
+    isLocal: true,
   },
   {
     id: 'qwq',
@@ -259,39 +244,109 @@ export const modelsOptions: ChatModel[] = [
     capabilities: ['text-generation'],
   },
   {
-    id: 'nova-micro',
-    name: 'Nova Micro (Bedrock)',
+    id: 'grok',
+    name: 'Grok',
     description:
-      'Amazon Nova Micro is a text only model that delivers the lowest latency responses at very low cost. It is highly performant at language understanding, translation, reasoning, code completion, brainstorming, and mathematical problem-solving. With its generation speed of over 200 tokens per second, Amazon Nova Micro is ideal for applications that require fast responses.',
-    capabilities: ['text-generation'],
+      'Comparable performance to Grok 2 but with improved efficiency, speed and capabilities.',
+    capabilities: ['text-generation', 'code-generation'],
   },
   {
-    id: 'nova-lite',
-    name: 'Nova Lite (Bedrock)',
+    id: 'sqlcoder',
+    name: 'SQLCoder',
     description:
-      'Amazon Nova Lite is a very low-cost multimodal model that is lightning fast for processing image, video, and text inputs. Amazon Nova Lite’s accuracy across a breadth of tasks, coupled with its lightning-fast speed, makes it suitable for a wide range of interactive and high-volume applications where cost is a key consideration.',
-    capabilities: ['text-generation'],
+      'SQLCoder is a model trained on SQL queries and their corresponding natural language descriptions. It can generate SQL queries from natural language descriptions and vice versa.',
+    capabilities: ['code-generation'],
   },
   {
-    id: 'nova-pro',
-    name: 'Nova Pro (Bedrock)',
+    id: 'deepseek-coder-6.7b',
+    name: 'DeepSeek Coder 6.7B',
     description:
-      'Amazon Nova Pro is a highly capable multimodal model with the best combination of accuracy, speed, and cost for a wide range of tasks.  Amazon Nova Pro’s capabilities, coupled with its industry-leading speed and cost efficiency, makes it a compelling model for almost any task, including video summarization, Q&A, mathematical reasoning, software development, and AI agents that can execute multi-step workflows.',
-    capabilities: ['text-generation'],
+      'Deepseek Coder is composed of a series of code language models, each trained from scratch on 2T tokens, with a composition of 87% code and 13% natural language in both English and Chinese.',
+    capabilities: ['code-generation'],
   },
   {
-    id: 'nova-reel',
-    name: 'Nova Reel (Bedrock)',
+    id: 'stable-diffusion-xl-lightning',
+    name: 'Stable Diffusion XL Lightning',
     description:
-      'Amazon Nova Reel is a state-of-the-art video generation model that allows customers to easily create high quality video from text and images. Amazon Nova Reel supports use of natural language prompts to control visual style and pacing, including camera motion control, and built-in controls to support safe and responsible use of AI.',
-    capabilities: ['text-to-video'],
-  },
-  {
-    id: 'nova-canvas',
-    name: 'Nova Canvas (Bedrock)',
-    description:
-      'Amazon Nova Canvas is a state-of-the-art image generation model that creates professional grade images from text or images provided in prompts. Amazon Nova Canvas also provides features that make it easy to edit images using text inputs, controls for adjusting color scheme and layout, and built-in controls to support safe and responsible use of AI.',
+      'SDXL-Lightning is a lightning-fast text-to-image generation model. It can generate high-quality 1024px images in a few steps.',
     capabilities: ['text-to-image'],
+  },
+  {
+    id: 'flux',
+    name: 'Flux',
+    description:
+      'FLUX.1 [schnell] is a 12 billion parameter rectified flow transformer capable of generating images from text descriptions.',
+    capabilities: ['text-to-image'],
+  },
+  {
+    id: 'stable-diffusion-xl-base-1.0',
+    name: 'Stable Diffusion XL Base 1.0',
+    description:
+      'Diffusion-based text-to-image generative model by Stability AI. Generates and modify images based on text prompts.',
+    capabilities: ['text-to-image'],
+  },
+  {
+    id: 'mistral-small',
+    name: 'Mistral Small (Mistral)',
+    description:
+      'Mistral Small is a lightweight model designed for cost-effective use in tasks like translation and summarization.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'llama-3.2-3b-instruct',
+    name: 'Llama 3.2 - 3B Instruct',
+    description:
+      'The Llama 3.2 instruction-tuned text only models are optimized for multilingual dialogue use cases, including agentic retrieval and summarization tasks.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'phi-2',
+    name: 'Phi 2',
+    description:
+      'Phi-2 is a Transformer-based model with a next-word prediction objective, trained on 1.4T tokens from multiple passes on a mixture of Synthetic and Web datasets for NLP and coding.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'openchat',
+    name: 'OpenChat',
+    description:
+      'OpenChat is an innovative library of open-source language models, fine-tuned with C-RLFT - a strategy inspired by offline reinforcement learning.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'smollm2-1.7b-instruct',
+    name: 'SmolLM2 - 1.7B Instruct (Hugging Face)',
+    description:
+      'SmolLM2 1.7B has various enhancements in instruction following, knowledge, reasoning, and mathematics. It was trained on 11 trillion tokens using a diverse dataset combination: FineWeb-Edu, DCLM.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'tinyllama',
+    name: 'TinyLlama',
+    description:
+      'The TinyLlama project aims to pretrain a 1.1B Llama model on 3 trillion tokens. This is the chat model finetuned on top of TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'una-cybertron-7b-v2',
+    name: 'Una Cybertron 7B V2',
+    description:
+      "Cybertron 7B v2 is a 7B MistralAI based model, best on it's series. It was trained with SFT, DPO and UNA (Unified Neural Alignment) on multiple datasets.",
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'llama-3.1-70b-instruct',
+    name: 'Llama 3.1 - 70B Instruct',
+    description:
+      'The Meta Llama 3.1 collection of multilingual large language models (LLMs) is a collection of pretrained and instruction tuned generative models. The Llama 3.1 instruction tuned text only models are optimized for multilingual dialogue use cases and outperform many of the available open source and closed chat models on common industry benchmarks.',
+    capabilities: ['text-generation'],
+  },
+  {
+    id: 'llama-3.2-1b-instruct',
+    name: 'Llama 3.2 - 1B Instruct',
+    description:
+      'The Llama 3.2 instruction-tuned text only models are optimized for multilingual dialogue use cases, including agentic retrieval and summarization tasks.',
+    capabilities: ['text-generation'],
   },
   {
     id: 'jamba-mini',
@@ -313,61 +368,5 @@ export const modelsOptions: ChatModel[] = [
     description:
       'Jambda Instruct is an aligned version of Jamba with additional training, chat capabilities, and safety guardrails to make it suitable for immediate and secure enterprise use.',
     capabilities: ['text-generation'],
-  },
-  {
-    id: 'Llama-3.2-1B-Instruct-q4f32_1-MLC',
-    name: 'Llama 3.2 1B Instruct (Q4F32)',
-    description: 'Quantized Llama 3.2 1B model optimized for web browsers',
-    capabilities: ['text-generation'],
-    isLocal: true,
-  },
-  {
-    id: 'Llama-3.2-3B-Instruct-q4f32_1-MLC',
-    name: 'Llama 3.2 3B Instruct (Q4F32)',
-    description: 'Quantized Llama 3.2 3B model optimized for web browsers',
-    capabilities: ['text-generation'],
-    isLocal: true,
-  },
-  {
-    id: 'Llama-3.1-8B-Instruct-q4f32_1-MLC',
-    name: 'Llama 3.1 8B Instruct (Q4F32)',
-    description: 'Quantized Llama 3.1 8B model optimized for web browsers',
-    capabilities: ['text-generation'],
-    isLocal: true,
-  },
-  {
-    id: 'Mistral-7B-Instruct-v0.3-q4f16_1-MLC',
-    name: 'Mistral 7B Instruct v0.3 (Q4F16)',
-    description: 'Latest Mistral 7B v0.3 model optimized for web browsers',
-    capabilities: ['text-generation'],
-    isLocal: true,
-  },
-  {
-    id: 'gemma-2-2b-it-q4f32_1-MLC',
-    name: 'Gemma 2 2B IT (Q4F32)',
-    description: "Google's Gemma 2B instruction-tuned model",
-    capabilities: ['text-generation'],
-    isLocal: true,
-  },
-  {
-    id: 'gemma-2-9b-it-q4f32_1-MLC',
-    name: 'Gemma 2 9B IT (Q4F32)',
-    description: "Google's Gemma 9B instruction-tuned model",
-    capabilities: ['text-generation'],
-    isLocal: true,
-  },
-  {
-    id: 'SmolLM2-1.7B-Instruct-q4f16_1-MLC',
-    name: 'SmolLM2 1.7B Instruct (Q4F16)',
-    description: 'Efficient small language model optimized for web browsers',
-    capabilities: ['text-generation'],
-    isLocal: true,
-  },
-  {
-    id: 'TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC',
-    name: 'TinyLlama 1.1B Chat v1.0 (Q4F16)',
-    description: 'Efficient tiny language model optimized for web browsers',
-    capabilities: ['text-generation'],
-    isLocal: true,
   },
 ];
