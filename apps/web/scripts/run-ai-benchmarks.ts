@@ -111,6 +111,7 @@ async function fetchModelResponse(model: string, benchmark: any) {
         mode: request.mode,
         max_tokens: request.max_tokens,
         role: request.role,
+        shouldSave: false,
       }),
     });
 
