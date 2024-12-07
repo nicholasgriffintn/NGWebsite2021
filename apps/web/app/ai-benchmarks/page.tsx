@@ -17,13 +17,35 @@ import benchmarkData from '@/lib/data/ai-benchmarks.json';
 import { PageLayout } from '@/components/PageLayout';
 import { InnerPage } from '@/components/InnerPage';
 
+type Message = {
+  role: string;
+  content: string;
+};
+
+type ModelResponse = {
+  request: {
+    model: string;
+    message: string;
+  };
+  response?: Message | Message[];
+  status?: string;
+  reason?: string | null;
+};
+
+type Benchmark = {
+  id: string;
+  prompt: string;
+  description: string;
+  models: ModelResponse[];
+};
+
 export const metadata = {
   title: 'AI Benchmarks',
   description:
     'Compare responses from different AI models from my personal testing.',
 };
 
-async function getData() {
+async function getData(): Promise<Benchmark[]> {
   return benchmarkData;
 }
 
@@ -46,7 +68,7 @@ export default async function Home() {
             </div>
           </div>
         </div>
-        {data.map((benchmark) => (
+        {data.map((benchmark: Benchmark) => (
           <Card key={benchmark.id} className="mb-6">
             <CardHeader>
               <CardTitle>{benchmark.prompt}</CardTitle>
@@ -54,7 +76,7 @@ export default async function Home() {
             </CardHeader>
             <CardContent>
               <Accordion type="single" collapsible className="w-full">
-                {benchmark.models.map((model, modelIndex) => (
+                {benchmark.models.map((model: ModelResponse, modelIndex) => (
                   <AccordionItem key={modelIndex} value={`item-${modelIndex}`}>
                     <AccordionTrigger>{model.request.model}</AccordionTrigger>
                     <AccordionContent>
