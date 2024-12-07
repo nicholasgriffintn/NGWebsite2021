@@ -1,0 +1,41 @@
+<svg width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="wheelGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#ddd"></stop>
+      <stop offset="100%" stop-color="#bbb"></stop>
+    </radialGradient>
+  </defs>
+
+  <!-- Hamster Wheel -->
+  <circle cx="100" cy="75" r="60" fill="url(#wheelGradient)" stroke="#999" stroke-width="3"></circle>
+  <line x1="100" y1="15" x2="100" y2="135" stroke="#999" stroke-width="3"></line>
+
+  <!-- Wheel Bars (simplified) -->
+  <line x1="58" y1="33" x2="142" y2="117" stroke="#ccc" stroke-width="2" stroke-dasharray="5,5"></line>
+  <line x1="58" y1="117" x2="142" y2="33" stroke="#ccc" stroke-width="2" stroke-dasharray="5,5"></line>
+
+  <!-- Hamster Body -->
+  <ellipse cx="110" cy="80" rx="20" ry="15" fill="#e0b080" stroke="#a07050" stroke-width="1"></ellipse>
+
+  <!-- Hamster Head -->
+  <circle cx="128" cy="70" r="10" fill="#e0b080" stroke="#a07050" stroke-width="1"></circle>
+
+  <!-- Hamster Eye -->
+  <circle cx="133" cy="68" r="2" fill="black"></circle>
+
+  <!-- Hamster Nose -->
+  <circle cx="136" cy="72" r="1" fill="black"></circle>
+
+  <!-- Hamster Feet (simplified, mid-run) -->
+  <line x1="115" y1="90" x2="110" y2="95" stroke="#a07050" stroke-width="2"></line>
+  <line x1="100" y1="95" x2="95" y2="90" stroke="#a07050" stroke-width="2"></line>
+
+  <!-- Hamster Tail -->
+  <line x1="90" y1="85" x2="85" y2="80" stroke="#a07050" stroke-width="1"></line>
+
+  <!-- Wheel Stand -->
+  <rect x="70" y="135" width="60" height="10" fill="#654321" stroke="#402010" stroke-width="2"></rect>
+
+  <!-- Ground -->
+  <line x1="0" y1="145" x2="200" y2="145" stroke="#888" stroke-width="2"></line>
+</svg>

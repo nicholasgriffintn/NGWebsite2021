@@ -1,0 +1,18 @@
+<svg width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g id="hamster_wheel">
+    <circle id="wheel" cx="100" cy="100" r="60" stroke="#999" stroke-width="8"></circle>
+    <circle id="wheel_center" cx="100" cy="100" r="10" fill="#333"></circle>
+    <g id="hamster">
+      <ellipse id="body" cx="100" cy="65" rx="20" ry="12" fill="#E0A860"></ellipse>
+      <circle id="head" cx="80" cy="60" r="8" fill="#D1884F"></circle>
+      <circle id="eye" cx="76" cy="58" r="1.5" fill="black"></circle>
+      <circle id="ear" cx="70" cy="50" r="3" fill="#E0A860" transform="rotate(-30 70 50)"></circle>
+      <ellipse id="leg1" cx="112" cy="75" rx="3" ry="6" fill="#E0A860" transform="rotate(30 112 75)"></ellipse>
+      <ellipse id="leg2" cx="88" cy="75" rx="3" ry="6" fill="#E0A860" transform="rotate(-30 88 75)"></ellipse>
+
+      <!-- Animation -->
+      <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 100 100" to="360 100 100" dur="2s" repeatCount="indefinite"></animateTransform>
+      <animateTransform xlink:href="#hamster" attributeName="transform" type="rotate" from="0 100 65" to="-360 100 65" dur="2s" repeatCount="indefinite"></animateTransform>
+    </g>
+  </g>
+</svg>
