@@ -8,7 +8,7 @@ hideFeaturedImage: true
 tags: [ai, podcasting, cloudflare, r2, replicate, whisper, bart, stable-diffusion-xl-lightning]
 ---
 
-Previously, I started work on building an AI based assistant [that you can read about here](/blog/posts/building-my-own-ai-assistant), as time goes on, I plan to expand this with mini applications that the user can open from the assistant and use to complete certain tasks.
+Previously, I started work on building an AI based assistant [that you can read about here](/blog/building-my-own-ai-assistant), as time goes on, I plan to expand this with mini applications that the user can open from the assistant and use to complete certain tasks.
 
 One of the first of these is what I'm writing about today, an automated podcasting app. The app is able to automatically generate a podcast listing from an audio upload, including generating a transcript, speaker identification, and more.
 

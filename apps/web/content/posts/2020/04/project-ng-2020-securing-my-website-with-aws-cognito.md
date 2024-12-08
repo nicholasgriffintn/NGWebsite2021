@@ -6,11 +6,11 @@ archived: true
 tags: [node, express, aws, cognito]
 ---
 
-Alongside the [launch of my new website](/blog/project-ng-2020-re-launching-my-personal-website.md) with Next JS, Nginx, Postgres, and Express, I want to expand my site with more things.
+Alongside the [launch of my new website](/blog/project-ng-2020-re-launching-my-personal-website) with Next JS, Nginx, Postgres, and Express, I want to expand my site with more things.
 
 To start, I need to get Authentication set up on the site so that we can lock off certain areas of the site, alongside any of the APIs that I don't want to be public.
 
-There are a number of ways that I could do this, and in the past, [I have done this with a database and Passport.js on an Express server](/blog/adding-authentication-express-blog-passport.md), this time, we're doing it with a much cooler service AWS Cognito.
+There are a number of ways that I could do this, and in the past, [I have done this with a database and Passport.js on an Express server](/blog/adding-authentication-express-blog-passport), this time, we're doing it with a much cooler service AWS Cognito.
 
 ## What is AWS Cognito
 

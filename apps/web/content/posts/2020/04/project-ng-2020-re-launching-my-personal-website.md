@@ -18,7 +18,7 @@ As part of my 2020 project, I've decided to work more on some features that are 
 
 To kick that off, I've started work on the new version of my site, for 2020.
 
-With this new version, the main change is that I'll be going back to a server, despite recently moving the site to an [S3 static basis](/blog/hosting-my-static-site-on-s3-with-aws-codepipeline.md).
+With this new version, the main change is that I'll be going back to a server, despite recently moving the site to an [S3 static basis](/blog/hosting-my-static-site-on-s3-with-aws-codepipeline).
 
 For 2020, the static will involve using a Ubuntu server with Nginx, Next JS, Postgres, and Express.
 
