@@ -1,99 +1,99 @@
-import type { Ai } from '@cloudflare/workers-types';
+import type { Ai } from "@cloudflare/workers-types";
 
 export type Env = {
-  AI: Ai;
+	AI: Ai;
 };
 
 export interface Player {
-  id: string;
-  name: string;
-  score: number;
+	id: string;
+	name: string;
+	score: number;
 }
 
 export interface GameMessage {
-  type: 'CHAT' | 'GUESS' | 'SYSTEM';
-  playerId: string;
-  playerName: string;
-  content: string;
-  timestamp: number;
+	type: "CHAT" | "GUESS" | "SYSTEM";
+	playerId: string;
+	playerName: string;
+	content: string;
+	timestamp: number;
 }
 
 export interface GameState {
-  isActive: boolean;
-  targetWord: string;
-  timeRemaining: number;
-  endTime?: number;
-  guesses: Array<{
-    guess: string;
-    timestamp: number;
-    playerId: string;
-    playerName: string;
-    correct: boolean;
-  }>;
-  hasWon: boolean;
-  currentDrawer?: string;
-  drawingData?: string;
-  statusMessage?: {
-    type: 'success' | 'failure';
-    message: string;
-  };
-  isLobby: boolean;
+	isActive: boolean;
+	targetWord: string;
+	timeRemaining: number;
+	endTime?: number;
+	guesses: Array<{
+		guess: string;
+		timestamp: number;
+		playerId: string;
+		playerName: string;
+		correct: boolean;
+	}>;
+	hasWon: boolean;
+	currentDrawer?: string;
+	drawingData?: string;
+	statusMessage?: {
+		type: "success" | "failure";
+		message: string;
+	};
+	isLobby: boolean;
 }
 
 export interface JoinRequest {
-  gameId: string;
-  playerId: string;
-  playerName: string;
+	gameId: string;
+	playerId: string;
+	playerName: string;
 }
 
 export interface LeaveRequest {
-  playerId: string;
+	playerId: string;
 }
 
 export interface StartGameRequest {
-  gameId: string;
-  playerId: string;
+	gameId: string;
+	playerId: string;
 }
 
 export interface GuessRequest {
-  gameId: string;
-  playerId: string;
-  guess: string;
+	gameId: string;
+	playerId: string;
+	guess: string;
 }
 
 export interface DrawingUpdateRequest {
-  gameId: string;
-  drawingData: any;
+	gameId: string;
+	drawingData: any;
 }
 
 export interface BaseResponse {
-  ok: boolean;
-  success: boolean;
-  message?: string;
-  statusCode?: number;
+	ok: boolean;
+	success: boolean;
+	message?: string;
+	statusCode?: number;
 }
 
 export interface GameStateResponse extends BaseResponse {
-  gameState: GameState;
-  users: Array<{
-    id: string;
-    name: string;
-    score: number;
-  }>;
+	gameState: GameState;
+	users: Array<{
+		id: string;
+		name: string;
+		score: number;
+	}>;
 }
 
 export interface Game {
-  name: string;
-  users: Map<string, { name: string; score: number }>;
-  gameState: GameState;
-  timerInterval: number | null;
-  lastAIGuessTime: number;
+	name: string;
+	users: Map<string, { name: string; score: number }>;
+	gameState: GameState;
+	timerInterval: number | null;
+	lastAIGuessTime: number;
 }
 
 export interface GameListItem {
-  id: string;
-  name: string;
-  playerCount: number;
-  isLobby: boolean;
-  isActive: boolean;
+	id: string;
+	name: string;
+	playerCount: number;
+	isLobby: boolean;
+	isActive: boolean;
 }

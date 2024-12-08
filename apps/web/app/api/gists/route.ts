@@ -1,13 +1,13 @@
-import { getGitHubGists } from '@/lib/data/github';
+import { getGitHubGists } from "@/lib/data/github";
 
-export const runtime = 'edge';
+export const runtime = "edge";
 
 export async function GET() {
-  const data = await getGitHubGists();
+	const data = await getGitHubGists();
 
-  return Response.json(data, {
-    headers: {
-      'Cache-Control': 's-maxage=180000',
-    },
-  });
+	return Response.json(data, {
+		headers: {
+			"Cache-Control": "s-maxage=180000",
+		},
+	});
 }

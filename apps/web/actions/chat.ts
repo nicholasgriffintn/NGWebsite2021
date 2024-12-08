@@ -1,239 +1,239 @@
-'use server';
+"use server";
 
-import { validateToken } from '@/lib/auth';
+import { validateToken } from "@/lib/auth";
 import {
-  uploadPodcast,
-  transcribePodcast,
-  summarisePodcast,
-  generatePodcastImage,
-} from '@/lib/data/chat/apps/podcast';
+	uploadPodcast,
+	transcribePodcast,
+	summarisePodcast,
+	generatePodcastImage,
+} from "@/lib/data/chat/apps/podcast";
 import {
-  getChat,
-  createChat,
-  sendFeedback,
-  sendTranscription,
-} from '@/lib/data/chat';
-import type { ChatMode, ChatRole } from '@/types/chat';
+	getChat,
+	createChat,
+	sendFeedback,
+	sendTranscription,
+} from "@/lib/data/chat";
+import type { ChatMode, ChatRole } from "@/types/chat";
 
 export async function onGenerateDrawing(drawingData: string) {
-  const token = await validateToken();
-  if (!token) {
-    throw new Error('No token found');
-  }
+	const token = await validateToken();
+	if (!token) {
+		throw new Error("No token found");
+	}
 
-  const baseUrl =
-    process.env.NODE_ENV === 'development'
-      ? 'http://localhost:8787'
-      : 'https://assistant.nicholasgriffin.workers.dev';
+	const baseUrl =
+		process.env.NODE_ENV === "development"
+			? "http://localhost:8787"
+			: "https://assistant.nicholasgriffin.workers.dev";
 
-  const base64Data = drawingData.replace(/^data:image\/\w+;base64,/, '');
-  const binaryData = Buffer.from(base64Data, 'base64');
-  const blob = new Blob([binaryData], { type: 'image/png' });
+	const base64Data = drawingData.replace(/^data:image\/\w+;base64,/, "");
+	const binaryData = Buffer.from(base64Data, "base64");
+	const blob = new Blob([binaryData], { type: "image/png" });
 
-  const formData = new FormData();
-  formData.append('drawing', blob, 'drawing.png');
+	const formData = new FormData();
+	formData.append("drawing", blob, "drawing.png");
 
-  const res = await fetch(`${baseUrl}/apps/drawing`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'User-Agent': 'NGWeb',
-    },
-    body: formData,
-  });
+	const res = await fetch(`${baseUrl}/apps/drawing`, {
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${token}`,
+			"User-Agent": "NGWeb",
+		},
+		body: formData,
+	});
 
-  if (!res.ok) {
-    console.error('Failed to submit drawing', res);
-    throw new Error('Failed to submit drawing');
-  }
+	if (!res.ok) {
+		console.error("Failed to submit drawing", res);
+		throw new Error("Failed to submit drawing");
+	}
 
-  const data = await res.json();
-  return data;
+	const data = await res.json();
+	return data;
 }
 
 export async function onUploadPodcast(audioUrl) {
-  const token = await validateToken();
-  if (!token) {
-    throw new Error('No token found');
-  }
+	const token = await validateToken();
+	if (!token) {
+		throw new Error("No token found");
+	}
 
-  const response = await uploadPodcast({
-    token,
-    audioUrl,
-  });
+	const response = await uploadPodcast({
+		token,
+		audioUrl,
+	});
 
-  if (!response) {
-    throw new Error('No response from the model');
-  }
+	if (!response) {
+		throw new Error("No response from the model");
+	}
 
-  return response;
+	return response;
 }
 
 export async function onTranscribePodcast(
-  chatId: string,
-  prompt: string,
-  numberOfSpeakers: number
+	chatId: string,
+	prompt: string,
+	numberOfSpeakers: number,
 ) {
-  const token = await validateToken();
-  if (!token) {
-    throw new Error('No token found');
-  }
+	const token = await validateToken();
+	if (!token) {
+		throw new Error("No token found");
+	}
 
-  const response = await transcribePodcast({
-    token,
-    chatId,
-    prompt,
-    numberOfSpeakers,
-  });
+	const response = await transcribePodcast({
+		token,
+		chatId,
+		prompt,
+		numberOfSpeakers,
+	});
 
-  if (!response) {
-    throw new Error('No response from the model');
-  }
+	if (!response) {
+		throw new Error("No response from the model");
+	}
 
-  return response;
+	return response;
 }
 
 export async function onGetChat(chatId: string) {
-  const token = await validateToken();
-  if (!token) {
-    console.error('No token found');
-    return [];
-  }
+	const token = await validateToken();
+	if (!token) {
+		console.error("No token found");
+		return [];
+	}
 
-  const chatMessages = await getChat({ token, id: chatId });
-  return Array.isArray(chatMessages) ? chatMessages : [];
+	const chatMessages = await getChat({ token, id: chatId });
+	return Array.isArray(chatMessages) ? chatMessages : [];
 }
 
 export async function onSummarisePodcast(
-  chatId: string,
-  speakers: Record<string, string>
+	chatId: string,
+	speakers: Record<string, string>,
 ) {
-  const token = await validateToken();
-  if (!token) {
-    throw new Error('No token found');
-  }
+	const token = await validateToken();
+	if (!token) {
+		throw new Error("No token found");
+	}
 
-  const response = await summarisePodcast({
-    token,
-    chatId,
-    speakers,
-  });
+	const response = await summarisePodcast({
+		token,
+		chatId,
+		speakers,
+	});
 
-  if (!response) {
-    throw new Error('No response from the model');
-  }
+	if (!response) {
+		throw new Error("No response from the model");
+	}
 
-  return response;
+	return response;
 }
 
 export async function onGeneratePodcastImage(chatId: string) {
-  const token = await validateToken();
-  if (!token) {
-    throw new Error('No token found');
-  }
+	const token = await validateToken();
+	if (!token) {
+		throw new Error("No token found");
+	}
 
-  const response = await generatePodcastImage({
-    token,
-    chatId,
-  });
+	const response = await generatePodcastImage({
+		token,
+		chatId,
+	});
 
-  if (!response) {
-    throw new Error('No response from the model');
-  }
+	if (!response) {
+		throw new Error("No response from the model");
+	}
 
-  return response;
+	return response;
 }
 
 export async function onCreateChat(
-  chatId: string,
-  message: string,
-  model: string,
-  mode: ChatMode = 'remote',
-  role: ChatRole = 'user'
+	chatId: string,
+	message: string,
+	model: string,
+	mode: ChatMode = "remote",
+	role: ChatRole = "user",
 ) {
-  'use server';
+	"use server";
 
-  const token = await validateToken();
-  if (!token) {
-    console.error('No token found');
-    return [];
-  }
+	const token = await validateToken();
+	if (!token) {
+		console.error("No token found");
+		return [];
+	}
 
-  const response = await createChat({
-    token,
-    chatId,
-    message,
-    model,
-    mode,
-    role,
-  });
-  return Array.isArray(response) ? response : [response];
+	const response = await createChat({
+		token,
+		chatId,
+		message,
+		model,
+		mode,
+		role,
+	});
+	return Array.isArray(response) ? response : [response];
 }
 
 export async function onChatSelect(chatId: string) {
-  'use server';
+	"use server";
 
-  const token = await validateToken();
-  if (!token) {
-    console.error('No token found');
-    return [];
-  }
+	const token = await validateToken();
+	if (!token) {
+		console.error("No token found");
+		return [];
+	}
 
-  const chatMessages = await getChat({ token, id: chatId });
-  return Array.isArray(chatMessages) ? chatMessages : [];
+	const chatMessages = await getChat({ token, id: chatId });
+	return Array.isArray(chatMessages) ? chatMessages : [];
 }
 
 export async function onNewChat(content: string) {
-  'use server';
+	"use server";
 
-  if (!content) {
-    return `New chat (${Math.random().toString(36).substring(7)})`;
-  }
+	if (!content) {
+		return `New chat (${Math.random().toString(36).substring(7)})`;
+	}
 
-  const shortContent = content.trim().substring(0, 36);
-  const contentTitle = `${shortContent}${
-    content.length > shortContent.length ? '...' : ''
-  }`;
-  return contentTitle;
+	const shortContent = content.trim().substring(0, 36);
+	const contentTitle = `${shortContent}${
+		content.length > shortContent.length ? "..." : ""
+	}`;
+	return contentTitle;
 }
 
 export async function onReaction(
-  chatId: string,
-  logId: string,
-  reaction: string
+	chatId: string,
+	logId: string,
+	reaction: string,
 ) {
-  'use server';
+	"use server";
 
-  const token = await validateToken();
-  if (!token) {
-    return;
-  }
+	const token = await validateToken();
+	if (!token) {
+		return;
+	}
 
-  if (reaction === 'thumbsUp') {
-    return await sendFeedback({ token, logId, feedback: 'positive' });
-  }
+	if (reaction === "thumbsUp") {
+		return await sendFeedback({ token, logId, feedback: "positive" });
+	}
 
-  if (reaction === 'thumbsDown') {
-    return await sendFeedback({ token, logId, feedback: 'negative' });
-  }
+	if (reaction === "thumbsDown") {
+		return await sendFeedback({ token, logId, feedback: "negative" });
+	}
 }
 
 export async function onTranscribe(audio: Blob) {
-  'use server';
+	"use server";
 
-  const token = await validateToken();
-  if (!token) {
-    throw new Error('No token found');
-  }
+	const token = await validateToken();
+	if (!token) {
+		throw new Error("No token found");
+	}
 
-  const response = await sendTranscription({
-    token,
-    audio,
-  });
+	const response = await sendTranscription({
+		token,
+		audio,
+	});
 
-  if (!response) {
-    throw new Error('No response from the model');
-  }
+	if (!response) {
+		throw new Error("No response from the model");
+	}
 
-  return response;
+	return response;
 }
