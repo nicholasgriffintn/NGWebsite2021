@@ -14,29 +14,38 @@ import { AudioCard } from '@/components/ChatInterface/Cards/AudioCard';
 import { DrawingCard } from '@/components/ChatInterface/Cards/DrawingCard';
 import type { ChatMessage } from '@/types/chat';
 import { parseMarkdown } from '@/lib/markdown';
+import { CreatedNoteCard } from '../Cards/CreatedNoteCard';
+import { NoteCard } from '../Cards/NoteCard';
 
 interface MessageProps {
   message: ChatMessage;
   onReaction: (reaction: string) => void;
 }
 
-const ToolCallMessage = ({ message }: { message: ChatMessage }) => (
-  <div key={message.id} className="mb-4 group relative">
-    <div
-      className={cn('flex items-start gap-3', {
-        'justify-end': message.role === 'user',
-      })}
-    >
-      <p className="text-sm mb-0 text-muted-foreground flex items-center">
-        <Hammer className="h-4 w-4 mr-2 flex-shrink-0" />
-        <span className="truncate">
-          Used tool(s):{' '}
-          {message.tool_calls?.map((tool_call) => tool_call.name).join(', ')}
-        </span>
-      </p>
+const ToolCallMessage = ({ message }: { message: ChatMessage }) => {
+  const toolName = message.tool_calls
+    ? message.tool_calls
+        .map((tool_call) => tool_call.name || tool_call.function.name)
+        .join(', ')
+    : 'unknown';
+
+  if (!toolName) return null;
+
+  return (
+    <div key={message.id} className="mb-4 group relative">
+      <div
+        className={cn('flex items-start gap-3', {
+          'justify-end': message.role === 'user',
+        })}
+      >
+        <p className="text-sm mb-0 text-muted-foreground flex items-center">
+          <Hammer className="h-4 w-4 mr-2 flex-shrink-0" />
+          <span className="truncate">Used tool: {toolName}</span>
+        </p>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const replaceCitations = (text: string, citations: string[]) => {
   return text.replace(/\[(\d+)\]/g, (match, number) => {
@@ -102,10 +111,6 @@ const MessageContent = ({
     content.includes('export') &&
     content.includes('function');
 
-  if (!content) {
-    return null;
-  }
-
   const cleanedAnalysis =
     (content.includes('<analysis>') &&
       content.split('</analysis>')?.[0]?.replace('<analysis>', '').trim()) ||
@@ -139,6 +144,10 @@ const MessageContent = ({
             citations={message.citations || []}
           />
         )}
+        {message.name === 'create_note' && (
+          <CreatedNoteCard data={message.data} />
+        )}
+        {message.name === 'get_note' && <NoteCard data={message.data} />}
         {message.name === 'get_weather' && <WeatherCard data={message.data} />}
         {message.name === 'create_image' && (
           <ReplicateCard name="create_image" data={message.data} />
@@ -286,7 +295,7 @@ export function MessageComponent({ message, onReaction }: MessageProps) {
     ? message.content
     : message?.content?.prompt || '';
 
-  if (!message.role || !content) {
+  if (!message.role || (!content && !message.name)) {
     return null;
   }
 

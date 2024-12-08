@@ -30,6 +30,9 @@ export interface ChatMessage {
       [key: string]: string;
     };
     name: string;
+    function: {
+      name: string;
+    };
   }[];
   status?: string;
   logId?: string;
