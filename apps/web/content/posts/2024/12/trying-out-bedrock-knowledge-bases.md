@@ -217,6 +217,6 @@ I think that's mostly the implementation honestly, outside of adding document up
 
 However, if I was doing it for a big project, I would probably look into the following:
 
-- Added some caching to the retrieval process
-- Look at how we can monitor the service
-- Look into dashboards and making more use out of OpenSearch
+- Adding some caching to the retrieval process
+- Monitoring the service with logs and dashboards
+- Getting more use out of OpenSearch
