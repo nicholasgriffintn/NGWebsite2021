@@ -83,7 +83,7 @@ Then I map over the filters and get the matches for each filter:
 
 For example, given the input "help me debug this python code", it might return:
 
-```typescript
+```json
 {
   coding_languages: ["python"],
   coding_practices: ["debug", "code"]
@@ -295,7 +295,7 @@ Rank them based on those scores:
 	}
 ```
 
-Finally, we select the best model:
+And then, finally, we select the best model:
 
 ```typescript
 	private static selectBestModel(modelScores: ModelScore[]): Model {
