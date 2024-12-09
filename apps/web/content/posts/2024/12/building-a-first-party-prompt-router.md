@@ -235,8 +235,8 @@ Then we decide on how to return depending on the capabilities of the model.
 
 We start with a couple of early returns:
 
-- If the prompt has no required capabilities, we return the default model
-- If the models are out of the budget, we return the default model
+- If the prompt has no required capabilities, or does not have any of the required capabilities, we immediately score the model 0
+- If the models are out of the budget, we again score the model 0
 
 Then we calculate the score for each of the models:
 
