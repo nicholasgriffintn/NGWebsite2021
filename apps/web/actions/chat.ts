@@ -205,6 +205,7 @@ export async function onNewChat(content: string) {
 
 export async function onReaction(
 	chatId: string,
+	content: string,
 	logId: string,
 	reaction: string,
 ) {
