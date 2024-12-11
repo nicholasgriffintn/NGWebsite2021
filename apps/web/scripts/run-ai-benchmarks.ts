@@ -18,6 +18,7 @@ const benchmarks = [
 ];
 
 const models = [
+	"gemini-2.0-flash",
 	"gemini-experimental-1121",
 	"gemini-experimental-1206",
 	"gemini-1.5-flash",
@@ -102,6 +103,7 @@ async function fetchModelResponse(model: string, benchmark: any) {
 				"Content-Type": "application/json",
 				"User-Agent": "NGWeb",
 				Authorization: `Bearer ${token}`,
+				"x-user-email": "automation@undefined.computer",
 			},
 			body: JSON.stringify({
 				chat_id: request.chatId,
@@ -120,6 +122,7 @@ async function fetchModelResponse(model: string, benchmark: any) {
 				`Error fetching data for ${request.chatId}:`,
 				response.statusText,
 			);
+			console.log(response);
 			return {
 				model,
 				request,
