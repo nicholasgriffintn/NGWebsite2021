@@ -23,6 +23,7 @@ export async function getChatKeys({
 				"Content-Type": "application/json",
 				"User-Agent": "NGWeb",
 				Authorization: `Bearer ${token}`,
+				"x-user-email": "anonymous@undefined.computer",
 			},
 		});
 
@@ -78,6 +79,7 @@ export async function getChat({
 				"Content-Type": "application/json",
 				"User-Agent": "NGWeb",
 				Authorization: `Bearer ${token}`,
+				"x-user-email": "anonymous@undefined.computer",
 			},
 		});
 
@@ -127,6 +129,7 @@ export async function createChat({
 				"Content-Type": "application/json",
 				"User-Agent": "NGWeb",
 				Authorization: `Bearer ${token}`,
+				"x-user-email": "anonymous@undefined.computer",
 			},
 			body: JSON.stringify({
 				chat_id: chatId,
@@ -182,6 +185,7 @@ export async function sendTranscription({
 			headers: {
 				"User-Agent": "NGWeb",
 				Authorization: `Bearer ${token}`,
+				"x-user-email": "anonymous@undefined.computer",
 			},
 			body: formData,
 		});
@@ -229,6 +233,7 @@ export async function sendFeedback({
 				"Content-Type": "application/json",
 				"User-Agent": "NGWeb",
 				Authorization: `Bearer ${token}`,
+				"x-user-email": "anonymous@undefined.computer",
 			},
 			body: JSON.stringify({
 				logId,

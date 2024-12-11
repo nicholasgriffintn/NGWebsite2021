@@ -20,6 +20,7 @@ export async function uploadPodcast({
 			headers: {
 				"User-Agent": "NGWeb",
 				Authorization: `Bearer ${token}`,
+				"x-user-email": "anonymous@undefined.computer",
 			},
 			body: JSON.stringify({
 				audioUrl,
@@ -67,6 +68,7 @@ export async function transcribePodcast({
 				"Content-Type": "application/json",
 				"User-Agent": "NGWeb",
 				Authorization: `Bearer ${token}`,
+				"x-user-email": "anonymous@undefined.computer",
 			},
 			body: JSON.stringify({
 				podcastId: chatId,
@@ -112,6 +114,7 @@ export async function summarisePodcast({
 				"Content-Type": "application/json",
 				"User-Agent": "NGWeb",
 				Authorization: `Bearer ${token}`,
+				"x-user-email": "anonymous@undefined.computer",
 			},
 			body: JSON.stringify({
 				podcastId: chatId,
@@ -155,6 +158,7 @@ export async function generatePodcastImage({
 				"Content-Type": "application/json",
 				"User-Agent": "NGWeb",
 				Authorization: `Bearer ${token}`,
+				"x-user-email": "anonymous@undefined.computer",
 			},
 			body: JSON.stringify({
 				podcastId: chatId,
