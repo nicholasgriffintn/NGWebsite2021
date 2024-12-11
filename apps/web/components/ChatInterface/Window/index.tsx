@@ -39,6 +39,7 @@ interface Props {
 	) => Promise<ChatMessage[]>;
 	onReaction: (
 		messageId: string,
+		content: string,
 		logId: string,
 		reaction: string,
 	) => Promise<void>;
