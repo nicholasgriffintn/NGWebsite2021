@@ -1,6 +1,7 @@
 ---
 title: "Building a First Party Prompt Router"
 date: "2024-12-09T20:51"
+update: "2024-12-12T06:51"
 tags: [ai, prompt-router, aws]
 description: Recently at AWS re:invent, AWS announced [Intelligent Prompt Routing in Bedrock](https://aws.amazon.com/bedrock/intelligent-prompt-routing/). While this looks although fantastic and useful for many, when I saw the announcement, I thought to myself, "I wonder how hard it would be to build my own?".\n\nAnd so that's what I've set out to do.\n\nIn this post, I'll be going through the work I've done so far, including building keyword recognition, ai prompt analysis and weighting to select the best model for a given prompt.
 ---
@@ -315,6 +316,8 @@ You can find the full [code for this here](https://github.com/nicholasgriffintn/
 One thing to note before I finish up is that there are some performance issues here.
 
 As we're adding on another AI call, we're ultimately slowing down the response time of the user's request, sometimes by a fair amount, at the moment, I'm using Mistral NeMo as I thought it would have a good range of knowledge while being cheap and fast.
+
+**Update:** I've since changed this to `llama-3.3-70b-specdec` via Groq and it's super speedy,
 
 I might want to try out some other models and see if they perform better, but really, I think I might want to build some sort of a benchmark first.
 
