@@ -49,6 +49,7 @@
 		"react": "18.3.1",
 		"react-dom": "18.3.1",
 		"react-hook-form": "^7.53.2",
+		"recharts": "^2.15.0",
 		"remark-gfm": "^4.0.0",
 		"sugar-high": "^0.7.5",
 		"tailwind-container-break-out": "^2.0.9",
