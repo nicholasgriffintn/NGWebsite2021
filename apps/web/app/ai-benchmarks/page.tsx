@@ -23,11 +23,17 @@ type Message = {
 };
 
 type ModelResponse = {
+	model?: string;
 	request: {
 		model: string;
 		message: string;
+		chatId?: string;
+		mode?: string;
+		role?: string;
+		max_tokens?: number;
+		timestamp?: string;
 	};
-	response?: Message | Message[];
+	response?: Message | Message[] | null;
 	status?: string;
 	reason?: string | null;
 };
@@ -77,7 +83,10 @@ export default async function Home() {
 						<CardContent>
 							<Accordion type="single" collapsible className="w-full">
 								{benchmark.models.map((model: ModelResponse, modelIndex) => (
-									<AccordionItem key={modelIndex} value={`item-${modelIndex}`}>
+									<AccordionItem
+										key={`${benchmark.id}-${modelIndex}`}
+										value={`item-${modelIndex}`}
+									>
 										<AccordionTrigger>{model.request.model}</AccordionTrigger>
 										<AccordionContent>
 											<div className="flex flex-col md:flex-row">
@@ -88,31 +97,30 @@ export default async function Home() {
 															{model.request.message}
 														</div>
 													</div>
-													{model.response && (
-														<>
-															{Array.isArray(model.response) ? (
-																model.response.map((message, messageIndex) => (
-																	<div key={messageIndex} className="mb-4">
-																		<div className="font-semibold">
-																			{message.role}:
-																		</div>
-																		<div className="whitespace-pre-wrap">
-																			{message.content}
-																		</div>
-																	</div>
-																))
-															) : (
-																<div className="mb-4">
-																	<div className="font-semibold">
-																		{model.response.role}:
-																	</div>
-																	<div className="whitespace-pre-wrap">
-																		{model.response.content}
-																	</div>
+													{model.response && Array.isArray(model.response) ? (
+														model.response.map((message, messageIndex) => (
+															<div
+																key={`${benchmark.id}-${modelIndex}-${messageIndex}`}
+																className="mb-4"
+															>
+																<div className="font-semibold">
+																	{message.role}:
 																</div>
-															)}
-														</>
-													)}
+																<div className="whitespace-pre-wrap">
+																	{message.content}
+																</div>
+															</div>
+														))
+													) : model.response ? (
+														<div className="mb-4">
+															<div className="font-semibold">
+																{model.response.role}:
+															</div>
+															<div className="whitespace-pre-wrap">
+																{model.response.content}
+															</div>
+														</div>
+													) : null}
 												</ScrollArea>
 												<div className="md:w-1/2 md:ml-2">
 													{model.status === "failed" && (
@@ -134,6 +142,7 @@ export default async function Home() {
 																</h4>
 																<div className="w-full h-[calc(100%-2rem)] flex items-center justify-center">
 																	<div
+																		// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 																		dangerouslySetInnerHTML={{
 																			__html:
 																				(Array.isArray(model.response)
