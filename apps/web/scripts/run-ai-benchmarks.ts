@@ -15,6 +15,13 @@ const benchmarks = [
 		description:
 			"A standardised test to see how well LLMs can create detailed system designs, while also testing its knowledge.",
 	},
+	{
+		id: "multi-part-scenario",
+		prompt:
+			"Please solve the following multi-part scenario that requires: Analytical reasoning, Creative problem-solving, Ethical considerations, Technical explanation. Scenario: A mid-sized technology company is developing an autonomous drone system for environmental monitoring. They've identified three potentially conflicting objectives: Maximize ecological data collection, Minimize wildlife disruption, Optimize operational cost-efficiency. Tasks: 1. Design a comprehensive drone flight strategy addressing all three objectives 2. Explain your logical reasoning for key design choices 3. Identify potential ethical challenges in autonomous environmental monitoring 4. Provide a technical architecture overview that demonstrates feasibility 5. Suggest potential mitigation strategies for unintended consequences. Additional constraints: Use current technological capabilities, Consider environmental and regulatory implications, Propose a scalable solution.",
+		description:
+			"A standardised test to see how well LLMs can solve multi-part scenarios.",
+	},
 ];
 
 const models = [
