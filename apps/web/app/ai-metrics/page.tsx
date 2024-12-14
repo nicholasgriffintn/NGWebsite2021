@@ -10,11 +10,7 @@ export const metadata = {
 		"See the performance metrics from my AI assistant and how it responds across different models.",
 };
 
-export default async function AIMetrics({
-	searchParams,
-}: {
-	searchParams: { [key: string]: string | string[] | undefined };
-}) {
+export default async function AIMetrics({ searchParams }) {
 	const params = await searchParams;
 	const status = typeof params.status === "string" ? params.status : "success";
 	const limit =
