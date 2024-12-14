@@ -37,21 +37,59 @@ export function CombinedMetricsChart({
 	data,
 	interval = 60,
 }: CombinedMetricsChartProps) {
-	const extendedData = [...data];
-	const lastEntry = data[data.length - 1];
+	if (!data?.length) {
+		return (
+			<div className="flex h-full w-full items-center justify-center text-muted-foreground">
+				No data available
+			</div>
+		);
+	}
 
-	if (lastEntry) {
+	const sanitizedData = data.map((point) => ({
+		timestamp: point.timestamp || "",
+		provider: point.provider || "unknown",
+		latency: typeof point.latency === "number" ? point.latency : 0,
+		promptTokens:
+			typeof point.promptTokens === "number" ? point.promptTokens : 0,
+		completionTokens:
+			typeof point.completionTokens === "number" ? point.completionTokens : 0,
+		totalTokens: typeof point.totalTokens === "number" ? point.totalTokens : 0,
+	}));
+
+	const extendedData = [...sanitizedData];
+	const lastEntry = sanitizedData[sanitizedData.length - 1];
+
+	if (lastEntry?.timestamp) {
 		const currentDate = new Date();
 		const lastEntryDate = new Date(lastEntry.timestamp.replace(" ", "T"));
 
-		while (lastEntryDate < currentDate) {
-			lastEntryDate.setMinutes(lastEntryDate.getMinutes() + interval);
+		if (!Number.isNaN(lastEntryDate.getTime())) {
+			while (lastEntryDate < currentDate) {
+				lastEntryDate.setMinutes(lastEntryDate.getMinutes() + interval);
 
-			if (lastEntryDate < currentDate) {
-				const interpolatedTimestamp = `${lastEntryDate.toISOString().split("T")[0]} ${lastEntryDate.getHours().toString().padStart(2, "0")}:${lastEntryDate.getMinutes().toString().padStart(2, "0")}`;
+				if (lastEntryDate < currentDate) {
+					const interpolatedTimestamp = `${lastEntryDate.toISOString().split("T")[0]} ${lastEntryDate.getHours().toString().padStart(2, "0")}:${lastEntryDate.getMinutes().toString().padStart(2, "0")}`;
 
+					extendedData.push({
+						timestamp: interpolatedTimestamp,
+						provider: lastEntry.provider,
+						latency: 0,
+						promptTokens: 0,
+						completionTokens: 0,
+						totalTokens: 0,
+					});
+				}
+			}
+
+			const currentMinutes = currentDate.getMinutes();
+			const roundedMinutes = Math.floor(currentMinutes / interval) * interval;
+			currentDate.setMinutes(roundedMinutes);
+
+			const currentTimestamp = `${currentDate.toISOString().split("T")[0]} ${currentDate.getHours().toString().padStart(2, "0")}:${currentDate.getMinutes().toString().padStart(2, "0")}`;
+
+			if (currentTimestamp > lastEntry.timestamp) {
 				extendedData.push({
-					timestamp: interpolatedTimestamp,
+					timestamp: currentTimestamp,
 					provider: lastEntry.provider,
 					latency: 0,
 					promptTokens: 0,
@@ -59,23 +97,6 @@ export function CombinedMetricsChart({
 					totalTokens: 0,
 				});
 			}
-		}
-
-		const currentMinutes = currentDate.getMinutes();
-		const roundedMinutes = Math.floor(currentMinutes / interval) * interval;
-		currentDate.setMinutes(roundedMinutes);
-
-		const currentTimestamp = `${currentDate.toISOString().split("T")[0]} ${currentDate.getHours().toString().padStart(2, "0")}:${currentDate.getMinutes().toString().padStart(2, "0")}`;
-
-		if (currentTimestamp > lastEntry.timestamp) {
-			extendedData.push({
-				timestamp: currentTimestamp,
-				provider: lastEntry.provider,
-				latency: 0,
-				promptTokens: 0,
-				completionTokens: 0,
-				totalTokens: 0,
-			});
 		}
 	}
 
@@ -88,12 +109,11 @@ export function CombinedMetricsChart({
 			if (!time) return "";
 			const [hours, minutes] = time.split(":");
 
-			const index = data.findIndex((d) => d.timestamp === timestamp);
-
-			const prevDate =
-				index > 0 ? data[index - 1]?.timestamp?.split(" ")[0] : null;
-
-			if (index === 0 || (prevDate && prevDate !== date)) {
+			if (
+				(hours === "00" && minutes === "00") ||
+				timestamp === extendedData[0]?.timestamp ||
+				timestamp === extendedData[extendedData.length - 1]?.timestamp
+			) {
 				return `${date} ${hours}:${minutes}`;
 			}
 
@@ -102,13 +122,6 @@ export function CombinedMetricsChart({
 			console.error("Error formatting timestamp:", timestamp);
 			return timestamp;
 		}
-	};
-
-	const isDayChange = (currentTimestamp: string, index: number) => {
-		if (index === 0 || !data[index - 1]?.timestamp) return false;
-		const [currentDate] = currentTimestamp.split(" ");
-		const [previousDate] = data[index - 1]?.timestamp?.split(" ") || [];
-		return currentDate !== previousDate;
 	};
 
 	const providerColors: { [key: string]: string } = {
@@ -127,6 +140,7 @@ export function CombinedMetricsChart({
 	};
 
 	const getProviderColor = (provider: string) => {
+		if (!provider) return "#0071f1";
 		const normalizedProvider = provider.toLowerCase();
 		return providerColors[normalizedProvider] || "#0071f1";
 	};
@@ -203,7 +217,7 @@ export function CombinedMetricsChart({
 						name="Latency (ms)"
 						opacity={0.9}
 					>
-						{data.map((entry, index) => (
+						{extendedData.map((entry, index) => (
 							<Cell
 								key={`cell-${index}-${entry.timestamp}`}
 								fill={getProviderColor(entry.provider)}
@@ -213,43 +227,38 @@ export function CombinedMetricsChart({
 							/>
 						))}
 					</Bar>
-					<Line
-						yAxisId="right"
-						type="monotone"
-						dataKey="promptTokens"
-						stroke="#00F5D4"
-						strokeWidth={2}
-						name="Prompt Tokens"
-						dot={false}
-					/>
-					<Line
-						yAxisId="right"
-						type="monotone"
-						dataKey="completionTokens"
-						stroke="#FF6B6B"
-						strokeWidth={2}
-						name="Completion Tokens"
-						dot={false}
-					/>
-					<Line
-						yAxisId="right"
-						type="monotone"
-						dataKey="totalTokens"
-						stroke="#FEE440"
-						strokeWidth={2}
-						name="Total Tokens"
-						dot={false}
-					/>
-					{data.map((entry, index) =>
-						isDayChange(entry.timestamp, index) ? (
-							<ReferenceLine
-								key={`ref-${entry.timestamp}`}
-								x={entry.timestamp}
-								stroke="var(--foreground)"
-								strokeDasharray="3 3"
-								opacity={0.5}
-							/>
-						) : null,
+					{extendedData.some((d) => d.promptTokens > 0) && (
+						<Line
+							yAxisId="right"
+							type="monotone"
+							dataKey="promptTokens"
+							stroke="#00F5D4"
+							strokeWidth={2}
+							name="Prompt Tokens"
+							dot={false}
+						/>
+					)}
+					{extendedData.some((d) => d.completionTokens > 0) && (
+						<Line
+							yAxisId="right"
+							type="monotone"
+							dataKey="completionTokens"
+							stroke="#FF6B6B"
+							strokeWidth={2}
+							name="Completion Tokens"
+							dot={false}
+						/>
+					)}
+					{extendedData.some((d) => d.totalTokens > 0) && (
+						<Line
+							yAxisId="right"
+							type="monotone"
+							dataKey="totalTokens"
+							stroke="#FEE440"
+							strokeWidth={2}
+							name="Total Tokens"
+							dot={false}
+						/>
 					)}
 				</ComposedChart>
 			</ResponsiveContainer>

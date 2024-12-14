@@ -43,7 +43,7 @@ export async function getAiMetrics({
 			return;
 		}
 
-		return data.metrics;
+		return data.metrics.reverse();
 	} catch (error) {
 		console.error("Error getting AI metrics", error);
 	}
