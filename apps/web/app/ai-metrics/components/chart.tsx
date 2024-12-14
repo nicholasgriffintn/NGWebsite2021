@@ -18,39 +18,53 @@ import {
 	ChartTooltipContent,
 } from "@/components/ui/chart";
 
-import { getGradient } from "@/lib/utils";
+interface MetricDataPoint {
+	timestamp: string;
+	provider: string;
+	latency: number;
+	promptTokens: number;
+	completionTokens: number;
+	totalTokens: number;
+}
 
 interface CombinedMetricsChartProps {
-	data: Array<{
-		name: string;
-		latency: number;
-		promptTokens: number;
-		completionTokens: number;
-		totalTokens: number;
-	}>;
+	data: MetricDataPoint[];
 }
 
 export function CombinedMetricsChart({ data }: CombinedMetricsChartProps) {
 	const formatLatency = (value: number) => `${value.toLocaleString()}ms`;
 	const formatTokens = (value: number) => `${value.toLocaleString()}`;
+	const formatTimestamp = (timestamp: string) => {
+		try {
+			if (!timestamp) return "";
+			const [_, time] = timestamp.split(" ");
+			if (!time) return "";
+			const [hours, minutes] = time.split(":");
+			return `${hours}:${minutes}`;
+		} catch (error) {
+			console.error("Error formatting timestamp:", timestamp);
+			return timestamp;
+		}
+	};
 
-	const barColors = [
-		"#FF6B6B", // Coral Red
-		"#4ECDC4", // Turquoise
-		"#45B7D1", // Sky Blue
-		"#96CEB4", // Sage Green
-		"#FFEEAD", // Cream Yellow
-		"#D4A5A5", // Dusty Rose
-		"#9B5DE5", // Purple
-		"#F15BB5", // Pink
-		"#00BBF9", // Bright Blue
-		"#00F5D4", // Mint
-		"#FEE440", // Yellow
-		"#FF99C8", // Light Pink
-		"#A8E6CF", // Mint Green
-		"#FFB3BA", // Light Red
-		"#BFCFF7", // Lavender
-	];
+	const providerColors: { [key: string]: string } = {
+		openai: "#9d94ec",
+		anthropic: "#f8a054",
+		bedrock: "#4693ff",
+		gork: "#cf7ee9",
+		openrouter: "#fb97b9",
+		mistral: "#73cee6",
+		"perplexity-ai": "#ffce4b",
+		workers: "#4693ff",
+		groq: "#f8a054",
+		"google-ai-studio": "#f8a054",
+		replicate: "#0071f1",
+	};
+
+	const getProviderColor = (provider: string) => {
+		const normalizedProvider = provider.toLowerCase();
+		return providerColors[normalizedProvider] || "#0071f1";
+	};
 
 	return (
 		<ChartContainer
@@ -77,16 +91,17 @@ export function CombinedMetricsChart({ data }: CombinedMetricsChartProps) {
 			<ResponsiveContainer width="100%" height="100%">
 				<ComposedChart
 					data={data}
-					margin={{ top: 40, right: 60, left: 30, bottom: 40 }}
+					margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
 				>
 					<CartesianGrid strokeDasharray="3 3" opacity={0.2} />
 					<XAxis
-						dataKey="name"
+						dataKey="timestamp"
 						angle={-45}
 						textAnchor="end"
 						height={60}
-						interval={0}
+						interval="preserveStartEnd"
 						tick={{ fontSize: 11, fill: "var(--foreground)" }}
+						tickFormatter={formatTimestamp}
 					/>
 					<YAxis
 						yAxisId="left"
@@ -110,10 +125,10 @@ export function CombinedMetricsChart({ data }: CombinedMetricsChartProps) {
 					/>
 					<Legend
 						verticalAlign="top"
-						height={36}
+						height={24}
 						iconSize={10}
 						wrapperStyle={{
-							paddingBottom: "20px",
+							paddingBottom: "10px",
 							fontSize: "12px",
 						}}
 					/>
@@ -125,8 +140,8 @@ export function CombinedMetricsChart({ data }: CombinedMetricsChartProps) {
 					>
 						{data.map((entry, index) => (
 							<Cell
-								key={`cell-${index}-${entry.name}`}
-								fill={barColors[index % barColors.length]}
+								key={`cell-${index}-${entry.timestamp}`}
+								fill={getProviderColor(entry.provider)}
 								style={{
 									filter: "brightness(1.1)",
 								}}

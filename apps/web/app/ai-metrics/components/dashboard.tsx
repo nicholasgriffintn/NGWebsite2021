@@ -62,6 +62,8 @@ export function MetricsDashboard({ metrics }: { metrics: Metric[] }) {
 			promptTokens: tokenUsage.prompt_tokens || 0,
 			completionTokens: tokenUsage.completion_tokens || 0,
 			totalTokens: tokenUsage.total_tokens || 0,
+			timestamp: metric.timestamp,
+			provider: metadata.provider,
 		};
 	});
 
