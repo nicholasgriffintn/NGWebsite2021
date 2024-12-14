@@ -77,8 +77,8 @@ export default async function Home() {
 				{data.map((benchmark: Benchmark) => (
 					<Card key={benchmark.id} className="mb-6">
 						<CardHeader>
-							<CardTitle>{benchmark.prompt}</CardTitle>
-							<CardDescription>{benchmark.description}</CardDescription>
+							<CardTitle>{benchmark.description}</CardTitle>
+							<CardDescription>Prompt: {benchmark.prompt}</CardDescription>
 						</CardHeader>
 						<CardContent>
 							<Accordion type="single" collapsible className="w-full">

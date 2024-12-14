@@ -22,11 +22,17 @@ const benchmarks = [
 		description:
 			"A standardised test to see how well LLMs can solve multi-part scenarios.",
 	},
+	{
+		id: "role-play",
+		prompt:
+			"You are an expert Dungeon Master (DM) for Dungeons & Dragons, known for creating immersive and captivating game experiences. Your task is to create a complete D&D setup for a game with four players. The campaign name for this adventure is:\n\n<campaign_name>\nThe tech leads of Azeroth\n</campaign_name>\n\nTo ensure a creative and impressive response, please follow these steps:\n\n1. Begin by brainstorming unique and imaginative elements for each aspect of the D&D setup. Wrap this process in <worldbuilding> tags:\n\n   a. List 5 unique elements for the adventure\n   b. List 5 interesting aspects of the world's history or culture\n   c. Create 4 character concepts with brief descriptions\n   d. Generate 3 potential names for each character concept\n\n2. After brainstorming, select the best ideas from each category and explain why they were chosen. Wrap this in <idea_selection> tags.\n\n3. Using the selected ideas, create the following components for the D&D game:\n\n   a. Adventure: Develop a detailed and engaging adventure for the players to explore. Include a compelling plot, interesting locations, and potential encounters.\n\n   b. World Backstory: Craft a rich and immersive backstory for the world in which the adventure takes place. Consider its history, cultures, and any relevant conflicts or mysteries.\n\n   c. Character Backstories: Create detailed and engaging backstories for each of the four player characters. Ensure that their backgrounds are interconnected with the world and adventure you've created.\n\n   d. Character Names: Provide unique and fitting names for each of the four characters.\n\n4. Present your final D&D setup using the following structure:\n\n   <adventure>\n   [Detailed description of the adventure]\n   </adventure>\n\n   <world_backstory>\n   [Rich backstory of the game world]\n   </world_backstory>\n\n   <character_backstories>\n   [Detailed backstories for each of the four characters]\n   </character_backstories>\n\n   <character_names>\n   [List of names for each character]\n   </character_names>\n\nRemember to make each element as creative, detailed, and engaging as possible. Your goal is to create an impressive and immersive D&D experience that will captivate the players from the moment they begin.",
+		description:
+			"A standardised test to see how well LLMs can create a detailed and engaging Dungeons & Dragons campaign.",
+	},
 ];
 
 const models = [
 	"gemini-2.0-flash",
-	"gemini-experimental-1121",
 	"gemini-experimental-1206",
 	"gemini-1.5-flash",
 	"gemini-1.5-pro",
@@ -59,6 +65,7 @@ const models = [
 	"tinyllama",
 	"Phi-3.5-MoE-instruct",
 	"Phi-3.5-mini-instruct",
+	"mythomax-l2-13b",
 ];
 
 const RATE_LIMIT = 50;
