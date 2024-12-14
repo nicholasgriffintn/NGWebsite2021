@@ -57,6 +57,8 @@ const models = [
 	"openchat",
 	"una-cybertron-7b-v2",
 	"tinyllama",
+	"Phi-3.5-MoE-instruct",
+	"Phi-3.5-mini-instruct",
 ];
 
 const RATE_LIMIT = 50;
