@@ -51,7 +51,11 @@ export default async function AIMetrics({ searchParams }) {
 						/>
 					</div>
 					{metrics.length > 0 ? (
-						<MetricsDashboard metrics={metrics} />
+						<MetricsDashboard
+							metrics={metrics}
+							interval={interval}
+							limit={limit}
+						/>
 					) : (
 						<div className="text-center text-muted-foreground">
 							No metrics found

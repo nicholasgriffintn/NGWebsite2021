@@ -10,6 +10,7 @@ import {
 	XAxis,
 	YAxis,
 	Cell,
+	ReferenceLine,
 } from "recharts";
 
 import {
@@ -29,17 +30,73 @@ interface MetricDataPoint {
 
 interface CombinedMetricsChartProps {
 	data: MetricDataPoint[];
+	interval: number;
 }
 
-export function CombinedMetricsChart({ data }: CombinedMetricsChartProps) {
+export function CombinedMetricsChart({
+	data,
+	interval = 60,
+}: CombinedMetricsChartProps) {
+	const extendedData = [...data];
+	const lastEntry = data[data.length - 1];
+
+	if (lastEntry) {
+		const currentDate = new Date();
+		const lastEntryDate = new Date(lastEntry.timestamp.replace(" ", "T"));
+
+		while (lastEntryDate < currentDate) {
+			lastEntryDate.setMinutes(lastEntryDate.getMinutes() + interval);
+
+			if (lastEntryDate < currentDate) {
+				const interpolatedTimestamp = `${lastEntryDate.toISOString().split("T")[0]} ${lastEntryDate.getHours().toString().padStart(2, "0")}:${lastEntryDate.getMinutes().toString().padStart(2, "0")}`;
+
+				extendedData.push({
+					timestamp: interpolatedTimestamp,
+					provider: lastEntry.provider,
+					latency: 0,
+					promptTokens: 0,
+					completionTokens: 0,
+					totalTokens: 0,
+				});
+			}
+		}
+
+		const currentMinutes = currentDate.getMinutes();
+		const roundedMinutes = Math.floor(currentMinutes / interval) * interval;
+		currentDate.setMinutes(roundedMinutes);
+
+		const currentTimestamp = `${currentDate.toISOString().split("T")[0]} ${currentDate.getHours().toString().padStart(2, "0")}:${currentDate.getMinutes().toString().padStart(2, "0")}`;
+
+		if (currentTimestamp > lastEntry.timestamp) {
+			extendedData.push({
+				timestamp: currentTimestamp,
+				provider: lastEntry.provider,
+				latency: 0,
+				promptTokens: 0,
+				completionTokens: 0,
+				totalTokens: 0,
+			});
+		}
+	}
+
 	const formatLatency = (value: number) => `${value.toLocaleString()}ms`;
 	const formatTokens = (value: number) => `${value.toLocaleString()}`;
 	const formatTimestamp = (timestamp: string) => {
 		try {
 			if (!timestamp) return "";
-			const [_, time] = timestamp.split(" ");
+			const [date, time] = timestamp.split(" ");
 			if (!time) return "";
 			const [hours, minutes] = time.split(":");
+
+			const index = data.findIndex((d) => d.timestamp === timestamp);
+
+			const prevDate =
+				index > 0 ? data[index - 1]?.timestamp?.split(" ")[0] : null;
+
+			if (index === 0 || (prevDate && prevDate !== date)) {
+				return `${date} ${hours}:${minutes}`;
+			}
+
 			return `${hours}:${minutes}`;
 		} catch (error) {
 			console.error("Error formatting timestamp:", timestamp);
@@ -47,18 +104,26 @@ export function CombinedMetricsChart({ data }: CombinedMetricsChartProps) {
 		}
 	};
 
+	const isDayChange = (currentTimestamp: string, index: number) => {
+		if (index === 0 || !data[index - 1]?.timestamp) return false;
+		const [currentDate] = currentTimestamp.split(" ");
+		const [previousDate] = data[index - 1]?.timestamp?.split(" ") || [];
+		return currentDate !== previousDate;
+	};
+
 	const providerColors: { [key: string]: string } = {
-		openai: "#9d94ec",
-		anthropic: "#f8a054",
-		bedrock: "#4693ff",
-		gork: "#cf7ee9",
-		openrouter: "#fb97b9",
-		mistral: "#73cee6",
-		"perplexity-ai": "#ffce4b",
-		workers: "#4693ff",
-		groq: "#f8a054",
-		"google-ai-studio": "#f8a054",
-		replicate: "#0071f1",
+		openai: "#6A5ACD",
+		anthropic: "#FF6B6B",
+		bedrock: "#4682B4",
+		grok: "#9370DB",
+		openrouter: "#FF69B4",
+		mistral: "#20B2AA",
+		"perplexity-ai": "#FFD700",
+		workers: "#5F9EA0",
+		groq: "#FF4500",
+		"google-ai-studio": "#4CAF50",
+		replicate: "#1E90FF",
+		"github-models": "#2196F3",
 	};
 
 	const getProviderColor = (provider: string) => {
@@ -90,7 +155,7 @@ export function CombinedMetricsChart({ data }: CombinedMetricsChartProps) {
 		>
 			<ResponsiveContainer width="100%" height="100%">
 				<ComposedChart
-					data={data}
+					data={extendedData}
 					margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
 				>
 					<CartesianGrid strokeDasharray="3 3" opacity={0.2} />
@@ -175,6 +240,17 @@ export function CombinedMetricsChart({ data }: CombinedMetricsChartProps) {
 						name="Total Tokens"
 						dot={false}
 					/>
+					{data.map((entry, index) =>
+						isDayChange(entry.timestamp, index) ? (
+							<ReferenceLine
+								key={`ref-${entry.timestamp}`}
+								x={entry.timestamp}
+								stroke="var(--foreground)"
+								strokeDasharray="3 3"
+								opacity={0.5}
+							/>
+						) : null,
+					)}
 				</ComposedChart>
 			</ResponsiveContainer>
 		</ChartContainer>

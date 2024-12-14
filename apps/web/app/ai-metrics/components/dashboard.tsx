@@ -34,7 +34,15 @@ const parseMetadata = (metadataString: string) => {
 	}
 };
 
-export function MetricsDashboard({ metrics }: { metrics: Metric[] }) {
+export function MetricsDashboard({
+	metrics,
+	interval,
+	limit,
+}: {
+	metrics: Metric[];
+	interval: number;
+	limit: number;
+}) {
 	const [selectedMetric, setSelectedMetric] = useState<Metric | null>(null);
 
 	const totalRequests = metrics.length;
@@ -77,6 +85,11 @@ export function MetricsDashboard({ metrics }: { metrics: Metric[] }) {
 						</CardTitle>
 						<CardDescription className="text-2xl font-bold">
 							{totalRequests}
+							{limit === totalRequests && (
+								<span className="ml-2 text-xs text-muted-foreground">
+									(limited to {limit})
+								</span>
+							)}
 						</CardDescription>
 					</CardHeader>
 				</Card>
@@ -97,6 +110,9 @@ export function MetricsDashboard({ metrics }: { metrics: Metric[] }) {
 						</CardTitle>
 						<CardDescription className="text-2xl font-bold">
 							${totalCost.toFixed(2)}
+							<span className="ml-2 text-xs text-muted-foreground">
+								Not available
+							</span>
 						</CardDescription>
 					</CardHeader>
 				</Card>
@@ -107,6 +123,9 @@ export function MetricsDashboard({ metrics }: { metrics: Metric[] }) {
 						</CardTitle>
 						<CardDescription className="text-2xl font-bold">
 							{cachedPercentage}%
+							<span className="ml-2 text-xs text-muted-foreground">
+								Not available
+							</span>
 						</CardDescription>
 					</CardHeader>
 				</Card>
@@ -117,6 +136,9 @@ export function MetricsDashboard({ metrics }: { metrics: Metric[] }) {
 						</CardTitle>
 						<CardDescription className="text-2xl font-bold">
 							{errorRequests}
+							<span className="ml-2 text-xs text-muted-foreground">
+								Not available
+							</span>
 						</CardDescription>
 					</CardHeader>
 				</Card>
@@ -131,7 +153,10 @@ export function MetricsDashboard({ metrics }: { metrics: Metric[] }) {
 						</CardDescription>
 					</CardHeader>
 					<CardContent className="h-[400px]">
-						<CombinedMetricsChart data={combinedChartData} />
+						<CombinedMetricsChart
+							data={combinedChartData}
+							interval={interval}
+						/>
 					</CardContent>
 				</Card>
 
