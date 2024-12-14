@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Open_Sans as FontSans } from "next/font/google";
+import Script from "next/script";
 
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -69,6 +70,13 @@ export default function RootLayout({
 				)}
 			>
 				{children}
+				{process.env.NODE_ENV === "production" && (
+					<Script
+						strategy="afterInteractive"
+						src="https://static.cloudflareinsights.com/beacon.min.js"
+						data-cf-beacon={`{"token": "f17a0a9788d34dd29d403923476ea39c", "spa": true}`}
+					/>
+				)}
 			</body>
 		</html>
 	);
