@@ -137,7 +137,7 @@ export async function getBlogPosts(showArchived = false) {
 		const posts = data.filter(
 			(post) => {
 				if (environment !== "development") {
-					return !post.metadata.draft;
+					return !post.metadata.draft && (!post.metadata.archived || showArchived);
 				}
 				return !post.metadata.archived || showArchived;
 			},
