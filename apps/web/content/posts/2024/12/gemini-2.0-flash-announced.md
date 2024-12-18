@@ -9,4 +9,5 @@ The new model is available to use today from Google AI Studio in an experimental
 
 Google outlines various improvements to the model such as better performance than 1.5, more output capabilities, native tool use and more, and from my [AI Benchmarks](/ai-benchmarks) it seems to be a good model.
 
-![Gemini 2.0 Flash Hamster Benchmarks](/uploads/gemini-2.0-flash/hamster.svg)
+![Gemini 2.0 Flash Hamster Benchmarks](https://ng-blog.s3rve.co.uk/uploads/gemini-2.0-flash/hamster.svg)
+

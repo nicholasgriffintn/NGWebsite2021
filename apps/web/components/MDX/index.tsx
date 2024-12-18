@@ -49,7 +49,16 @@ function CustomLink(props) {
 }
 
 function RoundedImage(props) {
-	return <Image alt={props.alt} className="rounded-lg" {...props} />;
+	return (
+		<div className="relative w-full">
+			<Image 
+				alt={props.alt}
+				className="rounded-lg"
+				fill
+				{...props} 
+			/>
+		</div>
+	);
 }
 
 function Code({ children, className, ...props }) {
@@ -123,6 +132,13 @@ function createHeading(level) {
 	return Heading;
 }
 
+function Wrapper({ children }) {
+	if (children && typeof children === 'object' && (children.type === RoundedImage || children.type === Image)) {
+		return children;
+	}
+	return <p>{children}</p>;
+}
+
 const components = {
 	h1: createHeading(1),
 	h2: createHeading(2),
@@ -130,10 +146,12 @@ const components = {
 	h4: createHeading(4),
 	h5: createHeading(5),
 	h6: createHeading(6),
+	img: RoundedImage,
 	Image: RoundedImage,
 	a: CustomLink,
 	code: Code,
 	Table,
+	p: Wrapper,
 };
 
 export function CustomMDX(props) {
