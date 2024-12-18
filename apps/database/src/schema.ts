@@ -49,8 +49,16 @@ export const document = sqliteTable("document", {
     id: text().primaryKey(),
     metadata: text(),
     title: text(),
+    description: text(),
+    slug: text(),
     content: text(),
     type: text(),
+    storage_key: text(),
+    archived: integer().default(0),
+    draft: integer().default(0),
+    image_url: text(),
+    image_alt: text(),
+    tags: text(),
     created_at: text()
     .default(sql`(CURRENT_TIMESTAMP)`).notNull(),
     updated_at: text()

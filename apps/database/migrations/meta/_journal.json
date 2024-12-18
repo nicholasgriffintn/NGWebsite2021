@@ -8,6 +8,13 @@
       "when": 1734557335370,
       "tag": "0000_chubby_nicolaos",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1734558052313,
+      "tag": "0001_perfect_corsair",
+      "breakpoints": true
     }
   ]
 }
