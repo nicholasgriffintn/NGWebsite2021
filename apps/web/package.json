@@ -8,17 +8,9 @@
 		"start": "next start",
 		"lint": "biome lint",
 		"format": "biome format --write",
-		"pages:build": "npx @cloudflare/next-on-pages",
 		"preview": "npm run pages:build && npx wrangler pages dev",
 		"deploy": "npm run pages:build && npx wrangler pages deploy",
-		"cf-typegen": "npx wrangler types --env-interface CloudflareEnv env.d.ts",
-		"db:generate": "drizzle-kit generate",
-		"db:migrate:local": "npx rangler d1 migrations apply personal-web --local",
-		"db:migrate:preview": "npx wrangler d1 migrations apply --env preview personal-web-preview",
-		"db:migrate:prod": "npx wrangler d1 migrations apply personal-web --remote",
-		"db:studio:local": "cross-env DB_LOCAL_PATH=$(find .wrangler/state/v3/d1/miniflare-D1DatabaseObject -type f -name '*.sqlite' -print -quit) drizzle-kit studio",
-		"db:studio:preview": "cross-env NODE_ENV='preview' drizzle-kit studio",
-		"db:studio:prod": "drizzle-kit studio"
+		"cf-typegen": "npx wrangler types --env-interface CloudflareEnv env.d.ts"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.9.1",
@@ -41,7 +33,6 @@
 		"better-sqlite3": "^11.5.0",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.1",
-		"drizzle-orm": "^0.36.1",
 		"html-react-parser": "^5.1.18",
 		"lucide-react": "^0.456.0",
 		"next": "15.0.3",
@@ -59,8 +50,6 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
-		"@cloudflare/next-on-pages": "^1.13.5",
-		"@cloudflare/workers-types": "^4.20241112.0",
 		"@tailwindcss/typography": "^0.5.15",
 		"@types/node": "^20",
 		"@types/react": "^18",
@@ -68,7 +57,6 @@
 		"@types/react-scroll": "^1.8.10",
 		"autoprefixer": "^10.4.20",
 		"cross-env": "^7.0.3",
-		"drizzle-kit": "^0.28.0",
 		"postcss": "^8.4.39",
 		"tailwindcss": "^3.4.14",
 		"typescript": "^5.6.3"

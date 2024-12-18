@@ -3,5 +3,4 @@
 
 interface CloudflareEnv {
 	LAST_FM_TOKEN: string;
-	DB: D1Database;
 }
