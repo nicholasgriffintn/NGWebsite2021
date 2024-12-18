@@ -29,8 +29,9 @@ const handler: ExportedHandler<{ BUCKET: R2Bucket; ENCRYPT_SECRET: string }> = {
 
                     const object = await env.BUCKET.get(keys.join("/"));
                     if (object) {
+                        const contentType = object.httpMetadata?.contentType;
                         return new Response(object.body, { headers: {
-                            "Content-Type": "application/json",
+                            "Content-Type": contentType || "application/json",
                             ...corsHeaders
                         } });
                     } else {

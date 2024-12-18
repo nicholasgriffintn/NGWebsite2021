@@ -2,7 +2,6 @@ import { PageLayout } from "@/components/PageLayout";
 import { InnerPage } from "@/components/InnerPage";
 import { getBlogPostsByTag } from "@/lib/blog";
 import { BlogCard } from "@/components/BlogCard";
-import { Link } from "@/components/Link";
 
 export const metadata = {
 	title: "Blog",

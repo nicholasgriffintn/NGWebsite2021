@@ -1,7 +1,38 @@
-import fs from "node:fs";
-import path from "node:path";
-
 import type { Metadata } from "@/types/blog";
+import { CacheManager } from "./cache";
+
+const BASE_API_URL = "https://content.s3rve.co.uk";
+
+const cacheManager = new CacheManager<any>();
+
+async function getApiData(path: string, options: { retry?: number } = {}) {
+	const cacheKey = `api_${path}`;
+	const cached = cacheManager.get<Response>(cacheKey);
+	if (cached) return cached;
+
+	const url = `${BASE_API_URL}/${path}`;
+	const maxRetries = options.retry ?? 3;
+	let lastError: Error | null = null;
+
+	for (let attempt = 0; attempt < maxRetries; attempt++) {
+		try {
+			const response = await fetch(url);
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+
+			const clonedResponse = response.clone();
+			cacheManager.set(cacheKey, clonedResponse);
+			return clonedResponse;
+		} catch (error) {
+			lastError = error instanceof Error ? error : new Error(String(error));
+			await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+		}
+	}
+
+	throw lastError ?? new Error(`Failed to fetch data from ${url}`);
+}
 
 export function parseFrontmatter(fileContent: string) {
 	const frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
@@ -12,19 +43,21 @@ export function parseFrontmatter(fileContent: string) {
 
 	const frontMatterBlock = match[1];
 	const content = fileContent.replace(frontmatterRegex, "").trim();
+
 	const metadata = frontMatterBlock?.split("\n").reduce(
 		(acc, line) => {
 			const [key, ...valueArr] = line.split(": ");
 			if (key) {
 				let value: string[] | string = valueArr.join(": ").trim();
-				value = value.replace(/^['"](.*)['"]$/, "$1"); // Remove quotes
+				value = value.replace(/^['"](.*)['"]$/, "$1");
+
 				if (value.startsWith("[") && value.endsWith("]")) {
-					// Parse array values
 					value = value
 						.slice(1, -1)
 						.split(",")
-						.map((tag) => tag.trim());
+						.map((tag) => tag.trim().replace(/^['"]|['"]$/g, ''));
 				}
+
 				acc[key.trim()] = value;
 			}
 			return acc;
@@ -32,81 +65,101 @@ export function parseFrontmatter(fileContent: string) {
 		{} as Partial<Metadata>,
 	);
 
-	return { metadata: metadata as Metadata, content };
-}
-
-function getFilesByExtension(dir: string, extensions: string[]) {
-	const results: string[] = [];
-
-	function traverse(currentDir: string) {
-		const files = fs.readdirSync(currentDir);
-
-		for (const file of files) {
-			const fullPath = path.join(currentDir, file);
-			const stat = fs.statSync(fullPath);
-
-			if (stat.isDirectory()) {
-				traverse(fullPath);
-			} else if (extensions.includes(path.extname(file))) {
-				results.push(path.relative(dir, fullPath));
-			}
+	const requiredFields: (keyof Metadata)[] = ['title', 'date'];
+	requiredFields.forEach(field => {
+		if (!metadata || !metadata[field]) {
+			console.warn(`Missing required metadata field: ${field}`);
 		}
-	}
+	});
 
-	traverse(dir);
-	return results;
+	return {
+		metadata: metadata as Metadata,
+		content
+	};
 }
 
-function readFileContent(filePath: string) {
-	return fs.readFileSync(filePath, "utf-8");
+async function getList({ path }: { path: string }): Promise<{ slug: string }[]> {
+	const response = await getApiData(path);
+	const data = await response.json() as { objects: { key: string }[] };
+
+	const objects = data.objects;
+
+	return objects.map((object) => {
+		return {
+			slug: object.key,
+		};
+	});
 }
 
-function getMDXData(dir: string) {
-	const mdxFiles = getFilesByExtension(dir, [".mdx", ".md"]);
-	return mdxFiles.map((file) => {
-		const { metadata, content } = parseFrontmatter(
-			readFileContent(path.join(dir, file)),
-		);
-		const slug = path.basename(file, path.extname(file));
+async function getPostData({ path }: { path: string }): Promise<string> {
+	const data = await getApiData(path);
 
-		const [year, month] = file.split(path.sep);
+	return data.text();
+}
+
+async function getMDXData({ path }: { path: string }) {
+	const cacheKey = `mdx_${path}`;
+	const cached = cacheManager.get<Awaited<ReturnType<typeof getMDXData>>>(cacheKey);
+	if (cached) return cached;
+
+	const mdxFiles = await getList({ path });
+
+	const posts = await Promise.all(mdxFiles.map(async (file) => {
+		const data = await getPostData({ path: file.slug });
+		const { metadata, content } = parseFrontmatter(data);
+
+		const paths = file.slug.split("/");
+		const slug = paths[paths.length - 1]?.replace(".md", "");
 
 		return {
 			metadata,
 			slug,
 			content,
-			path: {
-				year,
-				month,
-			},
+			path: paths,
 		};
-	});
+	}));
+
+	cacheManager.set(cacheKey, posts);
+	return posts;
 }
 
-export function getBlogPosts(showArchived = false) {
-	const posts = getMDXData(path.join(process.cwd(), "content", "posts")).filter(
-		(post) => {
-			if (process.env.NEXT_PUBLIC_ENVIROMENT !== "development") {
-				return !post.metadata.draft;
-			}
-			if (!showArchived && post.metadata.archived) {
-				return false;
-			}
-			return true;
-		},
-	);
-	return posts.sort(
-		(a, b) =>
-			new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime(),
-	);
+export async function getBlogPosts(showArchived = false) {
+	const cacheKey = `posts_${showArchived}`;
+	const cached = cacheManager.get<Awaited<ReturnType<typeof getBlogPosts>>>(cacheKey);
+	if (cached) {
+		return cached
+	};
+
+	try {
+		const environment = process.env.NEXT_PUBLIC_ENVIRONMENT ?? 'production';
+		const data = await getMDXData({ path: "content" });
+
+		const posts = data.filter(
+			(post) => {
+				if (environment !== "development") {
+					return !post.metadata.draft;
+				}
+				return !post.metadata.archived || showArchived;
+			},
+		).sort(
+			(a, b) =>
+				new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime(),
+		);
+
+		cacheManager.set(cacheKey, posts);
+		return posts;
+	} catch (error) {
+		console.error('Failed to get blog posts:', error);
+		return [];
+	}
 }
 
-export function getPaginatedBlogPosts({
+export async function getPaginatedBlogPosts({
 	showArchived = false,
 	page = 1,
 	limit = 10,
 }) {
-	const posts = getBlogPosts(showArchived);
+	const posts = await getBlogPosts(showArchived);
 	const startIndex = (page - 1) * limit;
 	const endIndex = startIndex + limit;
 	const paginatedPosts = posts.slice(startIndex, endIndex);
@@ -114,8 +167,8 @@ export function getPaginatedBlogPosts({
 	return paginatedPosts;
 }
 
-export function getAllTags() {
-	const posts = getBlogPosts();
+export async function getAllTags() {
+	const posts = await getBlogPosts();
 	const tagCounts = posts.reduce(
 		(acc, post) => {
 			if (Array.isArray(post.metadata.tags)) {
@@ -135,14 +188,15 @@ export function getAllTags() {
 	return tagCounts;
 }
 
-export function getBlogPostsByTag(tag: string) {
-	const posts = getBlogPosts();
+export async function getBlogPostsByTag(tag: string) {
+	const posts = await getBlogPosts();
 	return posts.filter((post) => post.metadata.tags?.includes(tag));
 }
 
-export function getBlogPostBySlug(slug: string) {
-	const posts = getBlogPosts(true);
-	return posts.find((post) => post.slug === slug);
+export async function getBlogPostBySlug(slug: string) {
+	const posts = await getBlogPosts(true);
+	const post = posts.find((post) => post.slug === slug);
+	return post;
 }
 
 export function formatDate(date: string, includeRelative = false) {

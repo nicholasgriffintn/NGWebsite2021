@@ -12,7 +12,7 @@ import { Link } from "@/components/Link";
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-	const posts = getBlogPosts(true);
+	const posts = await getBlogPosts(true);
 
 	return posts.map((post) => ({
 		slug: post.slug,
@@ -21,7 +21,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
 	const { slug } = await params;
-	const post = getBlogPostBySlug(slug);
+	const post = await getBlogPostBySlug(slug);
 
 	if (!post) {
 		return;
@@ -58,7 +58,7 @@ export async function generateMetadata({ params }) {
 
 export default async function Home({ params }) {
 	const { slug } = await params;
-	const post = getBlogPostBySlug(slug);
+	const post = await getBlogPostBySlug(slug);
 
 	if (!post) {
 		notFound();
