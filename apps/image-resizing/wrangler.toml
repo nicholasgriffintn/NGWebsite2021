@@ -1,0 +1,9 @@
+name = "website-image-resizing"
+compatibility_date = "2024-05-01"
+
+[dev]
+port = 8786
+
+routes = [
+	{ pattern = "images.s3rve.co.uk", custom_domain = true }
+]

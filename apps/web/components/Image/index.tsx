@@ -4,57 +4,30 @@ import { useState, useEffect } from "react";
 import NextImage, { type ImageProps } from "next/image";
 import clsx from "clsx";
 
-const loadImage = (setImageDimensions, setError, imageUrl) => {
-	/*
-		TODO: This is a temporary solution to get the image dimensions.
+const loadImage = async (setImageDimensions, setError, imageUrl) => {
+	const imageDataUrl = `https://images.s3rve.co.uk/?width=1920&format=json&image=${imageUrl}`;
 
-		I would prefer to do the following but Cloudflare is returning a CORS error.
+	const imageData = await fetch(imageDataUrl);
 
-		----
-
-		const imageDataUrl = `https://ng-blog.s3rve.co.uk/cdn-cgi/image/width=1920,format=json${imageUrl}`;
-
-		const imageData = await fetch(imageDataUrl);
-
-		if (!imageData.ok) {
-			setError(true);
-			return;
-		}
-
-		const imageDataJson = (await imageData.json()) as {
-			width: number;
-			height: number;
-		};
-
-		if (!imageDataJson.width || !imageDataJson.height) {
-			setError(true);
-			return;
-		}
-
-		setImageDimensions({
-			width: imageDataJson.width,
-			height: imageDataJson.height,
-		});
-	*/
-	if (typeof window === "undefined") return;
-
-	const img = new window.Image();
-	const isFullUrl = imageUrl.startsWith("http");
-	const finalUrl = isFullUrl ? imageUrl : `https://ng-blog.s3rve.co.uk${imageUrl}`;
-	img.src = finalUrl;
-
-	img.onload = () => {
-		setImageDimensions({
-			height: img.height,
-			width: img.width,
-		});
-	};
-	img.onerror = (err) => {
-		console.log(`${finalUrl} failed to load`);
+	if (!imageData.ok) {
 		setError(true);
-		// eslint-disable-next-line no-console
-		console.error(err);
+		return;
+	}
+
+	const imageDataJson = (await imageData.json()) as {
+		width: number;
+		height: number;
 	};
+
+	if (!imageDataJson.width || !imageDataJson.height) {
+		setError(true);
+		return;
+	}
+
+	setImageDimensions({
+		width: imageDataJson.width,
+		height: imageDataJson.height,
+	});
 };
 
 export function Image({
@@ -79,9 +52,13 @@ export function Image({
 	const [loadingComplete, setLoadingComplete] = useState(false);
 
 	useEffect(() => {
-		if (!width && !height) {
-			loadImage(setImageDimensions, setImageError, src);
-		}
+		const load = async () => {
+			if (!width && !height) {
+				await loadImage(setImageDimensions, setImageError, src);
+			}
+		};
+
+		load();
 	}, [src, width, height]);
 
 	const classes = clsx(
