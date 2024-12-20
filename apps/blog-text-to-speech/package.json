@@ -1,0 +1,14 @@
+{
+	"name": "website-blog-text-to-speech",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "wrangler dev src/index.ts",
+		"deploy": "wrangler deploy src/index.ts"
+	},
+	"dependencies": {
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20241127.0",
+		"wrangler": "^3.91.0"
+	}
+}

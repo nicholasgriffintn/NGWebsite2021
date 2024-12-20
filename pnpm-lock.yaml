@@ -27,6 +27,15 @@ importers:
         specifier: ^3.91.0
         version: 3.91.0(@cloudflare/workers-types@4.20241127.0)
 
+  apps/blog-text-to-speech:
+    devDependencies:
+      '@cloudflare/workers-types':
+        specifier: ^4.20241127.0
+        version: 4.20241218.0
+      wrangler:
+        specifier: ^3.91.0
+        version: 3.96.0(@cloudflare/workers-types@4.20241218.0)
+
   apps/database:
     dependencies:
       drizzle-orm:

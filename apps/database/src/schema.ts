@@ -59,6 +59,7 @@ export const document = sqliteTable("document", {
     image_url: text(),
     image_alt: text(),
     tags: text(),
+    audio_url: text(),
     created_at: text()
     .default(sql`(CURRENT_TIMESTAMP)`).notNull(),
     updated_at: text()

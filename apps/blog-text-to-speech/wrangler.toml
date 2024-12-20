@@ -1,0 +1,20 @@
+name = "website-blog-text-to-speech"
+compatibility_date = "2024-05-01"
+
+[dev]
+port = 8786
+
+[[r2_buckets]]
+binding = 'BUCKET'
+bucket_name = 'blog'
+preview_bucket_name = 'blog'
+
+[[queues.consumers]]
+queue = "blog-text-to-speech"
+max_batch_size = 100
+max_batch_timeout = 5
+
+[[d1_databases]]
+binding = "DB"
+database_name = "personal-web"
+database_id = "cabaa840-522a-42e0-86f4-6309cfdacc79"

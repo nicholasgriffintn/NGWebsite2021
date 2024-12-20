@@ -15,6 +15,13 @@
       "when": 1734558052313,
       "tag": "0001_perfect_corsair",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1734712646925,
+      "tag": "0002_chilly_moon_knight",
+      "breakpoints": true
     }
   ]
 }
