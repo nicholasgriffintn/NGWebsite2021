@@ -27,7 +27,7 @@ export async function getBlogPosts(showArchived = false) {
 	const params: Record<string, string> = {};
 	if (showArchived) params.archived = 'true';
 	
-	if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'development') {
+	if (process.env.ENVIRONMENT === 'development') {
 		params.drafts = 'true';
 	}
 
