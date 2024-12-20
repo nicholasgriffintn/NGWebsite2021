@@ -64,8 +64,6 @@ export default async function Home({ params }) {
 		notFound();
 	}
 
-	console.log(post);
-
 	return (
 		<PageLayout>
 			<InnerPage>
