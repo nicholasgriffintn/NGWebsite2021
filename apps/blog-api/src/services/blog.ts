@@ -15,8 +15,8 @@ export class BlogService {
             updated_at: doc.updated_at,
             image_url: doc.image_url,
             image_alt: doc.image_alt,
-            metadata: typeof doc.metadata === 'string' ? JSON.parse(doc.metadata) : {},
-            tags: typeof doc.tags === 'string' ? JSON.parse(doc.tags) : [],
+            metadata: typeof doc.metadata === 'string' ? JSON.parse(doc.metadata) : doc.metadata,
+            tags: typeof doc.tags === 'string' ? JSON.parse(doc.tags) : doc.tags,
             draft: Boolean(doc.draft),
             archived: Boolean(doc.archived)
         };
@@ -54,8 +54,7 @@ export class BlogService {
     async getPostBySlug(slug: string): Promise<BlogPost | null> {
         const query = `
             SELECT 
-                *,
-                COALESCE(NULLIF(description, ''), content) as description
+                *
             FROM document 
             WHERE slug = ? AND type = ? 
             LIMIT 1

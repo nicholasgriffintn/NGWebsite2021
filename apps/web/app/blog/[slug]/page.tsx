@@ -64,6 +64,8 @@ export default async function Home({ params }) {
 		notFound();
 	}
 
+	console.log(post);
+
 	return (
 		<PageLayout>
 			<InnerPage>
@@ -75,13 +77,13 @@ export default async function Home({ params }) {
 						__html: JSON.stringify({
 							"@context": "https://schema.org",
 							"@type": "BlogPosting",
-							headline: post.metadata.title,
-							datePublished: post.metadata.date,
-							dateModified: post.metadata.date || post.metadata.updated,
-							description: post.metadata.description,
-							image: post.metadata.image
-								? `https://nicholasgriffin.dev/${post.metadata.image}`
-								: `/og?title=${encodeURIComponent(post.metadata.title)}`,
+							headline: post.title,
+							datePublished: post.created_at,
+							dateModified: post.updated_at,
+							description: post.description,
+							image: post.image_url
+								? `https://nicholasgriffin.dev/${post.image_url}`
+								: `/og?title=${encodeURIComponent(post.title)}`,
 							url: `https://nicholasgriffin.dev/blog/${post.slug}`,
 							author: {
 								"@type": "Person",
@@ -91,64 +93,64 @@ export default async function Home({ params }) {
 					}}
 				/>
 				<h1 className="text-2xl md:text-4xl font-bold text-primary-foreground">
-					{post.metadata.title}
+					{post.title}
 				</h1>
 				<div className="grid grid-cols-5 gap-4">
 					<div className="col-span-5 md:col-span-3 lg:col-span-4 pt-5">
 						<div className="text-primary-foreground lg:max-w-[75%]">
 							<div className="mb-2">
-								{post.metadata.tags && (
+								{Array.isArray(post.tags) && (
 									<div className="text-sm text-muted-foreground flex flex-wrap items-center space-x-2 mb-2">
 										<span className="text-sm text-muted-foreground">Tags:</span>
-										{post.metadata.tags.map((tag) => (
+										{post.tags.map((tag) => (
 											<Link key={tag} href={`/tags/${tag}`} muted>
 												#{tag}
 											</Link>
 										))}
 									</div>
 								)}
-								{post.metadata.date && (
+								{post.created_at && (
 									<span className="text-sm text-muted-foreground">
-										Published on {formatDate(post.metadata.date)}
+										Published on {formatDate(post.created_at)}
 									</span>
 								)}
-								{post.metadata.updated && (
+								{post.updated_at && (
 									<>
 										<span className="text-sm text-muted-foreground"> • </span>
 										<span className="text-sm text-muted-foreground">
-											Updated on {formatDate(post.metadata.updated)}
+											Updated on {formatDate(post.updated_at)}
 										</span>
 									</>
 								)}
 							</div>
 						</div>
 					</div>
-					{post.metadata.image && !post.metadata.hideFeaturedImage && (
+					{post.image_url && !post.metadata.hideFeaturedImage && (
 						<div className="col-span-5 md:col-span-2 lg:col-span-1">
 							<Image
-								src={post.metadata.image}
-								alt={post.metadata.imageAlt || post.metadata.title}
+								src={post.image_url}
+								alt={post.image_alt || post.title}
 								className="w-full h-full object-cover rounded-lg"
 							/>
 						</div>
 					)}
 				</div>
 				<article className="prose dark:prose-invert pt-2 w-full min-w-full lg:min-w-[75%]">
-					{post.metadata.draft && (
+					{post.draft && (
 						<AlertMessage
 							variant="warning"
 							title="This post is a draft!"
 							description="This post is a draft and may not be finished."
 						/>
 					)}
-					{post.metadata.archived && (
+					{post.archived && (
 						<AlertMessage
 							variant="warning"
 							title="This post has been archived!"
 							description="This post has been archived due to it being from a previous version of my site, or a bit too old. Some things might be broken and it may not be up to date."
 						/>
 					)}
-					<div>{parseMarkdown(post.metadata.description || "")}</div>
+					<div>{parseMarkdown(post.description || "")}</div>
 					<CustomMDX source={post.content} />
 					{post.metadata.link && (
 						<Link href={post.metadata.link} className="text-primary-foreground">

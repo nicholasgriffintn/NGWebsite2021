@@ -10,17 +10,17 @@ export function BlogCard({ post }) {
 	const postLink = post.metadata.link || `/blog/${post.slug}`;
 	const isBookmark = post.metadata.isBookmark;
 	const postContent = parseMarkdown(
-		post.metadata.description || post.content,
+		post.description,
 		false,
 	);
 
 	return (
 		<Card className="overflow-hidden relative">
-			{post.metadata.image && (
+			{post.image_url && (
 				<div className="max-h-[190px] min-h-[190px] overflow-hidden h-full">
 					<Image
-						src={post.metadata.image}
-						alt={post.metadata.imageAlt || post.metadata.title}
+						src={post.image_url}
+						alt={post.image_alt || post.title}
 						className="w-full object-cover"
 						loading="lazy"
 						width={700}
@@ -37,7 +37,7 @@ export function BlogCard({ post }) {
 					)}
 					{isBookmark && !post.metadata.link ? (
 						<div className="text-2xl font-semibold leading-none tracking-tight space-x-2 leading-7">
-							{post.metadata.title}
+							{post.title}
 						</div>
 					) : (
 						<Link
@@ -46,11 +46,11 @@ export function BlogCard({ post }) {
 							target={post.metadata.link ? "_blank" : undefined}
 							underline={false}
 						>
-							{post.metadata.title}
+							{post.title}
 						</Link>
 					)}
-					{post.metadata.archived && <Badge>Archived</Badge>}
-					{post.metadata.draft && <Badge>Draft</Badge>}
+					{post.archived && <Badge>Archived</Badge>}
+					{post.draft && <Badge>Draft</Badge>}
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
@@ -60,21 +60,21 @@ export function BlogCard({ post }) {
 						<span>
 							<Link href={postLink}>
 								Read more
-								<span className="sr-only"> about {post.metadata.title}</span>
+								<span className="sr-only"> about {post.title}</span>
 							</Link>
 						</span>
 					)}
 				</div>
 				<div className="text-sm text-muted-foreground mb-4">
-					{post.metadata.date && (
+					{post.created_at && (
 						<span>
-							Published: {formatDate(post.metadata.date)}
-							{post.metadata.updated && " (Updated)"}
+							Published: {formatDate(post.created_at)}
+							{post.updated_at && " (Updated)"}
 						</span>
 					)}
-					{post.metadata.tags && (
+					{Array.isArray(post.tags) && (
 						<div className="flex flex-wrap items-center gap-2">
-							{post.metadata.tags.map((tag) => (
+							{post.tags.map((tag) => (
 								<Link
 									key={tag}
 									href={`/tags/${tag}`}
