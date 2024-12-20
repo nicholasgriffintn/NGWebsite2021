@@ -97,7 +97,7 @@ export default async function Home({ params }) {
 					<div className="col-span-5 md:col-span-3 lg:col-span-4 pt-5">
 						<div className="text-primary-foreground lg:max-w-[75%]">
 							<div className="mb-2">
-								{Array.isArray(post.tags) && (
+								{Array.isArray(post.tags) && post.tags.length > 0 && (
 									<div className="text-sm text-muted-foreground flex flex-wrap items-center space-x-2 mb-2">
 										<span className="text-sm text-muted-foreground">Tags:</span>
 										{post.tags.map((tag) => (

@@ -72,7 +72,7 @@ export function BlogCard({ post }) {
 							{post.updated_at && " (Updated)"}
 						</span>
 					)}
-					{Array.isArray(post.tags) && (
+					{Array.isArray(post.tags) && post.tags.length > 0 && (
 						<div className="flex flex-wrap items-center gap-2">
 							{post.tags.map((tag) => (
 								<Link
