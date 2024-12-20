@@ -1,10 +1,12 @@
-import { createResponse } from "./utils";
+import { createResponse, parseFrontmatter } from "./utils";
 import { CORS_HEADERS } from "./constants";
 import { BlogService } from "./services/blog";
-import { QueryParams } from "./types";
+import { QueryParams, QueueMessage } from "./types";
+import { BlogProcessor } from "./services/blog-processor";
+import { StorageService } from "./services/storage";
 
-const handler: ExportedHandler<{ DB: D1Database }> = {
-    async fetch(request: Request, env: { DB: D1Database }): Promise<Response> {
+const handler: ExportedHandler<{ DB: D1Database, BUCKET: R2Bucket }, QueueMessage> = {
+    async fetch(request: Request, env: { DB: D1Database, BUCKET: R2Bucket }): Promise<Response> {
         if (request.method === "OPTIONS") {
             return new Response(null, { headers: CORS_HEADERS });
         }
@@ -49,6 +51,46 @@ const handler: ExportedHandler<{ DB: D1Database }> = {
                 message: error instanceof Error ? error.message : 'Unknown error'
             }, 500);
         }
+    },
+    async queue(batch: MessageBatch<QueueMessage>, env: { BUCKET: R2Bucket, DB: D1Database }): Promise<void> {
+        if (batch.messages.length === 0) {
+            return;
+        }
+
+        console.log(`Processing ${batch.messages.length} messages`);
+        
+        const storageService = new StorageService(env.BUCKET);
+        const blogProcessor = new BlogProcessor(env.DB);
+
+        const results = await Promise.allSettled(
+            batch.messages.map(async message => {
+                console.log(`Processing ${message.body.key}`);
+
+                const content = await storageService.getObject(message.body.key);
+                if (!content) {
+                    console.log(`Object ${message.body.key} not found`);
+                    return;
+                }
+
+                const { metadata, content: blogContent } = parseFrontmatter(content);
+                const processedData = blogProcessor.processMetadata(metadata, message.body.key);
+                processedData.content = blogContent;
+
+                await blogProcessor.saveBlogPost(processedData);
+                console.log(`Processed ${message.body.key}`);
+            })
+        );
+        
+        results.forEach((result, index) => {
+            if (result.status === 'rejected') {
+                console.error(
+                    `Failed to process message ${batch.messages[index].body.key}:`,
+                    result.reason
+                );
+            }
+        });
+
+        console.log(`Completed processing ${batch.messages.length} messages`);
     }
 }
 
