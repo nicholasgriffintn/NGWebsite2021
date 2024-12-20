@@ -12,3 +12,8 @@ routes = [
 binding = 'BUCKET'
 bucket_name = 'blog'
 preview_bucket_name = 'blog'
+
+[[d1_databases]]
+binding = "DB"
+database_name = "personal-web"
+database_id = "cabaa840-522a-42e0-86f4-6309cfdacc79"
