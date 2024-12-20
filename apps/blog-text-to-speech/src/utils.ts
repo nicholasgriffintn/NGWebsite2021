@@ -23,22 +23,26 @@ export function formatContentForSpeech(markdownContent: string): string {
     }
 
     const PAUSE_LENGTHS = {
-        SHORT: '0.3s',
-        MEDIUM: '0.8s',
-        LONG: '1.0s'
+        SHORT: '300ms',
+        MEDIUM: '800ms',
+        LONG: '1000ms'
     };
 
     let content = markdownContent;
 
     content = content
+        // Remove URLs
+        .replace(/https?:\/\/[^\s<]+/g, '')
         // Replace HTML entities
         .replace(/&quot;/g, '"')
-        .replace(/&amp;/g, '&')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        // Escape existing SSML tags
-        .replace(/<break/g, '&lt;break')
-        .replace(/<emphasis/g, '&lt;emphasis');
+        .replace(/&amp;/g, 'and')
+        .replace(/&lt;/g, 'less than')
+        .replace(/&gt;/g, 'greater than')
+        // Remove markdown tables
+        .replace(/\|.*\|/g, '')
+        .replace(/[-|]+/g, '')
+        // Remove any existing SSML tags
+        .replace(/<[^>]+>/g, '');
 
     const transformations: Transformation[] = [
         // Remove markdown links while preserving text
@@ -51,7 +55,7 @@ export function formatContentForSpeech(markdownContent: string): string {
             pattern: /!\[([^\]]*)\]\([^)]*\)/g,
             replacement: (_match: string, alt: string) => alt ? `Image: ${alt}` : ''
         },
-        // Remove code blocks (multi-line)
+        // Remove code blocks
         {
             pattern: /```[\s\S]*?```/g,
             replacement: ''
@@ -65,31 +69,33 @@ export function formatContentForSpeech(markdownContent: string): string {
         {
             pattern: /#{1,6}\s*(.*)/g,
             replacement: (_match: string, header: string) => 
-                `<break time="${PAUSE_LENGTHS.LONG}" /><emphasis level="strong">${header}</emphasis><break time="${PAUSE_LENGTHS.MEDIUM}" />`
+                `<break time="${PAUSE_LENGTHS.LONG}"/><emphasis level="strong">${header.trim()}</emphasis><break time="${PAUSE_LENGTHS.MEDIUM}"/>`
         },
         // Add pauses after paragraphs
         {
             pattern: /\n\n/g,
-            replacement: ` <break time="${PAUSE_LENGTHS.MEDIUM}" /> `
+            replacement: `<break time="${PAUSE_LENGTHS.MEDIUM}"/>`
         },
         // Convert bullet points to spoken format
         {
             pattern: /^\s*[-*]\s/gm,
-            replacement: `<break time="${PAUSE_LENGTHS.SHORT}" />• `
+            replacement: `<break time="${PAUSE_LENGTHS.SHORT}"/> `
         },
         // Handle numbered lists
         {
             pattern: /^\s*\d+\.\s/gm,
-            replacement: `<break time="${PAUSE_LENGTHS.SHORT}" /> `
+            replacement: `<break time="${PAUSE_LENGTHS.SHORT}"/> `
         },
         // Convert emphasis markers (* and _) to SSML
         {
             pattern: /(\*\*|__)(.*?)\1/g,
-            replacement: '<emphasis level="strong">$2</emphasis>'
+            replacement: (_match: string, _marker: string, text: string) => 
+                `<emphasis level="strong">${text.trim()}</emphasis>`
         },
         {
             pattern: /(\*|_)(.*?)\1/g,
-            replacement: '<emphasis level="moderate">$2</emphasis>'
+            replacement: (_match: string, _marker: string, text: string) => 
+                `<emphasis level="moderate">${text.trim()}</emphasis>`
         }
     ];
 
@@ -103,8 +109,19 @@ export function formatContentForSpeech(markdownContent: string): string {
         // Remove any remaining markdown symbols
         .replace(/[#*_~`]/g, '')
         // Clean up any double breaks
-        .replace(/(<break[^>]+>\s*){2,}/g, '<break time="1.0s" />')
+        .replace(/(<break[^>]+>\s*){2,}/g, '<break time="1000ms"/>')
+        // Remove any non-SSML brackets that might remain
+        .replace(/<(?!break|emphasis|speak\b)[^>]+>/g, '')
+        // Clean up any empty emphasis tags
+        .replace(/<emphasis[^>]*>\s*<\/emphasis>/g, '')
         .trim();
 
-    return content;
+    // Verify all emphasis tags are properly closed
+    const emphasisOpenCount = (content.match(/<emphasis/g) || []).length;
+    const emphasisCloseCount = (content.match(/<\/emphasis>/g) || []).length;
+    if (emphasisOpenCount !== emphasisCloseCount) {
+        content = content.replace(/<emphasis[^>]*>/g, '').replace(/<\/emphasis>/g, '');
+    }
+
+    return `<speak>${content}</speak>`;
 }
