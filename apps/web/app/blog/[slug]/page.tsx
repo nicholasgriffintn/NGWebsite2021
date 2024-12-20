@@ -27,9 +27,9 @@ export async function generateMetadata({ params }) {
 		return;
 	}
 
-	const { title, date: publishedTime, description, image } = post.metadata;
-	const ogImage = image
-		? image
+	const { title, date: publishedTime, description, image_url } = post;
+	const ogImage = image_url
+		? `https://images.s3rve.co.uk/?image=${image_url}`
 		: `https://nicholasgriffin.dev/og?title=${encodeURIComponent(title)}`;
 
 	return {
