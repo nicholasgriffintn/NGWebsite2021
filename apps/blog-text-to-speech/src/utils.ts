@@ -60,10 +60,10 @@ export function formatContentForSpeech(markdownContent: string): string {
             pattern: /```[\s\S]*?```/g,
             replacement: ''
         },
-        // Remove inline code
+        // Replacce inline code
         {
-            pattern: /`[^`]*`/g,
-            replacement: ''
+            pattern: /`([^`]*)`/g,
+            replacement: '$1'
         },
         // Convert headers to emphasized text with pauses
         {
