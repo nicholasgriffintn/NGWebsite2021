@@ -64,27 +64,27 @@ const handler: ExportedHandler<{ DB: D1Database, BUCKET: R2Bucket }, QueueMessag
 
         const results = await Promise.allSettled(
             batch.messages.map(async message => {
-                console.log(`Processing ${message.body.key}`);
+                console.log(`Processing ${message.body.object.key}`);
 
-                const content = await storageService.getObject(message.body.key);
+                const content = await storageService.getObject(message.body.object.key);
                 if (!content) {
-                    console.log(`Object ${message.body.key} not found`);
+                    console.log(`Object ${message.body.object.key} not found`);
                     return;
                 }
 
                 const { metadata, content: blogContent } = parseFrontmatter(content);
-                const processedData = blogProcessor.processMetadata(metadata, message.body.key);
+                const processedData = blogProcessor.processMetadata(metadata, message.body.object.key);
                 processedData.content = blogContent;
 
                 await blogProcessor.saveBlogPost(processedData);
-                console.log(`Processed ${message.body.key}`);
+                console.log(`Processed ${message.body.object.key}`);
             })
         );
-        
+
         results.forEach((result, index) => {
             if (result.status === 'rejected') {
                 console.error(
-                    `Failed to process message ${batch.messages[index].body.key}:`,
+                    `Failed to process message ${batch.messages[index].body.object.key}:`,
                     result.reason
                 );
             }
