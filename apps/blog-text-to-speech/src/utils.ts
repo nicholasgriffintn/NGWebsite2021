@@ -43,22 +43,6 @@ export function formatContentForSpeech(markdownContent: string): string {
 
     let content = markdownContent;
 
-    content = content
-		// Replace new lines
-		.replace(/\\n/g, `<break time="${PAUSE_LENGTHS.MEDIUM}"/>`)
-        // Remove URLs
-        .replace(/https?:\/\/[^\s<]+/g, '')
-        // Replace HTML entities
-        .replace(/&quot;/g, '"')
-        .replace(/&amp;/g, 'and')
-        .replace(/&lt;/g, 'less than')
-        .replace(/&gt;/g, 'greater than')
-        // Remove markdown tables
-        .replace(/\|.*\|/g, '')
-        .replace(/[-|]+/g, '')
-        // Remove any existing SSML tags
-        .replace(/<[^>]+>/g, '');
-
     const transformations: Transformation[] = [
         // Remove markdown links while preserving text
         {
@@ -73,7 +57,7 @@ export function formatContentForSpeech(markdownContent: string): string {
         // Remove code blocks
         {
             pattern: /```[\s\S]*?```/g,
-            replacement: ''
+            replacement: 'Please view the code block in the browser.'
         },
         // Replacce inline code
         {
@@ -119,6 +103,20 @@ export function formatContentForSpeech(markdownContent: string): string {
     });
 
     content = content
+		// Replace new lines
+		.replace(/\\n/g, `<break time="${PAUSE_LENGTHS.MEDIUM}"/>`)
+		// Remove URLs
+		.replace(/https?:\/\/[^\s<]+/g, '')
+		// Replace HTML entities
+		.replace(/&quot;/g, '"')
+		.replace(/&amp;/g, 'and')
+		.replace(/&lt;/g, 'less than')
+		.replace(/&gt;/g, 'greater than')
+		// Remove markdown tables
+		.replace(/\|.*\|/g, '')
+		.replace(/[-|]+/g, '')
+		// Remove any existing SSML tags
+		.replace(/<[^>]+>/g, '')
         // Normalize whitespace
         .replace(/\s+/g, ' ')
         // Remove any remaining markdown symbols
@@ -137,6 +135,8 @@ export function formatContentForSpeech(markdownContent: string): string {
     if (emphasisOpenCount !== emphasisCloseCount) {
         content = content.replace(/<emphasis[^>]*>/g, '').replace(/<\/emphasis>/g, '');
     }
+
+	console.log(content);
 
     return `<speak>${content}</speak>`;
 }
