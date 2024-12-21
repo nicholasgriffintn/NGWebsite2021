@@ -28,6 +28,7 @@ export interface BlogPost extends BlogMetadata {
     image_alt: string | null;
     metadata: Record<string, unknown>;
     tags: string[];
+    audio_url: string | null;
 }
 
 export interface QueryParams {

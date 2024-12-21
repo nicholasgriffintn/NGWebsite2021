@@ -49,8 +49,9 @@ const handler: ExportedHandler<{
                     return;
                 }
 
-                const { content: blogContent } = parseFrontmatter(content);
-                const formattedContent = formatContentForSpeech(blogContent);
+                const { content: blogContent, metadata } = parseFrontmatter(content);
+                const fullBlogContent = `# ${metadata.title}\n${metadata.description}\n${blogContent}`;
+                const formattedContent = formatContentForSpeech(fullBlogContent);
 
                 const audioKey = await pollyService.uploadObject(formattedContent, storageService, slug);
 

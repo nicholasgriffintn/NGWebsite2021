@@ -1,13 +1,16 @@
 export type Metadata = {
 	title: string;
 	date: string;
-	updated?: string;
-	description?: string;
-	image?: string;
-	imageAlt?: string;
-	hideFeaturedImage?: boolean;
-	archived?: boolean;
+	description: string;
+	image_url?: string;
+	image_alt?: string;
+	tags?: string[];
 	draft?: boolean;
-	tags: string[];
-	link?: string;
+	archived?: boolean;
+	audio_url?: string;
+	metadata: {
+		link?: string;
+		hideFeaturedImage?: boolean;
+		hideAudio?: boolean;
+	};
 };

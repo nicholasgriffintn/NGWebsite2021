@@ -1,4 +1,4 @@
-export function parseFrontmatter(fileContent: string): { content: string } {
+export function parseFrontmatter(fileContent: string): { content: string, metadata: Record<string, string | string[]> } {
 	const frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
 	const match = frontmatterRegex.exec(fileContent);
 	if (!match) {
@@ -7,8 +7,21 @@ export function parseFrontmatter(fileContent: string): { content: string } {
 
 	const content = fileContent.replace(frontmatterRegex, "").trim();
 
+	const frontMatterBlock = match[1];
+	const metadata = frontMatterBlock?.split("\n").reduce<Record<string, string | string[]>>(
+		(acc, line) => {
+			const [key, ...valueArr] = line.split(": ");
+			if (key) {
+				acc[key.trim()] = valueArr.join(": ").trim();
+			}
+			return acc;
+		},
+		{},
+	);
+
 	return {
-		content
+		content,
+		metadata
 	};
 }
 
@@ -31,6 +44,8 @@ export function formatContentForSpeech(markdownContent: string): string {
     let content = markdownContent;
 
     content = content
+		// Replace new lines
+		.replace(/\\n/g, `<break time="${PAUSE_LENGTHS.MEDIUM}"/>`)
         // Remove URLs
         .replace(/https?:\/\/[^\s<]+/g, '')
         // Replace HTML entities

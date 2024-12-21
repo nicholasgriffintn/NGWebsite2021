@@ -31,6 +31,10 @@ export async function getBlogPosts(showArchived = false) {
 		params.drafts = 'true';
 	}
 
+	if (process.env.ENVIRONMENT === 'development') {
+		params.cacheBust = Math.random().toString(36).substring(2, 15);
+	}
+
 	try {
 		const posts = await getApiData('content', params);
 		return posts;
@@ -42,7 +46,13 @@ export async function getBlogPosts(showArchived = false) {
 
 export async function getBlogPostBySlug(slug: string) {
 	try {
-		const post = await getApiData(`content/${slug}`);
+		const params: Record<string, string> = {};
+
+		if (process.env.ENVIRONMENT === 'development') {
+		params.cacheBust = Math.random().toString(36).substring(2, 15);
+		}
+
+		const post = await getApiData(`content/${slug}`, params);
 		return post;
 	} catch (error) {
 		console.error('Failed to get blog post:', error);
