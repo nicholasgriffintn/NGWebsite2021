@@ -14,3 +14,9 @@ export type Metadata = {
 		hideAudio?: boolean;
 	};
 };
+
+export interface Heading {
+	text: string;
+	level: number;
+	slug: string;
+}

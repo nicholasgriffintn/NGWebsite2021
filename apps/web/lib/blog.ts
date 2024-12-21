@@ -1,5 +1,5 @@
 import { CacheManager } from "./cache";
-
+import { Heading } from "@/types/blog";
 const BASE_API_URL = "https://content.s3rve.co.uk";
 const cacheManager = new CacheManager<any>();
 
@@ -7,7 +7,7 @@ async function getApiData(path: string, params: Record<string, string> = {}) {
 	const queryString = new URLSearchParams(params).toString();
 	const fullPath = queryString ? `${path}?${queryString}` : path;
 	const cacheKey = `api_${fullPath}`;
-	
+
 	const cached = cacheManager.get(cacheKey);
 	if (cached) return cached;
 
@@ -26,7 +26,7 @@ async function getApiData(path: string, params: Record<string, string> = {}) {
 export async function getBlogPosts(showArchived = false) {
 	const params: Record<string, string> = {};
 	if (showArchived) params.archived = 'true';
-	
+
 	if (process.env.ENVIRONMENT === 'development') {
 		params.drafts = 'true';
 	}
@@ -49,7 +49,7 @@ export async function getBlogPostBySlug(slug: string) {
 		const params: Record<string, string> = {};
 
 		if (process.env.ENVIRONMENT === 'development') {
-		params.cacheBust = Math.random().toString(36).substring(2, 15);
+			params.cacheBust = Math.random().toString(36).substring(2, 15);
 		}
 
 		const post = await getApiData(`content/${slug}`, params);
@@ -122,4 +122,29 @@ export function formatDate(date: string, includeRelative = false) {
 	});
 
 	return includeRelative ? `${fullDate} (${formattedDate})` : fullDate;
+}
+
+export function extractHeadings(content: string) {
+	const headingRegex = /^(#{2,6})\s+(.+)$/gm;
+	const headings: Heading[] = [];
+	let match;
+
+	while ((match = headingRegex.exec(content)) !== null) {
+		const level = match[1].length;
+		const text = match[2];
+		const slug = text
+			.toLowerCase()
+			.replace(/[^a-z0-9]+/g, '-')
+			.replace(/(^-|-$)/g, '');
+
+			headings.push({
+				text,
+				level,
+				slug,
+			});
+	}
+
+	console.log(headings);
+
+	return headings;
 }

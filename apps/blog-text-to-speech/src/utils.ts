@@ -70,10 +70,15 @@ export function formatContentForSpeech(markdownContent: string): string {
             replacement: (_match: string, header: string) => 
                 `<break time="${PAUSE_LENGTHS.LONG}"/><emphasis level="strong">${header.trim()}</emphasis><break time="${PAUSE_LENGTHS.MEDIUM}"/>`
         },
-        // Add pauses after paragraphs
+        // Look for multiple newlines with optional spaces
         {
-            pattern: /\n\n/g,
+            pattern: /\n\s*\n/g,
             replacement: `<break time="${PAUSE_LENGTHS.MEDIUM}"/>`
+        },
+        // Add pause after end of sentences
+        {
+            pattern: /\.\s+/g,
+            replacement: `. <break time="${PAUSE_LENGTHS.SHORT}"/>`
         },
         // Convert bullet points to spoken format
         {

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { PageLayout } from "@/components/PageLayout";
 import { InnerPage } from "@/components/InnerPage";
-import { getBlogPosts, getBlogPostBySlug } from "@/lib/blog";
+import { getBlogPosts, getBlogPostBySlug, extractHeadings } from "@/lib/blog";
 import { CustomMDX } from "@/components/MDX";
 import { parseMarkdown } from "@/lib/markdown";
 import { AlertMessage } from "@/components/Alert";
@@ -70,6 +70,8 @@ export default async function Home({ params }) {
 		updated: post.updated_at
 	};
 
+	const headings = extractHeadings(post.content);
+
 	return (
 		<PageLayout>
 			<InnerPage>
@@ -126,7 +128,7 @@ export default async function Home({ params }) {
 						</article>
 					</div>
 					<div className="col-span-1 order-1 md:order-2">
-						<PostSidebar post={post} />
+						<PostSidebar post={post} headings={headings} />
 					</div>
 				</div>
 			</InnerPage>
