@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils"
 import { Link } from "@/components/Link"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Heading } from "@/types/blog"
+import { Separator } from "@/components/ui/separator"
 
 interface TableOfContentsProps {
   headings: Heading[]
@@ -15,9 +16,10 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
 
   return (
     <div className="rounded-lg border bg-background/50 text-foreground">
-      <div className="flex items-center p-4">
+      <div className="flex items-center px-4 pt-4">
         <h3 className="text-sm font-semibold">Table of Contents</h3>
       </div>
+      <Separator className="mt-2 mb-2" />
       <ScrollArea className="pb-4">
         <nav>
           <ul className="space-y-3 text-sm">
