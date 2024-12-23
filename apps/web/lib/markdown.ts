@@ -6,6 +6,7 @@ export function parseMarkdown(
 	classNames: { p?: string } = {},
 ) {
 	if (!input) return input;
+
 	const escapeHTML = (str: string) => {
 		return str
 			.replace(/&/g, "&amp;")
@@ -33,6 +34,8 @@ export function parseMarkdown(
 	});
 
 	let html = input
+		.replace(/\\\\/g, '\\')
+		.replace(/\\n/g, '\n')
 		.replace(/<summary>/g, "**Summary:** ")
 		.replace(/<\/summary>/g, "")
 		.replace(/<questions>/g, "**Questions:** ")
@@ -81,6 +84,12 @@ export function parseMarkdown(
 		.replace(/\*(.*?)\*/g, "<em>$1</em>")
 		.replace(/_(.*?)_/g, "<em>$1</em>")
 
+		// Images (updated with proper class names and styling)
+		.replace(
+			/!\[(.*?)\]\((.*?)\)/g,
+			'<img src="$2" alt="$1" class="rounded-lg max-w-full h-auto my-4" loading="lazy" />'
+		)
+
 		// Links
 		.replace(
 			/\[([^\]]+)\]\(([^)]+)\)/g,
@@ -94,18 +103,26 @@ export function parseMarkdown(
 		.replace(/^(\s*[-*+]\s+.*(?:\n(?!\s*[-*+]|\s*\d+\.).*)*)+/gm, (match) => {
 			const items = match
 				.split("\n")
-				.map((line) => `<li>${line.replace(/^\s*[-*+]\s+/, "")}</li>`)
+				.map((line) => {
+					const content = line.replace(/^\s*[-*+]\s+/, "").trim();
+					return content ? `<li>${content}</li>` : '';
+				})
+				.filter(Boolean)
 				.join("\n");
-			return `<ul>${items}</ul>`;
+			return `<ul class="list-disc">${items}</ul>`;
 		})
 
 		// Ordered lists (handle multiple levels)
 		.replace(/^(\s*\d+\.\s+.*(?:\n(?!\s*[-*+]|\s*\d+\.).*)*)+/gm, (match) => {
 			const items = match
 				.split("\n")
-				.map((line) => `<li>${line.replace(/^\s*\d+\.\s+/, "")}</li>`)
+				.map((line) => {
+					const content = line.replace(/^\s*\d+\.\s+/, "").trim();
+					return content ? `<li>${content}</li>` : '';
+				})
+				.filter(Boolean)
 				.join("\n");
-			return `<ol>${items}</ol>`;
+			return `<ol class="list-decimal">${items}</ol>`;
 		})
 
 		// Blockquotes (handle multiple lines)
@@ -117,16 +134,10 @@ export function parseMarkdown(
 		// Horizontal rules
 		.replace(/^(?:---|\*\*\*|___)\s*$/gm, "<hr>")
 
-		// Paragraphs (handle multiple lines)
+		// Paragraphs (handle multiple lines, but not inside lists)
 		.replace(
-			/^(?!<[hou]|<bl|<hr)[^\n]+(?:\n(?!<[hou]|<bl|<hr)[^\n]+)*/gm,
-			(match) => `<p class="${classNames.p}">${match.replace(/\n/g, " ")}</p>`,
-		)
-
-		// Images
-		.replace(
-			/!\[(.*?)\]\((.*?)\)/g,
-			'<img src="$2" alt="$1" class="max-w-full h-auto" />'
+			/^(?!<[houl]|<bl|<hr)[^\n]+(?:\n(?!<[houl]|<bl|<hr)[^\n]+)*/gm,
+			(match) => `<p class="${classNames.p || "text-base"}">${match.replace(/\n/g, "<br />")}</p>`,
 		)
 
 	// Restore code blocks with proper formatting
